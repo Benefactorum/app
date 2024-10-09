@@ -43,7 +43,7 @@ export default function Show({ post, flash }) {
               onClick={onDestroy}
               as="button"
               method="delete"
-              className={buttonVariants({ size: 'sm' })}
+              className={buttonVariants({ variant: "secondary", size: 'sm' })}
             >
               Destroy this post
             </Link>
