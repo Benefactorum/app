@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t typescript_react_rails_2 .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name typescript_react_rails_2 typescript_react_rails_2
+# docker build -t benefactorum .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name benefactorum benefactorum
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
@@ -28,9 +28,10 @@ ENV RAILS_ENV="production" \
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
-# Install packages needed to build gems
+# Install packages needed to build gems and Node.js + Yarn for assets
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git pkg-config && \
+    apt-get install --no-install-recommends -y build-essential git pkg-config nodejs npm && \
+    npm install --global yarn && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
@@ -42,11 +43,14 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
+# Install JavaScript dependencies
+RUN yarn install --frozen-lockfile
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-
-
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Final stage for app image
 FROM base
@@ -58,7 +62,7 @@ COPY --from=build /rails /rails
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    chown -R rails:rails db log storage tmp public
 USER 1000:1000
 
 # Entrypoint prepares the database.
