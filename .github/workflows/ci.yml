@@ -35,10 +35,12 @@ jobs:
       #     ruby-version: .ruby-version
       #     bundler-cache: true
 
-      - name: Scan for security vulnerabilities in JavaScript dependencies
+      - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Scan for security vulnerabilities in JavaScript dependencies
         run: npm ci && npm audit --audit-level=high
 
   lint:
