@@ -1,5 +1,6 @@
 import { Link, Head } from '@inertiajs/react'
 import Post from './Post'
+import { buttonVariants } from "@/components/ui/button"
 
 export default function Show({ post, flash }) {
   const onDestroy = (e) => {
@@ -42,7 +43,7 @@ export default function Show({ post, flash }) {
               onClick={onDestroy}
               as="button"
               method="delete"
-              className="mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium"
+              className={buttonVariants({ size: 'sm' })}
             >
               Destroy this post
             </Link>
