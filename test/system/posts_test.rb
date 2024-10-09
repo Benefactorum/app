@@ -16,7 +16,7 @@ class PostsTest < ApplicationSystemTestCase
 
     fill_in "Body", with: @post.body
     fill_in "Title", with: @post.title
-    click_on "Create Post"
+    click_on "Create post"
 
     assert_text "Post was successfully created"
     click_on "Back"
@@ -28,7 +28,7 @@ class PostsTest < ApplicationSystemTestCase
 
     fill_in "Body", with: @post.body
     fill_in "Title", with: @post.title
-    click_on "Update Post"
+    click_on "Update post"
 
     assert_text "Post was successfully updated"
     click_on "Back"
@@ -36,7 +36,10 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should destroy Post" do
     visit post_url(@post)
-    click_on "Destroy this post", match: :first
+
+    accept_alert "Are you sure you want to delete this post?" do
+      click_on "Destroy this post", match: :first
+    end
 
     assert_text "Post was successfully destroyed"
   end

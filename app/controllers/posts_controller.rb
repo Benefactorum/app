@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     @posts = Post.all
-    render inertia: 'Post/Index', props: {
+    render inertia: "Post/Index", props: {
       posts: @posts.map do |post|
         serialize_post(post)
       end
@@ -15,7 +15,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render inertia: 'Post/Show', props: {
+    render inertia: "Post/Show", props: {
       post: serialize_post(@post)
     }
   end
@@ -23,14 +23,14 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
-    render inertia: 'Post/New', props: {
+    render inertia: "Post/New", props: {
       post: serialize_post(@post)
     }
   end
 
   # GET /posts/1/edit
   def edit
-    render inertia: 'Post/Edit', props: {
+    render inertia: "Post/Edit", props: {
       post: serialize_post(@post)
     }
   end
