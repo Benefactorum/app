@@ -69,8 +69,7 @@ jobs:
     #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3 nodejs npm && \
-             npm install --global yarn
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -80,6 +79,14 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: setup yarn
+        run: npm install --global yarn
 
       - name: Set up JavaScript dependencies
         run: yarn install --frozen-lockfile
