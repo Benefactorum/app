@@ -45,7 +45,7 @@ env:
     WEB_CONCURRENCY: 2
 
     # Match this to any external database server to configure Active Record correctly
-    # Use typescript_react_rails_2-db for a db accessory server on same machine via local kamal docker network.
+    # Use benefactorum-db for a db accessory server on same machine via local kamal docker network.
     # DB_HOST: 192.168.0.2
 
     # Log everything from Rails

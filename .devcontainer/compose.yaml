@@ -1,4 +1,4 @@
-name: "typescript_react_rails_2"
+name: "benefactorum"
 
 services:
   rails-app:
@@ -7,9 +7,8 @@ services:
       dockerfile: .devcontainer/Dockerfile
 
     volumes:
-    - ../..:/workspaces:cached
-
-    # Overrides default command so things don't shut down after the process ends.
+      - ../..:/workspaces:cached
+      # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
     # Uncomment the next line to use a non-root user for all processes.
@@ -18,10 +17,8 @@ services:
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
     depends_on:
-    - selenium
+      - selenium
 
   selenium:
     image: selenium/standalone-chromium
     restart: unless-stopped
-
-  
