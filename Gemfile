@@ -52,6 +52,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "inertia_rails-contrib", github: "skryukov/inertia_rails-contrib", branch: "typescript-installation-script"
+gem "inertia_rails-contrib", github: "skryukov/inertia_rails-contrib", branch: "main"
 
 gem "vite_rails", "~> 3.0"
