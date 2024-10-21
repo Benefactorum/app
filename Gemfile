@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Use main development branch of Rails
-gem "rails", github: "rails/rails", branch: "main"
+gem "rails"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -52,6 +52,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# See the PR https://github.com/inertiajs/inertia-rails/pull/132
+gem "inertia_rails", github: "skryukov/inertia-rails", branch: "v2/all"
 gem "inertia_rails-contrib", github: "skryukov/inertia_rails-contrib", branch: "main"
 
 gem "vite_rails", "~> 3.0"
