@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/skryukov/inertia-rails.git
-  revision: 155b40ea6e41046ddedc977be15ea9e828609101
+  revision: fb1800033f3c27227f486f3432f6c79742b23a40
   branch: v2/all
   specs:
     inertia_rails (3.2.0)
