@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/skryukov/inertia-rails.git
-  revision: 155b40ea6e41046ddedc977be15ea9e828609101
+  revision: b8f84c393e0d00f34d4e3216b71c38883c7ef11b
   branch: v2/all
   specs:
     inertia_rails (3.2.0)
@@ -152,7 +152,7 @@ GEM
       zeitwerk (~> 2.5)
     language_server-protocol (3.17.0.3)
     logger (1.6.1)
-    loofah (2.22.0)
+    loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
