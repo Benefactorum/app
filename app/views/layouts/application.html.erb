@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title inertia><%= content_for(:title) || "Typescript React Rails 2" %></title>
+    <title inertia><%= content_for(:title) || "Benefactorum" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -17,12 +17,13 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <%= inertia_ssr_head %>
+
     <%# Includes all stylesheet files in app/views/stylesheets %>
     <%= vite_stylesheet_tag "application" %>
     <%= vite_react_refresh_tag %>
     <%= vite_client_tag %>
     <%= vite_typescript_tag "inertia" %>
-    <%= inertia_headers %>
     <%= vite_javascript_tag 'application' %>
     <!--
       If using a TypeScript entrypoint file:

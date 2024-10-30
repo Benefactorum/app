@@ -14,7 +14,6 @@
 
 @layer base {
   :root {
-
     --background: 180 8% 95%; /* #F1F3F3 */
 
     --foreground: 180 100% 10%; /* #003333 */
@@ -63,10 +62,25 @@
 
     --chart-5: 27 87% 67%;
 
-    --radius: 0.5rem
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-
     --background: 0 0% 3.9%;
 
     --foreground: 0 0% 98%;
@@ -113,7 +127,23 @@
 
     --chart-4: 280 65% 60%;
 
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
+
+    --sidebar-background: 240 5.9% 10%;
+
+    --sidebar-foreground: 240 4.8% 95.9%;
+
+    --sidebar-primary: 224.3 76.3% 48%;
+
+    --sidebar-primary-foreground: 0 0% 100%;
+
+    --sidebar-accent: 240 3.7% 15.9%;
+
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+
+    --sidebar-border: 240 3.7% 15.9%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -124,4 +154,16 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 100 900; /* This defines the range of variable font weights */
+  src: url("../assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf");
+  font-display: swap;
+}
+
+body {
+  @apply font-montserrat;
 }
