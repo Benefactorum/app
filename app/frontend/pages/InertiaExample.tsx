@@ -1,4 +1,3 @@
-import Layout from "./Layout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -11,7 +10,7 @@ export default function InertiaExample({ name }: { name: string }) {
   const [count, setCount] = useState(0);
 
   return (
-    <Layout>
+    <>
       <Head title="Inertia + Vite Ruby + React Example" />
 
       <div className={cs.root}>
@@ -55,6 +54,6 @@ export default function InertiaExample({ name }: { name: string }) {
           Click on the Inertia, Vite Ruby, and React logos to learn more
         </p>
       </div>
-    </Layout>
+    </>
   );
 }

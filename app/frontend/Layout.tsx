@@ -17,7 +17,7 @@ export default function Header({ children }) {
   const [active, setActive] = useState(false);
 
   return (
-    <>
+    <main>
       <header className="bg-white py-2">
         <div className="2xl:container 2xl:mx-auto flex items-center px-4 justify-between">
           <Link href="#home" className="flex gap-2 items-center">
@@ -130,7 +130,7 @@ export default function Header({ children }) {
           </ul>
         </nav>
       </header>
-      <div className="mt-4">{children}</div>
-    </>
+      {children}
+    </main>
   );
 }
