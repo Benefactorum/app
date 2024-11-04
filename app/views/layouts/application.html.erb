@@ -4,10 +4,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta
+      head-key="description"
+      name="description"
+      content="Benefactorum, association de bienfaiteurs est un site agrégeant toutes les associations d'intérêt général françaises."
+    >
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <!-- Favicon -->
+    <link rel="icon" href="<%= vite_asset_path('assets/logo.svg') %>" type="image/svg+xml">
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
