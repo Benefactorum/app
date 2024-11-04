@@ -4,10 +4,7 @@ import { createRoot } from "react-dom/client";
 import Layout from "../Layout";
 
 createInertiaApp({
-  // Set default page title
-  // see https://inertia-rails.netlify.app/guide/title-and-meta
-  //
-  // title: title => title ? `${title} - App` : 'App',
+  title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),
 
   // Disable progress bar
   //
