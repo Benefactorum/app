@@ -16,7 +16,7 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
+    apt-get install --no-install-recommends -y curl nodejs libjemalloc2 libvips sqlite3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
@@ -33,6 +33,8 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git pkg-config nodejs npm && \
     npm install --global yarn && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+RUN gem install foreman
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
@@ -51,6 +53,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+RUN ./bin/vite build --ssr
 
 # Final stage for app image
 FROM base
@@ -70,4 +73,4 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start server via Thruster by default, this can be overwritten at runtime
 EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+CMD ["foreman", "start"]
