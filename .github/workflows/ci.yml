@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   scan_ruby:
@@ -40,8 +40,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: setup yarn
+        run: npm install --global yarn
+
       - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: npm ci && npm audit --audit-level=high
+        run: yarn install --frozen-lockfile && yarn audit --level high
 
   lint:
     runs-on: ubuntu-latest
