@@ -7,7 +7,7 @@ image: mpressen/benefactorum
 # Deploy to these servers.
 servers:
   web:
-    - 51.158.166.124 # staging.benefactorum.org
+    - 51.158.166.124
   # job:
   #   hosts:
   #     - 192.168.0.1

@@ -33,7 +33,7 @@ export default function Header() {
           <NavigationMenuList className="space-x-8">
             <NavigationMenuItem className="hover:bg-background py-2 px-4 rounded-md">
               <NavigationMenuLink asChild>
-                <Link href="#find">
+                <Link href="/inertia-example">
                   <img
                     className="inline-block mr-1"
                     src={SearchIcon}
@@ -45,7 +45,7 @@ export default function Header() {
             </NavigationMenuItem>
             <NavigationMenuItem className="hover:bg-background py-2 px-4 rounded-md">
               <NavigationMenuLink asChild>
-                <Link href="#about-us">
+                <Link href="/posts">
                   <img
                     className="inline-block mr-1"
                     src={FistIcon}
@@ -88,7 +88,7 @@ export default function Header() {
         <ul className="flex flex-col space-y-2">
           <li>
             <Link
-              href="#find"
+              href="/inertia-example"
               className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md"
             >
               <img
@@ -101,7 +101,7 @@ export default function Header() {
           </li>
           <li>
             <Link
-              href="#about-us"
+              href="/posts"
               className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md"
             >
               <img
