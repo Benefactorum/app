@@ -2,7 +2,7 @@ name: Deploy to staging
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -38,4 +38,8 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           VERSION: ${{ github.sha }}
-        run: bundle exec kamal deploy --version=$VERSION
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 3
+          timeout_minutes: 5
+          command: bundle exec kamal deploy --version=$VERSION
