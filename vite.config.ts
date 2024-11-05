@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), RubyPlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "./app/frontend"),
     },
   },
 });

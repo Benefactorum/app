@@ -9,11 +9,10 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
+    /* Required for shadcn-ui/ui */
+    "baseUrl": "./app/frontend",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./*"]
     }
   }
 }
