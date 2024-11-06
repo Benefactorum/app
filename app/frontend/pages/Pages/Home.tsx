@@ -1,7 +1,10 @@
-export default function Index() {
+import HeroSection from "../../components/home/HeroSection";
+
+export default function Home() {
   return (
     <>
-      <div className="container mx-auto">Lol yolo !</div>
+      <HeroSection />
+      <div className="container mx-auto">Rest of the Homepage</div>
     </>
   );
 }
