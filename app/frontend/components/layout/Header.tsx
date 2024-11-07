@@ -19,12 +19,14 @@ export default function Header() {
 
   return (
     <header className="bg-white py-2">
-      <div className="2xl:container 2xl:mx-auto flex items-center px-4 justify-between">
+      <div className="2xl:container 2xl:mx-auto flex items-center px-2 justify-between">
         <Link href="/" className="flex gap-2 items-center">
-          <img className="h-12" src={Logo} alt="logo de Benefactorum" />
+          <img className="h-8 sm:h-12" src={Logo} alt="logo de Benefactorum" />
           <div className="text-right">
-            <h1 className="text-3xl font-bold leading-none">Benefactorum</h1>
-            <h2 className="text-sm leading-none text-slate-600">
+            <h1 className="text-2xl sm:text-3xl font-bold leading-none">
+              Benefactorum
+            </h1>
+            <h2 className="text-xs sm:text-sm leading-none text-slate-600">
               Association de bienfaiteurs
             </h2>
           </div>
