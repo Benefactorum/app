@@ -109,7 +109,7 @@ const causes = [
     title: "Religion",
     src: Beliefs,
     alt: "Portrait en noir et blanc d'un homme regardant vers le haut, symbolisant la spiritualité, la quête de réponses.",
-    description: "Soutien aux associations confessionnelles, ...",
+    description: "Soutien aux associations confessionnelles, spiritualité, ...",
   },
   {
     title: "Autre",
@@ -142,7 +142,7 @@ export default function CharityCarousel() {
                   title={cause.alt}
                   className="rounded-t-3xl"
                 />
-                <Card className="flex-grow bg-background rounded-t-none rounded-b-3xl flex flex-col shadow-md">
+                <Card className="flex-grow bg-background rounded-t-none rounded-b-3xl flex flex-col shadow-md border-t-none">
                   <CardHeader className="my-4 text-center">
                     <CardTitle className="text-xl font-semibold">
                       {cause.title}
