@@ -59,7 +59,7 @@ export default function Footer() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
-                  href="/posts"
+                  href="/qui-nous-sommes"
                   className="flex gap-2 items-center hover:underline"
                 >
                   <svg

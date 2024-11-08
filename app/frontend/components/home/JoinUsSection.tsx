@@ -41,7 +41,7 @@ export default function JoinUs() {
           </ul>
           <div>
             <Link
-              href="/posts"
+              href="/qui-nous-sommes"
               className={`${buttonVariants({
                 variant: "secondary",
                 size: "lg",

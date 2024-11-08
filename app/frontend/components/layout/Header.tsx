@@ -47,7 +47,7 @@ export default function Header() {
             </NavigationMenuItem>
             <NavigationMenuItem className="hover:bg-background py-2 px-4 rounded-md">
               <NavigationMenuLink asChild>
-                <Link href="/posts">
+                <Link href="/qui-nous-sommes">
                   <img
                     className="inline-block mr-1"
                     src={FistIcon}
