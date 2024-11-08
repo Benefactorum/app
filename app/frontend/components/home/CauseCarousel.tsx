@@ -126,6 +126,7 @@ export default function CharityCarousel() {
         opts={{
           align: "start",
           loop: true,
+          slidesToScroll: "auto",
         }}
       >
         <CarouselContent className="pb-3">
