@@ -12,7 +12,6 @@ export default function Home() {
       <JoinUsSection />
       <FaqSection />
       <QuoteSection />
-      <div className="container mx-auto">Rest of the Homepage</div>
     </>
   );
 }

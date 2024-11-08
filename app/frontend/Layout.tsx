@@ -1,4 +1,5 @@
 import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 import { ReactNode } from "react";
 
 type LayoutProps = {
@@ -18,6 +19,7 @@ export default function Layout({ children, flash }: LayoutProps) {
         )}
         {children}
       </main>
+      <Footer />
     </>
   );
 }
