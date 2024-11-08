@@ -20,16 +20,23 @@ export default function JoinUs() {
           </h3>
           <ul className="pl-4 sm:pl-8 list-disc flex flex-col space-y-4">
             <li className="leading-normal">
-              Vous pouvez utiliser Benefactorum pour trouver et soutenir les
-              associations d’intérêt général qui vous tiennent à coeur.
+              Benefactorum est la première initiative citoyenne pour référencer{" "}
+              <span className="font-semibold">
+                toutes les associations d’intérêt général
+              </span>{" "}
+              françaises.
             </li>
             <li className="leading-normal">
-              L’utilisation de Benefactorum est 100% gratuite.
+              Benefactorum est une plateforme open source, participative et
+              démocratique. Son utilisation est{" "}
+              <span className="font-semibold">100% gratuite</span>.
             </li>
             <li className="leading-normal">
-              Benefactorum est elle-même une association d’intérêt général. Son
-              but est de promouvoir l’altruisme, en facilitant la vie des
-              donateurs.
+              <span className="font-semibold">
+                Benefactorum est elle-même une association d’intérêt général
+              </span>
+              . Sa mission est de promouvoir l’altruisme, la générosité et la
+              solidarité.
             </li>
           </ul>
           <div>
