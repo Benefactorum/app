@@ -66,7 +66,7 @@ export default function HeroSection() {
             type="search"
             title="Rechercher une association ou une cause"
             placeholder="Rechercher une association ou une cause"
-            className="bg-white w-full h-11 rounded-none rounded-l-lg focus-visible:ring-0 focus-visible:border-primary focus-visible:placeholder-transparent border-r-0 focus-visible:ring-offset-0"
+            className="bg-white w-full h-11 rounded-none rounded-l-lg focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:placeholder-transparent border-r-0 focus-visible:ring-offset-0"
           />
           <Button type="submit" size="lg" className="rounded-none rounded-r-lg">
             <Search />
