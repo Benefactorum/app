@@ -10,9 +10,22 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 
 import Logo from "/assets/logo.svg";
-import SearchIcon from "/assets/icons/search.svg";
-import FistIcon from "/assets/icons/fist.svg";
-import LogInIcon from "/assets/icons/login.svg";
+import LogInIcon from "/assets/icons/login.svg?react";
+import SearchIcon from "/assets/icons/search.svg?react";
+import FistIcon from "/assets/icons/fist.svg?react";
+
+const navLinks = [
+  {
+    title: "Trouver une association",
+    href: "/inertia-example",
+    icon: SearchIcon,
+  },
+  {
+    title: "Qui sommes-nous ?",
+    href: "/qui-nous-sommes",
+    icon: FistIcon,
+  },
+];
 
 export default function Header() {
   const [active, setActive] = useState(false);
@@ -33,30 +46,19 @@ export default function Header() {
         </Link>
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList className="space-x-8">
-            <NavigationMenuItem className="hover:bg-background py-2 px-4 rounded-md">
-              <NavigationMenuLink asChild>
-                <Link href="/inertia-example">
-                  <img
-                    className="inline-block mr-1"
-                    src={SearchIcon}
-                    alt="icône de loupe"
-                  />
-                  Trouver une association
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="hover:bg-background py-2 px-4 rounded-md">
-              <NavigationMenuLink asChild>
-                <Link href="/qui-nous-sommes">
-                  <img
-                    className="inline-block mr-1"
-                    src={FistIcon}
-                    alt="icône d'un poing tendu"
-                  />
-                  Qui sommes-nous ?
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            {navLinks.map((link) => (
+              <NavigationMenuItem
+                key={link.href}
+                className="hover:bg-background py-2 px-4 rounded-md"
+              >
+                <NavigationMenuLink asChild>
+                  <Link href={link.href} className="flex gap-2 items-center">
+                    <link.icon className="filter invert-[17%] sepia-[12%] saturate-[4287%] hue-rotate-[137deg] brightness-[91%] contrast-[103%]" />
+                    {link.title}
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
           </NavigationMenuList>
         </NavigationMenu>
         <div className="flex items-center space-x-4">
@@ -77,43 +79,24 @@ export default function Header() {
               variant: "default",
             })} hidden sm:flex`}
           >
-            <img
-              className="inline-block mr-1"
-              src={LogInIcon}
-              alt="icône de loupe"
-            />
+            <LogInIcon />
             Se connecter
           </Link>
         </div>
       </div>
       <nav className={"w-full mt-4 lg:hidden" + (active ? "" : " hidden")}>
         <ul className="flex flex-col space-y-2">
-          <li>
-            <Link
-              href="/inertia-example"
-              className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md"
-            >
-              <img
-                className="inline-block mr-1"
-                src={SearchIcon}
-                alt="icône de loupe"
-              />
-              Trouver une association
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/posts"
-              className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md"
-            >
-              <img
-                className="inline-block mr-1"
-                src={FistIcon}
-                alt="icône d'un poing tendu"
-              />
-              Qui sommes-nous ?
-            </Link>
-          </li>
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md"
+              >
+                <link.icon className="filter invert-[17%] sepia-[12%] saturate-[4287%] hue-rotate-[137deg] brightness-[91%] contrast-[103%]" />
+                {link.title}
+              </Link>
+            </li>
+          ))}
           <li className="sm:hidden flex justify-center pt-2">
             <Link
               href="#login"
@@ -121,11 +104,7 @@ export default function Header() {
                 variant: "default",
               })} justify-center`}
             >
-              <img
-                className="inline-block mr-1"
-                src={LogInIcon}
-                alt="icône de loupe"
-              />
+              <LogInIcon />
               Se connecter
             </Link>
           </li>
