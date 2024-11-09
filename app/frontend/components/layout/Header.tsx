@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
+import { usePage } from "@inertiajs/react";
 
 import {
   NavigationMenu,
@@ -29,6 +30,7 @@ const navLinks = [
 
 export default function Header() {
   const [active, setActive] = useState(false);
+  const { url } = usePage();
 
   return (
     <header className="bg-white py-2">
@@ -49,7 +51,12 @@ export default function Header() {
             {navLinks.map((link) => (
               <NavigationMenuItem
                 key={link.href}
-                className="hover:bg-background py-2 px-4 rounded-md"
+                className={
+                  "py-2 px-4 rounded-md" +
+                  (url === link.href
+                    ? " bg-secondary"
+                    : " hover:bg-secondary/50")
+                }
               >
                 <NavigationMenuLink asChild>
                   <Link href={link.href} className="flex gap-2 items-center">

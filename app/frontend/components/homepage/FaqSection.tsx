@@ -33,22 +33,22 @@ export default function JoinUs() {
             </h3>
             <ul className="pl-4 sm:pl-8 list-disc flex flex-col space-y-4">
               <li>
-                <Link className="hover:underline" href="/">
+                <Link className="underline" href="/">
                   C’est quoi une association d’intérêt général ?
                 </Link>
               </li>
               <li>
-                <Link className="hover:underline" href="/">
+                <Link className="underline" href="/">
                   Pourquoi donner ?
                 </Link>
               </li>
               <li>
-                <Link className="hover:underline" href="/">
+                <Link className="underline" href="/">
                   Qu'est-ce-qu'une réduction d’impôt ?
                 </Link>
               </li>
               <li>
-                <Link className="hover:underline" href="/">
+                <Link className="underline" href="/">
                   À qui donner ?
                 </Link>
               </li>

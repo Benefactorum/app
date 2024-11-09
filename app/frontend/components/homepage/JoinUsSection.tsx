@@ -27,7 +27,8 @@ export default function JoinUs() {
               françaises.
             </li>
             <li className="leading-normal">
-              Benefactorum est une plateforme open source, participative et
+              Benefactorum est une plateforme{" "}
+              <span className="italic">open source</span>, participative et
               démocratique. Son utilisation est{" "}
               <span className="font-semibold">100% gratuite</span>.
             </li>

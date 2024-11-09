@@ -18,8 +18,8 @@ export default function QuoteSection() {
           <img
             src={Smiley}
             alt="Ouvrez les guillements"
-            className="ml-2 inline-block"
-          />
+            className="ml-2 inline-block pb-1"
+          />{" "}
           --
         </cite>
       </blockquote>
