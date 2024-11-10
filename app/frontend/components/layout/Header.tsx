@@ -1,6 +1,7 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import { usePage } from "@inertiajs/react";
+import { Spin as Hamburger } from "hamburger-react";
 
 import {
   NavigationMenu,
@@ -29,7 +30,7 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [active, setActive] = useState(false);
+  const [isOpen, setOpen] = useState(false);
   const { url } = usePage();
 
   return (
@@ -69,17 +70,7 @@ export default function Header() {
           </NavigationMenuList>
         </NavigationMenu>
         <div className="flex items-center space-x-4">
-          <button
-            onClick={() => setActive(!active)}
-            className={
-              "hover:bg-background rounded-md lg:hidden flex flex-col items-center space-y-1.5 p-2" +
-              (active ? " bg-background" : "")
-            }
-          >
-            <span className="block w-6 h-0.5 bg-gray-800"></span>
-            <span className="block w-6 h-0.5 bg-gray-800"></span>
-            <span className="block w-6 h-0.5 bg-gray-800"></span>
-          </button>
+          <Hamburger toggled={isOpen} toggle={setOpen} duration={0.8} />
           <Link
             href="#login"
             className={`${buttonVariants({
@@ -91,13 +82,13 @@ export default function Header() {
           </Link>
         </div>
       </div>
-      <nav className={"w-full mt-4 lg:hidden" + (active ? "" : " hidden")}>
+      <nav className={"w-full mt-4 lg:hidden" + (isOpen ? "" : " hidden")}>
         <ul className="flex flex-col space-y-2">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md"
+                className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md gap-2"
               >
                 <link.icon className="filter invert-[17%] sepia-[12%] saturate-[4287%] hue-rotate-[137deg] brightness-[91%] contrast-[103%]" />
                 {link.title}
