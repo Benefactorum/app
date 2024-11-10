@@ -145,7 +145,7 @@ export default function CharityCarousel() {
                 <Card className="flex-grow bg-background rounded-t-none rounded-b-3xl flex flex-col shadow-md border-t-none">
                   <CardHeader className="my-4 text-center">
                     <CardTitle className="text-xl font-semibold">
-                      {cause.title}
+                      <h3>{cause.title}</h3>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex-1">

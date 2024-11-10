@@ -8,7 +8,7 @@ const imageDescription =
 
 export default function JoinUs() {
   return (
-    <div className="py-16 2xl:container mx-auto px-4">
+    <div className="py-16 2xl:container mx-auto px-2 sm:px-4">
       <h2 className="mb-8 text-xl sm:text-2xl md:text-3xl font-semibold">
         Rejoignez Benefactorum !
       </h2>
