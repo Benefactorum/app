@@ -50,8 +50,10 @@ export default function Header() {
         >
           <img className="h-8 sm:h-12" src={Logo} alt="logo de Benefactorum" />
           <div className="text-right">
-            <h1 className="text-2xl sm:text-3xl font-bold">Benefactorum</h1>
-            <h2 className="text-xs sm:text-sm text-slate-600">
+            <h1 className="text-2xl sm:text-3xl font-bold leading-none sm:leading-none">
+              Benefactorum
+            </h1>
+            <h2 className="text-xs sm:text-sm leading-none sm:leading-none text-slate-600">
               Association de bienfaiteurs
             </h2>
           </div>

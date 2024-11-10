@@ -59,10 +59,10 @@ export default function Footer() {
       <div className="2xl:container 2xl:mx-auto flex flex-col lg:flex-row gap-8 items-center px-8 py-8 lg:py-2 justify-center sm:justify-between">
         <Link href="/" className="flex gap-2 items-center">
           <div className="text-right">
-            <h1 className="text-2xl sm:text-3xl font-bold leading-none">
+            <h1 className="text-2xl sm:text-3xl font-bold leading-none sm:leading-none">
               Benefactorum
             </h1>
-            <h2 className="text-xs sm:text-sm leading-none text-slate-200">
+            <h2 className="text-xs sm:text-sm leading-none sm:leading-none text-slate-200">
               Association de bienfaiteurs
             </h2>
           </div>
