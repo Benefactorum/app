@@ -15,7 +15,6 @@ export default function OurMission() {
                 src={BrainHeartLogo}
                 alt={imageDescription}
                 title={imageDescription}
-                className="rounded-3xl"
               />
             </AspectRatio>
           </div>

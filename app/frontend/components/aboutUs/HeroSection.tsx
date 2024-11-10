@@ -26,7 +26,6 @@ export default function HeroSection() {
               src={BenefactorumLogo}
               alt={imageDescription}
               title={imageDescription}
-              className="rounded-3xl"
             />
           </AspectRatio>
         </div>

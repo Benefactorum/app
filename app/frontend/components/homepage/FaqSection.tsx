@@ -32,25 +32,19 @@ export default function JoinUs() {
               toutes vos questions.
             </h3>
             <ul className="pl-4 sm:pl-8 list-disc flex flex-col space-y-4">
-              <li>
-                <Link className="underline" href="/">
+              <li className="underline hover:text-primary">
+                <Link href="/">
                   C’est quoi une association d’intérêt général ?
                 </Link>
               </li>
-              <li>
-                <Link className="underline" href="/">
-                  Pourquoi donner ?
-                </Link>
+              <li className="underline hover:text-primary">
+                <Link href="/">Pourquoi donner ?</Link>
               </li>
-              <li>
-                <Link className="underline" href="/">
-                  Qu'est-ce-qu'une réduction d’impôt ?
-                </Link>
+              <li className="underline hover:text-primary">
+                <Link href="/">Qu'est-ce-qu'une réduction d’impôt ?</Link>
               </li>
-              <li>
-                <Link className="underline" href="/">
-                  À qui donner ?
-                </Link>
+              <li className="underline hover:text-primary">
+                <Link href="/">À qui donner ?</Link>
               </li>
             </ul>
             <div className="ml-auto">

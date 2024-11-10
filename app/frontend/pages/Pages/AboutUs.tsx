@@ -1,11 +1,13 @@
 import HeroSection from "../../components/aboutUs/HeroSection";
-import OurMisson from "../../components/aboutUs/OurMission";
+import OurMission from "../../components/aboutUs/OurMission";
+import Together from "../../components/aboutUs/Together";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
-      <OurMisson />
+      <OurMission />
+      <Together />
     </>
   );
 }
