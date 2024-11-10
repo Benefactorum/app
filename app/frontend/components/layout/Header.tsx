@@ -33,16 +33,25 @@ export default function Header() {
   const [isOpen, setOpen] = useState(false);
   const { url } = usePage();
 
+  const handleLinkClick = () => {
+    setOpen(false);
+  };
+
   return (
     <header className="bg-white py-2">
-      <div className="2xl:container 2xl:mx-auto flex items-center px-2 justify-between">
-        <Link href="/" className="flex gap-2 items-center">
+      <div
+        id="mainHeader"
+        className="2xl:container 2xl:mx-auto flex items-center px-2 justify-between"
+      >
+        <Link
+          href="/"
+          className="flex gap-2 items-center"
+          onClick={handleLinkClick}
+        >
           <img className="h-8 sm:h-12" src={Logo} alt="logo de Benefactorum" />
           <div className="text-right">
-            <h1 className="text-2xl sm:text-3xl font-bold leading-none">
-              Benefactorum
-            </h1>
-            <h2 className="text-xs sm:text-sm leading-none text-slate-600">
+            <h1 className="text-2xl sm:text-3xl font-bold">Benefactorum</h1>
+            <h2 className="text-xs sm:text-sm text-slate-600">
               Association de bienfaiteurs
             </h2>
           </div>
@@ -60,7 +69,11 @@ export default function Header() {
                 }
               >
                 <NavigationMenuLink asChild>
-                  <Link href={link.href} className="flex gap-2 items-center">
+                  <Link
+                    href={link.href}
+                    className="flex gap-2 items-center"
+                    onClick={handleLinkClick}
+                  >
                     <link.icon className="filter invert-[17%] sepia-[12%] saturate-[4287%] hue-rotate-[137deg] brightness-[91%] contrast-[103%]" />
                     {link.title}
                   </Link>
@@ -70,44 +83,61 @@ export default function Header() {
           </NavigationMenuList>
         </NavigationMenu>
         <div className="flex items-center space-x-4">
-          <Hamburger toggled={isOpen} toggle={setOpen} duration={0.8} />
+          <div className="lg:hidden">
+            <Hamburger toggled={isOpen} toggle={setOpen} />
+          </div>
           <Link
             href="#login"
             className={`${buttonVariants({
               variant: "default",
             })} hidden sm:flex`}
+            onClick={handleLinkClick}
           >
             <LogInIcon />
             Se connecter
           </Link>
         </div>
       </div>
-      <nav className={"w-full mt-4 lg:hidden" + (isOpen ? "" : " hidden")}>
-        <ul className="flex flex-col space-y-2">
+
+      {/* Mobile Dropdown inside the header */}
+      <div
+        id="mobileDropdown"
+        className={`lg:hidden transition-all duration-700 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-36" : "max-h-0"
+        } w-max mx-auto`}
+      >
+        <ul className="flex flex-col mt-2">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="flex items-center justify-center w-full py-2 px-4 hover:bg-background rounded-md gap-2"
+                className={
+                  "flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md" +
+                  (url === link.href
+                    ? " bg-secondary"
+                    : " hover:bg-secondary/50")
+                }
+                onClick={handleLinkClick}
               >
                 <link.icon className="filter invert-[17%] sepia-[12%] saturate-[4287%] hue-rotate-[137deg] brightness-[91%] contrast-[103%]" />
                 {link.title}
               </Link>
             </li>
           ))}
-          <li className="sm:hidden flex justify-center pt-2">
+          <li className="sm:hidden flex justify-center">
             <Link
               href="#login"
               className={`${buttonVariants({
                 variant: "default",
               })} justify-center`}
+              onClick={handleLinkClick}
             >
               <LogInIcon />
               Se connecter
             </Link>
           </li>
         </ul>
-      </nav>
+      </div>
     </header>
   );
 }
