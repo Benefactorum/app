@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePage } from "@inertiajs/react";
 import { Spin as Hamburger } from "hamburger-react";
 
@@ -32,13 +32,29 @@ const navLinks = [
 export default function Header() {
   const [isOpen, setOpen] = useState(false);
   const { url } = usePage();
+  const headerRef = useRef(null);
 
   const handleLinkClick = () => {
     setOpen(false);
   };
 
+  // Handle click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <header className="bg-white py-2">
+    <header ref={headerRef} className="bg-white py-2">
       <div
         id="mainHeader"
         className="2xl:container 2xl:mx-auto flex items-center px-2 justify-between"
