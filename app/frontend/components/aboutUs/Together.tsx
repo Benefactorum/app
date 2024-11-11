@@ -3,9 +3,10 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Link } from "@inertiajs/react";
 import { buttonVariants } from "@/components/ui/button";
 
-const imageDescription = "";
+const imageDescription =
+  "Icône représentant deux silhouettes féminines se tenant côte à côte, symbolisant la solidarité, l'unité et le soutien mutuel";
 
-export default function OurMission() {
+export default function Together() {
   return (
     <div className="flex flex-col md:flex-row py-8 lg:py-16 2xl:container mx-auto px-2 sm:px-8 gap-8 lg:gap-16">
       <div className="flex flex-grow xl:flex-none md:w-2/3 flex-col justify-center gap-8">

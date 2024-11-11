@@ -2,7 +2,7 @@ import BrainHeartLogo from "/assets/images/aboutUs/brain-heart.svg";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const imageDescription =
-  "Logo de Benefactorum, représentant deux mains qui se donnent, dans un labyrinthe";
+  "Icône représentant un cerveau et un cœur entrelacés, symbolisant l'équilibre entre la rationalité et l'émotion";
 
 export default function OurMission() {
   return (
