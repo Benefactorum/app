@@ -8,7 +8,7 @@ export default function OurMission() {
   return (
     <div className="bg-white">
       <div className="flex flex-col-reverse md:flex-row py-8 lg:py-16 2xl:container mx-auto px-2 sm:px-8 gap-8 lg:gap-16">
-        <div className="flex md:w-1/3 justify-center items-center">
+        <div className="hidden md:flex md:w-1/3 justify-center items-center">
           <div className="w-[200px] lg:w-[300px]">
             <AspectRatio ratio={1}>
               <img
@@ -25,6 +25,17 @@ export default function OurMission() {
               Notre mission : donner envie de donner
             </span>
           </h2>
+          <div className="md:hidden flex my-4 mx-auto">
+            <div className="w-[150px]">
+              <AspectRatio ratio={1}>
+                <img
+                  src={BrainHeartLogo}
+                  alt={imageDescription}
+                  title={imageDescription}
+                />
+              </AspectRatio>
+            </div>
+          </div>
           <p className="">
             Benefactorum est né d’un constat simple :{" "}
             <span className="font-semibold">

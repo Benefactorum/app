@@ -10,7 +10,7 @@ export default function NonProfit() {
   return (
     <div className="bg-white">
       <div className="flex flex-col-reverse md:flex-row py-8 lg:py-16 2xl:container mx-auto px-2 sm:px-8 gap-8 lg:gap-16">
-        <div className="flex md:w-1/3 justify-center items-center">
+        <div className="hidden md:flex md:w-1/3 justify-center items-center">
           <div className="w-[200px] lg:w-[300px]">
             <AspectRatio ratio={1}>
               <img
@@ -27,6 +27,15 @@ export default function NonProfit() {
               Une gestion désintéressée et transparente
             </span>
           </h2>
+          <div className="w-[180px] mx-auto md:hidden">
+            <AspectRatio ratio={1}>
+              <img
+                src={HeartAssoLogo}
+                alt={imageDescription}
+                title={imageDescription}
+              />
+            </AspectRatio>
+          </div>
           <p className="">
             Benefactorum est une organisation à but non-lucratif, animée à 100%
             par des bénévoles.

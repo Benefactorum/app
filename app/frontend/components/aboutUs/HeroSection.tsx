@@ -14,12 +14,23 @@ export default function HeroSection() {
             On prend soin de <span className="font-semibold">vous !</span>
           </span>
         </h1>
+        <div className="flex sm:hidden justify-center items-center">
+          <div className="w-[200px]">
+            <AspectRatio ratio={1}>
+              <img
+                src={BenefactorumLogo}
+                alt={imageDescription}
+                title={imageDescription}
+              />
+            </AspectRatio>
+          </div>
+        </div>
         <h2 className="sm:text-xl lg:text-2xl">
           Découvrez Benefactorum, l’organisation d’intérêt général qui facilite
           la vie des donateurs !
         </h2>
       </div>
-      <div className="flex sm:w-1/2 md:w-1/3 lg:w-1/2 justify-center items-center">
+      <div className="hidden sm:flex sm:w-1/2 md:w-1/3 lg:w-1/2 justify-center items-center">
         <div className="w-[200px] md:w-[400px]">
           <AspectRatio ratio={1}>
             <img

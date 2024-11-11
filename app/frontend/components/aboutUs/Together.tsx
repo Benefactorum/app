@@ -15,6 +15,17 @@ export default function Together() {
             Toi + Moi + Eux + Tous ceux qui le veulent
           </span>
         </h2>
+        <div className="flex md:hidden my-4 mx-auto">
+          <div className="w-[120px]">
+            <AspectRatio ratio={177.59 / 200}>
+              <img
+                src={TogethernessLogo}
+                alt={imageDescription}
+                title={imageDescription}
+              />
+            </AspectRatio>
+          </div>
+        </div>
         <p className="">
           Benefactorum est un projet militant, créé par des donateurs ... pour
           des donateurs.
@@ -24,7 +35,7 @@ export default function Together() {
           plateforme est <span className="italic">open source</span>, son
           contenu est participatif, sa gouvernance est horizontale.
         </p>
-        <div className="flex items-center gap-8 flex-wrap">
+        <div className="flex flex-wrap justify-end md:justify-start items-center gap-y-4 gap-x-8">
           <Link
             href="/nous-rejoindre"
             className={`${buttonVariants({
@@ -39,7 +50,7 @@ export default function Together() {
           </Link>
         </div>
       </div>
-      <div className="flex md:w-1/3 justify-center items-center">
+      <div className="hidden md:flex md:w-1/3 justify-center items-center">
         <div className="w-[177.59px]">
           <AspectRatio ratio={177.59 / 200}>
             <img
