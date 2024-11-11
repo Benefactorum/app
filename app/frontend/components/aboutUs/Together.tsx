@@ -46,7 +46,7 @@ export default function Together() {
             Nous rejoindre
           </Link>
           <Link href="/co-fondateurs" className="underline hover:text-primary">
-            Voir l’équipe de cofondateurs
+            Voir l’équipe de co-fondateurs
           </Link>
         </div>
       </div>

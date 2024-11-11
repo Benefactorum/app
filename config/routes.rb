@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   root "pages#home"
   resources :posts
+
   get "inertia-example", to: "inertia_example#index"
+
   get "qui-nous-sommes", to: "pages#about_us"
+  get "co-fondateurs", to: "pages#cofounders"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
