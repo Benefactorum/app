@@ -55,7 +55,7 @@ const causes = [
     title: "Lutte contre la précarité",
     src: Poverty,
     alt: "Un homme sans-abri assis seul avec son chien, entouré de ses affaires dans un abri improvisé, symbolisant la solitude et la précarité de la vie dans la rue.",
-    description: "banques alimentaires, aide au logement, accès à l’emploi ...",
+    description: "Banques alimentaires, aide au logement, accès à l’emploi ...",
   },
   {
     title: "Éducation",
