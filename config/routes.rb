@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get "qui-nous-sommes", to: "pages#about_us"
   get "co-fondateurs", to: "pages#cofounders"
+  get "nous-rejoindre", to: "pages#join_us"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

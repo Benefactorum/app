@@ -26,10 +26,15 @@ const buttonVariants = cva(
         xl: "h-11 rounded-md px-24 text-base",
         icon: "h-10 w-10",
       },
+      mode: {
+        active: "",
+        disabled: "opacity-50 cursor-not-allowed",
+      },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      mode: "active",
     },
   }
 );
