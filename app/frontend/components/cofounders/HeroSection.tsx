@@ -9,7 +9,7 @@ export default function HeroSection() {
     <div className="flex flex-col sm:flex-row py-8 2xl:container mx-auto px-2 sm:px-8 lg:px-16 gap-8 lg:gap-16">
       <div className="flex flex-grow xl:flex-none lg:w-1/2 flex-col justify-center gap-8 lg:gap-16">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-          À l’origine
+          Notre équipe
         </h1>
         <div className="flex sm:hidden justify-center items-center">
           <div className="w-[200px]">

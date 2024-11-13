@@ -51,10 +51,12 @@ export default function NonProfit() {
           </p>
           <div className="flex justify-end">
             <Link
+              disabled
               href="/nous-rejoindre"
               className={`${buttonVariants({
                 variant: "",
                 size: "lg",
+                mode: "disabled",
               })}`}
             >
               En savoir plus

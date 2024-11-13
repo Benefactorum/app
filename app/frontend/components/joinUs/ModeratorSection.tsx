@@ -49,18 +49,16 @@ export default function OurMission() {
             contributions ou suggérer des modifications.
           </p>
           <div className="flex justify-end">
-            <Link
-              disabled
-              href=""
+            <a
+              href="mailto:contact@benefactorum.org?subject=Candidature:%20Devenir%20mod%C3%A9rateur"
               className={`${buttonVariants({
                 variant: "secondary",
                 size: "lg",
-                mode: "disabled",
               })}`}
             >
               <MonitorCheck />
               Devenir modérateur
-            </Link>
+            </a>
           </div>
         </div>
       </div>
