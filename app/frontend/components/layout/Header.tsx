@@ -2,6 +2,7 @@ import { Link } from "@inertiajs/react";
 import { useState, useEffect, useRef } from "react";
 import { usePage } from "@inertiajs/react";
 import { Spin as Hamburger } from "hamburger-react";
+import { CirclePlus, HeartHandshake, Bird } from "lucide-react";
 
 import {
   NavigationMenu,
@@ -9,6 +10,13 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { buttonVariants } from "@/components/ui/button";
 
 import Logo from "/assets/logo.svg";
@@ -26,6 +34,19 @@ const navLinks = [
     title: "Qui sommes-nous ?",
     href: "/qui-nous-sommes",
     icon: FistIcon,
+  },
+];
+
+const subNavLinks = [
+  {
+    title: "Nous rejoindre",
+    href: "/nous-rejoindre",
+    icon: HeartHandshake,
+  },
+  {
+    title: "Notre équipe",
+    href: "/co-fondateurs",
+    icon: Bird,
   },
 ];
 
@@ -74,8 +95,8 @@ export default function Header() {
             </h2>
           </div>
         </Link>
-        <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList className="space-x-8">
+        <NavigationMenu className="hidden min-[1100px]:flex">
+          <NavigationMenuList className="xl:gap-8">
             {navLinks.map((link) => (
               <NavigationMenuItem
                 key={link.href}
@@ -98,10 +119,42 @@ export default function Header() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
+            <NavigationMenuItem className="py-2 px-4 rounded-md hover:bg-secondary/50 focus-visible:bg-secondary">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex gap-2 items-center outline-none">
+                  <CirclePlus className="w-4 h-4 text-foreground" />
+                  Plus
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="p-4 flex flex-col gap-2">
+                  {subNavLinks.map((link) => (
+                    <DropdownMenuItem
+                      key={link.href}
+                      className={
+                        "text-base py-2 px-4 rounded-md" +
+                        (url === link.href
+                          ? " bg-secondary focus:bg-secondary"
+                          : " hover:bg-secondary/50 focus:bg-secondary/50")
+                      }
+                    >
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href={link.href}
+                          className="flex gap-2 items-center"
+                          onClick={handleLinkClick}
+                        >
+                          <link.icon className="text-foreground" />
+                          {link.title}
+                        </Link>
+                      </NavigationMenuLink>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
         <div className="flex items-center space-x-4">
-          <div className="lg:hidden">
+          <div className="min-[1100px]:hidden">
             <Hamburger toggled={isOpen} toggle={setOpen} />
           </div>
           <Link
@@ -120,11 +173,11 @@ export default function Header() {
       {/* Mobile Dropdown inside the header */}
       <div
         id="mobileDropdown"
-        className={`lg:hidden transition-all duration-700 ease-in-out overflow-hidden ${
-          isOpen ? "max-h-36" : "max-h-0"
+        className={`min-[1100px]:hidden transition-all duration-700 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-96" : "max-h-0"
         } w-max mx-auto`}
       >
-        <ul className="flex flex-col mt-2">
+        <ul className="flex flex-col mt-4">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
@@ -142,12 +195,31 @@ export default function Header() {
               </Link>
             </li>
           ))}
+          <hr class="border-t border-gray-5000 my-2" />
+          {subNavLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={
+                  "flex items-center justify-center gap-2 px-4 py-1 mb-1 rounded-md text-sm text-gray-500" +
+                  (url === link.href
+                    ? " bg-secondary"
+                    : " hover:bg-secondary/50")
+                }
+                onClick={handleLinkClick}
+              >
+                <link.icon className="w-4 h-4 text-gray-500" />
+                {link.title}
+              </Link>
+            </li>
+          ))}
+          <hr class="border-t border-gray-5000 my-2" />
           <li className="sm:hidden flex justify-center">
             <Link
               href="#login"
               className={`${buttonVariants({
                 variant: "default",
-              })} justify-center`}
+              })} justify-center my-4`}
               onClick={handleLinkClick}
             >
               <LogInIcon />
