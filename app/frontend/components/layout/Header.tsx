@@ -16,11 +16,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { buttonVariants } from "@/components/ui/button";
+import SignInModal from "@/components/layout/SignInModal";
 
 import Logo from "/assets/logo.svg";
-import LogInIcon from "/assets/icons/login.svg?react";
 import SearchIcon from "/assets/icons/search.svg?react";
 import FistIcon from "/assets/icons/fist.svg?react";
 
@@ -157,16 +155,9 @@ export default function Header() {
           <div className="min-[1100px]:hidden">
             <Hamburger toggled={isOpen} toggle={setOpen} />
           </div>
-          <Link
-            href="#login"
-            className={`${buttonVariants({
-              variant: "default",
-            })} hidden sm:flex`}
-            onClick={handleLinkClick}
-          >
-            <LogInIcon />
-            Se connecter
-          </Link>
+          <div className="hidden sm:flex">
+            <SignInModal />
+          </div>
         </div>
       </div>
 
@@ -195,36 +186,29 @@ export default function Header() {
               </Link>
             </li>
           ))}
-          <hr class="border-t border-gray-5000 my-2" />
+          <hr className="border-t border-gray-300 my-2" />
           {subNavLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 className={
-                  "flex items-center justify-center gap-2 px-4 py-1 mb-1 rounded-md text-sm text-gray-500" +
+                  "flex items-center justify-center gap-2 px-4 py-1 mb-1 rounded-md text-sm text-muted-foreground" +
                   (url === link.href
                     ? " bg-secondary"
                     : " hover:bg-secondary/50")
                 }
                 onClick={handleLinkClick}
               >
-                <link.icon className="w-4 h-4 text-gray-500" />
+                <link.icon className="w-4 h-4 text-muted-foreground" />
                 {link.title}
               </Link>
             </li>
           ))}
-          <hr class="border-t border-gray-5000 my-2" />
+          <hr className="border-t border-gray-300 my-2" />
           <li className="sm:hidden flex justify-center">
-            <Link
-              href="#login"
-              className={`${buttonVariants({
-                variant: "default",
-              })} justify-center my-4`}
-              onClick={handleLinkClick}
-            >
-              <LogInIcon />
-              Se connecter
-            </Link>
+            <div className="py-4 flex sm:hidden">
+              <SignInModal />
+            </div>
           </li>
         </ul>
       </div>
