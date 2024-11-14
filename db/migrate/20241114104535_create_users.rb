@@ -6,6 +6,8 @@ class CreateUsers < ActiveRecord::Migration[8.0]
 
       t.boolean :verified, null: false, default: false
 
+      t.references :account, null: false, foreign_key: true
+
       t.timestamps
     end
   end

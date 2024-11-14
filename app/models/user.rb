@@ -10,8 +10,9 @@ class User < ApplicationRecord
   end
 
 
+  belongs_to :account
+
   has_many :sessions, dependent: :destroy
-  has_many :sign_in_tokens, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, allow_nil: true, length: { minimum: 12 }
@@ -20,6 +21,10 @@ class User < ApplicationRecord
 
   before_validation if: :email_changed?, on: :update do
     self.verified = false
+  end
+
+  before_validation on: :create do
+    self.account = Account.new
   end
 
   after_update if: :password_digest_previously_changed? do
