@@ -16,11 +16,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import SignInModal from "@/components/layout/SignInModal";
+import SignInModal from "@/components/reusable/SignInModal";
+import { Button } from "@/components/ui/button";
 
 import Logo from "/assets/logo.svg";
+// @ts-ignore
 import SearchIcon from "/assets/icons/search.svg?react";
+// @ts-ignore
 import FistIcon from "/assets/icons/fist.svg?react";
+// @ts-ignore
+import LogInIcon from "/assets/icons/login.svg?react";
 
 const navLinks = [
   {
@@ -156,7 +161,12 @@ export default function Header() {
             <Hamburger toggled={isOpen} toggle={setOpen} />
           </div>
           <div className="hidden sm:flex">
-            <SignInModal />
+            <SignInModal>
+              <Button>
+                <LogInIcon />
+                Se connecter
+              </Button>
+            </SignInModal>
           </div>
         </div>
       </div>
@@ -207,7 +217,12 @@ export default function Header() {
           <hr className="border-t border-gray-300 my-2" />
           <li className="sm:hidden flex justify-center">
             <div className="py-4 flex sm:hidden">
-              <SignInModal />
+              <SignInModal>
+                <Button>
+                  <LogInIcon />
+                  Se connecter
+                </Button>
+              </SignInModal>
             </div>
           </li>
         </ul>

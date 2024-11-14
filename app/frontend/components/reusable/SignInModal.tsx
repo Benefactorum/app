@@ -1,4 +1,3 @@
-import LogInIcon from "/assets/icons/login.svg?react";
 import { StepForward } from "lucide-react";
 
 import {
@@ -11,11 +10,11 @@ import {
 } from "@/components/ui/dialog";
 
 import { Input } from "@/components/ui/input";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 // import { router } from "@inertiajs/react";
 
-export default function SignInModal() {
+export default function SignInModal({ children }: { children: ReactNode }) {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -26,12 +25,7 @@ export default function SignInModal() {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button className="">
-          <LogInIcon />
-          Se connecter
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="bg-white flex flex-col w-full py-16 sm:py-16 px-2 min-[591px]:px-16 ">
         <DialogHeader>
           <DialogTitle className="text-3xl">Bonjour !</DialogTitle>
@@ -47,7 +41,7 @@ export default function SignInModal() {
               type="email"
               title="Votre adresse email"
               placeholder="Votre adresse email"
-              className="bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:placeholder-transparent focus-visible:ring-offset-0"
+              className="bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0"
             />
             <Button type="submit" className="">
               <StepForward />

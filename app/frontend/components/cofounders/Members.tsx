@@ -2,6 +2,7 @@ import Maximilien from "/assets/images/cofounders/Maximilien-Pressensé.webp";
 import Camille from "/assets/images/cofounders/Camille-Pressensé.webp";
 import Pierre from "/assets/images/cofounders/Pierre-Chauty.webp";
 import Thomas from "/assets/images/cofounders/Thomas-Garnier.webp";
+// @ts-ignore
 import Linkedin from "/assets/icons/linkedin.svg?react";
 
 const cofounders = [

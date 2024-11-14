@@ -4,7 +4,7 @@ import DonorSection from "../../components/joinUs/DonorSection";
 import MemberSection from "../../components/joinUs/MemberSection";
 import ModeratorSection from "../../components/joinUs/ModeratorSection";
 import ContributorSection from "../../components/joinUs/ContributorSection";
-import QuoteSection from "../../components/joinUs/QuoteSection";
+import QuoteSection from "../../components/reusable/QuoteSection";
 
 export default function JoinUs() {
   return (
@@ -18,7 +18,10 @@ export default function JoinUs() {
       <MemberSection />
       <ModeratorSection />
       <ContributorSection />
-      <QuoteSection />
+      <QuoteSection
+        quote={<span>L'important, c'est de participer.</span>}
+        author={<span>Pierre de Coubertin</span>}
+      />
     </>
   );
 }
