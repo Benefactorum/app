@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :sessions do
+    resource :passwordless, only: [:new, :edit, :create]
+  end
   get  "sign_in", to: "sessions#new"
   post "sign_in", to: "sessions#create"
   get  "sign_up", to: "registrations#new"
