@@ -106,7 +106,7 @@ export default function Footer() {
           Mentions légales
         </Link>
         &nbsp;-&nbsp;
-        <Link href="/donnees-personelles" className="hover:underline">
+        <Link href="/donnees-personnelles" className="hover:underline">
           Données personnelles
         </Link>
       </p>

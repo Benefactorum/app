@@ -1,8 +1,8 @@
-import HeroSection from "../../components/homepage/HeroSection";
-import CharitySection from "../../components/homepage/CharitySection";
-import JoinUsSection from "../../components/homepage/JoinUsSection";
-import FaqSection from "../../components/homepage/FaqSection";
-import QuoteSection from "../../components/reusable/QuoteSection";
+import HeroSection from "@/components/homepage/HeroSection";
+import CharitySection from "@/components/homepage/CharitySection";
+import JoinUsSection from "@/components/homepage/JoinUsSection";
+import FaqSection from "@/components/homepage/FaqSection";
+import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Smiley from "/assets/images/homepage/quote/smiley.svg?react";
 

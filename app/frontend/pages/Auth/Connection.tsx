@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import { StepForward } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import QuoteSection from "../../components/reusable/QuoteSection";
+import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Superwoman from "/assets/images/auth/superwoman.svg?react";
 

@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { StepForward } from "lucide-react";
 
-import QuoteSection from "../../components/reusable/QuoteSection";
+import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Vomi from "/assets/images/auth/vomi.svg?react";
 
