@@ -25,11 +25,11 @@ export default function Together() {
             </AspectRatio>
           </div>
         </div>
-        <p className="">
+        <p>
           Benefactorum offre aux donateurs et aux associations bénéficiaires la
           possibilité de participer activement à sa gouvernance.
         </p>
-        <p className="">
+        <p>
           En tant qu'adhérent de l'association Benefactorum, vous avez
           l'opportunité de prendre part aux assemblées générales et
           d'influencer, par vos votes, les orientations et les décisions de

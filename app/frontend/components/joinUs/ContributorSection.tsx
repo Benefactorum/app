@@ -28,11 +28,11 @@ export default function Together() {
             </AspectRatio>
           </div>
         </div>
-        <p className="">
+        <p>
           Benefactorum développe une plateforme{" "}
           <span className="italic">open source</span>.
         </p>
-        <p className="">
+        <p>
           Que vous soyez codeur expert ou débutant, venez faire un tour sur
           notre <span className="italic">repo</span> !
         </p>

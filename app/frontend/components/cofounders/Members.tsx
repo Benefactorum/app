@@ -59,7 +59,7 @@ export default function Members() {
                 </h3>
                 <Linkedin className="w-5 h-5 fill-primary rounded-sm" />
               </a>
-              <p className="">{cofounder.description}</p>
+              <p>{cofounder.description}</p>
             </div>
           </div>
         ))}

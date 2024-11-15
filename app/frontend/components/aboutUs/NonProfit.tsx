@@ -36,16 +36,16 @@ export default function NonProfit() {
               />
             </AspectRatio>
           </div>
-          <p className="">
+          <p>
             Benefactorum est une organisation à but non-lucratif, animée à 100%
             par des bénévoles.
           </p>
-          <p className="">
+          <p>
             Benefactorum est une organisation d’intérêt général, et peut
             recevoir des dons, ce qui constitue l’unique source de financement
             de la plateforme.
           </p>
-          <p className="">
+          <p>
             Les comptes de Benefactorum sont publics et contrôlés par un
             commissaire aux comptes.
           </p>

@@ -39,11 +39,11 @@ export default function OurMission() {
               </AspectRatio>
             </div>
           </div>
-          <p className="">
+          <p>
             Benefactorum est un projet ouvert à toutes les bonnes volontés. Son
             contenu est participatif.
           </p>
-          <p className="">
+          <p>
             Pour garantir une qualité optimale du contenu sur Benefactorum, nous
             avons besoin de modérateurs. Leur mission : valider les nouvelles
             contributions ou suggérer des modifications.

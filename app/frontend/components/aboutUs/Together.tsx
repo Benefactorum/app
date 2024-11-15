@@ -26,11 +26,11 @@ export default function Together() {
             </AspectRatio>
           </div>
         </div>
-        <p className="">
+        <p>
           Benefactorum est un projet militant, créé par des donateurs ... pour
           des donateurs.
         </p>
-        <p className="">
+        <p>
           Benefactorum est un projet ouvert à toutes les bonnes volontés. La
           plateforme est <span className="italic">open source</span>, son
           contenu est participatif, sa gouvernance est horizontale.

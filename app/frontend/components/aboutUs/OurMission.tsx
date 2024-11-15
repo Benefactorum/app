@@ -36,7 +36,7 @@ export default function OurMission() {
               </AspectRatio>
             </div>
           </div>
-          <p className="">
+          <p>
             Benefactorum est né d’un constat simple :{" "}
             <span className="font-semibold">
               6 Français sur 10 souhaiteraient donner davantage
@@ -44,13 +44,13 @@ export default function OurMission() {
             . Pourtant, des obstacles persistent, et beaucoup trouvent le don
             trop complexe.
           </p>
-          <p className="">
+          <p>
             Nous avons fondé Benefactorum avec une conviction : ces obstacles,
             nous pouvons les surmonter. Imaginez un monde où donner est aussi
             impactant que gratifiant, où chaque geste de générosité est facilité
             en toute confiance.
           </p>
-          <p className="">
+          <p>
             Benefactorum est animé par un espoir : libérer le potentiel
             altruiste de nos utilisateurs, et ensemble, contribuer à un monde
             meilleur.

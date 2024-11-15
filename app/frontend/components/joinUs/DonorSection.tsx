@@ -39,15 +39,13 @@ export default function OurMission() {
               </AspectRatio>
             </div>
           </div>
-          <p className="">
+          <p>
             Benefactorum est une organisation d’intérêt général, et peut
             recevoir des dons, ce qui constitue l’unique source de financement
             de la plateforme.
           </p>
-          <p className="">
-            Donner à Benefactorum ouvre à 66% d’exonération fiscale.
-          </p>
-          <p className="">
+          <p>Donner à Benefactorum ouvre à 66% d’exonération fiscale.</p>
+          <p>
             En donnant à Benefactorum, vous lui permettez de couvrir ses frais
             de fonctionnement et de pérenniser son action.
           </p>

@@ -57,7 +57,7 @@ export default function CharityCarousel() {
             key={index}
             className="basis-auto flex justify-center w-56 items-center"
           >
-            <Link href="/inertia-example" className="">
+            <Link href="/inertia-example">
               <img
                 className="object-contain"
                 src={logo.src}
