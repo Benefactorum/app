@@ -16,7 +16,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import SignInModal from "@/components/reusable/SignInModal";
 import { Button } from "@/components/ui/button";
 
 import Logo from "/assets/logo.svg";
@@ -53,10 +52,19 @@ const subNavLinks = [
   },
 ];
 
+const excludedPatterns = [
+  /^\/connexion$/,
+  /^\/se-connecter$/,
+  /^\/confirmation-de-l-email$/,
+  /^\/s-inscrire(\?.*)?$/, // correspond à "/s-inscrire" suivi éventuellement de paramètres (comme ?email=...)
+];
+
 export default function Header() {
   const [isOpen, setOpen] = useState(false);
-  const { url } = usePage();
   const headerRef = useRef(null);
+
+  const { url } = usePage();
+  const isExcluded = excludedPatterns.some((pattern) => pattern.test(url));
 
   const handleLinkClick = () => {
     setOpen(false);
@@ -161,12 +169,14 @@ export default function Header() {
             <Hamburger toggled={isOpen} toggle={setOpen} />
           </div>
           <div className="hidden sm:flex">
-            <SignInModal>
-              <Button>
-                <LogInIcon />
-                Se connecter
-              </Button>
-            </SignInModal>
+            {!isExcluded && (
+              <Link href="connexion" onClick={handleLinkClick}>
+                <Button>
+                  <LogInIcon />
+                  Se connecter
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -214,17 +224,21 @@ export default function Header() {
               </Link>
             </li>
           ))}
-          <hr className="border-t border-gray-300 my-2" />
-          <li className="sm:hidden flex justify-center">
-            <div className="py-4 flex sm:hidden">
-              <SignInModal>
-                <Button>
-                  <LogInIcon />
-                  Se connecter
-                </Button>
-              </SignInModal>
-            </div>
-          </li>
+          {!isExcluded && (
+            <>
+              <hr className="border-t border-gray-300 my-2" />
+              <li className="sm:hidden flex justify-center">
+                <div className="py-4 flex sm:hidden">
+                  <Link href="connexion" onClick={handleLinkClick}>
+                    <Button>
+                      <LogInIcon />
+                      Se connecter
+                    </Button>
+                  </Link>
+                </div>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </header>

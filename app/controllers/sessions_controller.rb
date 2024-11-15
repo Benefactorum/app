@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
   end
 
   def new
+    render inertia: "Auth/Connection"
   end
 
   def create

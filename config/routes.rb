@@ -1,19 +1,20 @@
 Rails.application.routes.draw do
+  post "user/create_or_find"
   namespace :sessions do
-    resource :passwordless, only: [:new, :edit, :create]
+    resource :passwordless, only: [ :new, :edit, :create ]
   end
-  get  "sign_in", to: "sessions#new"
-  post "sign_in", to: "sessions#create"
-  get  "sign_up", to: "registrations#new"
-  post "sign_up", to: "registrations#create"
-  resources :sessions, only: [:index, :show, :destroy]
-  resource  :password, only: [:edit, :update]
+  get  "connexion", to: "sessions#new"
+  post "connexion", to: "sessions#create"
+  get  "s-inscrire", to: "registrations#new", as: :sign_up
+  post "s-inscrire", to: "registrations#create"
+  resources :sessions, only: [ :index, :show, :destroy ]
+  resource  :password, only: [ :edit, :update ]
   namespace :identity do
-    resource :email,              only: [:edit, :update]
-    resource :email_verification, only: [:show, :create]
-    resource :password_reset,     only: [:new, :edit, :create, :update]
+    resource :email,              only: [ :edit, :update ]
+    resource :email_verification, only: [ :show, :create ]
+    resource :password_reset,     only: [ :new, :edit, :create, :update ]
   end
-  root "home#index"
+  get "auth", to: "home#index"
   root "pages#home"
   resources :posts
 

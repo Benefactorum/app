@@ -11,7 +11,7 @@ export default function Layout({ children, flash }: LayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow">
+      <main className="flex flex-col flex-grow">
         {flash?.notice && (
           <p className="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block">
             {flash.notice}
