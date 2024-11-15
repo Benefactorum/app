@@ -3,7 +3,8 @@ import CharitySection from "../../components/homepage/CharitySection";
 import JoinUsSection from "../../components/homepage/JoinUsSection";
 import FaqSection from "../../components/homepage/FaqSection";
 import QuoteSection from "../../components/reusable/QuoteSection";
-import Smiley from "/assets/images/homepage/quote/smiley.webp";
+// @ts-ignore
+import Smiley from "/assets/images/homepage/quote/smiley.svg?react";
 
 export default function Home() {
   return (
@@ -18,11 +19,7 @@ export default function Home() {
         author={
           <span>
             Vous, une fois inscrit
-            <img
-              src={Smiley}
-              alt="Smiley avec un grand sourire"
-              className="ml-2 inline-block pb-1"
-            />
+            <Smiley className="inline-block ml-2 w-6 h-6 mb-1" />
           </span>
         }
       />
