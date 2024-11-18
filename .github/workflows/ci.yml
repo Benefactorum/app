@@ -96,6 +96,7 @@ jobs:
 
       - name: Run tests
         env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           RAILS_ENV: test
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
