@@ -62,3 +62,5 @@ gem "vite_rails", "~> 3.0"
 gem "authentication-zero", "~> 4.0"
 
 gem "rotp", "~> 6.3"
+
+gem "mailjet", "~> 1.8"
