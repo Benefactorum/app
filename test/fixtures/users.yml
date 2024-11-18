@@ -2,5 +2,11 @@
 
 lazaro_nixon:
   email: lazaronixon@hotmail.com
+  first_name: Lazaro
+  last_name: Nixon
   password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
   verified: true
+  terms_and_privacy_accepted_at: <%=  DateTime.current %>
+  otp_expires_at: <%=  DateTime.current + 5.minutes %>
+  otp_secret: <%= ROTP::Base32.random_base32 %>
+  account_id: 1

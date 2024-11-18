@@ -1,6 +1,8 @@
 require "test_helper"
 
 class UserMailerTest < ActionMailer::TestCase
+  fixtures :users
+
   setup do
     @user = users(:lazaro_nixon)
   end
