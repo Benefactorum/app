@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  before_create :assign_otp_secret
+
   has_secure_password validations: false
 
   generates_token_for :email_verification, expires_in: 2.days do
@@ -35,5 +37,11 @@ class User < ApplicationRecord
 
   after_update if: :password_digest_previously_changed? do
     sessions.where.not(id: Current.session).delete_all
+  end
+
+  private
+
+  def assign_otp_secret
+    self.otp_secret ||= ROTP::Base32.random_base32 # Generate a unique secret for each user
   end
 end

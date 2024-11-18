@@ -71,12 +71,12 @@ module.exports = {
         montserrat: ["Montserrat", "sans-serif"],
       },
       animation: {
-        marquee: "marquee 15s linear infinite",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       keyframes: {
-        marquee: {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(-50%)" },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
         },
       },
     },

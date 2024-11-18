@@ -3,23 +3,20 @@ class RegistrationsController < ApplicationController
 
   before_action :add_terms_and_privacy_accepted_at, only: [ :create ]
 
+  rate_limit to: 5, within: 1.minute, only: :create
+
   def new
     render inertia: "Auth/SignUp"
   end
 
   def create
-    @user = User.new(user_params)
+    user = User.new(user_params)
 
-    if @user.save
-      # session_record = @user.sessions.create!
-      # cookies.signed.permanent[:session_token] = { value: session_record.id, httponly: true }
-
-      # send_email_verification
-      send_passwordless_email
-      redirect_to sign_in_path # I need to pass a param to show the correct wording
-      # redirect_to root_path, notice: "Welcome! You have signed up successfully"
+    if user.save
+      send_otp_email(user)
+      redirect_to sign_in_path
     else
-      redirect_to sign_up_path, inertia: { errors: @user.errors }
+      redirect_to sign_up_path, inertia: { errors: user.errors }
     end
   end
 
@@ -35,11 +32,14 @@ class RegistrationsController < ApplicationController
       params.permit(:email, :first_name, :last_name, :terms_and_privacy_accepted_at)
     end
 
-    # def send_email_verification
-    #   UserMailer.with(user: @user).email_verification.deliver_later
-    # end
+    def send_otp_email(user)
+      user.increment!(:otp_counter)
 
-    def send_passwordless_email
-      UserMailer.with(user: @user).passwordless.deliver_later
+      otp = ROTP::HOTP.new(user.otp_secret)
+                      .at(user.otp_counter)
+
+      user.update!(otp_expires_at: DateTime.current + 10.minutes)
+
+      UserMailer.with(user:, otp:).otp.deliver_later
     end
 end

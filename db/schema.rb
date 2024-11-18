@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_15_115225) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_18_112514) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -33,6 +33,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_15_115225) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.datetime "terms_and_privacy_accepted_at", null: false
+    t.string "otp_secret", null: false
+    t.integer "otp_counter", default: 0
+    t.datetime "otp_expires_at"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end

@@ -1,4 +1,5 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, router } from "@inertiajs/react";
+import { useEffect } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -19,10 +20,11 @@ export default function SignUp() {
     terms_and_privacy_accepted_at: "",
   });
 
-  // transform((data) => ({
-  //   ...data,
-  //   email: sessionStorage.getItem("email"),
-  // }));
+  useEffect(() => {
+    if (!data.email) {
+      router.get("/connexion");
+    }
+  }, []);
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

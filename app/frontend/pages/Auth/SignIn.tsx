@@ -1,18 +1,50 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { StepForward, AlertCircle } from "lucide-react";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 import QuoteSection from "@/components/reusable/QuoteSection";
-// @ts-ignore
-import Vomi from "/assets/images/auth/vomi.svg?react";
 
 export default function SignUp() {
+  const [countdown, setCountdown] = useState(60);
   const { data, setData, post, processing, errors } = useForm({
+    email: sessionStorage.getItem("email"),
     code: "",
   });
-  const email = sessionStorage.getItem("email");
+
+  useEffect(() => {
+    if (!data.email) {
+      router.get("/connexion");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [countdown]);
+
+  function resendCode() {
+    post("/renvoyer-code", {
+      onSuccess: () => {
+        setData("code", "");
+        setCountdown(60);
+        toast.success(`Un nouveau code a été envoyé à ${data.email}`);
+      },
+    });
+  }
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,49 +58,75 @@ export default function SignUp() {
         <meta name="description" content="Your page description" />
       </Head>
       <div className="flex mx-auto justify-center py-16 lg:px-16">
-        <div className="bg-white p-8 md:p-16 rounded-2xl flex flex-col gap-8 max-w-[702px]">
+        <div className="bg-white p-8 md:p-16 rounded-2xl flex flex-col max-w-[702px]">
           <h1 className="text-2xl sm:text-3xl font-semibold ">
             Connectez-vous !
           </h1>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4 mt-8 ">
             <p>
-              Cliquez sur le lien de connexion que nous avons envoyé à{" "}
-              <span className="font-medium italic">{email}</span>.
+              Une fois que vous aurez saisi le code que nous avons envoyé à{" "}
+              {data.email}, vous serez connecté.
             </p>
             <p>Il est valide durant 10 minutes.</p>
           </div>
-          {/* <form onSubmit={submit} className="w-full flex flex-col pt-4 gap-8">
-            <div className="flex flex-col">
-              <Input
-                type="text"
+          <form
+            onSubmit={submit}
+            className="w-full flex flex-col pt-4 mt-8 gap-8"
+          >
+            <div className="flex flex-col mx-auto">
+              <InputOTP
+                autoFocus
                 required
+                maxLength={6}
                 value={data.code}
-                onChange={(e) => {
-                  setData("code", e.target.value);
+                onChange={(value) => {
+                  setData("code", value);
                   errors.code = "";
                 }}
-                placeholder="Code reçu par email"
-                className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${
-                  errors.code ? "border-red-600" : ""
-                }`}
-              />
+                // onComplete={() => post("/se-connecter")}
+                pattern={REGEXP_ONLY_DIGITS}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
               {errors.code && (
-                <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                <div className="flex items-center text-red-600 text-sm rounded-md p-1 mt-1">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.code}
                 </div>
               )}
             </div>
-            <Button type="submit" disabled={processing}>
+            <Button
+              type="submit"
+              disabled={processing || data.code.length !== 6 || !!errors.code}
+            >
               <StepForward />
               Continuer
             </Button>
-          </form> */}
-          <p className="text-sm text-muted-foreground">
-            Vous n'avez pas reçu l'email ?{" "}
-            <Link href="" className="underline hover:text-primary">
-              Renvoyer dans 30 secondes
-            </Link>
+          </form>
+          <p className="text-sm text-muted-foreground mt-16">
+            Vous n'avez pas reçu le code ?{" "}
+            {countdown > 0 ? (
+              <span className="underline cursor-pointer">
+                Renvoyer dans {countdown} secondes
+              </span>
+            ) : (
+              <button
+                onClick={resendCode}
+                className="underline hover:text-primary"
+              >
+                Renvoyer un nouveau code
+              </button>
+            )}
           </p>
         </div>
       </div>

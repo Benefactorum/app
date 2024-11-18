@@ -19,4 +19,11 @@ class UserMailer < ApplicationMailer
 
     mail to: @user.email, subject: "Your sign in link"
   end
+
+  def otp
+    @user = params[:user]
+    @otp = params[:otp]
+
+    mail to: @user.email, subject: "Benefactorum: Votre code de connexion est #{@otp}"
+  end
 end
