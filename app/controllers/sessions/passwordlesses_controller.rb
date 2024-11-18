@@ -24,16 +24,12 @@ class Sessions::PasswordlessesController < ApplicationController
 
   private
     def set_user
-      token = SignInToken.find_signed!(params[:sid]); @user = token.user
+      @user = User.find_by_token_for!(:passwordless, params[:sid])
     rescue StandardError
       redirect_to new_sessions_passwordless_path, alert: "That sign in link is invalid"
     end
 
     def send_passwordless_email
       UserMailer.with(user: @user).passwordless.deliver_later
-    end
-
-    def revoke_tokens
-      @user.sign_in_tokens.delete_all
     end
 end

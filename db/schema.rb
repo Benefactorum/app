@@ -30,11 +30,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_104535) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "sign_in_tokens", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.index ["user_id"], name: "index_sign_in_tokens_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest"
@@ -50,6 +45,5 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_104535) do
   end
 
   add_foreign_key "sessions", "users"
-  add_foreign_key "sign_in_tokens", "users"
   add_foreign_key "users", "accounts"
 end
