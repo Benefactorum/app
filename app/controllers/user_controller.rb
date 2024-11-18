@@ -8,6 +8,8 @@ class UserController < ApplicationController
   def create_or_find
     email = params[:email]
     if @user = User.find_by(email:)
+      send_passwordless_email
+      redirect_to sign_in_path
     else
       @user = User.create(email:) # will always fail because missing mandatory fields
       if @user.errors[:email].any?
@@ -17,4 +19,10 @@ class UserController < ApplicationController
       end
     end
   end
+
+  private
+
+  def send_passwordless_email
+      UserMailer.with(user: @user).passwordless.deliver_later
+    end
 end

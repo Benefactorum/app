@@ -15,6 +15,7 @@ class RegistrationsController < ApplicationController
       # cookies.signed.permanent[:session_token] = { value: session_record.id, httponly: true }
 
       # send_email_verification
+      send_passwordless_email
       redirect_to sign_in_path # I need to pass a param to show the correct wording
       # redirect_to root_path, notice: "Welcome! You have signed up successfully"
     else
@@ -34,7 +35,11 @@ class RegistrationsController < ApplicationController
       params.permit(:email, :first_name, :last_name, :terms_and_privacy_accepted_at)
     end
 
-    def send_email_verification
-      UserMailer.with(user: @user).email_verification.deliver_later
+    # def send_email_verification
+    #   UserMailer.with(user: @user).email_verification.deliver_later
+    # end
+
+    def send_passwordless_email
+      UserMailer.with(user: @user).passwordless.deliver_later
     end
 end

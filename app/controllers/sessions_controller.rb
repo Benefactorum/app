@@ -8,7 +8,8 @@ class SessionsController < ApplicationController
   end
 
   def new
-    render inertia: "Auth/Connection"
+    # should render the 'Connectez-vous' / 'Vous êtes presque inscrit !' page
+    render inertia: "Auth/SignIn" # I need to pass a param to show the correct wording
   end
 
   def create

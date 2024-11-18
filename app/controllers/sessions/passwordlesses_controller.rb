@@ -7,10 +7,11 @@ class Sessions::PasswordlessesController < ApplicationController
   end
 
   def edit
+    @user.update!(verified: true) # if not already verified
     session_record = @user.sessions.create!
     cookies.signed.permanent[:session_token] = { value: session_record.id, httponly: true }
 
-    revoke_tokens; redirect_to(root_path, notice: "Signed in successfully")
+    redirect_to(root_path, notice: "Signed in successfully")
   end
 
   def create
@@ -26,7 +27,8 @@ class Sessions::PasswordlessesController < ApplicationController
     def set_user
       @user = User.find_by_token_for!(:passwordless, params[:sid])
     rescue StandardError
-      redirect_to new_sessions_passwordless_path, alert: "That sign in link is invalid"
+      redirect_to sign_in_path, alert: "That email passwordless link is invalid"
+      # redirect_to new_sessions_passwordless_path, alert: "That sign in link is invalid"
     end
 
     def send_passwordless_email
