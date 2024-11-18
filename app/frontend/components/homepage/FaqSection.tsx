@@ -49,7 +49,7 @@ export default function JoinUs() {
             </ul>
             <div className="ml-auto">
               <Link
-                href="/posts"
+                href=""
                 className={`${buttonVariants({
                   variant: "",
                   size: "lg",

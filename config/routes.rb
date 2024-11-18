@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   end
   get "auth", to: "home#index"
   root "pages#home"
-  resources :posts
 
   get "inertia-example", to: "inertia_example#index"
 
