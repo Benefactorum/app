@@ -1,0 +1,38 @@
+# config/locales/fr.yml
+fr:
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      inclusion: "n'est pas inclus dans la liste"
+      exclusion: "est réservé"
+      invalid: "n'est pas valide"
+      confirmation: "ne correspond pas à la confirmation"
+      accepted: "doit être accepté"
+      empty: "ne peut pas être vide"
+      blank: "champs obligatoire"
+      present: "doit être vide"
+      too_long: "est trop long (maximum est de %{count} caractères)"
+      too_short: "est trop court (minimum est de %{count} caractères)"
+      wrong_length: "n'est pas de la bonne longueur (doit être de %{count} caractères)"
+      not_a_number: "n'est pas un nombre"
+      not_an_integer: "doit être un entier"
+      greater_than: "doit être supérieur à %{count}"
+      greater_than_or_equal_to: "doit être supérieur ou égal à %{count}"
+      equal_to: "doit être égal à %{count}"
+      less_than: "doit être inférieur à %{count}"
+      less_than_or_equal_to: "doit être inférieur ou égal à %{count}"
+      other_than: "doit être différent de %{count}"
+      even: "doit être pair"
+      odd: "doit être impair"
+      taken: "a déjà été pris"
+      record_invalid: "La validation a échoué : %{errors}"
+  activerecord:
+    models:
+      user: "Utilisateur"
+    attributes:
+      user:
+        email: "Adresse e-mail"
+        first_name: "Prénom"
+        last_name: "Nom de famille"
+        terms_and_privacy_accepted_at: "Conditions et confidentialité acceptées à"
+        password: "Mot de passe"

@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
+  get "connexion", to: "user#connection", as: :connection
   post "user/create_or_find"
   namespace :sessions do
     resource :passwordless, only: [ :new, :edit, :create ]
   end
-  get  "connexion", to: "sessions#new"
-  post "connexion", to: "sessions#create"
+  get "se-connecter", to: "sessions#new", as: :sign_in
+  post "se-connecter", to: "sessions#create"
   get  "s-inscrire", to: "registrations#new", as: :sign_up
   post "s-inscrire", to: "registrations#create"
   resources :sessions, only: [ :index, :show, :destroy ]

@@ -53,7 +53,7 @@ const subNavLinks = [
 ];
 
 const excludedPatterns = [
-  /^\/connexion$/,
+  /^\/connexion(\?.*)?$/,
   /^\/se-connecter$/,
   /^\/confirmation-de-l-email$/,
   /^\/s-inscrire(\?.*)?$/, // correspond à "/s-inscrire" suivi éventuellement de paramètres (comme ?email=...)
@@ -170,7 +170,7 @@ export default function Header() {
           </div>
           <div className="hidden sm:flex">
             {!isExcluded && (
-              <Link href="connexion" onClick={handleLinkClick}>
+              <Link href="/connexion" onClick={handleLinkClick}>
                 <Button>
                   <LogInIcon />
                   Se connecter
@@ -229,7 +229,7 @@ export default function Header() {
               <hr className="border-t border-gray-300 my-2" />
               <li className="sm:hidden flex justify-center">
                 <div className="py-4 flex sm:hidden">
-                  <Link href="connexion" onClick={handleLinkClick}>
+                  <Link href="/connexion" onClick={handleLinkClick}>
                     <Button>
                       <LogInIcon />
                       Se connecter

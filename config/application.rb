@@ -23,5 +23,8 @@ module Benefactorum
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Set default locale to French
+    config.i18n.default_locale = :fr
   end
 end

@@ -1,24 +1,25 @@
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
-import { StepForward } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { StepForward, AlertCircle } from "lucide-react";
+
 import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Superwoman from "/assets/images/auth/superwoman.svg?react";
 
-import { router } from "@inertiajs/react";
-
 export default function Connection() {
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const inputValue = (form.elements[0] as HTMLInputElement).value.trim();
+  const { data, setData, post, processing, errors } = useForm({
+    email: "",
+  });
 
-    if (!inputValue) {
-      return;
-    }
-    router.post("/user/create_or_find", { email: inputValue });
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    post("/user/create_or_find", {
+      onSuccess: () => {
+        sessionStorage.setItem("email", data.email);
+      },
+    });
   }
 
   return (
@@ -37,18 +38,31 @@ export default function Connection() {
               Nous vous aiderons à en créer un si ce n'est pas le cas.
             </span>
           </p>
-          <form
-            onSubmit={handleSubmit}
-            className="w-full flex flex-col pt-4 gap-8"
-          >
-            <Input
-              type="email"
-              required
-              title="Votre adresse email"
-              placeholder="Votre adresse email"
-              className="bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0"
-            />
-            <Button type="submit">
+          <form onSubmit={submit} className="w-full flex flex-col pt-4 gap-8">
+            <div>
+              <Input
+                type="email"
+                required
+                title="Votre adresse email"
+                placeholder="Votre adresse email"
+                value={data.email}
+                onChange={(e) => {
+                  setData("email", e.target.value);
+                  errors.email = "";
+                }}
+                className={
+                  "bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0" +
+                  (errors.email ? " border-red-600" : "")
+                }
+              />
+              {errors.email && (
+                <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                  <AlertCircle className="w-4 h-4 mr-1" />
+                  {errors.email}
+                </div>
+              )}
+            </div>
+            <Button type="submit" disabled={processing}>
               <StepForward />
               Continuer
             </Button>

@@ -14,7 +14,7 @@ interface QuoteSectionProps {
 }
 
 const excludedPatterns = [
-  /^\/connexion$/,
+  /^\/connexion(\?.*)?$/,
   /^\/se-connecter$/,
   /^\/confirmation-de-l-email$/,
   /^\/s-inscrire(\?.*)?$/, // correspond à "/s-inscrire" suivi éventuellement de paramètres (comme ?email=...)
@@ -44,7 +44,7 @@ const QuoteSection: FC<QuoteSectionProps> = ({
         </cite>
       </blockquote>
       {!isExcluded && (
-        <Link href="connexion">
+        <Link href="/connexion">
           <Button variant="secondary" size="xl">
             S'inscrire
           </Button>
