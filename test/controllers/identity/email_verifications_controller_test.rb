@@ -30,6 +30,6 @@ class Identity::EmailVerificationsControllerTest < ActionDispatch::IntegrationTe
     get identity_email_verification_url(sid: sid, email: @user.email)
 
     assert_redirected_to edit_identity_email_url
-    assert_equal "That email verification link is invalid", flash[:alert]
+    assert_equal "That email verification link is invalid", flash[:error]
   end
 end

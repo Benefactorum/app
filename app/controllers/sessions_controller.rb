@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
       else
         user.update!(verified: true, otp_expires_at: DateTime.current)
         sign_in(user)
-        redirect_to root_path, notice: "Vous êtes connecté."
+        redirect_to root_path, success: "Vous êtes connecté."
       end
     else
       redirect_to sign_in_path, inertia: { errors: { code: "Code de connexion invalide." } }
@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
 
   def destroy
     @session.destroy
-    redirect_to sessions_path, notice: "That session has been logged out"
+    redirect_to sessions_path, success: "That session has been logged out"
   end
 
   private

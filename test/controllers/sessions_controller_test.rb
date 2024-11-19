@@ -31,7 +31,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     skip
     post sign_in_url, params: { email: @user.email, password: "SecretWrong1*3" }
     assert_redirected_to sign_in_url(email_hint: @user.email)
-    assert_equal "That email or password is incorrect", flash[:alert]
+    assert_equal "That email or password is incorrect", flash[:error]
 
     get root_url
     assert_redirected_to sign_in_url

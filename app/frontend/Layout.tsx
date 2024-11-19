@@ -9,19 +9,31 @@ type LayoutProps = {
   children: ReactElement;
 };
 
+const flash_types: Array<keyof typeof toast> = [
+  "message",
+  "success",
+  "info",
+  "warning",
+  "error",
+];
+
 export default function Layout({ children }: LayoutProps) {
   const { flash = {} } = usePage<{
-    flash?: { alert?: string; notice?: string };
+    flash?: { [key: string]: string };
   }>().props;
 
   useEffect(() => {
-    if (flash?.notice) {
-      toast.success(flash.notice);
-    }
-    if (flash?.alert) {
-      toast.error(flash.alert);
-    }
-  }, [flash?.notice, flash?.alert]);
+    console.log(flash);
+    console.log(flash["warning"]);
+    flash_types.forEach((type) => {
+      if (flash?.[type]) {
+        toast[type](flash[type] as any);
+      }
+      if (flash?.alert) {
+        toast.error(flash.alert);
+      }
+    });
+  }, [flash]);
 
   return (
     <div className="flex flex-col min-h-screen">

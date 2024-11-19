@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   inertia_share flash: -> { flash.to_hash }
+  add_flash_types :message, :success, :info, :warning, :error
 
   before_action :set_current_request_details
   before_action :authenticate
@@ -12,7 +13,7 @@ class ApplicationController < ActionController::Base
       if session_record = Session.find_by_id(cookies.signed[:session_token])
         Current.session = session_record
       else
-        redirect_to new_connection_path
+        redirect_to new_connection_path, info: "Connectez-vous pour continuer."
       end
     end
 
