@@ -57,8 +57,8 @@ export default function SignUp() {
         <title>S'inscrire</title>
         <meta name="description" content="Your page description" />
       </Head>
-      <div className="flex mx-auto justify-center py-16 lg:px-16">
-        <div className="bg-white p-8 md:p-16 rounded-2xl flex flex-col max-w-[702px]">
+      <div className="flex mx-auto justify-center py-16 lg:px-16 overflow-x-hidden">
+        <div className="bg-white py-8 px-4 sm:px-8 md:p-16 rounded-2xl flex flex-col max-w-[653px]">
           <h1 className="text-2xl sm:text-3xl font-semibold ">
             Connectez-vous !
           </h1>
@@ -69,10 +69,7 @@ export default function SignUp() {
             </p>
             <p>Il est valide durant 10 minutes.</p>
           </div>
-          <form
-            onSubmit={submit}
-            className="w-full flex flex-col pt-4 mt-8 gap-8"
-          >
+          <form onSubmit={submit} className="flex flex-col pt-4 mt-8 gap-8">
             <div className="flex flex-col mx-auto">
               <InputOTP
                 autoFocus
@@ -85,6 +82,7 @@ export default function SignUp() {
                 }}
                 // onComplete={() => post("/se-connecter")}
                 pattern={REGEXP_ONLY_DIGITS}
+                containerClassName="mx-auto"
               >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
