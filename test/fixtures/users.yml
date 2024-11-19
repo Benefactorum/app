@@ -15,7 +15,9 @@ first_sign_up_user:
   email: test@mail.com
   first_name: John
   last_name: Doe
-  terms_and_privacy_accepted_at: <%=  DateTime.current %>
-  otp_expires_at: <%=  DateTime.current + 10.minutes %>
+  created_at: <%=  DateTime.current - 10.minutes %>
+  updated_at: <%=  DateTime.current - 10.minutes %>
+  terms_and_privacy_accepted_at: <%=  DateTime.current - 10.minutes %>
+  otp_expires_at: <%=  DateTime.current %>
   otp_secret: <%= ROTP::Base32.random_base32 %>
   account_id: 1
