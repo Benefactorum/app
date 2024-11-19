@@ -1,17 +1,34 @@
 require "test_helper"
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
-    get sign_up_url
+  include ActiveSupport::Testing::TimeHelpers
+
+  test "#new" do
+    get new_registration_url
     assert_response :success
   end
 
-  test "should sign up" do
-    skip
+  test "#create" do
+    freeze_time
     assert_difference("User.count") do
-      post sign_up_url, params: { email: "lazaronixon@hey.com", password: "Secret1*3*5*", password_confirmation: "Secret1*3*5*" }
+      post registrations_path, params: { email: "lazaronixon@hey.com", first_name: "Lazaro", last_name: "Nixon", accepts_conditions: true }
     end
 
-    assert_redirected_to root_url
+    user = User.find_by(email: "lazaronixon@hey.com")
+    assert_equal "Lazaro", user.first_name
+    assert_equal "Nixon", user.last_name
+    assert_equal user.terms_and_privacy_accepted_at, Time.current
+  end
+
+  test "#create with invalid params" do
+    skip
+    assert_no_difference("User.count") do
+      post registrations_path, params: { email: "invalid", first_name: "", last_name: "", accepts_conditions: false }
+    end
+    assert_redirected_to new_registration_path
+
+    # inertia_errors = JSON.parse(response.body)["props"]["errors"]
+    # # assert_not_empty inertia_errors
+    # # assert_equal [ "is invalid" ], inertia_errors["email"]
   end
 end

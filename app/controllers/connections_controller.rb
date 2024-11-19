@@ -18,7 +18,7 @@ class ConnectionsController < ApplicationController
       if user.errors[:email].any?
         redirect_to new_connection_path, inertia: { errors: user.errors }
       else
-        redirect_to sign_up_path
+        redirect_to new_registration_path
       end
     end
   end

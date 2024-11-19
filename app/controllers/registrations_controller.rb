@@ -16,7 +16,7 @@ class RegistrationsController < ApplicationController
       user.send_otp_email
       redirect_to sign_in_path
     else
-      redirect_to sign_up_path, inertia: { errors: user.errors }
+      redirect_to new_registration_path, inertia: { errors: user.errors }
     end
   end
 

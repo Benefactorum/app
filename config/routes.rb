@@ -6,12 +6,13 @@ Rails.application.routes.draw do
   end
   get "connexion", to: "connections#new", as: :new_connection
 
+  resources :registrations, only: [ :create ]
+  get "s-inscrire", to: "registrations#new", as: :new_registration
+
   get "se-connecter", to: "sessions#new", as: :sign_in
   post "se-connecter", to: "sessions#create"
   resources :sessions, only: [ :index, :show, :destroy ]
 
-  get  "s-inscrire", to: "registrations#new", as: :sign_up
-  post "s-inscrire", to: "registrations#create"
   resource  :password, only: [ :edit, :update ]
   namespace :identity do
     resource :email,              only: [ :edit, :update ]

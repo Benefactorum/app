@@ -29,7 +29,7 @@ export default function SignUp() {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post("/s-inscrire", {
+    post("registrations", {
       onSuccess: () => {
         sessionStorage.setItem("first_name", data.first_name);
         sessionStorage.setItem("last_name", data.last_name);
