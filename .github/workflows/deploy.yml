@@ -1,5 +1,9 @@
 name: Deploy to staging
 
+concurrency:
+  group: production
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
@@ -28,13 +32,12 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3.7.1
 
+      - name: Release Kamal lock
+        run: bundle exec kamal lock release
+
       - name: Deploy with Kamal
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           VERSION: ${{ github.sha }}
-        uses: nick-fields/retry@v3
-        with:
-          max_attempts: 3
-          timeout_minutes: 5
-          command: bundle exec kamal deploy --version=$VERSION
+        run: bundle exec kamal deploy --version=$VERSION

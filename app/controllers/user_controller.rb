@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  skip_before_action :authenticate, only: [ :connection, :create_or_find ]
+  skip_before_action :authenticate, only: [ :connection, :create_or_find, :resend_otp ]
 
   rate_limit to: 5, within: 1.minute, only: :create_or_find, by: -> { params[:email] }
   rate_limit to: 1, within: 1.minute, only: :resend_otp
