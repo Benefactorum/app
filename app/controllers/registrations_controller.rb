@@ -33,6 +33,7 @@ class RegistrationsController < ApplicationController
     end
 
     def send_otp_email(user)
+      # should I add a logic to not send another email if otp_expires_at is still valid ?
       user.increment!(:otp_counter)
 
       otp = ROTP::HOTP.new(user.otp_secret)

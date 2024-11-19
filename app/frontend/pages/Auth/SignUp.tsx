@@ -14,11 +14,12 @@ import Vomi from "/assets/images/auth/vomi.svg?react";
 export default function SignUp() {
   const { data, setData, post, processing, errors } = useForm({
     email: sessionStorage.getItem("email"),
-    first_name: "",
-    last_name: "",
-    accepts_conditions: false,
+    first_name: sessionStorage.getItem("first_name") || "",
+    last_name: sessionStorage.getItem("last_name") || "",
+    accepts_conditions: !!sessionStorage.getItem("accepts_conditions") || false,
     terms_and_privacy_accepted_at: "",
   });
+  const account_created = !!sessionStorage.getItem("account_created") || false;
 
   useEffect(() => {
     if (!data.email) {
@@ -28,7 +29,14 @@ export default function SignUp() {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post("/s-inscrire");
+    post("/s-inscrire", {
+      onSuccess: () => {
+        sessionStorage.setItem("first_name", data.first_name);
+        sessionStorage.setItem("last_name", data.last_name);
+        sessionStorage.setItem("account_created", "true");
+        sessionStorage.setItem("accepts_conditions", "true");
+      },
+    });
   }
 
   return (
@@ -53,6 +61,7 @@ export default function SignUp() {
                 id="firstName"
                 type="text"
                 required
+                disabled={account_created === true}
                 value={data.first_name}
                 onChange={(e) => {
                   setData("first_name", e.target.value);
@@ -76,6 +85,7 @@ export default function SignUp() {
                 id="lastName"
                 type="text"
                 required
+                disabled={account_created === true}
                 value={data.last_name}
                 onChange={(e) => {
                   setData("last_name", e.target.value);
@@ -98,6 +108,7 @@ export default function SignUp() {
                 <Checkbox
                   id="terms"
                   required
+                  disabled={account_created === true}
                   checked={data.accepts_conditions}
                   onCheckedChange={(checked) => {
                     setData("accepts_conditions", !!checked);
@@ -134,7 +145,11 @@ export default function SignUp() {
                 </div>
               )}
             </div>
-            <Button variant="secondary" type="submit" disabled={processing}>
+            <Button
+              variant="secondary"
+              type="submit"
+              disabled={account_created === true || processing}
+            >
               <StepForward />
               Continuer
             </Button>

@@ -10,7 +10,7 @@ import Superwoman from "/assets/images/auth/superwoman.svg?react";
 
 export default function Connection() {
   const { data, setData, post, processing, errors } = useForm({
-    email: "",
+    email: sessionStorage.getItem("email") || "",
   });
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -18,6 +18,10 @@ export default function Connection() {
     post("/connections", {
       onSuccess: () => {
         sessionStorage.setItem("email", data.email);
+        sessionStorage.removeItem("first_name");
+        sessionStorage.removeItem("last_name");
+        sessionStorage.removeItem("account_created");
+        sessionStorage.removeItem("accepts_conditions");
       },
     });
   }
