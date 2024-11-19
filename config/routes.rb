@@ -6,9 +6,6 @@ Rails.application.routes.draw do
   end
   get "connexion", to: "connections#new", as: :new_connection
 
-  namespace :sessions do
-    resource :passwordless, only: [ :new, :edit, :create ]
-  end
   get "se-connecter", to: "sessions#new", as: :sign_in
   post "se-connecter", to: "sessions#create"
   get  "s-inscrire", to: "registrations#new", as: :sign_up
