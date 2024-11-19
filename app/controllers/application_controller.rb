@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       if session_record = Session.find_by_id(cookies.signed[:session_token])
         Current.session = session_record
       else
-        redirect_to sign_in_path
+        redirect_to new_connection_path
       end
     end
 

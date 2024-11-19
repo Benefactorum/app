@@ -74,6 +74,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    ansi (1.5.0)
     ast (2.4.2)
     authentication-zero (4.0.3)
     base64 (0.2.0)
@@ -165,6 +166,11 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.25.1)
+    minitest-reporters (1.7.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     msgpack (1.7.5)
     net-http (0.5.0)
       uri
@@ -391,6 +397,7 @@ DEPENDENCIES
   inertia_rails-contrib
   kamal
   mailjet (~> 1.8)
+  minitest-reporters
   overmind
   puma (>= 5.0)
   rails

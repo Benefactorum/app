@@ -15,7 +15,7 @@ export default function Connection() {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post("/user/create_or_find", {
+    post("/connections", {
       onSuccess: () => {
         sessionStorage.setItem("email", data.email);
       },

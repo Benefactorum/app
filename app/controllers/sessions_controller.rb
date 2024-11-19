@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
     unless user
-      redirect_to connection_path
+      redirect_to new_connection_path
     end
 
     if params[:code].blank?

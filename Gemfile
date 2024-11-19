@@ -51,6 +51,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'minitest-reporters'
 end
 
 # See the PR https://github.com/inertiajs/inertia-rails/pull/132

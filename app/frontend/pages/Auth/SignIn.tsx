@@ -28,6 +28,15 @@ export default function SignUp() {
   }, []);
 
   useEffect(() => {
+    if (
+      errors.code ===
+      "Votre code de connexion a expiré. Demandez-en un nouveau."
+    ) {
+      setCountdown(0);
+    }
+  }, [errors.code]);
+
+  useEffect(() => {
     if (countdown > 0) {
       const timer = setInterval(() => {
         setCountdown((prev) => prev - 1);
@@ -37,7 +46,7 @@ export default function SignUp() {
   }, [countdown]);
 
   function resendCode() {
-    post("/renvoyer-code", {
+    post("/connections/resend_otp", {
       onSuccess: () => {
         setData("code", "");
         setCountdown(60);
@@ -111,21 +120,24 @@ export default function SignUp() {
               Continuer
             </Button>
           </form>
-          <p className="text-sm text-muted-foreground mt-16">
-            Vous n'avez pas reçu le code ?{" "}
-            {countdown > 0 ? (
+          {countdown > 0 && (
+            <p className="text-sm text-muted-foreground mt-16">
+              Vous n'avez pas reçu le code ?{" "}
               <span className="underline cursor-pointer">
                 Renvoyer dans {countdown} secondes
               </span>
-            ) : (
+            </p>
+          )}
+          {countdown === 0 && (
+            <p className="text-sm text-muted-foreground mt-16">
               <button
                 onClick={resendCode}
                 className="underline hover:text-primary"
               >
                 Renvoyer un nouveau code
               </button>
-            )}
-          </p>
+            </p>
+          )}
         </div>
       </div>
       <QuoteSection

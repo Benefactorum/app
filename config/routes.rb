@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  get "connexion", to: "user#connection", as: :connection
-  post "renvoyer-code", to: "user#resend_otp"
-  post "user/create_or_find"
+  resources :connections, only: [ :create ] do
+    collection do
+      post :resend_otp
+    end
+  end
+  get "connexion", to: "connections#new", as: :new_connection
+
   namespace :sessions do
     resource :passwordless, only: [ :new, :edit, :create ]
   end
