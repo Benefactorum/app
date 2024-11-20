@@ -113,6 +113,11 @@ GEM
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
+    factory_bot (6.5.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     faraday (2.12.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -405,6 +410,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  factory_bot_rails
   inertia_rails
   inertia_rails-contrib
   kamal

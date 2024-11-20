@@ -17,6 +17,6 @@ class UserMailer < ApplicationMailer
     @user = params[:user]
     @otp = params[:otp]
 
-    mail to: @user.email, subject: "Benefactorum: Votre code de connexion est #{@otp}"
+    mail to: @user.email, subject: "Benefactorum: Voici votre code de connexion"
   end
 end

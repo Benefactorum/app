@@ -6,13 +6,21 @@ module Otp
   end
 
   def send_otp_email(expiration_check: true)
-    return if expiration_check && otp_still_valid?
+    return false if expiration_check && otp_still_valid?
 
-    self.increment!(:otp_counter)
-    otp_code = ROTP::HOTP.new(otp_secret).at(otp_counter)
-    self.update!(otp_expires_at: DateTime.current + 10.minutes)
-    UserMailer.with(user: self, otp: otp_code).otp.deliver_later
+    otp = generate_new_otp
+    UserMailer.with(user: self, otp:).otp.deliver_later
     true
+  end
+
+  def generate_new_otp
+    self.increment!(:otp_counter)
+    self.update!(otp_expires_at: DateTime.current + 10.minutes)
+    otp
+  end
+
+  def otp
+    ROTP::HOTP.new(otp_secret).at(otp_counter)
   end
 
   private

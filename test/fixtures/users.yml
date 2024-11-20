@@ -10,14 +10,3 @@ lazaro_nixon:
   otp_expires_at: <%=  DateTime.current + 5.minutes %>
   otp_secret: <%= ROTP::Base32.random_base32 %>
   account_id: 1
-
-first_sign_up_user:
-  email: test@mail.com
-  first_name: John
-  last_name: Doe
-  created_at: <%=  DateTime.current - 10.minutes %>
-  updated_at: <%=  DateTime.current - 10.minutes %>
-  terms_and_privacy_accepted_at: <%=  DateTime.current - 10.minutes %>
-  otp_expires_at: <%=  DateTime.current %>
-  otp_secret: <%= ROTP::Base32.random_base32 %>
-  account_id: 1
