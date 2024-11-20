@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Connections", type: :request, inertia: true do
-  include ActionMailer::TestHelper
-
   describe "GET /connexion" do
     it "returns http success" do
       get new_connection_path
@@ -40,7 +38,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
         end
         otp = user.reload.otp
         assert_enqueued_email_with UserMailer, :otp, params: { user:, otp: }
-        assert_redirected_to sign_in_url
+        expect(response).to redirect_to(sign_in_path)
       end
 
       it "redirects to /se-connecter but does not send OTP email again if OTP is still valid" do

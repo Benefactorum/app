@@ -23,7 +23,8 @@ class RegistrationsController < ApplicationController
   private
 
     def add_terms_and_privacy_accepted_at
-      if params[:accepts_conditions].present?
+      params.delete(:terms_and_privacy_accepted_at)
+      if params[:accepts_conditions] === "true"
         params[:terms_and_privacy_accepted_at] = DateTime.current
       end
     end
