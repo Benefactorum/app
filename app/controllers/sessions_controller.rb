@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
     end
 
     if params[:code].blank?
-      redirect_to sign_in_path, inertia: { errors: { code: "champs obligatoire" } }
+      redirect_to new_session_path, inertia: { errors: { code: "champs obligatoire" } }
       return
     end
 
@@ -29,14 +29,14 @@ class SessionsController < ApplicationController
 
     if hotp.verify(params[:code], user.otp_counter)
       if DateTime.current > user.otp_expires_at
-        redirect_to sign_in_path, inertia: { errors: { code: "Votre code de connexion a expiré. Demandez-en un nouveau." } }
+        redirect_to new_session_path, inertia: { errors: { code: "Votre code de connexion a expiré. Demandez-en un nouveau." } }
       else
         user.update!(verified: true, otp_expires_at: DateTime.current)
         sign_in(user)
         redirect_to root_path, success: "Vous êtes connecté."
       end
     else
-      redirect_to sign_in_path, inertia: { errors: { code: "Code de connexion invalide." } }
+      redirect_to new_session_path, inertia: { errors: { code: "Code de connexion invalide." } }
     end
   end
 

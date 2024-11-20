@@ -23,8 +23,6 @@ export default function Layout({ children }: LayoutProps) {
   }>().props;
 
   useEffect(() => {
-    console.log(flash);
-    console.log(flash["warning"]);
     flash_types.forEach((type) => {
       if (flash?.[type]) {
         toast[type](flash[type] as any);

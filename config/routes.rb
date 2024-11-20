@@ -9,9 +9,8 @@ Rails.application.routes.draw do
   resources :registrations, only: [ :create ]
   get "s-inscrire", to: "registrations#new", as: :new_registration
 
-  get "se-connecter", to: "sessions#new", as: :sign_in
-  post "se-connecter", to: "sessions#create"
-  resources :sessions, only: [ :index, :show, :destroy ]
+  resources :sessions, only: [ :index, :show, :create, :destroy ]
+  get "se-connecter", to: "sessions#new", as: :new_session
 
   resource  :password, only: [ :edit, :update ]
   namespace :identity do

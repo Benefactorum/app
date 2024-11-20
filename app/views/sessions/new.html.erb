@@ -3,7 +3,7 @@
 
 <h1>Sign in</h1>
 
-<%= form_with(url: sign_in_path) do |form| %>
+<%= form_with(url: new_session_path) do |form| %>
   <div>
     <%= form.label :email, style: "display: block" %>
     <%= form.email_field :email, value: params[:email_hint], required: true, autofocus: true, autocomplete: "email" %>

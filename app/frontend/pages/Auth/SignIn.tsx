@@ -57,7 +57,7 @@ export default function SignUp() {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post("/se-connecter");
+    post("/sessions");
   }
 
   return (
@@ -89,7 +89,7 @@ export default function SignUp() {
                   setData("code", value);
                   errors.code = "";
                 }}
-                // onComplete={() => post("/se-connecter")}
+                // onComplete={() => post("/sessions")}
                 pattern={REGEXP_ONLY_DIGITS}
                 containerClassName="mx-auto"
               >
