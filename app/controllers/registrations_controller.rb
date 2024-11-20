@@ -1,9 +1,11 @@
 class RegistrationsController < ApplicationController
   skip_before_action :authenticate
 
+  before_action :verify_captcha, only: [ :create ]
   before_action :add_terms_and_privacy_accepted_at, only: [ :create ]
 
   rate_limit to: 100, within: 1.day, only: :create
+
   def new
     render inertia: "Auth/SignUp"
   end
@@ -25,6 +27,13 @@ class RegistrationsController < ApplicationController
       params.delete(:terms_and_privacy_accepted_at)
       if accepts_conditions?
         params[:terms_and_privacy_accepted_at] = DateTime.current
+      end
+    end
+
+    def verify_captcha
+      captcha = Captcha.new(params.delete(:recaptcha_token))
+      unless captcha.valid?
+        redirect_to new_registration_path, error: "Erreur de validation du captcha. Veuillez rafraîchir la page et réessayer."
       end
     end
 

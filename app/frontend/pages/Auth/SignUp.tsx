@@ -1,12 +1,11 @@
 import { Head, Link, useForm, router } from "@inertiajs/react";
-import { useEffect } from "react";
-
+import { useEffect, useRef } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { StepForward, AlertCircle } from "lucide-react";
-
+import ReCAPTCHA from 'react-google-recaptcha';
 import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Vomi from "/assets/images/auth/vomi.svg?react";
@@ -18,8 +17,10 @@ export default function SignUp() {
     last_name: sessionStorage.getItem("last_name") || "",
     accepts_conditions: !!sessionStorage.getItem("accepts_conditions") || false,
     terms_and_privacy_accepted_at: "",
+    recaptcha_token: "",
   });
   const account_created = !!sessionStorage.getItem("account_created") || false;
+  const recaptchaRef = useRef(null);
 
   useEffect(() => {
     if (!data.email) {
@@ -27,16 +28,27 @@ export default function SignUp() {
     }
   }, []);
 
+  function onChange(value) {
+    console.log("Captcha value:", value);
+    setData("recaptcha_token", value);
+  }
+
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post("registrations", {
-      onSuccess: () => {
-        sessionStorage.setItem("first_name", data.first_name);
-        sessionStorage.setItem("last_name", data.last_name);
-        sessionStorage.setItem("account_created", "true");
-        sessionStorage.setItem("accepts_conditions", "true");
-      },
-    });
+    // const recaptchaValue = recaptchaRef.current.getValue();
+    if (data.recaptcha_token !== "") {
+      // setData("recaptcha_token", recaptchaValue);
+      post("registrations", {
+        onSuccess: () => {
+          sessionStorage.setItem("first_name", data.first_name);
+          sessionStorage.setItem("last_name", data.last_name);
+          sessionStorage.setItem("account_created", "true");
+          sessionStorage.setItem("accepts_conditions", "true");
+        },
+      });
+    } else {
+      alert("Please complete the reCAPTCHA.");
+    }
   }
 
   return (
@@ -144,6 +156,13 @@ export default function SignUp() {
                   {errors.terms_and_privacy_accepted_at}
                 </div>
               )}
+            </div>
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6LfkEYUqAAAAAOacT9yEDlhWHnXbaZ5IJhVFbXIf"
+                onChange={onChange}
+              />
             </div>
             <Button
               variant="secondary"
