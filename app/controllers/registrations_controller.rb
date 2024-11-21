@@ -24,7 +24,7 @@ class RegistrationsController < ApplicationController
   private
 
     def add_terms_and_privacy_accepted_at
-      params.delete(:terms_and_privacy_accepted_at)
+      params.delete(:terms_and_privacy_accepted_at) # avoid hacking of terms_and_privacy_accepted_at
       if accepts_conditions?
         params[:terms_and_privacy_accepted_at] = DateTime.current
       end
@@ -33,7 +33,7 @@ class RegistrationsController < ApplicationController
     def verify_captcha
       captcha = Captcha.new(params.delete(:recaptcha_token))
       unless captcha.valid?
-        redirect_to new_registration_path, error: "Erreur de validation du captcha. Veuillez rafraîchir la page et réessayer."
+        redirect_to new_registration_path, error: "Erreur de validation du CAPTCHA. Veuillez réessayer."
       end
     end
 
@@ -42,7 +42,7 @@ class RegistrationsController < ApplicationController
     end
 
     def accepts_conditions?
-      # in test environment, the boolean true is received as a string 'true'
+      # BUG : in test environment, the boolean true is received as a string 'true'
       ActiveModel::Type::Boolean.new.cast(params[:accepts_conditions])
     end
 end

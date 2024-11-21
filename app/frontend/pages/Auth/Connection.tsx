@@ -16,12 +16,14 @@ export default function Connection() {
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     post("/connections", {
-      onSuccess: () => {
-        sessionStorage.setItem("email", data.email);
-        sessionStorage.removeItem("first_name");
-        sessionStorage.removeItem("last_name");
-        sessionStorage.removeItem("account_created");
-        sessionStorage.removeItem("accepts_conditions");
+      onSuccess: (page) => {
+        if (page.url !== "/connexion") {
+          sessionStorage.setItem("email", data.email);
+          sessionStorage.removeItem("firstName");
+          sessionStorage.removeItem("lastName");
+          sessionStorage.removeItem("signUpBlocked");
+          sessionStorage.removeItem("acceptsConditions");
+        }
       },
     });
   }

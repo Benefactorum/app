@@ -1,7 +1,3 @@
-require "net/http"
-require "uri"
-require "json"
-
 class Captcha
   SECRET_KEY = Rails.application.credentials.recaptcha[:secret_key]
 

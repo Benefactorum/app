@@ -3,6 +3,7 @@
   "type": "module",
   "devDependencies": {
     "@types/node": "^22.7.5",
+    "@types/react-google-recaptcha": "^2.1.9",
     "eslint": "^8.57.1",
     "eslint-config-react-app": "^7.0.1",
     "vite": "^5.4.8",

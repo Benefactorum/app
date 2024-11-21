@@ -13,42 +13,35 @@ import Vomi from "/assets/images/auth/vomi.svg?react";
 export default function SignUp() {
   const { data, setData, post, processing, errors } = useForm({
     email: sessionStorage.getItem("email"),
-    first_name: sessionStorage.getItem("first_name") || "",
-    last_name: sessionStorage.getItem("last_name") || "",
-    accepts_conditions: !!sessionStorage.getItem("accepts_conditions") || false,
+    first_name: sessionStorage.getItem("firstName") || "",
+    last_name: sessionStorage.getItem("lastName") || "",
+    accepts_conditions: !!sessionStorage.getItem("acceptsConditions") || false,
     terms_and_privacy_accepted_at: "",
     recaptcha_token: "",
   });
-  const account_created = !!sessionStorage.getItem("account_created") || false;
-  const recaptchaRef = useRef(null);
+  const signUpBlocked = !!sessionStorage.getItem("signUpBlocked") || false;
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   useEffect(() => {
     if (!data.email) {
       router.get("/connexion");
     }
-  }, []);
+  }, [data.email]);
 
-  function onChange(value) {
-    console.log("Captcha value:", value);
-    setData("recaptcha_token", value);
-  }
-
-  function submit(e: React.FormEvent<HTMLFormElement>) {
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // const recaptchaValue = recaptchaRef.current.getValue();
-    if (data.recaptcha_token !== "") {
-      // setData("recaptcha_token", recaptchaValue);
-      post("registrations", {
-        onSuccess: () => {
-          sessionStorage.setItem("first_name", data.first_name);
-          sessionStorage.setItem("last_name", data.last_name);
-          sessionStorage.setItem("account_created", "true");
-          sessionStorage.setItem("accepts_conditions", "true");
-        },
-      });
-    } else {
-      alert("Please complete the reCAPTCHA.");
-    }
+    const token = recaptchaRef.current ? await recaptchaRef.current.executeAsync() : "";
+    data.recaptcha_token = token || "";
+    post("registrations", {
+      onSuccess: (page) => {
+        if (page.url === "/se-connecter") {
+          sessionStorage.setItem("firstName", data.first_name);
+          sessionStorage.setItem("lastName", data.last_name);
+          sessionStorage.setItem("signUpBlocked", "true");
+          sessionStorage.setItem("acceptsConditions", "true");
+        }
+      }
+    });
   }
 
   return (
@@ -73,7 +66,7 @@ export default function SignUp() {
                 id="firstName"
                 type="text"
                 required
-                disabled={account_created === true}
+                disabled={signUpBlocked === true}
                 value={data.first_name}
                 onChange={(e) => {
                   setData("first_name", e.target.value);
@@ -97,7 +90,7 @@ export default function SignUp() {
                 id="lastName"
                 type="text"
                 required
-                disabled={account_created === true}
+                disabled={signUpBlocked === true}
                 value={data.last_name}
                 onChange={(e) => {
                   setData("last_name", e.target.value);
@@ -120,7 +113,7 @@ export default function SignUp() {
                 <Checkbox
                   id="terms"
                   required
-                  disabled={account_created === true}
+                  disabled={signUpBlocked === true}
                   checked={data.accepts_conditions}
                   onCheckedChange={(checked) => {
                     setData("accepts_conditions", !!checked);
@@ -161,13 +154,13 @@ export default function SignUp() {
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey="6LfkEYUqAAAAAOacT9yEDlhWHnXbaZ5IJhVFbXIf"
-                onChange={onChange}
+                size="invisible"
               />
             </div>
             <Button
               variant="secondary"
               type="submit"
-              disabled={account_created === true || processing}
+              disabled={signUpBlocked === true || processing}
             >
               <StepForward />
               Continuer

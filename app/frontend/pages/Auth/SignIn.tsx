@@ -25,7 +25,7 @@ export default function SignUp() {
     if (!data.email) {
       router.get("/connexion");
     }
-  }, []);
+  }, [data.email]);
 
   useEffect(() => {
     if (
@@ -47,10 +47,12 @@ export default function SignUp() {
 
   function resendCode() {
     post("/connections/resend_otp", {
-      onSuccess: () => {
-        setData("code", "");
-        setCountdown(60);
-        toast.success(`Un nouveau code a été envoyé à ${data.email}`);
+      onSuccess: (page) => {
+        if (page.url === "/se-connecter") {
+          setData("code", "");
+          setCountdown(60);
+          toast.success(`Un nouveau code a été envoyé à ${data.email}`);
+        }
       },
     });
   }
