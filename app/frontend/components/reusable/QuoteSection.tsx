@@ -14,10 +14,9 @@ interface QuoteSectionProps {
 }
 
 const excludedPatterns = [
-  /^\/connexion(\?.*)?$/,
+  /^\/connexion$/,
   /^\/se-connecter$/,
-  /^\/confirmation-de-l-email$/,
-  /^\/s-inscrire(\?.*)?$/, // correspond à "/s-inscrire" suivi éventuellement de paramètres (comme ?email=...)
+  /^\/s-inscrire$/,
 ];
 
 const QuoteSection: FC<QuoteSectionProps> = ({

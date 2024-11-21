@@ -1,6 +1,6 @@
 class ConnectionsController < ApplicationController
-  skip_before_action :authenticate
-  before_action :already_authenticated
+  skip_before_action :require_authentication
+  before_action :only_for_guests
 
   rate_limit to: 10,
              within: 1.minute,

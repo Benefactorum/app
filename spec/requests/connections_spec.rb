@@ -4,7 +4,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
   describe "GET /connexion" do
     subject { get new_connection_path }
 
-    it_behaves_like "already_authenticated"
+    it_behaves_like "only_for_guests"
 
     it "returns http success" do
       subject
@@ -16,7 +16,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
     subject { post connections_path, params: params }
     let(:params) { {} }
 
-    it_behaves_like "already_authenticated"
+    it_behaves_like "only_for_guests"
 
     context "when email is invalid" do
       let(:params) { { email: "" } }
@@ -83,7 +83,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
     subject { post resend_otp_connections_path, params: params }
     let(:params) { {} }
 
-    it_behaves_like "already_authenticated"
+    it_behaves_like "only_for_guests"
 
     context "when user is not found" do
       let(:params) { { email: "unknown@mail.com" } }

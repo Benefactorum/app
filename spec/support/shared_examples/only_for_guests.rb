@@ -1,4 +1,4 @@
-RSpec.shared_examples "already_authenticated" do
+RSpec.shared_examples "only_for_guests" do
   context "when the user is authenticated" do
     before do
       sign_in_as(create(:user))

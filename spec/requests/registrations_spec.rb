@@ -6,7 +6,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
   describe "GET /s-inscrire" do
     subject { get new_registration_path }
 
-    it_behaves_like "already_authenticated"
+    it_behaves_like "only_for_guests"
 
     it "returns http success" do
       subject
@@ -18,7 +18,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
     subject { post registrations_path, params: params }
     let(:params) { {} }
 
-    it_behaves_like "already_authenticated"
+    it_behaves_like "only_for_guests"
 
     context "with invalid params" do
       let!(:user) { create(:user) }

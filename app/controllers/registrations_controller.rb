@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
-  skip_before_action :authenticate
-  before_action :already_authenticated
+  skip_before_action :require_authentication
+  before_action :only_for_guests
 
   before_action :verify_captcha, only: [ :create ]
   before_action :add_terms_and_privacy_accepted_at, only: [ :create ]

@@ -1,8 +1,6 @@
 class SessionsController < ApplicationController
-  skip_before_action :authenticate, only: %i[new create]
-  before_action :already_authenticated, only: %i[new create]
-
-  before_action :set_session, only: :destroy
+  skip_before_action :require_authentication, only: %i[new create]
+  before_action :only_for_guests, only: %i[new create]
 
   # use a redirect to avoid a weird render
   rate_limit to: 5, within: 1.minute, only: :create, by: -> { params[:email] }
@@ -12,7 +10,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:email])
+    user = User.find_by!(email: params[:email])
     hotp = Hotp.new(user:, code: params[:code])
 
     if hotp.valid?
@@ -28,15 +26,12 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    @session.destroy
+    session = Current.user.sessions.find(params[:id])
+    session.destroy!
     redirect_to root_path, success: "Vous êtes déconnecté."
   end
 
   private
-
-  def set_session
-    @session = Current.user.sessions.find(params[:id])
-  end
 
   def sign_in(user)
     session = user.sessions.create!

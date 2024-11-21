@@ -3,28 +3,37 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   inertia_share flash: -> { flash.to_hash }
+  inertia_share user: -> { Current.user }
+  inertia_share sessionId: -> { Current.session&.id }
+
   add_flash_types :message, :success, :info, :warning, :error
 
   before_action :set_current_request_details
   before_action :authenticate
+  before_action :require_authentication
 
   private
-    def authenticate
-      if session_record = Session.find_by_id(cookies.signed[:session_token])
-        Current.session = session_record
-      else
-        redirect_to new_connection_path, info: "Connectez-vous pour continuer."
-      end
-    end
 
-    def already_authenticated
-      return unless Session.find_by_id(cookies.signed[:session_token])
+  def set_current_request_details
+    Current.user_agent = request.user_agent
+    Current.ip_address = request.ip
+  end
 
-      redirect_to root_path, info: "Vous êtes déjà connecté."
+  def authenticate
+    if session_record = Session.find_by_id(cookies.signed[:session_token])
+      Current.session = session_record
     end
+  end
 
-    def set_current_request_details
-      Current.user_agent = request.user_agent
-      Current.ip_address = request.ip
-    end
+  def require_authentication
+    redirect_to new_connection_path, info: "Connectez-vous pour continuer." unless authenticated?
+  end
+
+  def only_for_guests
+    redirect_to root_path, info: "Vous êtes déjà connecté." if authenticated?
+  end
+
+  def authenticated?
+    Current.user.present?
+  end
 end
