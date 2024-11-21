@@ -7,45 +7,29 @@ class SessionsController < ApplicationController
   # use a redirect to avoid a weird render
   rate_limit to: 5, within: 1.minute, only: :create, by: -> { params[:email] }
 
-
-  def index
-    @sessions = Current.user.sessions.order(created_at: :desc)
-  end
-
   def new
     render inertia: "Auth/SignIn"
   end
 
   def create
     user = User.find_by(email: params[:email])
-    unless user
-      redirect_to new_connection_path
-      return
-    end
+    hotp = Hotp.new(user:, code: params[:code])
 
-    if params[:code].blank?
-      redirect_to new_session_path, inertia: { errors: { code: "champs obligatoire" } }
-      return
-    end
-
-    hotp = ROTP::HOTP.new(user.otp_secret)
-
-    if hotp.verify(params[:code], user.otp_counter)
-      if DateTime.current > user.otp_expires_at
-        redirect_to new_session_path, inertia: { errors: { code: "Votre code de connexion a expiré. Demandez-en un nouveau." } }
-      else
-        user.update!(verified: true, otp_expires_at: DateTime.current)
-        sign_in(user)
-        redirect_to root_path, success: "Vous êtes connecté."
-      end
+    if hotp.valid?
+      user.update!(
+        verified: true,
+        otp_expires_at: DateTime.current # a used otp must be invalidated
+      )
+      sign_in(user)
+      redirect_to root_path, success: "Vous êtes connecté."
     else
-      redirect_to new_session_path, inertia: { errors: { code: "Code de connexion invalide." } }
+      redirect_to new_session_path, inertia: { errors: hotp.errors }
     end
   end
 
   def destroy
     @session.destroy
-    redirect_to sessions_path, success: "That session has been logged out"
+    redirect_to root_path, success: "Vous êtes déconnecté."
   end
 
   private

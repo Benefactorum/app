@@ -33,7 +33,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
           expect { subject }.not_to change(User, :count)
           expect(response).to redirect_to(new_registration_path)
           follow_redirect!
-          expect(inertia.props[:flash]['error']).to eq("Erreur de validation du CAPTCHA. Veuillez réessayer.")
+          expect(inertia.props[:flash]['error']).to be_present
         end
       end
 

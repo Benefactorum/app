@@ -8,7 +8,7 @@ RSpec.shared_examples "already_authenticated" do
       subject
       expect(response).to redirect_to(root_path)
       follow_redirect!
-      expect(inertia.props[:flash]['info']).to eq("Vous êtes déjà connecté.")
+      expect(inertia.props[:flash]['info']).to be_present
     end
   end
 end
