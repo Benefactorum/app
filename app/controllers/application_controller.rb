@@ -17,6 +17,12 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def already_authenticated
+      return unless Session.find_by_id(cookies.signed[:session_token])
+
+      redirect_to root_path, info: "Vous êtes déjà connecté."
+    end
+
     def set_current_request_details
       Current.user_agent = request.user_agent
       Current.ip_address = request.ip

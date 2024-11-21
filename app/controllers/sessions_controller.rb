@@ -1,8 +1,10 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate, only: %i[new create]
+  before_action :already_authenticated, only: %i[new create]
 
   before_action :set_session, only: :destroy
 
+  # use a redirect to avoid a weird render
   rate_limit to: 5, within: 1.minute, only: :create, by: -> { params[:email] }
 
 
@@ -18,6 +20,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email])
     unless user
       redirect_to new_connection_path
+      return
     end
 
     if params[:code].blank?

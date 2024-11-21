@@ -1,5 +1,6 @@
 class ConnectionsController < ApplicationController
   skip_before_action :authenticate
+  before_action :already_authenticated
 
   rate_limit to: 10,
              within: 1.minute,

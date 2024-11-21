@@ -5,5 +5,7 @@ FactoryBot.define do
     last_name  { "Doe" }
     email { "john.doe@mail.com" }
     terms_and_privacy_accepted_at { DateTime.current }
+    otp_expires_at { DateTime.current + 10.minutes }
+    otp_counter { 1 }
   end
 end

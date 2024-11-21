@@ -4,15 +4,25 @@ RSpec.describe "Registrations", type: :request, inertia: true do
   include ActiveSupport::Testing::TimeHelpers
 
   describe "GET /s-inscrire" do
+    subject { get new_registration_path }
+
+    it_behaves_like "already_authenticated"
+
     it "returns http success" do
-      get new_registration_path
+      subject
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "POST /registrations" do
+    subject { post registrations_path, params: params }
+    let(:params) { {} }
+
+    it_behaves_like "already_authenticated"
+
     context "with invalid params" do
       let!(:user) { create(:user) }
+      let(:params) { { email: user.email, last_name: "", accepts_conditions: false } }
 
       context "when captcha is invalid" do
         before do
@@ -20,9 +30,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
         end
 
         it "does not create a new user" do
-          expect {
-            post registrations_path, params: { email: user.email, last_name: "", accepts_conditions: false }
-          }.not_to change(User, :count)
+          expect { subject }.not_to change(User, :count)
           expect(response).to redirect_to(new_registration_path)
           follow_redirect!
           expect(inertia.props[:flash]['error']).to eq("Erreur de validation du CAPTCHA. Veuillez réessayer.")
@@ -35,35 +43,35 @@ RSpec.describe "Registrations", type: :request, inertia: true do
         end
 
         it "does not create a new user" do
-          expect {
-            post registrations_path, params: { email: user.email, last_name: "", accepts_conditions: false }
-          }.not_to change(User, :count)
+          expect { subject }.not_to change(User, :count)
           expect(response).to redirect_to(new_registration_path)
           follow_redirect!
           expect(inertia.props[:errors].keys).to include(:email, :first_name, :last_name, :terms_and_privacy_accepted_at)
         end
 
-        it "does not create a new user" do
-          expect {
-            post registrations_path, params: { email: "new_user@mail.com", first_name: 'john', last_name: 'Doe', terms_and_privacy_accepted_at: 1.week.ago }
-          }.not_to change(User, :count)
-          expect(response).to redirect_to(new_registration_path)
-          follow_redirect!
-          expect(inertia.props[:errors].keys).to include(:terms_and_privacy_accepted_at)
+        context "when terms_and_privacy_accepted_at is hacked" do
+          let(:params) { { email: "new_user@mail.com", first_name: 'john', last_name: 'Doe', terms_and_privacy_accepted_at: 1.week.ago } }
+
+          it "does not create a new user" do
+            expect { subject }.not_to change(User, :count)
+            expect(response).to redirect_to(new_registration_path)
+            follow_redirect!
+            expect(inertia.props[:errors].keys).to include(:terms_and_privacy_accepted_at)
+          end
         end
       end
     end
 
     context "with valid params" do
+      let(:params) { { email: "lazaronixon@hey.com", first_name: "Lazaro", last_name: "Nixon", accepts_conditions: true } }
+
       before do
         allow_any_instance_of(Captcha).to receive(:valid?).and_return(true)
       end
 
       it "creates a new user, send otp email and redirects to /se-connecter" do
         freeze_time
-        expect {
-          post registrations_path, params: { email: "lazaronixon@hey.com", first_name: "Lazaro", last_name: "Nixon", accepts_conditions: true }
-        }.to change(User, :count).by(1)
+        expect { subject }.to change(User, :count).by(1)
 
         user = User.find_by(email: "lazaronixon@hey.com")
         expect(user.first_name).to eq("Lazaro")
