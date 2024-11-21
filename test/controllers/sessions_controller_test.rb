@@ -14,13 +14,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get sign_in_url
+    get new_session_url
     assert_response :success
   end
 
   test "should sign in" do
     skip
-    post sign_in_url, params: { email: @user.email, password: "Secret1*3*5*" }
+    post new_session_url, params: { email: @user.email, password: "Secret1*3*5*" }
     assert_redirected_to root_url
 
     get root_url
@@ -29,12 +29,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not sign in with wrong credentials" do
     skip
-    post sign_in_url, params: { email: @user.email, password: "SecretWrong1*3" }
-    assert_redirected_to sign_in_url(email_hint: @user.email)
+    post new_session_url, params: { email: @user.email, password: "SecretWrong1*3" }
+    assert_redirected_to new_session_url(email_hint: @user.email)
     assert_equal "That email or password is incorrect", flash[:error]
 
     get root_url
-    assert_redirected_to sign_in_url
+    assert_redirected_to new_session_url
   end
 
   test "should sign out" do
@@ -45,6 +45,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to sessions_url
 
     follow_redirect!
-    assert_redirected_to sign_in_url
+    assert_redirected_to new_session_url
   end
 end
