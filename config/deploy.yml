@@ -72,6 +72,11 @@ asset_path: /rails/public/vite/assets
 # Configure the image builder.
 builder:
   arch: amd64
+  # https://jetthoughts.com/blog/automate-your-deployments-with-kamal-2-github-actions-devops-development/
+  cache:
+    type: gha
+    options: mode=max
+    image: kamal-app-build-cache
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
