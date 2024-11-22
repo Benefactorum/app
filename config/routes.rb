@@ -1,17 +1,17 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :connections, only: [ :create ] do
+  resources :connections, only: [:create] do
     collection do
       post :resend_otp
     end
   end
   get "connexion", to: "connections#new", as: :new_connection
 
-  resources :registrations, only: [ :create ]
+  resources :registrations, only: [:create]
   get "s-inscrire", to: "registrations#new", as: :new_registration
 
-  resources :sessions, only: [ :create, :destroy ]
+  resources :sessions, only: [:create, :destroy]
   get "se-connecter", to: "sessions#new", as: :new_session
 
   # resource  :password, only: [ :edit, :update ]
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   # is used by Kamal Deploy
-  get "up" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

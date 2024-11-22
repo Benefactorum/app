@@ -14,8 +14,8 @@ module Otp
   end
 
   def generate_new_otp
-    self.increment!(:otp_counter)
-    self.update!(otp_expires_at: DateTime.current + 10.minutes)
+    increment!(:otp_counter)
+    update!(otp_expires_at: DateTime.current + 10.minutes)
     otp
   end
 

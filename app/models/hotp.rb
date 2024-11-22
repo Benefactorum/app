@@ -9,7 +9,6 @@ class Hotp
   validates :code, presence: true
   validate :validate_code
 
-
   private
 
   def validate_code

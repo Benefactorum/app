@@ -7,6 +7,7 @@ class Current < ActiveSupport::CurrentAttributes
   delegate :user, to: :session, allow_nil: true
 
   def session=(session)
-    super; self.account = session.user.account
+    super
+    self.account = session.user.account
   end
 end

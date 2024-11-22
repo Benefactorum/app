@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Sessions", type: :request, inertia: true do
   describe "GET /se-connecter" do
@@ -20,7 +20,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
 
     context "with invalid params" do
       context "when email is invalid" do
-        let(:params) { { email: "" } }
+        let(:params) { {email: ""} }
 
         it "returns not found status" do
           subject
@@ -30,7 +30,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
 
       context "when code is invalid" do
         let!(:user) { create(:user) }
-        let(:params) { { email: user.email, code: "" } }
+        let(:params) { {email: user.email, code: ""} }
 
         it "redirects back with errors" do
           subject
@@ -43,13 +43,13 @@ RSpec.describe "Sessions", type: :request, inertia: true do
 
     context "with valid params" do
       let(:user) { create(:user) }
-      let(:params) { { email: user.email, code: user.otp } }
+      let(:params) { {email: user.email, code: user.otp} }
 
       it "signs in the user" do
         subject
         expect(response).to redirect_to(root_path)
         follow_redirect!
-        expect(inertia.props[:flash]['success']).to be_present
+        expect(inertia.props[:flash]["success"]).to be_present
       end
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
           subject
           expect(response).to redirect_to(root_path)
           follow_redirect!
-          expect(inertia.props[:flash]['success']).to be_present
+          expect(inertia.props[:flash]["success"]).to be_present
         end
       end
     end

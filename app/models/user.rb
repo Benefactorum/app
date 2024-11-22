@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Otp
+
   has_secure_password validations: false
 
   generates_token_for :email_verification, expires_in: 2.days do
@@ -10,15 +11,14 @@ class User < ApplicationRecord
     password_salt.last(10)
   end
 
-
   belongs_to :account
 
   has_many :sessions, dependent: :destroy
 
   validates :email, presence: true
-  validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }, if: -> { email.present? }
+  validates :email, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}, if: -> { email.present? }
   validates :first_name, :last_name, :terms_and_privacy_accepted_at, presence: true
-  validates :password, allow_nil: true, length: { minimum: 12 }
+  validates :password, allow_nil: true, length: {minimum: 12}
 
   normalizes :email, with: -> { _1.strip.downcase }
 

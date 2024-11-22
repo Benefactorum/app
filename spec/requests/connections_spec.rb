@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Connections", type: :request, inertia: true do
   describe "GET /connexion" do
@@ -19,7 +19,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
     it_behaves_like "only_for_guests"
 
     context "when email is invalid" do
-      let(:params) { { email: "" } }
+      let(:params) { {email: ""} }
 
       it "redirects back with errors" do
         assert_no_emails do
@@ -32,15 +32,15 @@ RSpec.describe "Connections", type: :request, inertia: true do
     end
 
     context "when user is unknown" do
-      let(:params) { { email: "unknown@mail.com" } }
+      let(:params) { {email: "unknown@mail.com"} }
 
       xcontext "when rate limit is reached" do
         # can't get this test to pass, but feature works as expected
         it "rate_limit" do
           9.times do
-            post connections_path, params: { email: "unknown@mail.com" }
+            post connections_path, params: {email: "unknown@mail.com"}
           end
-          post connections_path, params: { email: "unknown@mail.com" }
+          post connections_path, params: {email: "unknown@mail.com"}
           expect(response).to redirect_to(new_connection_path)
           follow_redirect!
           expect(inertia.props[:flash]).to be_present
@@ -57,14 +57,14 @@ RSpec.describe "Connections", type: :request, inertia: true do
 
     context "when user is known" do
       let(:user) { create(:user, otp_expires_at: DateTime.current) }
-      let(:params) { { email: user.email } }
+      let(:params) { {email: user.email} }
 
       it "redirects to /se-connecter and sends OTP email" do
         assert_enqueued_emails 1 do
           subject
         end
         otp = user.reload.otp
-        assert_enqueued_email_with UserMailer, :otp, params: { user:, otp: }
+        assert_enqueued_email_with UserMailer, :otp, params: {user:, otp:}
         expect(response).to redirect_to(new_session_path)
       end
 
@@ -86,7 +86,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
     it_behaves_like "only_for_guests"
 
     context "when user is not found" do
-      let(:params) { { email: "unknown@mail.com" } }
+      let(:params) { {email: "unknown@mail.com"} }
 
       it "redirects to /connection and does not send email" do
         assert_no_emails do
@@ -98,7 +98,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
 
     context "when user is known" do
       let(:user) { create(:user) }
-      let(:params) { { email: user.email } }
+      let(:params) { {email: user.email} }
 
       it "sends OTP email and redirects to /se-connecter" do
         assert_enqueued_emails 1 do

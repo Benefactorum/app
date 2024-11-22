@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Registrations", type: :request, inertia: true do
   include ActiveSupport::Testing::TimeHelpers
@@ -22,7 +22,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
 
     context "with invalid params" do
       let!(:user) { create(:user) }
-      let(:params) { { email: user.email, last_name: "", accepts_conditions: false } }
+      let(:params) { {email: user.email, last_name: "", accepts_conditions: false} }
 
       context "when captcha is invalid" do
         before do
@@ -33,7 +33,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
           expect { subject }.not_to change(User, :count)
           expect(response).to redirect_to(new_registration_path)
           follow_redirect!
-          expect(inertia.props[:flash]['error']).to be_present
+          expect(inertia.props[:flash]["error"]).to be_present
         end
       end
 
@@ -50,7 +50,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
         end
 
         context "when terms_and_privacy_accepted_at is hacked" do
-          let(:params) { { email: "new_user@mail.com", first_name: 'john', last_name: 'Doe', terms_and_privacy_accepted_at: 1.week.ago } }
+          let(:params) { {email: "new_user@mail.com", first_name: "john", last_name: "Doe", terms_and_privacy_accepted_at: 1.week.ago} }
 
           it "does not create a new user" do
             expect { subject }.not_to change(User, :count)
@@ -63,7 +63,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
     end
 
     context "with valid params" do
-      let(:params) { { email: "lazaronixon@hey.com", first_name: "Lazaro", last_name: "Nixon", accepts_conditions: true } }
+      let(:params) { {email: "lazaronixon@hey.com", first_name: "Lazaro", last_name: "Nixon", accepts_conditions: true} }
 
       before do
         allow_any_instance_of(Captcha).to receive(:valid?).and_return(true)
@@ -79,7 +79,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
         expect(user.terms_and_privacy_accepted_at).to eq(Time.current)
 
         otp = user.reload.otp
-        assert_enqueued_email_with UserMailer, :otp, params: { user:, otp: }
+        assert_enqueued_email_with UserMailer, :otp, params: {user:, otp:}
 
         expect(response).to redirect_to(new_session_path)
       end

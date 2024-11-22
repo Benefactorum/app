@@ -8,7 +8,7 @@ RSpec.shared_examples "only_for_guests" do
       subject
       expect(response).to redirect_to(root_path)
       follow_redirect!
-      expect(inertia.props[:flash]['info']).to be_present
+      expect(inertia.props[:flash]["info"]).to be_present
     end
   end
 end
