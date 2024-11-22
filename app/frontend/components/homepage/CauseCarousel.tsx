@@ -9,7 +9,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -152,12 +151,12 @@ export default function CharityCarousel() {
                     <p>{cause.description}</p>
                   </CardContent>
                   <CardFooter className="my-4 ml-auto">
-                    <a
+                    <Link
                       href="/associations"
                       className="text-primary text-right hover:underline"
                     >
                       Voir les associations
-                    </a>
+                    </Link>
                   </CardFooter>
                 </Card>
               </div>

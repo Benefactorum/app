@@ -1,0 +1,109 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Test@cursor",
+      "request": "launch",
+      "command": "bundle",
+      "script": "exec rspec",
+      "args": ["${file}:${lineNumber}"],
+      "useBundler": true
+    },
+    {
+      "type": "rdbg",
+      "name": "Test@file",
+      "request": "launch",
+      "command": "bundle",
+      "script": "exec rspec",
+      "args": ["${file}"],
+      "useBundler": true
+    },
+    {
+      "type": "rdbg",
+      "name": "Test@all",
+      "request": "launch",
+      "command": "bundle",
+      "script": "exec rspec",
+      "args": [],
+      "useBundler": true
+    },
+    // {
+    //   "type": "rdbg",
+    //   "name": "Test@file:focus",
+    //   "request": "launch",
+    //   "command": "bundle",
+    //   "script": "exec rspec",
+    //   "args": ["--tag", "focus", "${file}"],
+    //   "useBundler": true
+    // },
+    // {
+    //   "type": "rdbg",
+    //   "name": "Test@all:focus",
+    //   "request": "launch",
+    //   "command": "bundle",
+    //   "script": "exec rspec",
+    //   "args": ["--tag", "focus"],
+    //   "useBundler": true
+    // },
+    // {
+    //   "type": "rdbg",
+    //   "name": "Test@file:input_tag",
+    //   "request": "launch",
+    //   "command": "bundle",
+    //   "script": "exec rspec",
+    //   "args": ["--tag", "${input:tag}", "${file}"],
+    //   "useBundler": true
+    // },
+    // {
+    //   "type": "rdbg",
+    //   "name": "Test@all:input_tag",
+    //   "request": "launch",
+    //   "command": "bundle",
+    //   "script": "exec rspec",
+    //   "args": ["--tag", "${input:tag}"],
+    //   "useBundler": true
+    // },
+    {
+      "type": "rdbg",
+      "name": "Test@file:only_failures",
+      "request": "launch",
+      "command": "bundle",
+      "script": "exec rspec",
+      "args": ["--only-failures", "${file}"],
+      "useBundler": true
+    },
+    {
+      "type": "rdbg",
+      "name": "Test@all:only_failures",
+      "request": "launch",
+      "command": "bundle",
+      "script": "exec rspec",
+      "args": ["--only-failures"],
+      "useBundler": true
+    },
+    {
+      "type": "rdbg",
+      "name": "Server: Attach debugger",
+      "request": "attach"
+    },
+    {
+      "type": "rdbg",
+      "name": "Script: run",
+      "request": "launch",
+      "script": "${file}",
+      "args": [],
+      "askParameters": true
+    },
+  ],
+  "inputs": [
+    {
+      "id": "tag",
+      "type": "promptString",
+      "description": "Enter the RSpec tag to filter tests"
+    }
+  ]
+}

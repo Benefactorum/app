@@ -1,5 +1,5 @@
-import CharityCarousel from "./CharityCarousel";
-import CauseCarousel from "./CauseCarousel";
+import CharityCarousel from "@/components/homepage/CharityCarousel";
+import CauseCarousel from "@/components/homepage/CauseCarousel";
 
 export default function CharitySection() {
   return (

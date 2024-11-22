@@ -2,7 +2,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { createElement } from "react";
 // import { createRoot } from "react-dom/client";
 import { hydrateRoot } from "react-dom/client";
-import Layout from "../Layout";
+import Layout from "@/Layout";
 
 createInertiaApp({
   title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),

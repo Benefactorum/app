@@ -1,5 +1,5 @@
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { ReactElement, useEffect } from "react";
 import { usePage } from "@inertiajs/react";
 import { Toaster } from "@/components/ui/sonner";

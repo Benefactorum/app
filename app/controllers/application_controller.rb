@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   inertia_share flash: -> { flash.to_hash }
-  inertia_share user: -> { Current.user }
+  inertia_share user: -> { Current.user&.slice(:first_name, :email) }
   inertia_share sessionId: -> { Current.session&.id }
 
   add_flash_types :message, :success, :info, :warning, :error

@@ -231,7 +231,7 @@ export default function Header() {
             {!user && !isExcluded && (
               <Link href="/connexion" onClick={handleLinkClick}>
                 <Button>
-                  <LogIn className="text-foreground" />
+                  <LogIn />
                   Se connecter
                 </Button>
               </Link>
@@ -284,6 +284,23 @@ export default function Header() {
               Qui sommes-nous ?
             </Link>
           </li>
+          {!!user && (
+            <li>
+              <Link
+                href="/mes-contributions"
+                className={
+                  "flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md" +
+                  (url === "/inertia-example"
+                    ? " bg-secondary"
+                    : " hover:bg-secondary/50")
+                }
+                onClick={handleLinkClick}
+              >
+                <HandHeart className="w-4 h-4 text-foreground" />
+                Mes contributions
+              </Link>
+            </li>
+          )}
           <hr className="border-t border-gray-300 my-2" />
           {subNavLinks.map((link) => (
             <li key={link.href}>

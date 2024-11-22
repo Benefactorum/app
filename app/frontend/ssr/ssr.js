@@ -2,7 +2,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
 import { createElement } from "react"; // Add this import
-import Layout from "../Layout";
+import Layout from "@/Layout";
 
 createServer((page) =>
   createInertiaApp({
