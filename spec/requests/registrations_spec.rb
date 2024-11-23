@@ -79,7 +79,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
         expect(user.terms_and_privacy_accepted_at).to eq(Time.current)
 
         otp = user.reload.otp
-        assert_enqueued_email_with UserMailer, :otp, params: {user:, otp:}
+        assert_enqueued_email_with UserMailer, :otp, params: {user:}
 
         expect(response).to redirect_to(new_session_path)
       end

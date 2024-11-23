@@ -25,7 +25,7 @@ class ConnectionsController < ApplicationController
   def create
     email = params[:email]
     if (user = User.find_by(email:))
-      user.send_otp_email
+      Otp.new(user:).send_email
       redirect_to new_session_path
     else
       user = User.create(email:) # will always fail because missing mandatory fields
@@ -39,7 +39,7 @@ class ConnectionsController < ApplicationController
 
   def resend_otp
     if (user = User.find_by(email: params[:email]))
-      user.send_otp_email(expiration_check: false)
+      Otp.new(user:).send_email(expiration_check: false)
       redirect_to new_session_path
     else
       redirect_to new_connection_path

@@ -17,9 +17,9 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by!(email: params[:email])
-    hotp = Hotp.new(user:, code: params[:code])
+    otp = Otp.new(user:, code: params[:code])
 
-    if hotp.valid?
+    if otp.valid?
       user.update!(
         verified: true,
         otp_expires_at: DateTime.current # a used otp must be invalidated
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
       sign_in(user)
       redirect_to root_path, success: "Vous êtes connecté."
     else
-      redirect_to new_session_path, inertia: {errors: hotp.errors}
+      redirect_to new_session_path, inertia: {errors: otp.errors}
     end
   end
 

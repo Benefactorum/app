@@ -15,7 +15,7 @@ class UserMailer < ApplicationMailer
 
   def otp
     @user = params[:user]
-    @otp = params[:otp]
+    @formatted_otp = @user.otp.insert(3, " ")
 
     mail to: @user.email, subject: "Benefactorum : Voici votre code de connexion"
   end

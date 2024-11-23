@@ -18,7 +18,7 @@ class RegistrationsController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      user.send_otp_email
+      Otp.new(user:).send_email
       redirect_to new_session_path
     else
       redirect_to new_registration_path, inertia: {errors: user.errors}

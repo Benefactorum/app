@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Otp
+  include User::Otp
 
   has_secure_password validations: false
 

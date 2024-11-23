@@ -64,12 +64,12 @@ RSpec.describe "Connections", type: :request, inertia: true do
           subject
         end
         otp = user.reload.otp
-        assert_enqueued_email_with UserMailer, :otp, params: {user:, otp:}
+        assert_enqueued_email_with UserMailer, :otp, params: {user:}
         expect(response).to redirect_to(new_session_path)
       end
 
       it "redirects to /se-connecter but does not send OTP email again if OTP is still valid" do
-        otp = user.generate_new_otp
+        otp = user.generate_new_otp!
         assert_no_emails do
           subject
         end
@@ -108,7 +108,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
       end
 
       it "sends OTP email again even if OTP is still valid and redirects to /se-connecter" do
-        otp = user.generate_new_otp
+        otp = user.generate_new_otp!
         assert_enqueued_emails 1 do
           subject
         end

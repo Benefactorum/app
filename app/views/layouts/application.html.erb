@@ -12,11 +12,11 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <!-- Favicon -->
-    <link rel="icon" href="<%= vite_asset_path('assets/logo.svg') %>" type="image/svg+xml">
+    <%= favicon_link_tag vite_asset_path('assets/logo.svg') %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
     <%= inertia_ssr_head %>
 
     <%# Hot reload in dev %>

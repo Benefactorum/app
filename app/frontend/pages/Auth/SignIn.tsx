@@ -94,6 +94,7 @@ export default function SignUp() {
                 // onComplete={() => post("/sessions")}
                 pattern={REGEXP_ONLY_DIGITS}
                 containerClassName="mx-auto"
+                pasteTransformer={(pastedText) => pastedText.replace(/\s/g, "").slice(0, 6)}
               >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
