@@ -38,9 +38,9 @@
     }
   </style>
 </head>
-<body style="margin: 0; width: 100%; background-color: hsl(180 8% 95%); padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
+<body style="margin: 0; width: 100%; background-color: #F1F3F3; padding: 0; -webkit-font-smoothing: antialiased; word-break: break-word">
   <div role="article" aria-roledescription="email" aria-label lang="en">
-    <div class="sm-px-4" style="background-color: hsl(180 8% 95%); font-family: Montserrat, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; color: hsl(180 100% 10%)">
+    <div class="sm-px-4" style="background-color: #F1F3F3; font-family: Montserrat, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; color: #003333">
       <table align="center" style="margin: 0 auto" cellpadding="0" cellspacing="0" role="none">
         <tr>
           <td style="width: 552px; max-width: 100%">
@@ -51,10 +51,11 @@
                   <table style="width: auto" cellpadding="0" cellspacing="0" role="none">
                     <tr>
                       <td style="padding-right: 8px; vertical-align: middle">
-                        <img src="<%= vite_asset_url('assets/logo.svg') %>" alt="logo de Benefactorum" style="max-width: 100%; vertical-align: middle; height: 48px; width: 48px" width="48" height="48">
+                        <%# svg don't work consistently in mails %>
+                        <%= image_tag(vite_asset_path('assets/logo.png'), alt: 'logo de Benefactorum', style: 'max-width: 100%; vertical-align: middle; height: 48px; width: 48px', width: 48, height: 48) %>
                       </td>
                       <td style="text-align: right; vertical-align: middle">
-                        <h1 style="margin: 0; font-size: 30px; font-weight: 700; line-height: 1; color: hsl(180 100% 10%)">
+                        <h1 style="margin: 0; font-size: 30px; font-weight: 700; line-height: 1; color: #003333">
                           Benefactorum
                         </h1>
                         <h2 style="margin: 0; font-size: 14px; line-height: 1; color: #475569">
