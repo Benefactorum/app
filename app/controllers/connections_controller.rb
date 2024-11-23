@@ -12,6 +12,7 @@ class ConnectionsController < ApplicationController
     }
   rate_limit to: 1,
     within: 1.minute,
+    by: -> { params[:email] },
     only: :resend_otp,
     with: -> {
       redirect_to new_connection_path,
