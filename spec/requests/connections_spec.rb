@@ -63,7 +63,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
         assert_enqueued_emails 1 do
           subject
         end
-        otp = user.reload.otp
+        user.reload.otp
         assert_enqueued_email_with UserMailer, :otp, params: {user:}
         expect(response).to redirect_to(new_session_path)
       end
