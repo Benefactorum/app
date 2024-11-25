@@ -81,7 +81,7 @@ export default function Header() {
   }, []);
 
   const logOut = () => {
-    router.delete(`sessions/${sessionId}`);
+    router.delete(`/sessions/${sessionId}`);
   };
 
   return (

@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
         otp_expires_at: DateTime.current # a used otp must be invalidated
       )
       sign_in(user)
-      redirect_to root_path, success: "Vous êtes connecté."
+      redirect_to user, success: "Vous êtes connecté."
     else
       redirect_to new_session_path, inertia: {errors: otp.errors}
     end

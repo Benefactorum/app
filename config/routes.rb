@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
   get "se-connecter", to: "sessions#new", as: :new_session
 
+  # resources :users, only: [:show]
+  get "utilisateurs/:id", to: "users#show", as: :user
   # resource  :password, only: [ :edit, :update ]
   # namespace :identity do
   #   resource :email,              only: [ :edit, :update ]
