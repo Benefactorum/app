@@ -27,9 +27,11 @@ class Otp
 
     unless otp.verify(code, user.otp_counter)
       errors.add(:code, "Code de connexion invalide.")
+      return
     end
 
     if otp_expired?
+      # beware changing the error message, it's used in the front-end
       errors.add(:code, "Votre code de connexion a expiré. Demandez-en un nouveau.")
     end
   end

@@ -29,8 +29,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (
-      errors.code ===
-      "Votre code de connexion a expiré. Demandez-en un nouveau."
+      errors.code?.includes("Votre code de connexion a expiré. Demandez-en un nouveau.")
     ) {
       setCountdown(0);
     }
@@ -91,10 +90,8 @@ export default function SignUp() {
                   setData("code", value);
                   errors.code = "";
                 }}
-                // onComplete={() => post("/sessions")}
                 pattern={REGEXP_ONLY_DIGITS}
                 containerClassName="mx-auto"
-                pasteTransformer={(pastedText) => pastedText.replace(/\s/g, "").slice(0, 6)}
               >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />

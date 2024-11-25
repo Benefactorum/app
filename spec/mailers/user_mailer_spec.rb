@@ -9,7 +9,7 @@ RSpec.describe UserMailer, type: :mailer do
       expect(mail.subject).to eq("Benefactorum : Voici votre code de connexion")
       expect(mail.to).to eq([user.email])
       expect(mail.from).to eq(["contact@benefactorum.org"])
-      formatted_otp = user.otp.insert(3, " ")
+      formatted_otp = UserMailer.new.send(:format_otp, user.otp)
       expect(mail.body.encoded).to include(formatted_otp)
     end
   end
