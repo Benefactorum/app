@@ -3,17 +3,19 @@ class User < ApplicationRecord
 
   has_secure_password validations: false
 
-  generates_token_for :email_verification, expires_in: 2.days do
-    email
-  end
+  # generates_token_for :email_verification, expires_in: 2.days do
+  #   email
+  # end
 
-  generates_token_for :password_reset, expires_in: 20.minutes do
-    password_salt.last(10)
-  end
+  # generates_token_for :password_reset, expires_in: 20.minutes do
+  #   password_salt.last(10)
+  # end
 
   belongs_to :account
 
   has_many :sessions, dependent: :destroy
+
+  has_one_attached :profile_picture
 
   validates :email, presence: true
   validates :email, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}, if: -> { email.present? }
