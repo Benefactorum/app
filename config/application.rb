@@ -26,5 +26,10 @@ module Benefactorum
 
     # Set default locale to French
     config.i18n.default_locale = :fr
+
+    config.generators do |g|
+      g.helper false
+      g.template_engine nil
+    end
   end
 end

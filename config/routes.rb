@@ -21,8 +21,6 @@ Rails.application.routes.draw do
   #   resource :password_reset,     only: [ :new, :edit, :create, :update ]
   # end
 
-  # get "auth", to: "home#index"
-
   root "pages#home"
 
   get "inertia-example", to: "inertia_example#index"
