@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "ProfilePictures", type: :request do
   describe "GET /update" do
@@ -14,5 +14,4 @@ RSpec.describe "ProfilePictures", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
-
 end
