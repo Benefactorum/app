@@ -55,7 +55,7 @@ export default function Header() {
   const { url } = usePage();
   const isExcluded = excludedPatterns.some((pattern) => pattern.test(url));
 
-  const user = usePage().props.user;
+  const user = usePage().props.currentUser;
   const sessionId = usePage().props.sessionId;
 
   const handleLinkClick = () => {
@@ -249,9 +249,8 @@ export default function Header() {
       {/* Mobile Dropdown inside the header */}
       <div
         id="mobileDropdown"
-        className={`min-[1100px]:hidden transition-all duration-700 ease-in-out overflow-hidden ${
-          isOpen ? "max-h-96" : "max-h-0"
-        } w-max mx-auto`}
+        className={`min-[1100px]:hidden transition-all duration-700 ease-in-out overflow-hidden ${isOpen ? "max-h-96" : "max-h-0"
+          } w-max mx-auto`}
       >
         <ul className="flex flex-col mt-4">
           <li>

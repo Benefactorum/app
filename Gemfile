@@ -2,6 +2,11 @@ source "https://rubygems.org"
 
 # Use main development branch of Rails
 gem "rails"
+
+gem "inertia_rails"
+gem "inertia_rails-contrib"
+
+gem "vite_rails", "~> 3.0"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -27,8 +32,16 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
+gem "authentication-zero", "~> 4.0"
+
+gem "rotp", "~> 6.3"
+
+gem "mailjet", "~> 1.8"
+
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -59,15 +72,3 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-# See the PR https://github.com/inertiajs/inertia-rails/pull/132
-gem "inertia_rails"
-gem "inertia_rails-contrib"
-
-gem "vite_rails", "~> 3.0"
-
-gem "authentication-zero", "~> 4.0"
-
-gem "rotp", "~> 6.3"
-
-gem "mailjet", "~> 1.8"

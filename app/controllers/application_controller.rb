@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   inertia_share flash: -> { flash.to_hash }
-  inertia_share user: -> { Current.user&.slice(:first_name, :email) }
+  inertia_share currentUser: -> { Current.user&.slice(:id, :first_name, :email) }
   inertia_share sessionId: -> { Current.session&.id }
 
   add_flash_types :message, :success, :info, :warning, :error
@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
 
   def only_for_guests
     redirect_to root_path, info: "Vous êtes déjà connecté." if authenticated?
+  end
+
+  def only_for_current_user
+    redirect_to root_path, error: "Erreur d'autorisation" unless @user == Current.user
   end
 
   def authenticated?

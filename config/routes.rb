@@ -1,21 +1,25 @@
 Rails.application.routes.draw do
+  get "profile_picture/update"
+  get "profile_picture/destroy"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  get "connexion", to: "connections#new", as: :new_connection
   resources :connections, only: [:create] do
     collection do
       post :resend_otp
     end
   end
-  get "connexion", to: "connections#new", as: :new_connection
 
-  resources :registrations, only: [:create]
   get "s-inscrire", to: "registrations#new", as: :new_registration
+  resources :registrations, only: [:create]
 
-  resources :sessions, only: [:create, :destroy]
   get "se-connecter", to: "sessions#new", as: :new_session
+  resources :sessions, only: [:create, :destroy]
 
-  # resources :users, only: [:show]
   get "utilisateurs/:id", to: "users#show", as: :user
+  resources :users, only: [:update] do
+    resource :profile_picture, only: [:update, :destroy]
+  end
   # resource  :password, only: [ :edit, :update ]
   # namespace :identity do
   #   resource :email,              only: [ :edit, :update ]
