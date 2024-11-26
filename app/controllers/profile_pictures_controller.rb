@@ -1,12 +1,12 @@
 class ProfilePicturesController < ApplicationController
   before_action :get_user
-  before_action :only_for_current_user, only: %i[update]
+  before_action :only_for_current_user
 
   def update
-    # I need to validate file type and size
-    @user.update!(user_params)
+    profile_picture = ProfilePicture.new(profile_picture: params[:profile_picture])
+    profile_picture.attach_to(@user)
 
-    redirect_to @user
+    redirect_to @user, inertia: {errors: profile_picture.errors}
   end
 
   def destroy
@@ -16,10 +16,6 @@ class ProfilePicturesController < ApplicationController
   end
 
   private
-
-  def user_params
-    params.permit(:profile_picture)
-  end
 
   def get_user
     @user = User.find(params[:user_id])

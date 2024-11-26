@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "profile_picture/update"
-  get "profile_picture/destroy"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   get "connexion", to: "connections#new", as: :new_connection

@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include User::Otp
+  include User::ProfilePicture
 
   has_secure_password validations: false
 
@@ -15,24 +16,23 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :destroy
 
-  has_one_attached :profile_picture
-
   validates :email, presence: true
   validates :email, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}, if: -> { email.present? }
   validates :first_name, :last_name, :terms_and_privacy_accepted_at, presence: true
-  validates :password, allow_nil: true, length: {minimum: 12}
+
+  # validates :password, allow_nil: true, length: {minimum: 12}
 
   normalizes :email, with: -> { _1.strip.downcase }
 
-  before_validation if: :email_changed?, on: :update do
-    self.verified = false
-  end
+  # before_validation if: :email_changed?, on: :update do
+  #   self.verified = false
+  # end
 
   before_validation on: :create do
     self.account = Account.new
   end
 
-  after_update if: :password_digest_previously_changed? do
-    sessions.where.not(id: Current.session).delete_all
-  end
+  # after_update if: :password_digest_previously_changed? do
+  #   sessions.where.not(id: Current.session).delete_all
+  # end
 end

@@ -21,7 +21,7 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import NoProfilePicture from "@/assets/images/user/no-profile-picture.svg?react";
-import { Settings, Pencil, Trash2 } from "lucide-react";
+import { Settings, Pencil, Trash2, AlertCircle } from "lucide-react";
 import Facebook from "/assets/icons/facebook.svg?react";
 // @ts-ignore
 import Instagram from "/assets/icons/instagram.svg?react";
@@ -68,7 +68,7 @@ type CurrentUser = {
 
 
 export default function Show({ user, profile_picture, currentUser }: { user: User, profile_picture: ProfilePicture, currentUser: CurrentUser | null }) {
-  const { data, setData, patch, processing } = useForm({
+  const { data, setData, patch, processing, errors } = useForm({
     profile_picture: null,
   })
 
@@ -126,11 +126,20 @@ export default function Show({ user, profile_picture, currentUser }: { user: Use
 
                   <form onSubmit={submit} className="flex flex-col gap-4">
                     <Label className='text-xl' htmlFor="picture">Photo de profil</Label>
-                    <Input type="file" required className=''
-                      onChange={(e) => {
-                        setData("profile_picture", e.target.files[0]);
-                      }} />
-                    <Button type="submit" disabled={processing || data.profile_picture === null}>Mettre à jour</Button>
+                    <div>
+                      <Input type="file" required className=''
+                        onChange={(e) => {
+                          setData("profile_picture", e.target.files[0]);
+                          errors.profile_picture = null;
+                        }} />
+                      {errors.profile_picture && (
+                        <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                          <AlertCircle className="w-4 h-4 mr-1" />
+                          {errors.profile_picture}
+                        </div>
+                      )}
+                    </div>
+                    <Button type="submit" disabled={processing || !!errors.profile_picture}>Mettre à jour</Button>
                   </form>
                 </PopoverContent>
               </Popover>
