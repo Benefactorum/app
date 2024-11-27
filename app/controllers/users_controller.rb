@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def show
     render inertia: "User/Show", props: {
       user: @user.as_json(only: %i[id created_at first_name last_name]),
-      profile_picture: @user.profile_picture.attached? ? url_for(@user.profile_picture) : nil
+      profile_picture_url: @user.profile_picture.attached? ? url_for(@user.profile_picture) : nil
     }
   end
 

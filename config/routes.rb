@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :users, only: [:update] do
     resource :profile_picture, only: [:update, :destroy]
   end
+
   # resource  :password, only: [ :edit, :update ]
   # namespace :identity do
   #   resource :email,              only: [ :edit, :update ]

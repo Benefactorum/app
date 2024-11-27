@@ -1,5 +1,5 @@
 import { Head, router, useForm, Link } from "@inertiajs/react";
-
+import { useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -19,8 +19,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress"
 
-import NoProfilePicture from "@/assets/images/user/no-profile-picture.svg?react";
+
+import { DirectUpload } from "@rails/activestorage"
+
+import { toast } from "sonner";
+
+
+import NoProfilePicture from "@/assets/images/user/no-profile-picture.svg";
 import { Settings, Pencil, Trash2, AlertCircle } from "lucide-react";
 import Facebook from "/assets/icons/facebook.svg?react";
 // @ts-ignore
@@ -58,7 +65,7 @@ type User = {
   created_at: string;
 };
 
-type ProfilePicture = string | null;
+type ProfilePictureUrl = string | null;
 
 type CurrentUser = {
   id: number;
@@ -67,25 +74,47 @@ type CurrentUser = {
 };
 
 
-export default function Show({ user, profile_picture, currentUser }: { user: User, profile_picture: ProfilePicture, currentUser: CurrentUser | null }) {
+
+export default function Show({ user, profile_picture_url, currentUser }: { user: User, profile_picture_url: ProfilePictureUrl, currentUser: CurrentUser | null }) {
   const { data, setData, patch, processing, errors } = useForm({
     profile_picture: null,
   })
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   function submit(e: React.FormEvent) {
-    e.preventDefault()
-    patch(`/users/${user.id}/profile_picture`, {
-      onSuccess: () => {
-        setData("profile_picture", null)
+    e.preventDefault();
+    const upload = new DirectUpload(data.profile_picture, '/rails/active_storage/direct_uploads', {
+      directUploadWillStoreFileWithXHR: (request) => {
+        request.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const progress = (event.loaded / event.total) * 100;
+            setUploadProgress(progress);
+          }
+        });
+      },
+    });
+
+    upload.create((error, blob) => {
+      setUploadProgress(null);
+      if (error) {
+        toast.error("Une erreur est survenue lors de l'enregistrement de votre photo de profil. Veuillez réessayer.");
+      } else {
+        data.profile_picture = blob.signed_id;
+        patch(`/users/${user.id}/profile_picture`, {
+          onSuccess: () => {
+            if (!errors.profile_picture) {
+              toast.success("Votre photo de profil a été mise à jour avec succès.");
+            }
+          },
+        });
       }
-    }
-    )
+    });
   }
 
   function destroy() {
     router.delete(`/users/${user.id}/profile_picture`, {
       onSuccess: () => {
-        setData("profile_picture", null)
+        toast.success("Votre photo de profil a été supprimée.")
       }
     })
   }
@@ -98,11 +127,11 @@ export default function Show({ user, profile_picture, currentUser }: { user: Use
       </Head>
       <div className="w-full mx-auto flex flex-wrap py-8 lg:py-16 2xl:container px-2 sm:px-8 gap-8">
         <div className="mx-auto relative flex justify-center items-center">
-          {profile_picture ?
-            <img src={profile_picture} alt="avatar de profil" className="w-[212px] h-[212px] rounded-full object-cover" />
-            :
-            <NoProfilePicture className="mx-auto" />
-          }
+          <img
+            alt="avatar de profil"
+            className="w-[212px] h-[212px] rounded-full object-cover"
+            src={profile_picture_url || NoProfilePicture}
+          />
           {user.id === currentUser?.id &&
             <AlertDialog>
               <Popover>
@@ -116,7 +145,7 @@ export default function Show({ user, profile_picture, currentUser }: { user: Use
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="relative">
-                  {profile_picture &&
+                  {profile_picture_url &&
                     <AlertDialogTrigger className="absolute top-4 right-4">
                       <Button variant="destructive" className="w-7 h-7">
                         <Trash2 />
@@ -139,8 +168,10 @@ export default function Show({ user, profile_picture, currentUser }: { user: Use
                         </div>
                       )}
                     </div>
-                    <Button type="submit" disabled={processing || !!errors.profile_picture}>Mettre à jour</Button>
+                    <Button type="submit" disabled={uploadProgress || processing || !!errors.profile_picture}>Mettre à jour</Button>
                   </form>
+                  <Progress className={uploadProgress ? 'mt-4' : ' hidden'} value={uploadProgress} />
+
                 </PopoverContent>
               </Popover>
               <AlertDialogContent>
