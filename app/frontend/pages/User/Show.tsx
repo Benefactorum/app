@@ -1,5 +1,5 @@
 import { Head, router, useForm, Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Popover,
   PopoverContent,
@@ -21,8 +21,8 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress"
 
-
-import { DirectUpload } from "@rails/activestorage"
+// doesn't work with SSR
+// import { DirectUpload } from "@rails/activestorage"
 
 import { toast } from "sonner";
 
@@ -80,10 +80,22 @@ export default function Show({ user, profile_picture_url, currentUser }: { user:
     profile_picture: null,
   })
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [activeStorage, setActiveStorage] = useState(null);
+
+  useEffect(() => {
+    async function loadActiveStorage() {
+      const module = await import('@rails/activestorage');
+      module.start();
+      setActiveStorage(module);
+    }
+
+    loadActiveStorage();
+  }, []);
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const upload = new DirectUpload(data.profile_picture, '/rails/active_storage/direct_uploads', {
+
+    const upload = new activeStorage.DirectUpload(data.profile_picture, '/rails/active_storage/direct_uploads', {
       directUploadWillStoreFileWithXHR: (request) => {
         request.upload.addEventListener('progress', (event) => {
           if (event.lengthComputable) {
