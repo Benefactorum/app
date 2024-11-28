@@ -15,9 +15,13 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
 
   get "utilisateurs/:id", to: "users#show", as: :user
+  # get "mes-contributions", to: "contributions#index", as: :user_contributions
   resources :users, only: [:update] do
     resource :profile_picture, only: [:update, :destroy]
+    resources :contributions, shallow: true
   end
+
+  get "mes-contributions", to: "contributions#index"
 
   # resource  :password, only: [ :edit, :update ]
   # namespace :identity do
