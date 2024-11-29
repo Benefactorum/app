@@ -1,24 +1,21 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import { Fragment } from 'react'
-import Contribution from './Contribution'
 import { ContributionType } from './types'
+import { CurrentUserType } from '@/pages/types'
 
 interface IndexProps {
+  currentUser: CurrentUserType
   contributions: ContributionType[]
-  flash: { notice?: string }
 }
 
-export default function Index({ currentUser, contributions, flash }: IndexProps) {
+export default function Index({ currentUser, contributions }: IndexProps) {
   return (
     <>
-      <Head title="Contributions" />
-      <div className="mx-auto md:w-2/3 w-full px-8 pt-8">
-        {flash.notice && (
-          <p className="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block">
-            {flash.notice}
-          </p>
-        )}
-        <div className="flex justify-between items-center">
+      <Head title="Mes contributions" />
+      <div className="">
+
+
+        {/* <div className="flex justify-between items-center">
           <h1 className="font-bold text-4xl">Contributions</h1>
           <Link
             href={`/users/${currentUser.id}/contributions/new`}
@@ -42,7 +39,7 @@ export default function Index({ currentUser, contributions, flash }: IndexProps)
               </p>
             </Fragment>
           ))}
-        </div>
+        </div> */}
       </div>
     </>
   )

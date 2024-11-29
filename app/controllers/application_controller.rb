@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: {chrome: 50, safari: 14, firefox: 65, edge: 18, ie: false} # if Rails.env.production?
 
   inertia_share flash: -> { flash.to_hash }
-  inertia_share currentUser: -> { Current.user&.slice(:id, :first_name, :email) }
+  inertia_share currentUser: -> { Current.user&.slice(:id, :first_name) }
   inertia_share sessionId: -> { Current.session&.id }
 
   add_flash_types :message, :success, :info, :warning, :error

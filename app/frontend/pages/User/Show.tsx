@@ -39,6 +39,8 @@ import Linkedin from "/assets/icons/linkedin.svg?react";
 
 import FormattedDate from '@/components/FormattedDate';
 
+import { CurrentUserType, ProfilePictureUrlType } from '@/pages/types'
+
 const socialLinks = [
   {
     href: "",
@@ -58,24 +60,13 @@ const socialLinks = [
   },
 ];
 
-type User = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  created_at: string;
-};
+interface IndexProps {
+  user: UserType
+  profile_picture_url: ProfilePictureUrlType
+  currentUser: CurrentUserType
+}
 
-type ProfilePictureUrl = string | null;
-
-type CurrentUser = {
-  id: number;
-  first_name: string;
-  email: string;
-};
-
-
-
-export default function Show({ user, profile_picture_url, currentUser }: { user: User, profile_picture_url: ProfilePictureUrl, currentUser: CurrentUser | null }) {
+export default function Show({ user, profile_picture_url, currentUser }: IndexProps) {
   const { data, setData, patch, processing, errors } = useForm({
     profile_picture: null,
   })
@@ -240,7 +231,7 @@ export default function Show({ user, profile_picture_url, currentUser }: { user:
               </p>
             }
             <p>
-              0 dons - 0 contributions
+              0 points d'impact.
             </p>
           </div>
         </div>

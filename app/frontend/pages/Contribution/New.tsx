@@ -1,8 +1,10 @@
 import { Head, Link } from '@inertiajs/react'
 import Form from './Form'
 import { ContributionType } from './types'
+import { CurrentUserType } from '@/pages/types'
 
 interface NewProps {
+  currentUser: CurrentUserType
   contribution: ContributionType
 }
 
