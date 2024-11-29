@@ -8,5 +8,5 @@ class Contribution < ApplicationRecord
     CorrectionRequest
   ]
 
-  has_many :documents, dependent: :destroy
+  has_many :documents # , dependent: :destroy ## what would happen if a document was also used for an Osbl
 end

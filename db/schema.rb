@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_28_123910) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_29_095144) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -53,6 +53,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_28_123910) do
     t.index ["user_id"], name: "index_contributions_on_user_id"
   end
 
+  create_table "documents", force: :cascade do |t|
+    t.integer "contribution_id"
+    t.integer "osbl_id"
+    t.integer "type", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contribution_id"], name: "index_documents_on_contribution_id"
+    t.index ["osbl_id"], name: "index_documents_on_osbl_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_agent"
@@ -82,6 +93,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_28_123910) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contributions", "users"
+  add_foreign_key "documents", "contributions"
+  add_foreign_key "documents", "osbls"
   add_foreign_key "sessions", "users"
   add_foreign_key "users", "accounts"
 end
