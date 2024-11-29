@@ -1,4 +1,4 @@
-class CreateDocuments < ActiveRecord::Migration[8.0]
+class CreateDocument < ActiveRecord::Migration[8.0]
   def change
     create_table :documents do |t|
       t.references :contribution, foreign_key: true
