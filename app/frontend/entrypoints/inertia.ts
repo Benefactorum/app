@@ -3,6 +3,7 @@ import { createElement } from "react";
 // import { createRoot } from "react-dom/client";
 import { hydrateRoot } from "react-dom/client";
 import Layout from "@/Layout";
+import LayoutForContribution from "@/LayoutForContribution";
 
 createInertiaApp({
   title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),
@@ -17,7 +18,9 @@ createInertiaApp({
     const page = pages[`../pages/${name}.tsx`] as {
       default: { layout?: (page: JSX.Element) => JSX.Element };
     };
-    page.default.layout ||= (page) => createElement(Layout, null, page);
+    page.default.layout = name.startsWith('Contribution/')
+      ? (page) => createElement(LayoutForContribution, null, page)
+      : (page) => createElement(Layout, null, page);
     return page;
   },
 

@@ -85,7 +85,7 @@ export default function Header() {
   };
 
   return (
-    <header ref={headerRef} className="bg-white py-2">
+    <header ref={headerRef} className="bg-white py-2 border-b">
       <div
         id="mainHeader"
         className="2xl:container 2xl:mx-auto flex items-center px-2 justify-between"

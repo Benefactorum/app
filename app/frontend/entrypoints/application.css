@@ -64,7 +64,7 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
 
@@ -72,7 +72,7 @@
 
     --sidebar-primary-foreground: 0 0% 98%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 40 100% 69%; /* 240 4.8% 95.9%; */
 
     --sidebar-accent-foreground: 240 5.9% 10%;
 
