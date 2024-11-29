@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/inertiajs/inertia-rails.git
-  revision: 65ba636cc0b351b1d8ece9e353e746e32f7bf391
+  revision: 234aaabba071028517857743396fee62683f7a37
   specs:
-    inertia_rails (3.4.0)
+    inertia_rails (3.5.0)
       railties (>= 6)
 
 GEM
