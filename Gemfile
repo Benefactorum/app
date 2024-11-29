@@ -5,14 +5,14 @@ gem "rails"
 
 gem "inertia_rails", github: "inertiajs/inertia-rails"
 
-gem "vite_rails", "~> 3.0"
+gem "vite_rails", "~> 3.0.19"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 2.1"
+gem "sqlite3", ">= 2.3.1"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+gem "puma", ">= 6.5.0"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.20"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[windows jruby]
@@ -31,7 +31,7 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-gem "authentication-zero", "~> 4.0"
+gem "authentication-zero", "~> 4.0.3"
 
 gem "rotp", "~> 6.3"
 
