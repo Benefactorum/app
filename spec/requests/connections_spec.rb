@@ -27,7 +27,7 @@ RSpec.describe "Connections", type: :request, inertia: true do
         end
         expect(response).to redirect_to(new_connection_path)
         follow_redirect!
-        expect(inertia.props[:errors][:email]).to be_present
+        expect(inertia.props[:errors]["email"]).to be_present
       end
     end
 

@@ -20,7 +20,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
           subject
           expect(response).to redirect_to(user)
           follow_redirect!
-          expect(inertia.props[:errors][:profile_picture]).to be_present
+          expect(inertia.props[:errors]["profile_picture"]).to be_present
         end
       end
       context "with invalid file type" do
@@ -29,7 +29,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
           subject
           expect(response).to redirect_to(user)
           follow_redirect!
-          expect(inertia.props[:errors][:profile_picture]).to be_present
+          expect(inertia.props[:errors]["profile_picture"]).to be_present
         end
       end
 
@@ -43,7 +43,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
           subject
           expect(response).to redirect_to(user)
           follow_redirect!
-          expect(inertia.props[:errors][:profile_picture]).to be_present
+          expect(inertia.props[:errors]["profile_picture"]).to be_present
         end
       end
 

@@ -1,5 +1,6 @@
 class ContributionsController < ApplicationController
   before_action :set_user_if_not_set, only: %i[index]
+  before_action :set_user, only: %i[new create]
   before_action :only_for_current_user
   before_action :set_contribution, only: %i[show edit update destroy]
 
@@ -42,7 +43,7 @@ class ContributionsController < ApplicationController
     if @contribution.save
       redirect_to @contribution, notice: "Contribution was successfully created."
     else
-      redirect_to new_contribution_url, inertia: {errors: @contribution.errors}
+      redirect_to new_user_contribution_url, inertia: {errors: @contribution.errors}
     end
   end
 
@@ -69,6 +70,10 @@ class ContributionsController < ApplicationController
     else
       Current.user
     end
+  end
+
+  def set_user
+    @user = User.find(params[:user_id])
   end
 
   # Use callbacks to share common setup or constraints between actions.

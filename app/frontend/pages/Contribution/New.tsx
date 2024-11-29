@@ -1,7 +1,12 @@
-import { Link, Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import Form from './Form'
+import { ContributionType } from './types'
 
-export default function New({ contribution }) {
+interface NewProps {
+  contribution: ContributionType
+}
+
+export default function New({ currentUser, contribution }: NewProps) {
   return (
     <>
       <Head title="New contribution" />
@@ -13,13 +18,13 @@ export default function New({ contribution }) {
           contribution={contribution}
           onSubmit={(form) => {
             form.transform((data) => ({ contribution: data }))
-            form.post('/contributions')
+            form.post(`/users/${currentUser.id}/contributions`)
           }}
-          submitText="Create contribution"
+          submitText="Create Contribution"
         />
 
         <Link
-          href="/contributions"
+          href="/mes-contributions"
           className="ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
         >
           Back to contributions

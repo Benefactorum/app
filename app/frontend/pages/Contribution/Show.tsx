@@ -1,13 +1,13 @@
-import { Link, Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import Contribution from './Contribution'
+import { ContributionType } from './types'
 
-export default function Show({ contribution, flash }) {
-  const onDestroy = (e) => {
-    if (!confirm('Are you sure you want to delete this contribution?')) {
-      e.preventDefault()
-    }
-  }
+interface ShowProps {
+  contribution: ContributionType
+  flash: { notice?: string }
+}
 
+export default function Show({ contribution, flash }: ShowProps) {
   return (
     <>
       <Head title={`Contribution #${contribution.id}`} />
@@ -39,7 +39,6 @@ export default function Show({ contribution, flash }) {
           <div className="inline-block ml-2">
             <Link
               href={`/contributions/${contribution.id}`}
-              onClick={onDestroy}
               as="button"
               method="delete"
               className="mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium"

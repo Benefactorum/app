@@ -46,7 +46,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
           expect { subject }.not_to change(User, :count)
           expect(response).to redirect_to(new_registration_path)
           follow_redirect!
-          expect(inertia.props[:errors].keys).to include(:email, :first_name, :last_name, :terms_and_privacy_accepted_at)
+          expect(inertia.props[:errors].keys).to include("email", "first_name", "last_name", "terms_and_privacy_accepted_at")
         end
 
         context "when terms_and_privacy_accepted_at is hacked" do
@@ -56,7 +56,7 @@ RSpec.describe "Registrations", type: :request, inertia: true do
             expect { subject }.not_to change(User, :count)
             expect(response).to redirect_to(new_registration_path)
             follow_redirect!
-            expect(inertia.props[:errors].keys).to include(:terms_and_privacy_accepted_at)
+            expect(inertia.props[:errors].keys).to include("terms_and_privacy_accepted_at")
           end
         end
       end

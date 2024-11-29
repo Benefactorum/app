@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_25_110838) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_28_123910) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -42,6 +42,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_25_110838) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "contributions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "contributable_type", null: false
+    t.integer "contributable_id", null: false
+    t.string "github_resource_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contributable_type", "contributable_id"], name: "index_contributions_on_contributable"
+    t.index ["user_id"], name: "index_contributions_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_agent"
@@ -70,6 +81,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_25_110838) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "contributions", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "users", "accounts"
 end

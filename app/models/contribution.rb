@@ -1,6 +1,12 @@
 class Contribution < ApplicationRecord
   belongs_to :user
-  delegated_type :contributable, types: %w[OsblProposal Comment]
+  delegated_type :contributable, types: %w[
+    OsblCreation
+    OsblUpdate
+    Discussion
+    BugReport
+    CorrectionRequest
+  ]
 
-  enum :status, {pending: 0, submitted: 1, approved: 2, rejected: 3}
+  has_many :documents, dependent: :destroy
 end

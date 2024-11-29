@@ -1,4 +1,10 @@
-export default function Contribution({ contribution }) {
+import { ContributionType } from './types'
+
+interface ContributionProps {
+  contribution: ContributionType
+}
+
+export default function Contribution({ contribution }: ContributionProps) {
   return (
     <div>
       <p className="my-5">

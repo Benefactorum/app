@@ -36,7 +36,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
           subject
           expect(response).to redirect_to(new_session_path)
           follow_redirect!
-          expect(inertia.props[:errors][:code]).to be_present
+          expect(inertia.props[:errors]["code"]).to be_present
         end
       end
     end

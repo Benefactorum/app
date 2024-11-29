@@ -1,7 +1,12 @@
-import { Link, Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import Form from './Form'
+import { ContributionType } from './types'
 
-export default function Edit({ contribution }) {
+interface EditProps {
+  contribution: ContributionType
+}
+
+export default function Edit({ contribution }: EditProps) {
   return (
     <>
       <Head title="Editing contribution" />
@@ -15,7 +20,7 @@ export default function Edit({ contribution }) {
             form.transform((data) => ({ contribution: data }))
             form.patch(`/contributions/${contribution.id}`)
           }}
-          submitText="Update contribution"
+          submitText="Update Contribution"
         />
 
         <Link

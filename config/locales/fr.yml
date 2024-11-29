@@ -26,6 +26,7 @@ fr:
       odd: "doit être impair"
       taken: "a déjà été pris"
       record_invalid: "La validation a échoué : %{errors}"
+      required: "champs obligatoire"
   activerecord:
     models:
       user: "Utilisateur"
@@ -36,3 +37,7 @@ fr:
         last_name: "Nom de famille"
         terms_and_privacy_accepted_at: "Conditions et confidentialité acceptées à"
         password: "Mot de passe"
+      contribution:
+        user: "Utilisateur"
+        status: "Statut"
+        contributable: "Type de contribution"
