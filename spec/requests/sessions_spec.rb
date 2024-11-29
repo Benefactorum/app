@@ -47,7 +47,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
 
       it "signs in the user" do
         subject
-        expect(response).to redirect_to user
+        expect(response).to redirect_to my_profile_path
         follow_redirect!
         expect(inertia.props[:flash]["success"]).to be_present
       end

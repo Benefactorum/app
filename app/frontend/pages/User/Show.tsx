@@ -146,14 +146,8 @@ export default function Show({ user, profile_picture_url, currentUser }: IndexPr
           {user.id === currentUser?.id &&
             <AlertDialog>
               <Popover>
-                <PopoverTrigger>
-                  <Button
-                    variant="secondary"
-                    className="hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full"
-                    size="icon"
-                  >
-                    <Pencil />
-                  </Button>
+                <PopoverTrigger className="flex bg-secondary w-10 h-10 justify-center items-center hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full">
+                  <Pencil />
                 </PopoverTrigger>
                 <PopoverContent className="relative">
                   {profile_picture_url &&

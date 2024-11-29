@@ -47,8 +47,20 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
       it "renders a successful response" do
         # Contribution.create! valid_attributes
-        get mes_contributions_url
+        subject
         expect(response).to be_successful
+      end
+    end
+  end
+
+  describe "GET /mes-contributions" do
+    subject { get my_contributions_url }
+
+    it_behaves_like "require_authentication"
+
+    context "for current user" do
+      before do
+        sign_in_as(create(:user))
       end
 
       it "renders a successful response" do

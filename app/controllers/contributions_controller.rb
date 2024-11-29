@@ -1,6 +1,6 @@
 class ContributionsController < ApplicationController
-  before_action :set_user_if_not_set, only: %i[index]
-  before_action :set_user, only: %i[new create]
+  before_action :get_user_or_current, only: %i[index]
+  before_action :get_user, only: %i[new create]
   before_action :only_for_current_user
   before_action :set_contribution, only: %i[show edit update destroy]
 
@@ -64,15 +64,7 @@ class ContributionsController < ApplicationController
 
   private
 
-  def set_user_if_not_set
-    @user = if params[:user_id]
-      User.find(params[:user_id])
-    else
-      Current.user
-    end
-  end
-
-  def set_user
+  def get_user
     @user = User.find(params[:user_id])
   end
 

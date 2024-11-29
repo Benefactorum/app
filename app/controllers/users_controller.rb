@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :require_authentication, only: %i[show]
 
-  before_action :get_user
+  before_action :get_user_or_current, only: %i[show]
   before_action :only_for_current_user, only: %i[update]
 
   def show

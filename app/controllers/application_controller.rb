@@ -41,4 +41,11 @@ class ApplicationController < ActionController::Base
   def authenticated?
     Current.user.present?
   end
+
+  def get_user_or_current
+    @user = get_user
+  rescue ActiveRecord::RecordNotFound
+    @user = Current.user
+    require_authentication
+  end
 end
