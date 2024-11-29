@@ -1,0 +1,2 @@
+class Osbl < ApplicationRecord
+end
