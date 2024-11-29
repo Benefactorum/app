@@ -95,27 +95,35 @@ export default function Show({ user, profile_picture_url, currentUser }: { user:
   function submit(e: React.FormEvent) {
     e.preventDefault();
 
-    const upload = new activeStorage.DirectUpload(data.profile_picture, '/rails/active_storage/direct_uploads', {
-      directUploadWillStoreFileWithXHR: (request) => {
-        request.upload.addEventListener('progress', (event) => {
-          if (event.lengthComputable) {
-            const progress = (event.loaded / event.total) * 100;
-            setUploadProgress(progress);
-          }
-        });
-      },
-    });
+    const upload = new activeStorage.DirectUpload(
+      data.profile_picture,
+      `/rails/active_storage/direct_uploads?subfolder=profile_pictures`,
+      {
+        directUploadWillStoreFileWithXHR: (request) => {
+          request.upload.addEventListener('progress', (event) => {
+            if (event.lengthComputable) {
+              const progress = (event.loaded / event.total) * 100;
+              setUploadProgress(progress);
+            }
+          });
+        },
+      }
+    );
 
     upload.create((error, blob) => {
       setUploadProgress(null);
       if (error) {
-        toast.error("Une erreur est survenue lors de l'enregistrement de votre photo de profil. Veuillez réessayer.");
+        toast.error(
+          "Une erreur est survenue lors de l'enregistrement de votre photo de profil. Veuillez réessayer."
+        );
       } else {
         data.profile_picture = blob.signed_id;
         patch(`/users/${user.id}/profile_picture`, {
           onSuccess: () => {
             if (!errors.profile_picture) {
-              toast.success("Votre photo de profil a été mise à jour avec succès.");
+              toast.success(
+                "Votre photo de profil a été mise à jour avec succès."
+              );
             }
           },
         });
