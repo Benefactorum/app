@@ -5,6 +5,9 @@ import RubyPlugin from "vite-plugin-ruby";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
+  ssr: {
+    noExternal: true,
+  },
   plugins: [react(), RubyPlugin(), svgr()],
   resolve: {
     alias: {

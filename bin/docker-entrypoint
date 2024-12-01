@@ -6,8 +6,8 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# If running foreman start then create or migrate existing database
-if [ "${1}" == "foreman" ] && [ "${2}" == "start" ]; then
+# If running the rails server then create or migrate existing database
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
 fi
 
