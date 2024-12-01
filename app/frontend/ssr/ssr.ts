@@ -1,4 +1,4 @@
-import { createInertiaApp } from "@inertiajs/react";
+import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
 import { createElement } from "react"; // Add this import
@@ -11,8 +11,11 @@ createServer((page) =>
     title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),
     render: ReactDOMServer.renderToString,
     resolve: (name) => {
-      const pages = import.meta.glob("../pages/**/*.tsx", { eager: true });
+      const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", { eager: true });
       const page = pages[`../pages/${name}.tsx`];
+      if (!page) {
+        console.error(`Missing Inertia page component: '${name}.svelte'`)
+      }
       page.default.layout = name.startsWith('Contribution/')
       ? (page) => createElement(LayoutForContribution, null, page)
       : (page) => createElement(Layout, null, page);

@@ -6,6 +6,7 @@ import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   ssr: {
+    // prebuilds ssr.js so we can drop node_modules from the resulting container
     noExternal: true,
   },
   plugins: [react(), RubyPlugin(), svgr()],

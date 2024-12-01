@@ -1,7 +1,6 @@
-import { createInertiaApp } from "@inertiajs/react";
+import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
 import { createElement } from "react";
-// import { createRoot } from "react-dom/client";
-import { hydrateRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import Layout from "@/Layout";
 import LayoutForContribution from "@/LayoutForContribution";
 
@@ -14,10 +13,13 @@ createInertiaApp({
   // progress: false,
 
   resolve: (name) => {
-    const pages = import.meta.glob("../pages/**/*.tsx", { eager: true });
+    const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", { eager: true });
     const page = pages[`../pages/${name}.tsx`] as {
       default: { layout?: (page: JSX.Element) => JSX.Element };
     };
+    if (!page) {
+      console.error(`Missing Inertia page component: '${name}.tsx'`)
+    }
     page.default.layout = name.startsWith('Contribution/')
       ? (page) => createElement(LayoutForContribution, null, page)
       : (page) => createElement(Layout, null, page);
@@ -25,11 +27,21 @@ createInertiaApp({
   },
 
   setup({ el, App, props }) {
-    // const root = createRoot(el);
+    if (el) {
+      if (el.dataset.serverRendered === 'true') {
+        hydrateRoot(el, createElement(App, props));
+      } else {
+        // createRoot(el).render(<App {...props} />);
+        const root = createRoot(el);
+        root.render(createElement(App, props));
+      }
+    } else {
+      console.error(
+        'Missing root element.\n\n' +
+        'If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n' +
+        'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.',
+      )
+    }
 
-    // root.render(createElement(App, props));
-
-    // createRoot(el).render(<App {...props} />);
-    hydrateRoot(el, createElement(App, props));
   },
 });
