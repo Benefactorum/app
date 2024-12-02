@@ -13,6 +13,7 @@
     "baseUrl": "./app/frontend",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+     "types": ["vitest/globals"]
   }
 }

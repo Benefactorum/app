@@ -2,7 +2,6 @@ import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
 import { createElement } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import Layout from "@/Layout";
-import LayoutForContribution from "@/LayoutForContribution";
 
 createInertiaApp({
   title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),
@@ -20,9 +19,8 @@ createInertiaApp({
     if (!page) {
       console.error(`Missing Inertia page component: '${name}.tsx'`)
     }
-    page.default.layout = name.startsWith('Contribution/')
-      ? (page) => createElement(LayoutForContribution, null, page)
-      : (page) => createElement(Layout, null, page);
+    page.default.layout = (page) =>
+      createElement(Layout, { showSidebar: name.startsWith("Contribution/"), flash: page.props.flash}, page);
     return page;
   },
 
@@ -31,7 +29,6 @@ createInertiaApp({
       if (el.dataset.serverRendered === 'true') {
         hydrateRoot(el, createElement(App, props));
       } else {
-        // createRoot(el).render(<App {...props} />);
         const root = createRoot(el);
         root.render(createElement(App, props));
       }

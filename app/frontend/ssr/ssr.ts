@@ -1,9 +1,8 @@
 import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
-import { createElement } from "react"; // Add this import
+import { createElement } from "react";
 import Layout from "@/Layout";
-import LayoutForContribution from "@/LayoutForContribution";
 
 createServer((page) =>
   createInertiaApp({
@@ -14,11 +13,10 @@ createServer((page) =>
       const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", { eager: true });
       const page = pages[`../pages/${name}.tsx`];
       if (!page) {
-        console.error(`Missing Inertia page component: '${name}.svelte'`)
+        console.error(`Missing Inertia page component: '${name}.tsx'`);
       }
-      page.default.layout = name.startsWith('Contribution/')
-      ? (page) => createElement(LayoutForContribution, null, page)
-      : (page) => createElement(Layout, null, page);
+      page.default.layout = (page) =>
+        createElement(Layout, { showSidebar: name.startsWith("Contribution/"), flash: page.props.flash}, page);
       return page;
     },
     setup: ({ App, props }) => createElement(App, props),

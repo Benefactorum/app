@@ -15,4 +15,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./app/frontend"),
     },
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './setupTests.ts',
+  },
 });

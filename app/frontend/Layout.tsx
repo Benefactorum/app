@@ -1,15 +1,18 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ReactElement, useEffect } from "react";
-import { usePage } from "@inertiajs/react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 type LayoutProps = {
   children: ReactElement;
+  showSidebar?: boolean;
+  flash?: { [key: string]: string };
 };
 
-const flash_types: Array<keyof typeof toast> = [
+const flashTypes: Array<keyof typeof toast> = [
   "message",
   "success",
   "info",
@@ -17,18 +20,11 @@ const flash_types: Array<keyof typeof toast> = [
   "error",
 ];
 
-export default function Layout({ children }: LayoutProps) {
-  const { flash = {} } = usePage<{
-    flash?: { [key: string]: string };
-  }>().props;
-
+export default function Layout({ children, showSidebar = false, flash = {} }: LayoutProps) {
   useEffect(() => {
-    flash_types.forEach((type) => {
-      if (flash?.[type]) {
+    flashTypes.forEach((type) => {
+      if (flash[type]) {
         toast[type](flash[type] as any);
-      }
-      if (flash?.alert) {
-        toast.error(flash.alert);
       }
     });
   }, [flash]);
@@ -37,7 +33,17 @@ export default function Layout({ children }: LayoutProps) {
     <div className="flex flex-col min-h-screen">
       <Header />
       <Toaster theme="light" position="top-right" richColors closeButton />
-      <main className="flex flex-col flex-grow">{children}</main>
+      {showSidebar ? (
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="flex flex-col flex-grow">
+            <SidebarTrigger />
+            {children}
+          </main>
+        </SidebarProvider>
+      ) : (
+        <main className="flex flex-col flex-grow">{children}</main>
+      )}
       <Footer />
     </div>
   );
