@@ -18,7 +18,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
         let(:params) { {profile_picture: nil} }
         it "does not update and returns an error" do
           subject
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(my_profile_path)
           follow_redirect!
           expect(inertia.props[:errors]["profile_picture"]).to be_present
         end
@@ -27,7 +27,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
         let(:params) { {profile_picture: fixture_file_upload("invalid_file_type.svg")} }
         it "does not update and returns an error" do
           subject
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(my_profile_path)
           follow_redirect!
           expect(inertia.props[:errors]["profile_picture"]).to be_present
         end
@@ -41,7 +41,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
         end
         it "does not update and returns an error" do
           subject
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(my_profile_path)
           follow_redirect!
           expect(inertia.props[:errors]["profile_picture"]).to be_present
         end
@@ -51,7 +51,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
         let(:params) { {profile_picture: fixture_file_upload("valid_file.png")} }
         it "updates the profile picture and redirects" do
           subject
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(my_profile_path)
           follow_redirect!
           expect(inertia.props[:errors]).to be_nil
         end
@@ -77,7 +77,7 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
         it "destroys the profile picture and redirects" do
           subject
           expect(user.reload.profile_picture).not_to be_attached
-          expect(response).to redirect_to(user)
+          expect(response).to redirect_to(my_profile_path)
         end
       end
     end

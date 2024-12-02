@@ -25,6 +25,7 @@ import { Progress } from "@/components/ui/progress"
 // import { DirectUpload } from "@rails/activestorage"
 
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 
 import NoProfilePicture from "@/assets/images/user/no-profile-picture.svg";
@@ -146,15 +147,23 @@ export default function Show({ user, profile_picture_url, currentUser }: IndexPr
           {user.id === currentUser?.id &&
             <AlertDialog>
               <Popover>
-                <PopoverTrigger className="flex bg-secondary w-10 h-10 justify-center items-center hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full">
+                <PopoverTrigger
+                  className={cn(
+                    buttonVariants({
+                      variant: "secondary",
+                      size: "icon",
+                    }),
+                    "hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full"
+                  )}
+                >
                   <Pencil />
                 </PopoverTrigger>
                 <PopoverContent className="relative">
                   {profile_picture_url &&
-                    <AlertDialogTrigger className="absolute top-4 right-4">
-                      <Button variant="destructive" className="w-7 h-7">
-                        <Trash2 />
-                      </Button>
+                    <AlertDialogTrigger className={`${buttonVariants({
+                      variant: "destructive",
+                    })} absolute top-4 right-4 w-7 h-7`}>
+                      <Trash2 />
                     </AlertDialogTrigger>
                   }
 
@@ -245,7 +254,7 @@ export default function Show({ user, profile_picture_url, currentUser }: IndexPr
             </div>
           }
         </div>
-      </div>
+      </div >
     </>
   );
 }
