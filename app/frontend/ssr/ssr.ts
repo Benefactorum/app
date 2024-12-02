@@ -1,24 +1,15 @@
-import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
+import { createInertiaApp } from "@inertiajs/react";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
 import { createElement } from "react";
-import Layout from "@/Layout";
+import { getTitle, resolvePage } from "@/entrypoints/inertiaConfig";
 
 createServer((page) =>
   createInertiaApp({
     page,
-    title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),
+    title: getTitle,
     render: ReactDOMServer.renderToString,
-    resolve: (name) => {
-      const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", { eager: true });
-      const page = pages[`../pages/${name}.tsx`];
-      if (!page) {
-        console.error(`Missing Inertia page component: '${name}.tsx'`);
-      }
-      page.default.layout = (page) =>
-        createElement(Layout, { showSidebar: name.startsWith("Contribution/"), flash: page.props.flash}, page);
-      return page;
-    },
+    resolve: resolvePage,
     setup: ({ App, props }) => createElement(App, props),
   })
 );

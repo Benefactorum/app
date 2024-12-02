@@ -1,32 +1,18 @@
-import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
+import { createInertiaApp } from "@inertiajs/react";
 import { createElement } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
-import Layout from "@/Layout";
+import { getTitle, resolvePage } from "./inertiaConfig";
 
 createInertiaApp({
-  title: (title) => (title ? `${title} | Benefactorum` : "Benefactorum"),
-
+  title: getTitle,
   // Disable progress bar
   //
   // see https://inertia-rails.netlify.app/guide/progress-indicators
   // progress: false,
-
-  resolve: (name) => {
-    const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", { eager: true });
-    const page = pages[`../pages/${name}.tsx`] as {
-      default: { layout?: (page: JSX.Element) => JSX.Element };
-    };
-    if (!page) {
-      console.error(`Missing Inertia page component: '${name}.tsx'`)
-    }
-    page.default.layout = (page) =>
-      createElement(Layout, { showSidebar: name.startsWith("Contribution/"), flash: page.props.flash}, page);
-    return page;
-  },
-
+  resolve: resolvePage,
   setup({ el, App, props }) {
     if (el) {
-      if (el.dataset.serverRendered === 'true') {
+      if (el.dataset.serverRendered === "true") {
         hydrateRoot(el, createElement(App, props));
       } else {
         const root = createRoot(el);
@@ -34,11 +20,10 @@ createInertiaApp({
       }
     } else {
       console.error(
-        'Missing root element.\n\n' +
-        'If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n' +
-        'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.',
-      )
+        "Missing root element.\n\n" +
+        "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
+        "Consider moving <%= vite_typescript_tag 'inertia' %> to the Inertia-specific layout instead."
+      );
     }
-
   },
 });
