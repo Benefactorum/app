@@ -11,6 +11,9 @@ services:
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
+    environment:
+      SELENIUM_REMOTE_HOST: selenium
+
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 

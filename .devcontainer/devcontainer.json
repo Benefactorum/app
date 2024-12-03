@@ -13,11 +13,8 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22.11.0"
     },
-    "ghcr.io/duduribeiro/devcontainer-features/tmux:1": {}
-  },
-  "containerEnv": {
-    "CAPYBARA_SERVER_PORT": "45678",
-    "SELENIUM_HOST": "selenium"
+    "ghcr.io/duduribeiro/devcontainer-features/tmux:1": {},
+    "ghcr.io/rails/devcontainer/features/bundler-cache:1": {}
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
