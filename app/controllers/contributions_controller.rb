@@ -32,12 +32,12 @@ class ContributionsController < ApplicationController
   end
 
   def create
-    @contribution = Contribution.new(contribution_params)
+    @osbl = Osbl.new(osbl_params)
 
-    if @contribution.save
-      redirect_to @contribution, notice: "Contribution was successfully created."
+    if @osbl.save
+      redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
     else
-      redirect_to new_user_contribution_url, inertia: {errors: @contribution.errors}
+      redirect_to my_new_contribution_path, inertia: {errors: @osbl.errors}
     end
   end
 
@@ -65,9 +65,8 @@ class ContributionsController < ApplicationController
     @contribution = Contribution.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
-  def contribution_params
-    params.require(:contribution).permit(:user_id, :status, :contributable_id, :contributable_type)
+  def osbl_params
+    params.permit(:name, :website, :logo, :description)
   end
 
   def serialize_contribution(contribution)

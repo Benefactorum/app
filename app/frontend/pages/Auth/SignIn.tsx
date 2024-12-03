@@ -107,7 +107,7 @@ export default function SignUp() {
                 </InputOTPGroup>
               </InputOTP>
               {errors.code && (
-                <div className="flex items-center text-red-600 text-sm rounded-md p-1 mt-1">
+                <div className="flex items-center text-red-600 text-sm p-1 mt-1">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.code}
                 </div>

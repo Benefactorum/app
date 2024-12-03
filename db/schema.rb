@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_29_113100) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_02_161145) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -65,9 +65,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_29_113100) do
   end
 
   create_table "osbls", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "website"
+    t.text "description"
+    t.index ["name"], name: "index_osbls_on_name", unique: true
+    t.index ["website"], name: "index_osbls_on_website", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|

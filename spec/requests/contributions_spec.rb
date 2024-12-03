@@ -72,7 +72,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
   end
 
   describe "GET /mes-contributions/ajouter-une-association" do
-    subject { get my_new_contributions_url }
+    subject { get my_new_contribution_url }
 
     it_behaves_like "require_authentication"
 

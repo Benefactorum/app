@@ -130,7 +130,7 @@ export default function Header() {
               <NavigationMenuItem
                 className={
                   "py-2 px-4 rounded-md" +
-                  (url === "/mes-contributions"
+                  (url.startsWith("/mes-contributions")
                     ? " bg-secondary"
                     : " hover:bg-secondary/50")
                 }
@@ -289,7 +289,7 @@ export default function Header() {
                 href="/mes-contributions"
                 className={
                   "flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md" +
-                  (url === "/inertia-example"
+                  (url.startsWith("/mes-contributions")
                     ? " bg-secondary"
                     : " hover:bg-secondary/50")
                 }

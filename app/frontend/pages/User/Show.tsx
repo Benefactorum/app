@@ -176,7 +176,7 @@ export default function Show({ user, profile_picture_url, currentUser }: IndexPr
                           errors.profile_picture = null;
                         }} />
                       {errors.profile_picture && (
-                        <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                        <div className="flex items-center text-red-600 text-sm p-1">
                           <AlertCircle className="w-4 h-4 mr-1" />
                           {errors.profile_picture}
                         </div>

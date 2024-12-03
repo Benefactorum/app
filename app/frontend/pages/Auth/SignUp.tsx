@@ -73,12 +73,10 @@ export default function SignUp() {
                   errors.first_name = "";
                 }}
                 placeholder="Alain"
-                className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${
-                  errors.first_name ? "border-red-600" : ""
-                }`}
+                className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errors.first_name ? "border-red-600" : ""}`}
               />
               {errors.first_name && (
-                <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                <div className="flex items-center text-red-600 text-sm p-1">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.first_name}
                 </div>
@@ -97,12 +95,10 @@ export default function SignUp() {
                   errors.last_name = "";
                 }}
                 placeholder="Connu"
-                className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${
-                  errors.last_name ? "border-red-600" : ""
-                }`}
+                className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errors.last_name ? "border-red-600" : ""}`}
               />
               {errors.last_name && (
-                <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                <div className="flex items-center text-red-600 text-sm p-1">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.last_name}
                 </div>
@@ -119,9 +115,7 @@ export default function SignUp() {
                     setData("accepts_conditions", !!checked);
                     errors.terms_and_privacy_accepted_at = "";
                   }}
-                  className={`${
-                    errors.terms_and_privacy_accepted_at ? "border-red-600" : ""
-                  }`}
+                  className={`${errors.terms_and_privacy_accepted_at ? "border-red-600" : ""}`}
                 />
                 <Label htmlFor="terms" className="leading-normal font-normal">
                   Je confirme avoir lu et accepté les{" "}
@@ -144,7 +138,7 @@ export default function SignUp() {
                 </Label>
               </div>
               {errors.terms_and_privacy_accepted_at && (
-                <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                <div className="flex items-center text-red-600 text-sm p-1">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.terms_and_privacy_accepted_at}
                 </div>

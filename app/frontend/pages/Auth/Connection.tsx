@@ -62,7 +62,7 @@ export default function Connection() {
                 }
               />
               {errors.email && (
-                <div className="flex items-center text-red-600 text-sm rounded-md p-1">
+                <div className="flex items-center text-red-600 text-sm p-1">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.email}
                 </div>

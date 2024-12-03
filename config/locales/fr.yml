@@ -24,7 +24,7 @@ fr:
       other_than: "doit être différent de %{count}"
       even: "doit être pair"
       odd: "doit être impair"
-      taken: "a déjà été pris"
+      taken: "existe déjà"
       record_invalid: "La validation a échoué : %{errors}"
       required: "champs obligatoire"
   activerecord:

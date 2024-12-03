@@ -6,7 +6,7 @@ RSpec.describe "Contributions", type: :system do
       connect_as(create(:user))
     end
     it "displays the home page" do
-      visit my_new_contributions_path
+      visit my_new_contribution_path
       expect(page).to have_text("Ajouter une association")
     end
   end
