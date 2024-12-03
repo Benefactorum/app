@@ -1,10 +1,9 @@
 class ContributionsController < ApplicationController
-  before_action :get_user_or_current, only: %i[index]
-  before_action :get_user, only: %i[new create]
+  before_action :get_user_or_current, only: %i[index new]
+  before_action :get_user, only: %i[create]
   before_action :only_for_current_user
   before_action :set_contribution, only: %i[show edit update destroy]
 
-  # GET /contributions
   def index
     @contributions = Contribution.all
     render inertia: "Contribution/Index", props: {
@@ -14,29 +13,24 @@ class ContributionsController < ApplicationController
     }
   end
 
-  # GET /contributions/1
   def show
     render inertia: "Contribution/Show", props: {
       contribution: serialize_contribution(@contribution)
     }
   end
 
-  # GET /contributions/new
   def new
-    @contribution = Contribution.new
     render inertia: "Contribution/New", props: {
-      contribution: serialize_contribution(@contribution)
+      osbl: Osbl.new
     }
   end
 
-  # GET /contributions/1/edit
   def edit
     render inertia: "Contribution/Edit", props: {
       contribution: serialize_contribution(@contribution)
     }
   end
 
-  # POST /contributions
   def create
     @contribution = Contribution.new(contribution_params)
 
@@ -47,7 +41,6 @@ class ContributionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /contributions/1
   def update
     if @contribution.update(contribution_params)
       redirect_to @contribution, notice: "Contribution was successfully updated."
@@ -56,7 +49,6 @@ class ContributionsController < ApplicationController
     end
   end
 
-  # DELETE /contributions/1
   def destroy
     @contribution.destroy!
     redirect_to contributions_url, notice: "Contribution was successfully destroyed."

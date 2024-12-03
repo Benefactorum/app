@@ -7,3 +7,10 @@ export interface ContributionType {
 }
 
 export type ContributionFormType = Omit<ContributionType, 'id'>
+
+export interface OsblType {
+  id: number
+  name: string
+}
+
+export type OsblFormType = Omit<OsblType, 'id'>

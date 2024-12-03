@@ -8,7 +8,7 @@ RSpec.describe "Pages", type: :system do
   describe "GET /" do
     it "displays the home page" do
       visit root_path
-      expect(page).to have_text("Vous pouvez faire\n la différence,\nici et maintenant\n")
+      expect(page.text.squish).to include("Vous pouvez faire la différence, ici et maintenant")
     end
   end
 end

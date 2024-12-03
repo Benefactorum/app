@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :contributions, shallow: true
   end
   get "mes-contributions", to: "contributions#index", as: :my_contributions
+  get "mes-contributions/ajouter-une-association", to: "contributions#new", as: :my_new_contributions
 
   # resource  :password, only: [ :edit, :update ]
   # namespace :identity do

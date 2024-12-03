@@ -70,6 +70,24 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       end
     end
   end
+
+  describe "GET /mes-contributions/ajouter-une-association" do
+    subject { get my_new_contributions_url }
+
+    it_behaves_like "require_authentication"
+
+    context "for current user" do
+      before do
+        sign_in_as(create(:user))
+      end
+
+      it "renders a successful response" do
+        subject
+        expect(response).to be_successful
+      end
+    end
+  end
+
   xdescribe "GET /show" do
     it "renders a successful response" do
       contribution = Contribution.create! valid_attributes
@@ -80,7 +98,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
   xdescribe "GET /new" do
     it "renders a successful response" do
-      get new_contribution_url
+      get new_user_contribution_url
       expect(response).to be_successful
     end
   end

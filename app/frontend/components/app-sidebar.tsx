@@ -24,7 +24,7 @@ const items = [
   },
   {
     title: "Ajouter une association",
-    url: "#",
+    url: "/mes-contributions/ajouter-une-association",
     icon: FilePlus2,
   },
 ]

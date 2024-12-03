@@ -83,6 +83,7 @@ export default function SignUp() {
             <div className="flex flex-col mx-auto">
               <InputOTP
                 autoFocus
+                id="OTP" // capybara needs an id to find the input
                 required
                 maxLength={6}
                 value={data.code}
