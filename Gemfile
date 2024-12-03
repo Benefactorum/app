@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # Use main development branch of Rails
 gem "rails"
 
-gem "inertia_rails", github: "inertiajs/inertia-rails"
+gem "inertia_rails"
 
 gem "vite_rails", "~> 3.0.19"
 # Use sqlite3 as the database for Active Record
