@@ -7,9 +7,13 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/rails/devcontainer/features/activestorage": {},
-    "ghcr.io/rails/devcontainer/features/sqlite3": {}
+    "ghcr.io/rails/devcontainer/features/sqlite3": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22.11.0"
+    },
+    "ghcr.io/duduribeiro/devcontainer-features/tmux:1": {}
   },
   "containerEnv": {
     "CAPYBARA_SERVER_PORT": "45678",
@@ -20,7 +24,34 @@
     3000
   ],
   // Configure tool-specific properties.
-  // "customizations": {},
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "[ruby]": {
+          "editor.defaultFormatter": "Shopify.ruby-lsp"
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "editor.formatOnSave": true,
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        "rubyLsp.formatter": "standard",
+        "rubyLsp.linters": [
+          "standard"
+        ]
+      },
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root",
   // Use 'postCreateCommand' to run commands after the container is created.
