@@ -17,7 +17,7 @@ class Captcha
     )
     result = JSON.parse(response.body)
     !!result["success"]
-  rescue => e
+  rescue Net::HTTPError => e
     Rails.logger.error "Captcha validation error: #{e.message}"
     false
   end
