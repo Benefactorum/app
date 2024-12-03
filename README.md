@@ -1,49 +1,27 @@
-
-
-## Getting Started
-
-
-
-## Development Setup
-
-To set up the Benefactorum project locally:
-
-1. **Prerequisites**: Ensure you have [Visual Studio Code](https://code.visualstudio.com/) installed.
-2. **Dev Container**: Open the project in VS Code; it will automatically set up the development container.
-3. **Start Development**: Once the setup is complete, run the following command to start the development environment:
-
-   ```bash
-   bin/dev
-
-
-
-
-
----
-
 # Benefactorum
 
-Benefactorum is a non-profit, collaborative donation platform that enables French donors to easily discover and support the causes they care about. 
-
----
+Benefactorum is a non-profit, collaborative donation platform that enables French donors to easily discover and support the causes they care about.
+<br>
+<br>
 
 ## Features
 
+When Benefactorum is feature-complete, here's what you'll be able to do.
+
 1. **Find Associations**: Discover organizations that align with your values.
 2. **Make Donations**: Donate directly through Benefactorum.
-3. **Tax Benefits**: Easily manage your tax deductions.
-
----
+3. **Stay in Control**: Manage your recurring donations and keep track of your tax benefits with ease.
+<br>
 
 ## Tech Stack
 
 ### Backend
 - **Ruby on Rails 8**: Provides a robust and maintainable backend foundation.
-- **SQLite**: Lightweight and efficient database for streamlined deployment and development.
+- **SQLite**: Lightweight and efficient database for streamlined deployment and development. Litestream replication.
 
 ### Frontend
 - **React with TypeScript**: Ensures a dynamic and type-safe front-end experience.
-- **Inertia.js**: Bridges the gap between Rails and React for fast single-page app functionality.
+- **Inertia.js**: Bridges the gap between Rails and React for fast single-page app functionality. Server Side Rendering (SSR).
 - **TailwindCSS**: Provides a modern, responsive, and customizable UI.
 - **shadcn/ui**: Reusable components for consistent design.
 
@@ -51,32 +29,42 @@ Benefactorum is a non-profit, collaborative donation platform that enables Frenc
 - **Vite**: Efficient asset bundling and faster development builds.
 - **Kamal**: Simplified deployment to Scaleway VPS.
 - **GitHub Actions**: Manages CI/CD workflows for testing and deployment.
-
----
+- **Dev Containers**: Ready-to-use, containerized development environment.
+<br>
 
 ## Installation & Setup
 
 ### Prerequisites
-- Ensure you have [Visual Studio Code](https://code.visualstudio.com/) or [Dev Container CLI](https://github.com/devcontainers/cli) installed. 
+- Ensure you have [Visual Studio Code](https://code.visualstudio.com/) with Dev Containers extension or [Dev Container CLI](https://github.com/devcontainers/cli) installed.
+
 
 ### Steps
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/Benefactorum/app benefactorum
    cd benefactorum
    ```
+2. Set up the development container.
 
-2. Start the development server:
+   **Example using Visual Studio Code**:
+   ```bash
+   code .
+   ```
+   Then click on the 'Reopen in Container' popup.
+
+   *Note: You can achieve this setup with any Dev Containers-compatible tool.*
+
+3. Start the development server:
    ```bash
    bin/dev
    ```
 
-3. Open your browser and navigate to:
+4. Open your browser and navigate to:
    ```
    http://localhost:3000
    ```
-
----
+<br>
 
 ## Testing
 
@@ -85,38 +73,35 @@ Run tests to ensure stability:
 bundle exec rspec # Backend & e2e tests
 yarn test         # Frontend tests
 ```
-
----
+<br>
 
 ## Contributing
 
 We welcome contributions! To contribute:
 1. Fork the repository.
-2. Create a feature branch:
+2. Create a new branch:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b branch-name
    ```
 3. Commit your changes:
    ```bash
-   git commit -m "Add your feature description"
+   git commit -m "Add your commit message"
    ```
 4. Push your branch and open a Pull Request.
 
 Please follow the coding standards enforced by **Standard Ruby**, **Prettier**, and **ESLint**.
-
----
+<br>
+<br>
 
 ## License
 
-This project is licensed under the MIT License.
-
----
+This project is licensed under the [GNU GPLv3](./License) License.
+<br>
+<br>
 
 ## Contact
 
 For any inquiries, feel free to reach out:
 - Email: maximilien@benefactorum.org
 - Manifesto: [benefactorum.org](https://benefactorum.org)
-- Web app: https://staging.benefactorum.org
-
---- 
+- Web app: https://staging.benefactorum.org (WIP)
