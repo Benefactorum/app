@@ -35,7 +35,7 @@ When Benefactorum is feature-complete, here's what you'll be able to do.
 ## Installation & Setup
 
 ### Prerequisites
-- Ensure you have [Visual Studio Code](https://code.visualstudio.com/) with Dev Containers extension or [Dev Container CLI](https://github.com/devcontainers/cli) installed.
+- Docker
 
 
 ### Steps
