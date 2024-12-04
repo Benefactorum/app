@@ -24,8 +24,6 @@ RSpec.configure do |config|
       Capybara.server_port = 3001
       Capybara.app_host = "http://rails-app:3001"
       driven_by :remote_chrome
-    else
-      driven_by :selenium_chrome_headless
     end
   end
 end
