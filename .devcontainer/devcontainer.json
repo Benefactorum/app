@@ -7,6 +7,9 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true
+    },
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/rails/devcontainer/features/activestorage": {},
     "ghcr.io/rails/devcontainer/features/sqlite3": {},
@@ -51,6 +54,15 @@
   },
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root",
+  // sync history files to the host
+  "mounts": [
+    "source=${HOME}/.bash_history,target=/home/vscode/.bash_history,type=bind",
+    "source=${HOME}/.zsh_history,target=/home/vscode/.zsh_history,type=bind",
+    "source=${HOME}/.irb-history,target=/home/vscode/.irb-history,type=bind",
+    "source=${HOME}/.zshrc,target=/home/vscode/.zshrc,type=bind",
+    "source=${HOME}/.oh-my-zsh,target=/home/vscode/.oh-my-zsh,type=bind"
+  ],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "bin/setup --skip-server"
+    "postCreateCommand": "bin/setup --skip-server"
+
 }
