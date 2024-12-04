@@ -1,6 +1,5 @@
 source "https://rubygems.org"
 
-# Use main development branch of Rails
 gem "rails"
 
 gem "inertia_rails"
@@ -49,24 +48,24 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rspec-rails"
+  gem "rspec-rails", require: false
   gem "factory_bot_rails"
 
-  gem "standard"
-  gem "standard-rails"
+  gem "standard", require: false
+  gem "standard-rails", require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "overmind", require: false
-  gem "ruby-lsp"
-  gem "ruby-lsp-rails"
-  gem "ruby-lsp-rspec"
+  gem "ruby-lsp", require: false
+  gem "ruby-lsp-rails", require: false
+  gem "ruby-lsp-rspec", require: false
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
+  gem "capybara", require: false
   gem "selenium-webdriver"
 end

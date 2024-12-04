@@ -12,7 +12,7 @@ services:
     command: sleep infinity
 
     environment:
-      SELENIUM_REMOTE_HOST: selenium
+      SELENIUM_REMOTE_HOST: true
 
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode

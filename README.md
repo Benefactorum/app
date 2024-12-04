@@ -29,7 +29,7 @@ When Benefactorum is feature-complete, here's what you'll be able to do.
 - **Vite**: Efficient asset bundling and faster development builds.
 - **Kamal**: Simplified deployment to Scaleway VPS.
 - **GitHub Actions**: Manages CI/CD workflows for testing and deployment.
-- **Dev Containers**: Ready-to-use, containerized development environment.
+- **Dev Container**: Ready-to-use, containerized development environment.
 <br>
 
 ## Installation & Setup
