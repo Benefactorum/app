@@ -51,7 +51,7 @@ When Benefactorum is feature-complete, here's what you'll be able to do.
    ```bash
    code .
    ```
-   Then click on the 'Reopen in Container' popup.
+   Then click on popups to install Dev Containers extension and to 'Reopen in Container'
 
    *Note: You can achieve this setup with any Dev Containers-compatible tool.*
 

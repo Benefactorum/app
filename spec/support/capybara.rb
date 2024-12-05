@@ -22,7 +22,7 @@ RSpec.configure do |config|
     if ENV["SELENIUM_REMOTE_HOST"]
       Capybara.server_host = "0.0.0.0"
       Capybara.server_port = 3001
-      Capybara.app_host = "http://rails-app:3001"
+      Capybara.app_host = "http://benefactorum:3001"
       driven_by :remote_chrome
     end
   end

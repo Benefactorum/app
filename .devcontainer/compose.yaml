@@ -1,7 +1,7 @@
 name: "benefactorum"
 
 services:
-  rails-app:
+  benefactorum:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
