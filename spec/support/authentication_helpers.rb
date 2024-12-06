@@ -6,7 +6,7 @@ RSpec.configure do
   # capybara
   def connect_as(user)
     visit new_connection_path
-    fill_in "email", with: user.email
+    fill_in "Votre adresse email", with: user.email
     click_button "Continuer"
     fill_in "OTP", with: user.otp
     click_button "Continuer"
