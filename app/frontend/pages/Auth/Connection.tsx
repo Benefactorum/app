@@ -48,6 +48,7 @@ export default function Connection() {
             <div>
               <Input
                 type="email"
+                id="email" // capybara needs an id to find the input
                 required
                 autoFocus
                 title="Votre adresse email"
