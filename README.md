@@ -51,14 +51,16 @@ When Benefactorum is feature-complete, here's what you'll be able to do.
    ```bash
    code .
    ```
-   Then click on popups to install Dev Containers extension and to 'Reopen in Container'
+   Then click on popups to install Dev Containers extension and 'Reopen in Container'
 
    *Note: You can achieve this setup with any Dev Containers-compatible tool.*
 
-3. Start the development server:
+3. Inside the dev container, start the development server:
    ```bash
    bin/dev
    ```
+
+   *Note: With VS code, run this command inside the integrated terminal.*
 
 4. Open your browser and navigate to:
    ```
