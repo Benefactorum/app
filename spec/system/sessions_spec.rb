@@ -7,7 +7,7 @@ RSpec.describe "Sessions", type: :system do
     # avoid redirection when hitting new_session_path
     # as it sets up email in the local Storage
     visit new_connection_path
-    fill_in "email", with: user.email
+    fill_in "Votre adresse email", with: user.email
     click_button "Continuer"
   end
 
