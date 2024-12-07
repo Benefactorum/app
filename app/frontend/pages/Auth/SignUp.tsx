@@ -64,6 +64,7 @@ export default function SignUp() {
               <Label htmlFor="firstName">Prénom :</Label>
               <Input
                 id="firstName"
+                autoFocus
                 type="text"
                 required
                 disabled={signUpBlocked === true}

@@ -35,9 +35,9 @@ Rails.application.routes.draw do
 
   get "inertia-example", to: "inertia_example#index"
 
-  get "qui-nous-sommes", to: "pages#about_us"
-  get "co-fondateurs", to: "pages#cofounders"
-  get "nous-rejoindre", to: "pages#join_us"
+  get "qui-nous-sommes", to: "pages#about_us", as: :about_us
+  get "co-fondateurs", to: "pages#cofounders", as: :cofounders
+  get "nous-rejoindre", to: "pages#join_us", as: :join_us
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
