@@ -16,6 +16,7 @@ Capybara.register_driver :remote_chrome do |app|
 end
 
 Capybara.javascript_driver = :remote_chrome
+Capybara.save_path = Rails.root.join("tmp/screenshots")
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do
@@ -24,6 +25,8 @@ RSpec.configure do |config|
       Capybara.server_port = 3001
       Capybara.app_host = "http://benefactorum:3001"
       driven_by :remote_chrome
+    else
+      driven_by :selenium, using: :headless_chrome
     end
   end
 end

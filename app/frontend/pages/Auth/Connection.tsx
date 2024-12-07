@@ -49,6 +49,7 @@ export default function Connection() {
               <Input
                 type="email"
                 required
+                autoFocus
                 title="Votre adresse email"
                 placeholder="Votre adresse email"
                 value={data.email}
