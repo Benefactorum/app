@@ -8,13 +8,25 @@ import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Superwoman from "/assets/images/auth/superwoman.svg?react";
 
+import { z } from 'zod';
+
+const emailSchema = z.string().email({ message: "Veuillez entrer une adresse email valide." });
+
+
 export default function Connection() {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors, setError, clearErrors } = useForm({
     email: sessionStorage.getItem("email") || "",
   });
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const validation = emailSchema.safeParse(data.email);
+    if (!validation.success) {
+      setError("email", validation.error.errors[0].message)
+      return;
+    }
+
     post("/connections", {
       onSuccess: (page) => {
         if (page.url !== "/connexion") {
@@ -55,7 +67,7 @@ export default function Connection() {
                 value={data.email}
                 onChange={(e) => {
                   setData("email", e.target.value);
-                  errors.email = "";
+                  clearErrors("email")
                 }}
                 className={
                   "bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0" +
@@ -69,7 +81,7 @@ export default function Connection() {
                 </div>
               )}
             </div>
-            <Button type="submit" disabled={processing}>
+            <Button type="submit" disabled={processing || hasErrors}>
               <StepForward />
               Continuer
             </Button>
