@@ -8,7 +8,8 @@ export function useConnectionForm() {
     email: sessionStorage.getItem("email") || "",
   });
 
-  function validateAndSubmit() {
+  function validateAndSubmit(e) {
+    e.preventDefault();
     const validation = emailSchema.safeParse(data.email);
     if (!validation.success) {
       setError("email", validation.error.errors[0].message);
@@ -19,7 +20,6 @@ export function useConnectionForm() {
       onSuccess: (page) => {
         if (page.url !== "/connexion") {
           sessionStorage.setItem("email", data.email);
-          // TODO: try to instruct inertia to store form's data and errors in history state instead of using sessionStorage
           sessionStorage.removeItem("firstName");
           sessionStorage.removeItem("lastName");
           sessionStorage.removeItem("signUpBlocked");
