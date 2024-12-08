@@ -24,17 +24,15 @@ class ConnectionsController < ApplicationController
   end
 
   def create
-    email = params[:email]
-    if (user = User.find_by(email:))
-      Otp.new(user:).send_email
+    form = NewConnectionForm.new(email: params[:email])
+
+    case form.submit
+    when :existing_user
       redirect_to new_session_path
+    when :new_user
+      redirect_to new_registration_path
     else
-      user = User.create(email:) # will always fail because missing mandatory fields
-      if user.errors[:email].any?
-        redirect_to new_connection_path, inertia: {errors: user.errors}
-      else
-        redirect_to new_registration_path
-      end
+      redirect_to new_connection_path, inertia: {errors: form.errors}
     end
   end
 
