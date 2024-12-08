@@ -38,7 +38,7 @@ import Github from "/assets/icons/github.svg?react";
 // @ts-ignore
 import Linkedin from "/assets/icons/linkedin.svg?react";
 
-import FormattedDate from '@/components/FormattedDate';
+import FormattedDate from '@/lib/formattedDate';
 
 import { CurrentUserType, ProfilePictureUrlType } from '@/pages/types'
 
