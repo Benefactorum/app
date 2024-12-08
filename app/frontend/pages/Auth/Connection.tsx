@@ -1,15 +1,10 @@
-import React from 'react';
 import { Head } from "@inertiajs/react";
-
+import { ConnectionForm } from './ConnectionForm';
 import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Superwoman from "/assets/images/auth/superwoman.svg?react";
-import { useConnectionForm } from '@/hooks/useConnectionForm';
-import { ConnectionForm } from './ConnectionForm';
 
 export default function Connection() {
-  const { data, errors, processing, updateEmail, validateAndSubmit } = useConnectionForm();
-
   return (
     <>
       <Head>
@@ -26,13 +21,7 @@ export default function Connection() {
               Nous vous aiderons à en créer un si ce n'est pas le cas.
             </span>
           </p>
-          <ConnectionForm
-            email={data.email}
-            errors={errors}
-            processing={processing}
-            onEmailChange={updateEmail}
-            onSubmit={validateAndSubmit}
-          />
+          <ConnectionForm/>
         </div>
       </div>
       <QuoteSection
