@@ -1,44 +1,14 @@
-import { Head, useForm } from "@inertiajs/react";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { StepForward, AlertCircle } from "lucide-react";
+import React from 'react';
+import { Head } from "@inertiajs/react";
 
 import QuoteSection from "@/components/reusable/QuoteSection";
 // @ts-ignore
 import Superwoman from "/assets/images/auth/superwoman.svg?react";
-
-import { z } from 'zod';
-
-const emailSchema = z.string().email({ message: "Veuillez entrer une adresse email valide." });
-
+import { useConnectionForm } from '@/hooks/useConnectionForm';
+import { ConnectionForm } from './ConnectionForm';
 
 export default function Connection() {
-  const { data, setData, post, processing, errors, setError, clearErrors } = useForm({
-    email: sessionStorage.getItem("email") || "",
-  });
-
-  function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const validation = emailSchema.safeParse(data.email);
-    if (!validation.success) {
-      setError("email", validation.error.errors[0].message)
-      return;
-    }
-
-    post("/connections", {
-      onSuccess: (page) => {
-        if (page.url !== "/connexion") {
-          sessionStorage.setItem("email", data.email);
-          sessionStorage.removeItem("firstName");
-          sessionStorage.removeItem("lastName");
-          sessionStorage.removeItem("signUpBlocked");
-          sessionStorage.removeItem("acceptsConditions");
-        }
-      },
-    });
-  }
+  const { data, errors, processing, updateEmail, validateAndSubmit } = useConnectionForm();
 
   return (
     <>
@@ -56,36 +26,13 @@ export default function Connection() {
               Nous vous aiderons à en créer un si ce n'est pas le cas.
             </span>
           </p>
-          <form onSubmit={submit} className="w-full flex flex-col pt-4 gap-8">
-            <div>
-              <Input
-                type="email"
-                required
-                autoFocus
-                title="Votre adresse email"
-                placeholder="Votre adresse email"
-                value={data.email}
-                onChange={(e) => {
-                  setData("email", e.target.value);
-                  clearErrors("email")
-                }}
-                className={
-                  "bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0" +
-                  (errors.email ? " border-red-600" : "")
-                }
-              />
-              {errors.email && (
-                <div className="flex items-center text-red-600 text-sm p-1">
-                  <AlertCircle className="w-4 h-4 mr-1" />
-                  {errors.email}
-                </div>
-              )}
-            </div>
-            <Button type="submit" disabled={processing || hasErrors}>
-              <StepForward />
-              Continuer
-            </Button>
-          </form>
+          <ConnectionForm
+            email={data.email}
+            errors={errors}
+            processing={processing}
+            onEmailChange={updateEmail}
+            onSubmit={validateAndSubmit}
+          />
         </div>
       </div>
       <QuoteSection
