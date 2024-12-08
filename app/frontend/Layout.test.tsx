@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Layout from "./Layout";
+import Layout from "@/Layout";
 
 // Mock matchMedia globally for consistent behavior in tests
 Object.defineProperty(window, "matchMedia", {
@@ -21,7 +21,7 @@ vi.mock("@/components/layout/Header", () => ({
   default: () => <div>Mock Header</div>,
 }));
 
-vi.mock("@/components/app-sidebar", () => ({
+vi.mock("@/components/AppSidebar", () => ({
   AppSidebar: () => <div>Mock App Sidebar</div>,
 }));
 

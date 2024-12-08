@@ -6,7 +6,7 @@ export const getTitle = (title: string | null): string =>
   title ? `${title} | Benefactorum` : "Benefactorum";
 
 export const resolvePage = (name: string): ResolvedComponent => {
-  const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", { eager: true });
+  const pages = import.meta.glob<ResolvedComponent>("../pages/**/!(*.test).tsx", { eager: true });
   const page = pages[`../pages/${name}.tsx`] as {
     default: { layout?: (page: JSX.Element) => JSX.Element };
   };

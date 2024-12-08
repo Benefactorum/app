@@ -4,7 +4,7 @@ import { ReactElement, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 
 type LayoutProps = {
   children: ReactElement;

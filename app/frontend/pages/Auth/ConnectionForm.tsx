@@ -8,7 +8,7 @@ export function ConnectionForm() {
   const { data, errors, processing, updateEmail, validateAndSubmit } = useConnectionForm();
 
   return (
-    <form onSubmit={(e) => validateAndSubmit(e)} className="w-full flex flex-col pt-4 gap-8">
+    <form onSubmit={(e) => validateAndSubmit(e)} className="w-full flex flex-col pt-4 gap-8" aria-label="form">
       <div>
         <Input
           type="email"
