@@ -2,13 +2,15 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Authentication Routes
-  get "connexion", to: "connections#new", as: :new_connection
-  resource :connection, only: [:create]
-  resource :otp, only: [:create]
-  get "s-inscrire", to: "registrations#new", as: :new_registration
-  resource :registration, only: [:create]
-  get "se-connecter", to: "sessions#new", as: :new_session
-  resources :sessions, only: [:create, :destroy]
+  scope module: "auth" do
+    get "connexion", to: "connections#new", as: :new_connection
+    resource :connection, only: [:create]
+    resource :otp, only: [:create]
+    get "s-inscrire", to: "registrations#new", as: :new_registration
+    resource :registration, only: [:create]
+    get "se-connecter", to: "sessions#new", as: :new_session
+    resources :sessions, only: [:create, :destroy]
+  end
 
   # User Profile and Contributions
   get "utilisateurs/:id", to: "users#show", as: :user
