@@ -18,14 +18,12 @@ module Auth
 
     def create
       user = User.find_by!(email: params[:email])
-      otp = Otp.new(user:, code: params[:code])
+      otp = user.otp
 
-      if otp.valid?
-        user.update!(
-          verified: true,
-          otp_expires_at: DateTime.current # a used otp must be invalidated
-        )
+      if otp.verify?(params[:code])
+        user.update!(verified: true)
         sign_in(user)
+        otp.destroy!
         redirect_to my_profile_path, success: "Vous êtes connecté."
       else
         redirect_to new_session_path, inertia: {errors: otp.errors}

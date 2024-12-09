@@ -19,7 +19,7 @@ module Auth
       user = User.new(user_params)
 
       if user.save
-        Otp.new(user:).send_email
+        UserMailer.with(user:).otp.deliver_later
         redirect_to new_session_path
       else
         redirect_to new_registration_path, inertia: {errors: user.errors}

@@ -14,7 +14,7 @@ module Auth
 
     def create
       if (user = User.find_by(email: params[:email]))
-        Otp.new(user:).send_email(expiration_check: false)
+        UserMailer.with(user:).otp.deliver_later
         redirect_to new_session_path
       else
         redirect_to new_connection_path
