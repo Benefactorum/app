@@ -16,7 +16,7 @@ export function useConnectionForm() {
       return;
     }
 
-    post("/connections", {
+    post("/connection", {
       onSuccess: (page) => {
         if (page.url !== "/connexion") {
           sessionStorage.setItem("email", data.email);

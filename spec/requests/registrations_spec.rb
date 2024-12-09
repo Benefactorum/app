@@ -14,8 +14,8 @@ RSpec.describe "Registrations", type: :request, inertia: true do
     end
   end
 
-  describe "POST /registrations" do
-    subject { post registrations_path, params: params }
+  describe "POST /registration" do
+    subject { post registration_path, params: params }
     let(:params) { {} }
 
     it_behaves_like "only_for_guests"

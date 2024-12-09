@@ -45,7 +45,7 @@ export default function SignUp() {
   }, [countdown]);
 
   function resendCode() {
-    post("/connections/resend_otp", {
+    post("/otp", {
       onSuccess: (page) => {
         if (page.url === "/se-connecter") {
           setData("code", "");

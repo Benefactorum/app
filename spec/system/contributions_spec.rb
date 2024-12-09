@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Contributions", type: :system do
-  describe "#new" do
+  describe "/mes-contributions" do
     before do
       connect_as(create(:user))
     end
