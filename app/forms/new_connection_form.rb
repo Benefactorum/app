@@ -11,7 +11,7 @@ class NewConnectionForm
     return false unless valid?
 
     if (user = User.find_by(email: email))
-      Otp.new(user: user).send_email
+      UserMailer.with(user:).otp.deliver_later unless user.otp.still_valid?
       :existing_user
     else
       :new_user

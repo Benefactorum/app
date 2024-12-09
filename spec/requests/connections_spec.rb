@@ -69,11 +69,10 @@ RSpec.describe "Connection", type: :request, inertia: true do
       end
 
       it "redirects to /se-connecter but does not send OTP email again if OTP is still valid" do
-        otp = user.generate_new_otp!
+        user.otp.create!
         assert_no_emails do
           subject
         end
-        expect(user.reload.otp).to eq(otp)
         expect(response).to redirect_to(new_session_path)
       end
     end

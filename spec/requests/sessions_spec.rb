@@ -43,7 +43,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
 
     context "with valid params" do
       let(:user) { create(:user) }
-      let(:params) { {email: user.email, code: user.otp} }
+      let(:params) { {email: user.email, code: user.otp.code} }
 
       it "signs in the user" do
         subject

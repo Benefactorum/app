@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include User::Otp
+  include Otp
   include User::ProfilePicture
 
   has_secure_password validations: false

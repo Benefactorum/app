@@ -15,14 +15,15 @@ class UserMailer < ApplicationMailer
 
   def otp
     @user = params[:user]
-    @formatted_otp = format_otp(@user.otp)
+    otp = @user.otp.create!
+    @formatted_otp = format(otp.code)
 
     mail(to: @user.email, subject: "Benefactorum : Voici votre code de connexion")
   end
 
   private
 
-  def format_otp(otp)
+  def format(otp)
     otp.chars.each_with_index.map do |char, index|
       if index == 2
         "<span style='letter-spacing: 12px;'>#{char}</span>"

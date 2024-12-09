@@ -5,14 +5,8 @@ module User::Otp
     before_create :assign_otp_secret
   end
 
-  def generate_new_otp!
-    increment!(:otp_counter)
-    update!(otp_expires_at: DateTime.current + 10.minutes)
-    otp
-  end
-
   def otp
-    Otp.new(user: self).to_s
+    @otp ||= Otp.new(self)
   end
 
   private
