@@ -3,11 +3,10 @@ Rails.application.routes.draw do
 
   # Authentication Routes
   get "connexion", to: "connections#new", as: :new_connection
-  resources :connections, only: [:create] do
-    post :resend_otp, on: :collection
-  end
+  resource :connection, only: [:create]
+  resource :otp, only: [:create]
   get "s-inscrire", to: "registrations#new", as: :new_registration
-  resources :registrations, only: [:create]
+  resource :registration, only: [:create]
   get "se-connecter", to: "sessions#new", as: :new_session
   resources :sessions, only: [:create, :destroy]
 

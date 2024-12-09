@@ -97,7 +97,7 @@ describe("useConnectionForm", () => {
     result.current.validateAndSubmit(fakeEvent);
   });
 
-  expect(postMock).toHaveBeenCalledWith("/connections", expect.any(Object));
+  expect(postMock).toHaveBeenCalledWith("/connection", expect.any(Object));
   expect(sessionStorage.getItem("email")).toBe("valid@example.com");
   expect(sessionStorage.getItem("firstName")).toBe(null);
   expect(sessionStorage.getItem("lastName")).toBe(null);

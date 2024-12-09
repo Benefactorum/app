@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Registrations", type: :system do
+RSpec.describe "/s-inscrire", type: :system do
   before do
     # avoid redirection when hitting new_registration_path
     # as it sets up email in the local storage
@@ -9,10 +9,8 @@ RSpec.describe "Registrations", type: :system do
     click_button "Continuer"
   end
 
-  describe "#new" do
-    it "displays page" do
-      # visit new_registration_path
-      expect(page).to have_content("Créez votre compte !")
-    end
+  it "displays page" do
+    # visit new_registration_path
+    expect(page).to have_content("Créez votre compte !")
   end
 end

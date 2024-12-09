@@ -32,7 +32,7 @@ export default function SignUp() {
     e.preventDefault();
     const token = recaptchaRef.current ? await recaptchaRef.current.executeAsync() : "";
     data.recaptcha_token = token || "";
-    post("registrations", {
+    post("registration", {
       onSuccess: (page) => {
         if (page.url === "/se-connecter") {
           sessionStorage.setItem("firstName", data.first_name);

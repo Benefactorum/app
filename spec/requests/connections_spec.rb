@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Connections", type: :request, inertia: true do
+RSpec.describe "Connection", type: :request, inertia: true do
   describe "GET /connexion" do
     subject { get new_connection_path }
 
@@ -12,8 +12,8 @@ RSpec.describe "Connections", type: :request, inertia: true do
     end
   end
 
-  describe "POST /connections" do
-    subject { post connections_path, params: params }
+  describe "POST /connection" do
+    subject { post connection_path, params: params }
     let(:params) { {} }
 
     it_behaves_like "only_for_guests"
@@ -38,9 +38,9 @@ RSpec.describe "Connections", type: :request, inertia: true do
         # can't get this test to pass, but feature works as expected
         it "rate_limit" do
           9.times do
-            post connections_path, params: {email: "unknown@mail.com"}
+            post connection_path, params: {email: "unknown@mail.com"}
           end
-          post connections_path, params: {email: "unknown@mail.com"}
+          post connection_path, params: {email: "unknown@mail.com"}
           expect(response).to redirect_to(new_connection_path)
           follow_redirect!
           expect(inertia.props[:flash]).to be_present
@@ -74,45 +74,6 @@ RSpec.describe "Connections", type: :request, inertia: true do
           subject
         end
         expect(user.reload.otp).to eq(otp)
-        expect(response).to redirect_to(new_session_path)
-      end
-    end
-  end
-
-  describe "POST /connections/resend_otp" do
-    subject { post resend_otp_connections_path, params: params }
-    let(:params) { {} }
-
-    it_behaves_like "only_for_guests"
-
-    context "when user is not found" do
-      let(:params) { {email: "unknown@mail.com"} }
-
-      it "redirects to /connection and does not send email" do
-        assert_no_emails do
-          subject
-        end
-        expect(response).to redirect_to(new_connection_path)
-      end
-    end
-
-    context "when user is known" do
-      let(:user) { create(:user) }
-      let(:params) { {email: user.email} }
-
-      it "sends OTP email and redirects to /se-connecter" do
-        assert_enqueued_emails 1 do
-          subject
-        end
-        expect(response).to redirect_to(new_session_path)
-      end
-
-      it "sends OTP email again even if OTP is still valid and redirects to /se-connecter" do
-        otp = user.generate_new_otp!
-        assert_enqueued_emails 1 do
-          subject
-        end
-        expect(user.reload.otp).not_to eq(otp)
         expect(response).to redirect_to(new_session_path)
       end
     end
