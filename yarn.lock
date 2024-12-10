@@ -1253,22 +1253,21 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.1.tgz#9a96ce501bc62df46c4031fbd970e3cc6b10f07b"
   integrity sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==
 
-"@inertiajs/core@2.0.0-beta.2":
-  version "2.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@inertiajs/core/-/core-2.0.0-beta.2.tgz#27b06ab008aba520277736bf2a8a76654f032ed9"
-  integrity sha512-2fi1YAncmkQAGko+miQanobF5anSO9lBK8i6Fgl0YKDjLQJg7+Sdr/yQIDwJtvFYgOgDbAhIcAawn9usc0/9bQ==
+"@inertiajs/core@2.0.0-beta.3":
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@inertiajs/core/-/core-2.0.0-beta.3.tgz#e11b43551cb47a4ac15e1db8fcb04109ec4c6285"
+  integrity sha512-CjfOdDQ9ifxi0eCLxdPtcACcVBY5JgkH+zBoUQhvNUFOkylk7vDVr8KUOt8LG0XpwX4Hs6c6+sloNPlwFO+nDw==
   dependencies:
     axios "^1.6.0"
     deepmerge "^4.0.0"
-    nprogress "^0.2.0"
     qs "^6.9.0"
 
-"@inertiajs/react@^2.0.0-beta.2":
-  version "2.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@inertiajs/react/-/react-2.0.0-beta.2.tgz#8dffd30e82d306f307b2029d496a188fd226e502"
-  integrity sha512-Zm3hWYvA0GNEHaqt3CPUBNz5NFQnxopOiAdYZ4HKrR/upsptMNcJ+JBQ7r0Wvmk3xaq9cbO3JiH7RvXUDxItxQ==
+"@inertiajs/react@^2.0.0-beta.3":
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@inertiajs/react/-/react-2.0.0-beta.3.tgz#166ad40d26e769a2fa644958ddc65462c7143f82"
+  integrity sha512-AWztx6ARcbTAZcx0zwfIGe8tVs8pcbyzu2E62dx/+j52MClulsebtLaMKpN3T1hhzlpB3I5tO4+tTObbMuQFXA==
   dependencies:
-    "@inertiajs/core" "2.0.0-beta.2"
+    "@inertiajs/core" "2.0.0-beta.3"
     lodash.isequal "^4.5.0"
 
 "@isaacs/cliui@^8.0.2":
@@ -4325,11 +4324,6 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
-
-nprogress@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
-  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
 
 nwsapi@^2.2.12:
   version "2.2.16"
