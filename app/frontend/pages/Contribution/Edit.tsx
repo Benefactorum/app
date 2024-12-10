@@ -1,6 +1,6 @@
-import { Head, Link } from '@inertiajs/react'
-import Form from './Form'
-import { ContributionType } from './types'
+import { Head, Link } from "@inertiajs/react"
+import Form from "./Form"
+import { ContributionType } from "./types"
 
 interface EditProps {
   contribution: ContributionType

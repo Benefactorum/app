@@ -1,8 +1,8 @@
-import { createInertiaApp } from "@inertiajs/react";
-import createServer from "@inertiajs/react/server";
-import ReactDOMServer from "react-dom/server";
-import { createElement } from "react";
-import { getTitle, resolvePage } from "@/entrypoints/inertiaConfig";
+import { createInertiaApp } from "@inertiajs/react"
+import createServer from "@inertiajs/react/server"
+import ReactDOMServer from "react-dom/server"
+import { createElement } from "react"
+import { getTitle, resolvePage } from "@/entrypoints/inertiaConfig"
 
 createServer((page) =>
   createInertiaApp({
@@ -12,4 +12,4 @@ createServer((page) =>
     resolve: resolvePage,
     setup: ({ App, props }) => createElement(App, props),
   })
-);
+)

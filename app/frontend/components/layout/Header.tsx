@@ -1,7 +1,7 @@
-import { Link, router } from "@inertiajs/react";
-import { useState, useEffect, useRef } from "react";
-import { usePage } from "@inertiajs/react";
-import { Spin as Hamburger } from "hamburger-react";
+import { Link, router } from "@inertiajs/react"
+import { useState, useEffect, useRef } from "react"
+import { usePage } from "@inertiajs/react"
+import { Spin as Hamburger } from "hamburger-react"
 import {
   Search,
   CirclePlus,
@@ -11,23 +11,23 @@ import {
   HandMetal,
   LogIn,
   LogOut,
-} from "lucide-react";
+} from "lucide-react"
 
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+} from "@/components/ui/navigation-menu"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
 
-import Logo from "/assets/logo.svg";
+import Logo from "/assets/logo.svg"
 
 const subNavLinks = [
   {
@@ -40,27 +40,23 @@ const subNavLinks = [
     href: "/co-fondateurs",
     icon: Bird,
   },
-];
+]
 
-const excludedPatterns = [
-  /^\/connexion$/,
-  /^\/se-connecter$/,
-  /^\/s-inscrire$/,
-];
+const excludedPatterns = [/^\/connexion$/, /^\/se-connecter$/, /^\/s-inscrire$/]
 
 export default function Header() {
-  const [isOpen, setOpen] = useState(false);
-  const headerRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setOpen] = useState(false)
+  const headerRef = useRef<HTMLDivElement>(null)
 
-  const { url } = usePage();
-  const isExcluded = excludedPatterns.some((pattern) => pattern.test(url));
+  const { url } = usePage()
+  const isExcluded = excludedPatterns.some((pattern) => pattern.test(url))
 
-  const user = usePage().props.currentUser;
-  const sessionId = usePage().props.sessionId;
+  const user = usePage().props.currentUser
+  const sessionId = usePage().props.sessionId
 
   const handleLinkClick = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   // Handle click outside
   useEffect(() => {
@@ -69,20 +65,20 @@ export default function Header() {
         headerRef.current &&
         !headerRef.current.contains(event.target as Node)
       ) {
-        setOpen(false);
+        setOpen(false)
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside)
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   const logOut = () => {
-    router.delete(`/sessions/${sessionId}`);
-  };
+    router.delete(`/sessions/${sessionId}`)
+  }
 
   return (
     <header ref={headerRef} className="bg-white py-2 border-b">
@@ -249,8 +245,9 @@ export default function Header() {
       {/* Mobile Dropdown inside the header */}
       <div
         id="mobileDropdown"
-        className={`min-[1100px]:hidden transition-all duration-700 ease-in-out overflow-hidden ${isOpen ? "max-h-96" : "max-h-0"
-          } w-max mx-auto`}
+        className={`min-[1100px]:hidden transition-all duration-700 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-96" : "max-h-0"
+        } w-max mx-auto`}
       >
         <ul className="flex flex-col mt-4">
           <li>
@@ -349,5 +346,5 @@ export default function Header() {
         </ul>
       </div>
     </header>
-  );
+  )
 }

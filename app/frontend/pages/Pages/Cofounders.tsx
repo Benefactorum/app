@@ -1,7 +1,7 @@
-import { Head } from "@inertiajs/react";
-import HeroSection from "@/components/cofounders/HeroSection";
-import Members from "@/components/cofounders/Members";
-import QuoteSection from "@/components/reusable/QuoteSection";
+import { Head } from "@inertiajs/react"
+import HeroSection from "@/components/cofounders/HeroSection"
+import Members from "@/components/cofounders/Members"
+import QuoteSection from "@/components/reusable/QuoteSection"
 
 export default function AboutUs() {
   return (
@@ -18,5 +18,5 @@ export default function AboutUs() {
         author={<span>Anne Frank</span>}
       />
     </>
-  );
+  )
 }

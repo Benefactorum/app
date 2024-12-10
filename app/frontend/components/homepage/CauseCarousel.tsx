@@ -1,32 +1,32 @@
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/react"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/ui/carousel"
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
-import Environment from "/assets/images/homepage/causes/environment.webp";
-import ChildCare from "/assets/images/homepage/causes/childcare.webp";
-import Health from "/assets/images/homepage/causes/health.webp";
-import Poverty from "/assets/images/homepage/causes/poverty.webp";
-import Education from "/assets/images/homepage/causes/education.webp";
-import AnimalRights from "/assets/images/homepage/causes/animal-rights.webp";
-import Research from "/assets/images/homepage/causes/research.webp";
-import ArtsCulture from "/assets/images/homepage/causes/arts-culture.webp";
-import InternationalAid from "/assets/images/homepage/causes/international-aid.webp";
-import Disability from "/assets/images/homepage/causes/disability.webp";
-import SocialJustice from "/assets/images/homepage/causes/social-justice.webp";
-import Beliefs from "/assets/images/homepage/causes/beliefs.webp";
-import Others from "/assets/images/homepage/causes/others.webp";
+import Environment from "/assets/images/homepage/causes/environment.webp"
+import ChildCare from "/assets/images/homepage/causes/childcare.webp"
+import Health from "/assets/images/homepage/causes/health.webp"
+import Poverty from "/assets/images/homepage/causes/poverty.webp"
+import Education from "/assets/images/homepage/causes/education.webp"
+import AnimalRights from "/assets/images/homepage/causes/animal-rights.webp"
+import Research from "/assets/images/homepage/causes/research.webp"
+import ArtsCulture from "/assets/images/homepage/causes/arts-culture.webp"
+import InternationalAid from "/assets/images/homepage/causes/international-aid.webp"
+import Disability from "/assets/images/homepage/causes/disability.webp"
+import SocialJustice from "/assets/images/homepage/causes/social-justice.webp"
+import Beliefs from "/assets/images/homepage/causes/beliefs.webp"
+import Others from "/assets/images/homepage/causes/others.webp"
 
 const causes = [
   {
@@ -116,7 +116,7 @@ const causes = [
     alt: "Un tas de pièces de puzzle mélangées, symbolisant la diversité, le défi de reconstituer un tout ou la recherche de solutions.",
     description: "Causes diverses et variées.",
   },
-];
+]
 
 export default function CharityCarousel() {
   return (
@@ -180,5 +180,5 @@ export default function CharityCarousel() {
         <CarouselNext variant="secondary" className="hidden min-[432px]:flex" />
       </Carousel>
     </div>
-  );
+  )
 }

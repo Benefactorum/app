@@ -1,8 +1,8 @@
-import BenefactorumLogo from "/assets/images/aboutUs/benefactorum.svg";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import BenefactorumLogo from "/assets/images/aboutUs/benefactorum.svg"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 const imageDescription =
-  "Logo de Benefactorum, représentant deux mains qui se donnent, dans un labyrinthe";
+  "Logo de Benefactorum, représentant deux mains qui se donnent, dans un labyrinthe"
 
 export default function HeroSection() {
   return (
@@ -42,5 +42,5 @@ export default function HeroSection() {
         </div>
       </div>
     </div>
-  );
+  )
 }

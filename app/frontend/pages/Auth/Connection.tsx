@@ -1,8 +1,8 @@
-import { Head } from "@inertiajs/react";
-import { ConnectionForm } from './ConnectionForm';
-import QuoteSection from "@/components/reusable/QuoteSection";
+import { Head } from "@inertiajs/react"
+import { ConnectionForm } from "./ConnectionForm"
+import QuoteSection from "@/components/reusable/QuoteSection"
 // @ts-ignore
-import Superwoman from "/assets/images/auth/superwoman.svg?react";
+import Superwoman from "/assets/images/auth/superwoman.svg?react"
 
 export default function Connection() {
   return (
@@ -21,7 +21,7 @@ export default function Connection() {
               Nous vous aiderons à en créer un si ce n'est pas le cas.
             </span>
           </p>
-          <ConnectionForm/>
+          <ConnectionForm />
         </div>
       </div>
       <QuoteSection
@@ -34,5 +34,5 @@ export default function Connection() {
         }
       />
     </>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import Member from "/assets/images/joinUs/adherent.webp";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
-import { Vote } from "lucide-react";
+import Member from "/assets/images/joinUs/adherent.webp"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
+import { Vote } from "lucide-react"
 
 const imageDescription =
-  "Icône représentant une main insérant un bulletin de vote dans une urne, entourée de figures humaines levant la main, symbolisant la participation démocratique, le vote et l'engagement citoyen.";
+  "Icône représentant une main insérant un bulletin de vote dans une urne, entourée de figures humaines levant la main, symbolisant la participation démocratique, le vote et l'engagement citoyen."
 
 export default function Together() {
   return (
@@ -65,5 +65,5 @@ export default function Together() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import Moderator from "/assets/images/joinUs/moderateur.webp";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
-import { MonitorCheck } from "lucide-react";
+import Moderator from "/assets/images/joinUs/moderateur.webp"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
+import { MonitorCheck } from "lucide-react"
 
 const imageDescription =
-  "Icône représentant un écran d'ordinateur avec une interface de gestion et un utilisateur en bas, symbolisant le rôle de modération, de contrôle et d'administration en ligne.";
+  "Icône représentant un écran d'ordinateur avec une interface de gestion et un utilisateur en bas, symbolisant le rôle de modération, de contrôle et d'administration en ligne."
 
 export default function OurMission() {
   return (
@@ -63,5 +63,5 @@ export default function OurMission() {
         </div>
       </div>
     </div>
-  );
+  )
 }

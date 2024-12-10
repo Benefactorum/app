@@ -1,21 +1,21 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Search } from "lucide-react"
 
 // import { router } from "@inertiajs/react";
-import PovertyImage from "/assets/images/homepage/hero_section/home-hero-left-top.webp";
-import EcologyImage from "/assets/images/homepage/hero_section/home-hero-left-middle.webp";
-import CommunityImage from "/assets/images/homepage/hero_section/home-hero-left-bottom.webp";
-import AnimalImage from "/assets/images/homepage/hero_section/home-hero-right-top.webp";
-import MedicalImage from "/assets/images/homepage/hero_section/home-hero-right-middle.webp";
-import ChildrenImage from "/assets/images/homepage/hero_section/home-hero-right-bottom.webp";
+import PovertyImage from "/assets/images/homepage/hero_section/home-hero-left-top.webp"
+import EcologyImage from "/assets/images/homepage/hero_section/home-hero-left-middle.webp"
+import CommunityImage from "/assets/images/homepage/hero_section/home-hero-left-bottom.webp"
+import AnimalImage from "/assets/images/homepage/hero_section/home-hero-right-top.webp"
+import MedicalImage from "/assets/images/homepage/hero_section/home-hero-right-middle.webp"
+import ChildrenImage from "/assets/images/homepage/hero_section/home-hero-right-bottom.webp"
 
 export default function HeroSection() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const inputValue = (form.elements[0] as HTMLInputElement).value;
-    alert(inputValue);
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+    const inputValue = (form.elements[0] as HTMLInputElement).value
+    alert(inputValue)
     // router.get("", inputValue.value);
   }
 
@@ -74,5 +74,5 @@ export default function HeroSection() {
         </form>
       </div>
     </div>
-  );
+  )
 }

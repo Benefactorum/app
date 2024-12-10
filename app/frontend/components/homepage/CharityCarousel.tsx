@@ -1,25 +1,25 @@
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/react"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 
-import ActionContreLaFaim from "/assets/images/homepage/logos/action-contre-la-faim.png";
-import Adie from "/assets/images/homepage/logos/adie.png";
-import AfmTelethon from "/assets/images/homepage/logos/afm-telethon.png";
-import AideAuxJeunesDiabetiques from "/assets/images/homepage/logos/aide-aux-jeunes-diabetiques.png";
-import Boomforest from "/assets/images/homepage/logos/boomforest.png";
-import CroixRouge from "/assets/images/homepage/logos/croix-rouge.png";
-import EmmausFrance from "/assets/images/homepage/logos/emmaus-france.png";
-import Greenpeace from "/assets/images/homepage/logos/greenpeace.png";
-import Msf from "/assets/images/homepage/logos/msf.png";
-import RestosDuCoeur from "/assets/images/homepage/logos/restos-du-coeur.svg";
-import SecoursCatholique from "/assets/images/homepage/logos/secours-catholique.png";
-import Snc from "/assets/images/homepage/logos/snc.svg";
+import ActionContreLaFaim from "/assets/images/homepage/logos/action-contre-la-faim.png"
+import Adie from "/assets/images/homepage/logos/adie.png"
+import AfmTelethon from "/assets/images/homepage/logos/afm-telethon.png"
+import AideAuxJeunesDiabetiques from "/assets/images/homepage/logos/aide-aux-jeunes-diabetiques.png"
+import Boomforest from "/assets/images/homepage/logos/boomforest.png"
+import CroixRouge from "/assets/images/homepage/logos/croix-rouge.png"
+import EmmausFrance from "/assets/images/homepage/logos/emmaus-france.png"
+import Greenpeace from "/assets/images/homepage/logos/greenpeace.png"
+import Msf from "/assets/images/homepage/logos/msf.png"
+import RestosDuCoeur from "/assets/images/homepage/logos/restos-du-coeur.svg"
+import SecoursCatholique from "/assets/images/homepage/logos/secours-catholique.png"
+import Snc from "/assets/images/homepage/logos/snc.svg"
 
 const logos = [
   { src: ActionContreLaFaim, alt: "Action Contre La Faim" },
@@ -34,7 +34,7 @@ const logos = [
   { src: RestosDuCoeur, alt: "Restos Du Coeur" },
   { src: SecoursCatholique, alt: "Secours Catholique" },
   { src: Snc, alt: "SNC" },
-];
+]
 
 export default function CharityCarousel() {
   return (
@@ -69,5 +69,5 @@ export default function CharityCarousel() {
         ))}
       </CarouselContent>
     </Carousel>
-  );
+  )
 }

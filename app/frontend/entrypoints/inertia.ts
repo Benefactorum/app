@@ -1,7 +1,7 @@
-import { createInertiaApp } from "@inertiajs/react";
-import { createElement } from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
-import { getTitle, resolvePage } from "./inertiaConfig";
+import { createInertiaApp } from "@inertiajs/react"
+import { createElement } from "react"
+import { createRoot, hydrateRoot } from "react-dom/client"
+import { getTitle, resolvePage } from "./inertiaConfig"
 
 createInertiaApp({
   title: getTitle,
@@ -13,17 +13,17 @@ createInertiaApp({
   setup({ el, App, props }) {
     if (el) {
       if (el.dataset.serverRendered === "true") {
-        hydrateRoot(el, createElement(App, props));
+        hydrateRoot(el, createElement(App, props))
       } else {
-        const root = createRoot(el);
-        root.render(createElement(App, props));
+        const root = createRoot(el)
+        root.render(createElement(App, props))
       }
     } else {
       console.error(
         "Missing root element.\n\n" +
-        "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
-        "Consider moving <%= vite_typescript_tag 'inertia' %> to the Inertia-specific layout instead."
-      );
+          "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
+          "Consider moving <%= vite_typescript_tag 'inertia' %> to the Inertia-specific layout instead."
+      )
     }
   },
-});
+})

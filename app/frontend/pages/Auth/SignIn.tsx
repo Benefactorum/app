@@ -1,64 +1,66 @@
-import { Head, useForm, router } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { Head, useForm, router } from "@inertiajs/react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button";
-import { StepForward, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button"
+import { StepForward, AlertCircle } from "lucide-react"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
+} from "@/components/ui/input-otp"
+import { REGEXP_ONLY_DIGITS } from "input-otp"
 
-import QuoteSection from "@/components/reusable/QuoteSection";
+import QuoteSection from "@/components/reusable/QuoteSection"
 
 export default function SignUp() {
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(60)
   const { data, setData, post, processing, errors } = useForm({
     email: sessionStorage.getItem("email"),
     code: "",
-  });
+  })
 
   useEffect(() => {
     if (!data.email) {
-      router.get("/connexion");
+      router.get("/connexion")
     }
-  }, [data.email]);
+  }, [data.email])
 
   useEffect(() => {
     if (
-      errors.code?.includes("Votre code de connexion a expiré. Demandez-en un nouveau.")
+      errors.code?.includes(
+        "Votre code de connexion a expiré. Demandez-en un nouveau."
+      )
     ) {
-      setCountdown(0);
+      setCountdown(0)
     }
-  }, [errors.code]);
+  }, [errors.code])
 
   useEffect(() => {
     if (countdown > 0) {
       const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
+        setCountdown((prev) => prev - 1)
+      }, 1000)
+      return () => clearInterval(timer)
     }
-  }, [countdown]);
+  }, [countdown])
 
   function resendCode() {
     post("/otp", {
       onSuccess: (page) => {
         if (page.url === "/se-connecter") {
-          setData("code", "");
-          setCountdown(60);
-          toast.success(`Un nouveau code a été envoyé à ${data.email}`);
+          setData("code", "")
+          setCountdown(60)
+          toast.success(`Un nouveau code a été envoyé à ${data.email}`)
         }
       },
-    });
+    })
   }
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    post("/sessions");
+    e.preventDefault()
+    post("/sessions")
   }
 
   return (
@@ -88,8 +90,8 @@ export default function SignUp() {
                 maxLength={6}
                 value={data.code}
                 onChange={(value) => {
-                  setData("code", value);
-                  errors.code = "";
+                  setData("code", value)
+                  errors.code = ""
                 }}
                 pattern={REGEXP_ONLY_DIGITS}
                 containerClassName="mx-auto"
@@ -151,5 +153,5 @@ export default function SignUp() {
         author={<span>Elizabeth Taylor</span>}
       />
     </>
-  );
+  )
 }

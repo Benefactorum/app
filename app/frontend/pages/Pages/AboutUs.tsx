@@ -1,9 +1,9 @@
-import { Head } from "@inertiajs/react";
-import HeroSection from "@/components/aboutUs/HeroSection";
-import OurMission from "@/components/aboutUs/OurMission";
-import Together from "@/components/aboutUs/Together";
-import NonProfit from "@/components/aboutUs/NonProfit";
-import QuoteSection from "@/components/reusable/QuoteSection";
+import { Head } from "@inertiajs/react"
+import HeroSection from "@/components/aboutUs/HeroSection"
+import OurMission from "@/components/aboutUs/OurMission"
+import Together from "@/components/aboutUs/Together"
+import NonProfit from "@/components/aboutUs/NonProfit"
+import QuoteSection from "@/components/reusable/QuoteSection"
 
 export default function AboutUs() {
   return (
@@ -27,5 +27,5 @@ export default function AboutUs() {
         author={<span>Albert Schweitzer</span>}
       />
     </>
-  );
+  )
 }

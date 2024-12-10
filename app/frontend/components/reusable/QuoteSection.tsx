@@ -1,31 +1,27 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "@inertiajs/react";
+import { Button } from "@/components/ui/button"
+import { Link } from "@inertiajs/react"
 // @ts-ignore
-import LeftQuote from "/assets/images/homepage/quote/left-quote.svg?react";
+import LeftQuote from "/assets/images/homepage/quote/left-quote.svg?react"
 // @ts-ignore
-import RightQuote from "/assets/images/homepage/quote/right-quote.svg?react";
-import { ReactElement, FC } from "react";
-import { usePage } from "@inertiajs/react";
+import RightQuote from "/assets/images/homepage/quote/right-quote.svg?react"
+import { ReactElement, FC } from "react"
+import { usePage } from "@inertiajs/react"
 
 interface QuoteSectionProps {
-  quote: ReactElement;
-  author: ReactElement;
-  white?: boolean;
+  quote: ReactElement
+  author: ReactElement
+  white?: boolean
 }
 
-const excludedPatterns = [
-  /^\/connexion$/,
-  /^\/se-connecter$/,
-  /^\/s-inscrire$/,
-];
+const excludedPatterns = [/^\/connexion$/, /^\/se-connecter$/, /^\/s-inscrire$/]
 
 const QuoteSection: FC<QuoteSectionProps> = ({
   quote,
   author,
   white = true,
 }) => {
-  const { url } = usePage();
-  const isExcluded = excludedPatterns.some((pattern) => pattern.test(url));
+  const { url } = usePage()
+  const isExcluded = excludedPatterns.some((pattern) => pattern.test(url))
 
   return (
     <div
@@ -50,7 +46,7 @@ const QuoteSection: FC<QuoteSectionProps> = ({
         </Link>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default QuoteSection;
+export default QuoteSection

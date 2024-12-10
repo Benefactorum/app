@@ -1,4 +1,4 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react"
 
 export function InputError({ children }) {
   return (
@@ -6,5 +6,5 @@ export function InputError({ children }) {
       <AlertCircle className="w-4 h-4 mr-1" />
       {children}
     </div>
-  );
+  )
 }

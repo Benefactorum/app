@@ -1,9 +1,9 @@
-import Maximilien from "/assets/images/cofounders/Maximilien-Pressensé.webp";
-import Camille from "/assets/images/cofounders/Camille-Pressensé.webp";
-import Pierre from "/assets/images/cofounders/Pierre-Chauty.webp";
-import Thomas from "/assets/images/cofounders/Thomas-Garnier.webp";
+import Maximilien from "/assets/images/cofounders/Maximilien-Pressensé.webp"
+import Camille from "/assets/images/cofounders/Camille-Pressensé.webp"
+import Pierre from "/assets/images/cofounders/Pierre-Chauty.webp"
+import Thomas from "/assets/images/cofounders/Thomas-Garnier.webp"
 // @ts-ignore
-import Linkedin from "/assets/icons/linkedin.svg?react";
+import Linkedin from "/assets/icons/linkedin.svg?react"
 
 const cofounders = [
   {
@@ -31,7 +31,7 @@ const cofounders = [
     description: "Co-fondateur et administrateur de Benefactorum.",
     linkedin: "https://www.linkedin.com/in/pierre-chauty/",
   },
-];
+]
 
 export default function Members() {
   return (
@@ -65,5 +65,5 @@ export default function Members() {
         ))}
       </div>
     </div>
-  );
+  )
 }
