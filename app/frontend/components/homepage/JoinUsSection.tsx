@@ -1,10 +1,10 @@
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Altogether from "/assets/images/homepage/altogether.webp";
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import Altogether from "/assets/images/homepage/altogether.webp"
 
 const imageDescription =
-  "Illustration de personnes de divers horizons unies pour le bien commun, participant à des activités simples comme planter des arbres, partager de la nourriture et interagir avec bienveillance, symbolisant la solidarité et l'engagement communautaire";
+  "Illustration de personnes de divers horizons unies pour le bien commun, participant à des activités simples comme planter des arbres, partager de la nourriture et interagir avec bienveillance, symbolisant la solidarité et l'engagement communautaire"
 
 export default function JoinUs() {
   return (
@@ -66,5 +66,5 @@ export default function JoinUs() {
         </div>
       </div>
     </div>
-  );
+  )
 }

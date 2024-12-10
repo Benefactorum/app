@@ -1,10 +1,10 @@
-import TogethernessLogo from "/assets/images/aboutUs/togetherness.svg";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
+import TogethernessLogo from "/assets/images/aboutUs/togetherness.svg"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
 
 const imageDescription =
-  "Icône représentant deux silhouettes féminines se tenant côte à côte, symbolisant la solidarité, l'unité et le soutien mutuel";
+  "Icône représentant deux silhouettes féminines se tenant côte à côte, symbolisant la solidarité, l'unité et le soutien mutuel"
 
 export default function Together() {
   return (
@@ -62,5 +62,5 @@ export default function Together() {
         </div>
       </div>
     </div>
-  );
+  )
 }

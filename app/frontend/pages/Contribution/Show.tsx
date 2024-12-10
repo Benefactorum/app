@@ -1,6 +1,6 @@
-import { Head, Link } from '@inertiajs/react'
-import Contribution from './Contribution'
-import { ContributionType } from './types'
+import { Head, Link } from "@inertiajs/react"
+import Contribution from "./Contribution"
+import { ContributionType } from "./types"
 
 interface ShowProps {
   contribution: ContributionType
@@ -20,7 +20,9 @@ export default function Show({ contribution, flash }: ShowProps) {
             </p>
           )}
 
-          <h1 className="font-bold text-4xl">Contribution #{contribution.id}</h1>
+          <h1 className="font-bold text-4xl">
+            Contribution #{contribution.id}
+          </h1>
 
           <Contribution contribution={contribution} />
 

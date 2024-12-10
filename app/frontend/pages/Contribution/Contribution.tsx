@@ -1,4 +1,4 @@
-import { ContributionType } from './types'
+import { ContributionType } from "./types"
 
 interface ContributionProps {
   contribution: ContributionType

@@ -9,5 +9,5 @@ export default function HeroSection() {
         différentes manières d’apporter votre pierre à l’édifice.
       </h2>
     </div>
-  );
+  )
 }

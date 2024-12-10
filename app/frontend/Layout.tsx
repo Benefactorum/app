@@ -1,16 +1,16 @@
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { ReactElement, useEffect } from "react";
-import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
+import { ReactElement, useEffect } from "react"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/AppSidebar"
 
 type LayoutProps = {
-  children: ReactElement;
-  showSidebar?: boolean;
-  flash?: { [key: string]: string };
-};
+  children: ReactElement
+  showSidebar?: boolean
+  flash?: { [key: string]: string }
+}
 
 const flashTypes: Array<keyof typeof toast> = [
   "message",
@@ -18,16 +18,20 @@ const flashTypes: Array<keyof typeof toast> = [
   "info",
   "warning",
   "error",
-];
+]
 
-export default function Layout({ children, showSidebar = false, flash = {} }: LayoutProps) {
+export default function Layout({
+  children,
+  showSidebar = false,
+  flash = {},
+}: LayoutProps) {
   useEffect(() => {
     flashTypes.forEach((type) => {
       if (flash[type]) {
-        toast[type](flash[type] as any);
+        toast[type](flash[type] as any)
       }
-    });
-  }, [flash]);
+    })
+  }, [flash])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -46,5 +50,5 @@ export default function Layout({ children, showSidebar = false, flash = {} }: La
       )}
       <Footer />
     </div>
-  );
+  )
 }

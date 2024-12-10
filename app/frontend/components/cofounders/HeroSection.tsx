@@ -1,8 +1,8 @@
-import Colibri from "/assets/images/cofounders/colibri.webp";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Colibri from "/assets/images/cofounders/colibri.webp"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 const imageDescription =
-  "Illustration minimaliste du conte du colibri tentant d'éteindre un feu de forêt en transportant une goutte d'eau, symbolisant l'effort individuel et l'engagement face aux grands défis, même si le geste peut sembler insignifiant.";
+  "Illustration minimaliste du conte du colibri tentant d'éteindre un feu de forêt en transportant une goutte d'eau, symbolisant l'effort individuel et l'engagement face aux grands défis, même si le geste peut sembler insignifiant."
 
 export default function HeroSection() {
   return (
@@ -39,5 +39,5 @@ export default function HeroSection() {
         </div>
       </div>
     </div>
-  );
+  )
 }

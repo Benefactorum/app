@@ -1,11 +1,11 @@
-import ContribOSS from "/assets/images/joinUs/contrib-oss.webp";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
-import { SearchCode } from "lucide-react";
+import ContribOSS from "/assets/images/joinUs/contrib-oss.webp"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
+import { SearchCode } from "lucide-react"
 
 const imageDescription =
-  "Icône illustrant un projet open source sur GitHub, montrant des développeurs collaborant autour de lignes de code, symbolisant le travail collectif, le partage des connaissances et l'innovation ouverte dans la communauté technologique.";
+  "Icône illustrant un projet open source sur GitHub, montrant des développeurs collaborant autour de lignes de code, symbolisant le travail collectif, le partage des connaissances et l'innovation ouverte dans la communauté technologique."
 
 export default function Together() {
   return (
@@ -62,5 +62,5 @@ export default function Together() {
         </div>
       </div>
     </div>
-  );
+  )
 }

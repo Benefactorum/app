@@ -3,5 +3,4 @@ export interface CurrentUserType {
   first_name: string
 }
 
-export type ProfilePictureUrlType = string | null;
-
+export type ProfilePictureUrlType = string | null

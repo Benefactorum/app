@@ -1,25 +1,25 @@
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/react"
 
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { buttonVariants } from "@/components/ui/button";
+} from "@/components/ui/navigation-menu"
+import { buttonVariants } from "@/components/ui/button"
 
 // @ts-ignore
-import SearchIcon from "/assets/icons/search.svg?react";
+import SearchIcon from "/assets/icons/search.svg?react"
 // @ts-ignore
-import FistIcon from "@/assets/icons/fist.svg?react";
+import FistIcon from "@/assets/icons/fist.svg?react"
 // @ts-ignore
-import Facebook from "/assets/icons/facebook.svg?react";
+import Facebook from "/assets/icons/facebook.svg?react"
 // @ts-ignore
-import Instagram from "/assets/icons/instagram.svg?react";
+import Instagram from "/assets/icons/instagram.svg?react"
 // @ts-ignore
-import Github from "/assets/icons/github.svg?react";
+import Github from "/assets/icons/github.svg?react"
 // @ts-ignore
-import Linkedin from "/assets/icons/linkedin.svg?react";
+import Linkedin from "/assets/icons/linkedin.svg?react"
 
 const navLinks = [
   {
@@ -32,7 +32,7 @@ const navLinks = [
     href: "/qui-nous-sommes",
     icon: FistIcon,
   },
-];
+]
 
 const socialLinks = [
   {
@@ -51,7 +51,7 @@ const socialLinks = [
     href: "https://www.linkedin.com/company/benefactorum/",
     icon: Linkedin,
   },
-];
+]
 
 export default function Footer() {
   return (
@@ -111,5 +111,5 @@ export default function Footer() {
         </Link>
       </p>
     </footer>
-  );
+  )
 }

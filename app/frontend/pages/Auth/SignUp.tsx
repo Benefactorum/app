@@ -1,14 +1,14 @@
-import { Head, Link, useForm, router } from "@inertiajs/react";
-import { useEffect, useRef } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { StepForward, AlertCircle } from "lucide-react";
-import ReCAPTCHA from 'react-google-recaptcha';
-import QuoteSection from "@/components/reusable/QuoteSection";
+import { Head, Link, useForm, router } from "@inertiajs/react"
+import { useEffect, useRef } from "react"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button"
+import { StepForward, AlertCircle } from "lucide-react"
+import ReCAPTCHA from "react-google-recaptcha"
+import QuoteSection from "@/components/reusable/QuoteSection"
 // @ts-ignore
-import Vomi from "/assets/images/auth/vomi.svg?react";
+import Vomi from "/assets/images/auth/vomi.svg?react"
 
 export default function SignUp() {
   const { data, setData, post, processing, errors } = useForm({
@@ -18,30 +18,32 @@ export default function SignUp() {
     accepts_conditions: !!sessionStorage.getItem("acceptsConditions") || false,
     terms_and_privacy_accepted_at: "",
     recaptcha_token: "",
-  });
-  const signUpBlocked = !!sessionStorage.getItem("signUpBlocked") || false;
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  })
+  const signUpBlocked = !!sessionStorage.getItem("signUpBlocked") || false
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   useEffect(() => {
     if (!data.email) {
-      router.get("/connexion");
+      router.get("/connexion")
     }
-  }, [data.email]);
+  }, [data.email])
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const token = recaptchaRef.current ? await recaptchaRef.current.executeAsync() : "";
-    data.recaptcha_token = token || "";
+    e.preventDefault()
+    const token = recaptchaRef.current
+      ? await recaptchaRef.current.executeAsync()
+      : ""
+    data.recaptcha_token = token || ""
     post("registration", {
       onSuccess: (page) => {
         if (page.url === "/se-connecter") {
-          sessionStorage.setItem("firstName", data.first_name);
-          sessionStorage.setItem("lastName", data.last_name);
-          sessionStorage.setItem("signUpBlocked", "true");
-          sessionStorage.setItem("acceptsConditions", "true");
+          sessionStorage.setItem("firstName", data.first_name)
+          sessionStorage.setItem("lastName", data.last_name)
+          sessionStorage.setItem("signUpBlocked", "true")
+          sessionStorage.setItem("acceptsConditions", "true")
         }
-      }
-    });
+      },
+    })
   }
 
   return (
@@ -70,8 +72,8 @@ export default function SignUp() {
                 disabled={signUpBlocked === true}
                 value={data.first_name}
                 onChange={(e) => {
-                  setData("first_name", e.target.value);
-                  errors.first_name = "";
+                  setData("first_name", e.target.value)
+                  errors.first_name = ""
                 }}
                 placeholder="Alain"
                 className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errors.first_name ? "border-red-600" : ""}`}
@@ -92,8 +94,8 @@ export default function SignUp() {
                 disabled={signUpBlocked === true}
                 value={data.last_name}
                 onChange={(e) => {
-                  setData("last_name", e.target.value);
-                  errors.last_name = "";
+                  setData("last_name", e.target.value)
+                  errors.last_name = ""
                 }}
                 placeholder="Connu"
                 className={`bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errors.last_name ? "border-red-600" : ""}`}
@@ -113,8 +115,8 @@ export default function SignUp() {
                   disabled={signUpBlocked === true}
                   checked={data.accepts_conditions}
                   onCheckedChange={(checked) => {
-                    setData("accepts_conditions", !!checked);
-                    errors.terms_and_privacy_accepted_at = "";
+                    setData("accepts_conditions", !!checked)
+                    errors.terms_and_privacy_accepted_at = ""
                   }}
                   className={`${errors.terms_and_privacy_accepted_at ? "border-red-600" : ""}`}
                 />
@@ -182,5 +184,5 @@ export default function SignUp() {
         }
       />
     </>
-  );
+  )
 }

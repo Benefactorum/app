@@ -30,7 +30,7 @@ const items = [
 ]
 
 export function AppSidebar() {
-  const { url } = usePage();
+  const { url } = usePage()
 
   return (
     <Sidebar>
@@ -41,9 +41,14 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className={url === item.url
-                      ? " bg-secondary"
-                      : " hover:bg-secondary/50"}>
+                    <Link
+                      href={item.url}
+                      className={
+                        url === item.url
+                          ? " bg-secondary"
+                          : " hover:bg-secondary/50"
+                      }
+                    >
                       <item.icon />
                       <span className="font-semibold">{item.title}</span>
                     </Link>

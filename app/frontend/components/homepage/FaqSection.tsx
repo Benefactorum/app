@@ -1,10 +1,10 @@
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Faq from "/assets/images/homepage/faq.webp";
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import Faq from "/assets/images/homepage/faq.webp"
 
 const imageDescription =
-  "Illustration d'un livre ouvert avec un cœur au centre et une loupe à côté, symbolisant le guide du donateur";
+  "Illustration d'un livre ouvert avec un cœur au centre et une loupe à côté, symbolisant le guide du donateur"
 
 export default function JoinUs() {
   return (
@@ -62,5 +62,5 @@ export default function JoinUs() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,9 +1,11 @@
-import { useForm } from '@inertiajs/react'
-import { FormEvent } from 'react'
-import { ContributionFormType, ContributionType } from './types'
+import { useForm } from "@inertiajs/react"
+import { FormEvent } from "react"
+import { ContributionFormType, ContributionType } from "./types"
 
 // Temporary fix for InertiaFormProps not being exported from @inertiajs/react
-type InertiaFormProps<TForm extends Record<string, any>> = ReturnType<typeof useForm<TForm>>
+type InertiaFormProps<TForm extends Record<string, any>> = ReturnType<
+  typeof useForm<TForm>
+>
 
 interface FormProps {
   contribution: ContributionType
@@ -11,7 +13,11 @@ interface FormProps {
   submitText: string
 }
 
-export default function Form({ contribution, onSubmit, submitText }: FormProps) {
+export default function Form({
+  contribution,
+  onSubmit,
+  submitText,
+}: FormProps) {
   const form = useForm<ContributionFormType>({
     user_id: contribution.user_id,
     status: contribution.status,
@@ -34,7 +40,7 @@ export default function Form({ contribution, onSubmit, submitText }: FormProps) 
           id="user"
           value={data.user_id}
           className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData('user_id', e.target.value)}
+          onChange={(e) => setData("user_id", e.target.value)}
         />
         {errors.user && (
           <div className="text-red-500 px-3 py-2 font-medium">
@@ -51,7 +57,7 @@ export default function Form({ contribution, onSubmit, submitText }: FormProps) 
           id="status"
           value={data.status}
           className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData('status', parseInt(e.target.value))}
+          onChange={(e) => setData("status", parseInt(e.target.value))}
         />
         {errors.status && (
           <div className="text-red-500 px-3 py-2 font-medium">
@@ -68,7 +74,7 @@ export default function Form({ contribution, onSubmit, submitText }: FormProps) 
           id="contributable"
           value={data.contributable_id}
           className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData('contributable_id', e.target.value)}
+          onChange={(e) => setData("contributable_id", e.target.value)}
         />
         {errors.contributable && (
           <div className="text-red-500 px-3 py-2 font-medium">

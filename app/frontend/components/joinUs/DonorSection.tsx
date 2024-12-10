@@ -1,11 +1,11 @@
-import Donor from "/assets/images/joinUs/donor.webp";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
-import { HandHeart } from "lucide-react";
+import Donor from "/assets/images/joinUs/donor.webp"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
+import { HandHeart } from "lucide-react"
 
 const imageDescription =
-  "Icône d'une main déposant une pièce dans une boîte de don ornée d'un cœur, symbolisant la générosité, le soutien aux causes sociales et l'engagement dans les actions caritatives.";
+  "Icône d'une main déposant une pièce dans une boîte de don ornée d'un cœur, symbolisant la générosité, le soutien aux causes sociales et l'engagement dans les actions caritatives."
 
 export default function OurMission() {
   return (
@@ -66,5 +66,5 @@ export default function OurMission() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-import HeartAssoLogo from "/assets/images/aboutUs/heart-asso.svg";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Link } from "@inertiajs/react";
-import { buttonVariants } from "@/components/ui/button";
+import HeartAssoLogo from "/assets/images/aboutUs/heart-asso.svg"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Link } from "@inertiajs/react"
+import { buttonVariants } from "@/components/ui/button"
 
 const imageDescription =
-  "Icône d'un cœur stylisé, symbolisant l'engagement associatif, la solidarité et le soutien communautaire.";
+  "Icône d'un cœur stylisé, symbolisant l'engagement associatif, la solidarité et le soutien communautaire."
 
 export default function NonProfit() {
   return (
@@ -65,5 +65,5 @@ export default function NonProfit() {
         </div>
       </div>
     </div>
-  );
+  )
 }
