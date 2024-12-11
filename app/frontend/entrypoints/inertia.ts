@@ -1,7 +1,7 @@
-import { createInertiaApp } from "@inertiajs/react"
-import { createElement } from "react"
-import { createRoot, hydrateRoot } from "react-dom/client"
-import { getTitle, resolvePage } from "./inertiaConfig"
+import { createInertiaApp } from '@inertiajs/react'
+import { createElement } from 'react'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import { getTitle, resolvePage } from './inertiaConfig'
 
 createInertiaApp({
   title: getTitle,
@@ -10,9 +10,9 @@ createInertiaApp({
   // see https://inertia-rails.netlify.app/guide/progress-indicators
   // progress: false,
   resolve: resolvePage,
-  setup({ el, App, props }) {
+  setup ({ el, App, props }) {
     if (el) {
-      if (el.dataset.serverRendered === "true") {
+      if (el.dataset.serverRendered === 'true') {
         hydrateRoot(el, createElement(App, props))
       } else {
         const root = createRoot(el)
@@ -20,10 +20,10 @@ createInertiaApp({
       }
     } else {
       console.error(
-        "Missing root element.\n\n" +
-          "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
+        'Missing root element.\n\n' +
+          'If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n' +
           "Consider moving <%= vite_typescript_tag 'inertia' %> to the Inertia-specific layout instead."
       )
     }
-  },
+  }
 })

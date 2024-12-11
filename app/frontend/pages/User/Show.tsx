@@ -1,12 +1,12 @@
-import { Head, router, useForm, Link } from "@inertiajs/react"
-import { useState, useEffect } from "react"
+import { Head, router, useForm, Link } from '@inertiajs/react'
+import { useState, useEffect, ReactElement } from 'react'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,70 +16,70 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 
 // doesn't work with SSR
 // import { DirectUpload } from "@rails/activestorage"
 
-import { toast } from "sonner"
-import { cn } from "@/lib/utils"
+import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 
-import NoProfilePicture from "@/assets/images/user/no-profile-picture.svg"
-import { Settings, Pencil, Trash2, AlertCircle } from "lucide-react"
-import Facebook from "/assets/icons/facebook.svg?react"
-// @ts-ignore
-import Instagram from "/assets/icons/instagram.svg?react"
-// @ts-ignore
-import Github from "/assets/icons/github.svg?react"
-// @ts-ignore
-import Linkedin from "/assets/icons/linkedin.svg?react"
+import NoProfilePicture from '@/assets/images/user/no-profile-picture.svg'
+import { Settings, Pencil, Trash2, AlertCircle } from 'lucide-react'
+import Facebook from '@/assets/icons/facebook.svg?react'
+// @ts-expect-error
+import Instagram from '@/assets/icons/instagram.svg?react'
+// @ts-expect-error
+import Github from '@/assets/icons/github.svg?react'
+// @ts-expect-error
+import Linkedin from '@/assets/icons/linkedin.svg?react'
 
-import FormattedDate from "@/lib/formattedDate"
+import FormattedDate from '@/lib/formattedDate'
 
-import { CurrentUserType, ProfilePictureUrlType } from "@/pages/types"
+import { CurrentUserType, ProfilePictureUrlType } from '@/pages/types'
 
 const socialLinks = [
   {
-    href: "",
-    icon: Facebook,
+    href: '',
+    icon: Facebook
   },
   {
-    href: "",
-    icon: Instagram,
+    href: '',
+    icon: Instagram
   },
   {
-    href: "",
-    icon: Github,
+    href: '',
+    icon: Github
   },
   {
-    href: "",
-    icon: Linkedin,
-  },
+    href: '',
+    icon: Linkedin
+  }
 ]
 
 interface IndexProps {
-  user: UserType
+  user: UserType & { id: string | number }
   profile_picture_url: ProfilePictureUrlType
   currentUser: CurrentUserType
 }
 
-export default function Show({
+export default function Show ({
   user,
-  profile_picture_url,
-  currentUser,
-}: IndexProps) {
+  profile_picture_url, // eslint-disable-line
+  currentUser
+}: IndexProps): ReactElement {
   const { data, setData, patch, processing, errors } = useForm({
-    profile_picture: null,
+    profile_picture: null
   })
   const [uploadProgress, setUploadProgress] = useState<number | null>(null)
   const [activeStorage, setActiveStorage] = useState(null)
 
   useEffect(() => {
-    async function loadActiveStorage() {
-      const module = await import("@rails/activestorage")
+    async function loadActiveStorage (): void {
+      const module = await import('@rails/activestorage')
       module.start()
       setActiveStorage(module)
     }
@@ -87,27 +87,27 @@ export default function Show({
     loadActiveStorage()
   }, [])
 
-  function submit(e: React.FormEvent) {
+  function submit (e: React.FormEvent): void {
     e.preventDefault()
 
     const upload = new activeStorage.DirectUpload(
       data.profile_picture,
-      `/rails/active_storage/direct_uploads?subfolder=profile_pictures`,
+      '/rails/active_storage/direct_uploads?subfolder=profile_pictures',
       {
         directUploadWillStoreFileWithXHR: (request) => {
-          request.upload.addEventListener("progress", (event) => {
+          request.upload.addEventListener('progress', (event: ProgressEvent) => {
             if (event.lengthComputable) {
               const progress = (event.loaded / event.total) * 100
               setUploadProgress(progress)
             }
           })
-        },
+        }
       }
     )
 
     upload.create((error, blob) => {
       setUploadProgress(null)
-      if (error) {
+      if (error != null) {
         toast.error(
           "Une erreur est survenue lors de l'enregistrement de votre photo de profil. Veuillez réessayer."
         )
@@ -117,20 +117,20 @@ export default function Show({
           onSuccess: () => {
             if (!errors.profile_picture) {
               toast.success(
-                "Votre photo de profil a été mise à jour avec succès."
+                'Votre photo de profil a été mise à jour avec succès.'
               )
             }
-          },
+          }
         })
       }
     })
   }
 
-  function destroy() {
+  function destroy () {
     router.delete(`/users/${user.id}/profile_picture`, {
       onSuccess: () => {
-        toast.success("Votre photo de profil a été supprimée.")
-      },
+        toast.success('Votre photo de profil a été supprimée.')
+      }
     })
   }
 
@@ -138,13 +138,13 @@ export default function Show({
     <>
       <Head>
         <title>Tableau de bord</title>
-        <meta name="description" content="Your page description" />
+        <meta name='description' content='Your page description' />
       </Head>
-      <div className="w-full mx-auto flex flex-wrap py-8 lg:py-16 2xl:container px-2 sm:px-8 gap-8">
-        <div className="mx-auto relative flex justify-center items-center">
+      <div className='w-full mx-auto flex flex-wrap py-8 lg:py-16 2xl:container px-2 sm:px-8 gap-8'>
+        <div className='mx-auto relative flex justify-center items-center'>
           <img
-            alt="avatar de profil"
-            className="w-[212px] h-[212px] rounded-full object-cover"
+            alt='avatar de profil'
+            className='w-[212px] h-[212px] rounded-full object-cover'
             src={profile_picture_url || NoProfilePicture}
           />
           {user.id === currentUser?.id && (
@@ -153,48 +153,48 @@ export default function Show({
                 <PopoverTrigger
                   className={cn(
                     buttonVariants({
-                      variant: "secondary",
-                      size: "icon",
+                      variant: 'secondary',
+                      size: 'icon'
                     }),
-                    "hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full"
+                    'hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full'
                   )}
                 >
                   <Pencil />
                 </PopoverTrigger>
-                <PopoverContent className="relative">
+                <PopoverContent className='relative'>
                   {profile_picture_url && (
                     <AlertDialogTrigger
                       className={`${buttonVariants({
-                        variant: "destructive",
+                        variant: 'destructive'
                       })} absolute top-4 right-4 w-7 h-7`}
                     >
                       <Trash2 />
                     </AlertDialogTrigger>
                   )}
 
-                  <form onSubmit={submit} className="flex flex-col gap-4">
-                    <Label className="text-xl" htmlFor="picture">
+                  <form onSubmit={submit} className='flex flex-col gap-4'>
+                    <Label className='text-xl' htmlFor='picture'>
                       Photo de profil
                     </Label>
                     <div>
                       <Input
-                        type="file"
+                        type='file'
                         required
-                        className=""
+                        className=''
                         onChange={(e) => {
-                          setData("profile_picture", e.target.files[0])
+                          setData('profile_picture', e.target.files[0])
                           errors.profile_picture = null
                         }}
                       />
                       {errors.profile_picture && (
-                        <div className="flex items-center text-red-600 text-sm p-1">
-                          <AlertCircle className="w-4 h-4 mr-1" />
+                        <div className='flex items-center text-red-600 text-sm p-1'>
+                          <AlertCircle className='w-4 h-4 mr-1' />
                           {errors.profile_picture}
                         </div>
                       )}
                     </div>
                     <Button
-                      type="submit"
+                      type='submit'
                       disabled={
                         uploadProgress || processing || !!errors.profile_picture
                       }
@@ -203,7 +203,7 @@ export default function Show({
                     </Button>
                   </form>
                   <Progress
-                    className={uploadProgress ? "mt-4" : " hidden"}
+                    className={uploadProgress ? 'mt-4' : ' hidden'}
                     value={uploadProgress}
                   />
                 </PopoverContent>
@@ -225,23 +225,23 @@ export default function Show({
             </AlertDialog>
           )}
         </div>
-        <div className="mx-auto flex">
-          <div className="mx-auto flex flex-col justify-center gap-4">
-            <div className="flex flex-col gap-4 md:flex-row">
-              <h1 className=" text-2xl sm:text-3xl lg:text-4xl whitespace-pre-line font-semibold">
-                <span className="leading-snug">
+        <div className='mx-auto flex'>
+          <div className='mx-auto flex flex-col justify-center gap-4'>
+            <div className='flex flex-col gap-4 md:flex-row'>
+              <h1 className=' text-2xl sm:text-3xl lg:text-4xl whitespace-pre-line font-semibold'>
+                <span className='leading-snug'>
                   {user.first_name} {user.last_name}
                 </span>
               </h1>
-              <div className="flex items-center space-x-2">
+              <div className='flex items-center space-x-2'>
                 {socialLinks.map((link, index) => (
                   <a
                     key={index}
                     href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target='_blank'
+                    rel='noopener noreferrer'
                   >
-                    <link.icon className="w-5 h-5 fill-primary rounded-sm hover:fill-foreground" />
+                    <link.icon className='w-5 h-5 fill-primary rounded-sm hover:fill-foreground' />
                   </a>
                 ))}
               </div>
@@ -254,13 +254,13 @@ export default function Show({
           </div>
         </div>
 
-        <div className="flex flex-col justify-center ml-auto gap-8">
+        <div className='flex flex-col justify-center ml-auto gap-8'>
           {user.id === currentUser?.id && (
-            <div className="flex justify-end">
+            <div className='flex justify-end'>
               <Link
-                href=""
+                href=''
                 className={`${buttonVariants({
-                  size: "lg",
+                  size: 'lg'
                 })}`}
               >
                 <Settings />

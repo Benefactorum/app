@@ -1,18 +1,18 @@
-import { Head } from "@inertiajs/react"
-import { Fragment } from "react"
-import { ContributionType } from "./types"
-import { CurrentUserType } from "@/pages/types"
+import { Head } from '@inertiajs/react'
+import { Fragment } from 'react'
+import { ContributionType } from './types'
+import { CurrentUserType } from '@/pages/types'
 
 interface IndexProps {
   currentUser: CurrentUserType
   contributions: ContributionType[]
 }
 
-export default function Index({ currentUser, contributions }: IndexProps) {
+export default function Index ({ currentUser, contributions }: IndexProps) {
   return (
     <>
-      <Head title="Mes contributions" />
-      <div className="">
+      <Head title='Mes contributions' />
+      <div className=''>
         {/* <div className="flex justify-between items-center">
           <h1 className="font-bold text-4xl">Contributions</h1>
           <Link

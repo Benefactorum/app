@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "app/frontend/**/*.ts",
+    "app/frontend/**/*.tsx"
+  ],
+  "compilerOptions": {
+    "strictNullChecks": true
+  }
+}

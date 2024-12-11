@@ -1,5 +1,5 @@
-import { FilePlus2, Library, NotebookPen } from "lucide-react"
-import { Link, usePage } from "@inertiajs/react"
+import { FilePlus2, Library, NotebookPen } from 'lucide-react'
+import { Link, usePage } from '@inertiajs/react'
 
 import {
   Sidebar,
@@ -8,28 +8,28 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  SidebarMenuItem
+} from '@/components/ui/sidebar'
 
 const items = [
   {
-    title: "Mon historique",
-    url: "/mes-contributions",
-    icon: Library,
+    title: 'Mon historique',
+    url: '/mes-contributions',
+    icon: Library
   },
   {
-    title: "Nous écrire",
-    url: "#",
-    icon: NotebookPen,
+    title: 'Nous écrire',
+    url: '#',
+    icon: NotebookPen
   },
   {
-    title: "Ajouter une association",
-    url: "/mes-contributions/ajouter-une-association",
-    icon: FilePlus2,
-  },
+    title: 'Ajouter une association',
+    url: '/mes-contributions/ajouter-une-association',
+    icon: FilePlus2
+  }
 ]
 
-export function AppSidebar() {
+export function AppSidebar (): JSX.Element {
   const { url } = usePage()
 
   return (
@@ -45,12 +45,12 @@ export function AppSidebar() {
                       href={item.url}
                       className={
                         url === item.url
-                          ? " bg-secondary"
-                          : " hover:bg-secondary/50"
+                          ? ' bg-secondary'
+                          : ' hover:bg-secondary/50'
                       }
                     >
                       <item.icon />
-                      <span className="font-semibold">{item.title}</span>
+                      <span className='font-semibold'>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

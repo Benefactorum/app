@@ -91,7 +91,7 @@ We welcome contributions! To contribute:
    ```
 4. Push your branch and open a Pull Request.
 
-Please follow the coding standards enforced by **Standard Ruby**, **Prettier**, and **ESLint**.
+Please follow the coding standards enforced by **Standard Ruby** and **ts-standard**.
 <br>
 <br>
 
