@@ -1,13 +1,13 @@
-import { createElement } from "react"
-import type { ResolvedComponent } from "@inertiajs/react"
-import Layout from "@/Layout"
+import { createElement } from 'react'
+import type { ResolvedComponent } from '@inertiajs/react'
+import Layout from '@/Layout'
 
 export const getTitle = (title: string | null): string =>
-  title ? `${title} | Benefactorum` : "Benefactorum"
+  title ? `${title} | Benefactorum` : 'Benefactorum'
 
 export const resolvePage = (name: string): ResolvedComponent => {
   const pages = import.meta.glob<ResolvedComponent>(
-    "../pages/**/!(*.test).tsx",
+    '../pages/**/!(*.test).tsx',
     { eager: true }
   )
   const page = pages[`../pages/${name}.tsx`] as {
@@ -20,8 +20,8 @@ export const resolvePage = (name: string): ResolvedComponent => {
     createElement(
       Layout,
       {
-        showSidebar: name.startsWith("Contribution/"),
-        flash: page.props.flash,
+        showSidebar: name.startsWith('Contribution/'),
+        flash: page.props.flash
       },
       page
     )

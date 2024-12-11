@@ -1,44 +1,44 @@
-import { Head } from "@inertiajs/react"
-import { useState } from "react"
+import { Head } from '@inertiajs/react'
+import { useState } from 'react'
 
-import reactSvg from "/assets/react.svg"
-import inertiaSvg from "/assets/inertia.svg"
-import viteRubySvg from "/assets/vite_ruby.svg"
-import cs from "@/pages/InertiaExample.module.css"
+import reactSvg from '../../../../../../../../assets/react.svg'
+import inertiaSvg from '../../../../../../../../assets/inertia.svg'
+import viteRubySvg from '../../../../../../../../assets/vite_ruby.svg'
+import cs from '@/pages/InertiaExample.module.css'
 
-export default function InertiaExample({ name }: { name: string }) {
+export default function InertiaExample ({ name }: { name: string }) {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <Head title="Inertia + Vite Ruby + React Example" />
+      <Head title='Inertia + Vite Ruby + React Example' />
 
       <div className={cs.root}>
         <h1 className={cs.h1}>Hello {name}!</h1>
 
         <div>
-          <a href="https://inertia-rails.netlify.app" target="_blank">
-            <img className={cs.logo} src={inertiaSvg} alt="Inertia logo" />
+          <a href='https://inertia-rails.netlify.app' target='_blank' rel='noreferrer'>
+            <img className={cs.logo} src={inertiaSvg} alt='Inertia logo' />
           </a>
-          <a href="https://vite-ruby.netlify.app" target="_blank">
+          <a href='https://vite-ruby.netlify.app' target='_blank' rel='noreferrer'>
             <img
               className={`${cs.logo} ${cs.vite}`}
               src={viteRubySvg}
-              alt="Vite Ruby logo"
+              alt='Vite Ruby logo'
             />
           </a>
-          <a href="https://react.dev" target="_blank">
+          <a href='https://react.dev' target='_blank' rel='noreferrer'>
             <img
               className={`${cs.logo} ${cs.react}`}
               src={reactSvg}
-              alt="React logo"
+              alt='React logo'
             />
           </a>
         </div>
 
         <h2 className={cs.h2}>Inertia + Vite Ruby + React</h2>
 
-        <div className="card">
+        <div className='card'>
           <button
             className={cs.button}
             onClick={() => setCount((count) => count + 1)}

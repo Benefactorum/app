@@ -5,8 +5,8 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "lint:fix": "ts-standard --fix app/frontend",
-    "lint": "ts-standard --report app/frontend"
+    "lint:fix": "ts-standard app/frontend --fix",
+    "lint": "ts-standard app/frontend --report"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
