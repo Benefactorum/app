@@ -1,0 +1,9 @@
+module.exports = {
+  // ... other configurations ...
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
+    // ... other options ...
+  },
+  // ... other configurations ...
+};
