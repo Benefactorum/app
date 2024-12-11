@@ -5,8 +5,8 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "format": "prettier --write app/frontend",
-    "check-format": "prettier --check app/frontend"
+    "format": "ts-standard --fix",
+    "check-format": "ts-standard --report"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -14,10 +14,7 @@
     "@types/node": "^22.10.1",
     "@types/react-google-recaptcha": "^2.1.9",
     "@vitest/ui": "^2.1.6",
-    "eslint": "^9.15.0",
-    "eslint-config-react-app": "^7.0.1",
     "jsdom": "^25.0.1",
-    "prettier": "^3.4.2",
     "vite": "^6.0.1",
     "vite-plugin-ruby": "^5.1.1",
     "vite-plugin-svgr": "^4.3.0",
