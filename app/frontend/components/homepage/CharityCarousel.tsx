@@ -56,7 +56,7 @@ export default function CharityCarousel (): ReactElement {
             key={index}
             className='basis-auto flex justify-center w-56 items-center'
           >
-            <Link href='/inertia-example'>
+            <Link href='/'>
               <img
                 className='object-contain'
                 src={logo.src}

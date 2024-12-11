@@ -31,7 +31,6 @@ Rails.application.routes.draw do
 
   # Static Pages
   root "pages#home"
-  get "inertia-example", to: "inertia_example#index"
   get "qui-nous-sommes", to: "pages#about_us", as: :about_us
   get "co-fondateurs", to: "pages#cofounders", as: :cofounders
   get "nous-rejoindre", to: "pages#join_us", as: :join_us

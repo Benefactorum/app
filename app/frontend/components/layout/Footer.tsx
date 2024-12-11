@@ -25,7 +25,7 @@ import Linkedin from '@/assets/icons/linkedin.svg?react'
 const navLinks = [
   {
     title: 'Trouver une association',
-    href: '/inertia-example',
+    href: '/trouver-une-association',
     icon: SearchIcon
   },
   {
