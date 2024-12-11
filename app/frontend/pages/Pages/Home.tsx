@@ -1,12 +1,13 @@
-import HeroSection from "@/components/homepage/HeroSection"
-import CharitySection from "@/components/homepage/CharitySection"
-import JoinUsSection from "@/components/homepage/JoinUsSection"
-import FaqSection from "@/components/homepage/FaqSection"
-import QuoteSection from "@/components/reusable/QuoteSection"
-// @ts-ignore
-import Smiley from "/assets/images/homepage/quote/smiley.svg?react"
+import HeroSection from '@/components/homepage/HeroSection'
+import CharitySection from '@/components/homepage/CharitySection'
+import JoinUsSection from '@/components/homepage/JoinUsSection'
+import FaqSection from '@/components/homepage/FaqSection'
+import QuoteSection from '@/components/reusable/QuoteSection'
+// @ts-expect-error
+import Smiley from '@/assets/images/homepage/quote/smiley.svg?react'
+import { ReactElement } from 'react'
 
-export default function Home() {
+export default function Home (): ReactElement {
   return (
     <>
       <HeroSection />
@@ -19,7 +20,7 @@ export default function Home() {
         author={
           <span>
             Vous, une fois inscrit
-            <Smiley className="inline-block ml-2 w-6 h-6 mb-1" />
+            <Smiley className='inline-block ml-2 w-6 h-6 mb-1' />
           </span>
         }
       />

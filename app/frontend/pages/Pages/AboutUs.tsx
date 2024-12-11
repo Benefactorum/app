@@ -1,16 +1,17 @@
-import { Head } from "@inertiajs/react"
-import HeroSection from "@/components/aboutUs/HeroSection"
-import OurMission from "@/components/aboutUs/OurMission"
-import Together from "@/components/aboutUs/Together"
-import NonProfit from "@/components/aboutUs/NonProfit"
-import QuoteSection from "@/components/reusable/QuoteSection"
+import { Head } from '@inertiajs/react'
+import HeroSection from '@/components/aboutUs/HeroSection'
+import OurMission from '@/components/aboutUs/OurMission'
+import Together from '@/components/aboutUs/Together'
+import NonProfit from '@/components/aboutUs/NonProfit'
+import QuoteSection from '@/components/reusable/QuoteSection'
+import { ReactElement } from 'react'
 
-export default function AboutUs() {
+export default function AboutUs (): ReactElement {
   return (
     <>
       <Head>
         <title>Qui nous sommes</title>
-        <meta name="description" content="Your page description" />
+        <meta name='description' content='Your page description' />
       </Head>
       <HeroSection />
       <OurMission />
@@ -20,7 +21,7 @@ export default function AboutUs() {
         white={false}
         quote={
           <span>
-            L'exemple n'est pas le meilleur moyen de convaincre,{"\n"}c'est le
+            L'exemple n'est pas le meilleur moyen de convaincre,{'\n'}c'est le
             seul.
           </span>
         }

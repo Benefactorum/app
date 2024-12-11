@@ -6,11 +6,11 @@ export interface ContributionType {
   contributable_type: string
 }
 
-export type ContributionFormType = Omit<ContributionType, "id">
+export type ContributionFormType = Omit<ContributionType, 'id'>
 
 export interface OsblType {
   id: number
   name: string
 }
 
-export type OsblFormType = Omit<OsblType, "id">
+export type OsblFormType = Omit<OsblType, 'id'>
