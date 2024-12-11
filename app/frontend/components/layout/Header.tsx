@@ -105,14 +105,14 @@ export default function Header (): ReactElement {
             <NavigationMenuItem
               className={
                 'py-2 px-4 rounded-md' +
-                (url === '/inertia-example'
+                (url === '/'
                   ? ' bg-secondary'
                   : ' hover:bg-secondary/50')
               }
             >
               <NavigationMenuLink asChild>
                 <Link
-                  href='/inertia-example'
+                  href='/'
                   className='flex gap-2 items-center'
                   onClick={handleLinkClick}
                 >
@@ -251,10 +251,10 @@ export default function Header (): ReactElement {
         <ul className='flex flex-col mt-4'>
           <li>
             <Link
-              href='/inertia-example'
+              href='/'
               className={
                 'flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md' +
-                (url === '/inertia-example'
+                (url === '/'
                   ? ' bg-secondary'
                   : ' hover:bg-secondary/50')
               }
