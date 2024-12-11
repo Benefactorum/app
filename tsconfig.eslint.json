@@ -4,5 +4,8 @@
     "app/frontend/**/*.ts",
     "app/frontend/**/*.tsx",
     "vite.config.ts"
-  ]
+  ],
+  "compilerOptions": {
+    "strictNullChecks": true
+  }
 }

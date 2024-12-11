@@ -5,8 +5,8 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "format": "ts-standard --fix",
-    "check-format": "ts-standard --report"
+    "lint:fix": "ts-standard --fix app/frontend",
+    "lint": "ts-standard --report app/frontend"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -62,5 +62,11 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.7.2",
     "zod": "^3.23.8"
+  },
+  "ts-standard": {
+    "ignore": [
+      "app/frontend/components/ui",
+      "vite-env.d.ts"
+    ]
   }
 }
