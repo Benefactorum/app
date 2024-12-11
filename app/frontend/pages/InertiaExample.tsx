@@ -1,9 +1,9 @@
 import { Head } from '@inertiajs/react'
 import { useState } from 'react'
 
-import reactSvg from '../../../../../../../../assets/react.svg'
-import inertiaSvg from '../../../../../../../../assets/inertia.svg'
-import viteRubySvg from '../../../../../../../../assets/vite_ruby.svg'
+import reactSvg from '@/assets/react.svg'
+import inertiaSvg from '@/assets/inertia.svg'
+import viteRubySvg from '@/assets/vite_ruby.svg'
 import cs from '@/pages/InertiaExample.module.css'
 
 export default function InertiaExample ({ name }: { name: string }) {
