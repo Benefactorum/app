@@ -1,8 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "Registrations", type: :request, inertia: true do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe "GET /s-inscrire" do
     subject { get new_registration_path }
 

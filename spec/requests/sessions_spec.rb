@@ -39,6 +39,34 @@ RSpec.describe "Sessions", type: :request, inertia: true do
           expect(inertia.props[:errors]["code"]).to be_present
         end
       end
+
+      context "when code has been used" do
+        let!(:user) { create(:user, :with_otp) }
+        let(:params) { {email: user.email, code: user.otp.code} }
+
+        before { user.otp.revoke! }
+
+        it "redirects back with errors" do
+          subject
+          expect(response).to redirect_to(new_session_path)
+          follow_redirect!
+          expect(inertia.props[:errors]["code"]).to be_present
+        end
+      end
+
+      context "when code is expired" do
+        let!(:user) { create(:user, :with_otp) }
+        let(:params) { {email: user.email, code: user.otp.code} }
+
+        before { travel Otp::EXPIRATION_TIME + 1.second }
+
+        it "redirects back with errors" do
+          subject
+          expect(response).to redirect_to(new_session_path)
+          follow_redirect!
+          expect(inertia.props[:errors]["code"]).to be_present
+        end
+      end
     end
 
     context "with valid params" do

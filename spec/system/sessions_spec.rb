@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "/se-connecter", type: :system do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_otp) }
 
   before do
     # avoid redirection when hitting new_session_path
