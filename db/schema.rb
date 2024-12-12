@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_02_161145) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_12_102506) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -74,6 +74,16 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_02_161145) do
     t.index ["website"], name: "index_osbls_on_website", unique: true
   end
 
+  create_table "otps", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "secret", null: false
+    t.integer "counter", default: 0
+    t.boolean "used", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_otps_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_agent"
@@ -93,9 +103,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_02_161145) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.datetime "terms_and_privacy_accepted_at", null: false
-    t.string "otp_secret", null: false
-    t.integer "otp_counter", default: 0
-    t.datetime "otp_expires_at"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
@@ -105,6 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_02_161145) do
   add_foreign_key "contributions", "users"
   add_foreign_key "documents", "contributions"
   add_foreign_key "documents", "osbls"
+  add_foreign_key "otps", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "users", "accounts"
 end

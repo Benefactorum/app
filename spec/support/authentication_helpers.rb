@@ -1,6 +1,7 @@
 RSpec.configure do
   def sign_in_as(user)
-    post sessions_path, params: {email: user.email, code: user.otp.code}
+    session = user.sessions.create!
+    allow_any_instance_of(ActionDispatch::Cookies::CookieJar).to receive(:signed).and_return({session_token: session.id})
   end
 
   # capybara

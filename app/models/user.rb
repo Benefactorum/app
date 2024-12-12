@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  include Otp
   include User::ProfilePicture
+
+  has_one :otp, dependent: :destroy
 
   has_secure_password validations: false
 

@@ -56,24 +56,43 @@ RSpec.describe "Connection", type: :request, inertia: true do
     end
 
     context "when user is known" do
-      let(:user) { create(:user, otp_expires_at: DateTime.current) }
+      let!(:user) { create(:user, otp: otp) }
+
       let(:params) { {email: user.email} }
 
-      it "redirects to /se-connecter and sends OTP email" do
-        assert_enqueued_emails 1 do
-          subject
+      context "when OTP is expired" do
+        let(:otp) { create(:otp) }
+
+        before { travel Otp::EXPIRATION_TIME + 1.second }
+        it "redirects to /se-connecter and sends OTP email" do
+          assert_enqueued_emails 1 do
+            subject
+          end
+          assert_enqueued_email_with UserMailer, :otp, params: {user:}
+          expect(response).to redirect_to(new_session_path)
         end
-        user.reload.otp
-        assert_enqueued_email_with UserMailer, :otp, params: {user:}
-        expect(response).to redirect_to(new_session_path)
       end
 
-      it "redirects to /se-connecter but does not send OTP email again if OTP is still valid" do
-        user.otp.create!
-        assert_no_emails do
-          subject
+      context "when OTP has been used" do
+        let(:otp) { create(:otp, :used) }
+
+        it "redirects to /se-connecter and sends OTP email" do
+          assert_enqueued_emails 1 do
+            subject
+          end
+          assert_enqueued_email_with UserMailer, :otp, params: {user:}
+          expect(response).to redirect_to(new_session_path)
         end
-        expect(response).to redirect_to(new_session_path)
+      end
+
+      context "when OTP is not expired nor used" do
+        let(:otp) { create(:otp) }
+        it "redirects to /se-connecter but does not send OTP email again" do
+          assert_no_emails do
+            subject
+          end
+          expect(response).to redirect_to(new_session_path)
+        end
       end
     end
   end

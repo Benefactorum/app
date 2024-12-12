@@ -1,25 +1,33 @@
-class Otp
-  include ActiveModel::Validations
+class Otp < ApplicationRecord
+  EXPIRATION_TIME = 10.minutes
 
-  attr_reader :user
-  attr_reader :client
+  belongs_to :user
 
-  def initialize(user)
-    @user = user
-    @client = ROTP::HOTP.new(user.otp_secret)
+  before_create :assign_secret
+
+  def still_valid?
+    !used? && !expired?
+  end
+
+  def generate_new_code!
+    transaction do
+      increment!(:counter)
+      update!(used: false)
+    end
+    code
   end
 
   def code
-    client.at(user.otp_counter)
+    client.at(counter)
   end
 
   def verify?(code)
-    unless client.verify(code, user.otp_counter)
+    unless client.verify(code, counter)
       errors.add(:code, "Code de connexion invalide.")
       return false
     end
 
-    if expired?
+    unless still_valid?
       # beware changing the error message, it's used in the front-end
       errors.add(:code, "Votre code de connexion a expiré. Demandez-en un nouveau.")
       return false
@@ -28,21 +36,21 @@ class Otp
     true
   end
 
-  def destroy!
-    user.update!(otp_expires_at: DateTime.current)
+  def revoke!
+    update!(used: true)
   end
 
-  def create!
-    user.increment!(:otp_counter)
-    user.update!(otp_expires_at: DateTime.current + 10.minutes)
-    self
+  private
+
+  def client
+    @client ||= ROTP::HOTP.new(secret)
   end
 
-  def still_valid?
-    !!user.otp_expires_at&.after?(DateTime.current)
+  def assign_secret
+    self.secret = ROTP::Base32.random_base32
   end
 
   def expired?
-    !still_valid?
+    updated_at < EXPIRATION_TIME.ago
   end
 end

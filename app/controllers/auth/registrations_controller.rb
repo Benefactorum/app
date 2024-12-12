@@ -18,12 +18,15 @@ module Auth
     def create
       user = User.new(user_params)
 
-      if user.save
-        UserMailer.with(user:).otp.deliver_later
-        redirect_to new_session_path
-      else
-        redirect_to new_registration_path, inertia: {errors: user.errors}
+      ActiveRecord::Base.transaction do
+        user.save!
+        user.create_otp!
       end
+
+      UserMailer.with(user:).otp.deliver_later
+      redirect_to new_session_path
+    rescue ActiveRecord::RecordInvalid => e
+      redirect_to new_registration_path, inertia: {errors: e.record.errors}
     end
 
     private
