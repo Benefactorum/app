@@ -25,13 +25,13 @@ RSpec.describe "/contributions", type: :request, inertia: true do
   }
 
   describe "GET /index" do
-    let(:user) { create(:user, :with_otp) }
+    let(:user) { create(:user) }
     subject { get user_contributions_url(user) }
 
     it_behaves_like "require_authentication"
 
     context "signed as another user" do
-      let(:other_user) { create(:user, :with_otp) }
+      let(:other_user) { create(:user) }
 
       before do
         sign_in_as(other_user)
@@ -60,7 +60,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
     context "for current user" do
       before do
-        sign_in_as(create(:user, :with_otp))
+        sign_in_as(create(:user))
       end
 
       it "renders a successful response" do
@@ -78,7 +78,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
     context "for current user" do
       before do
-        sign_in_as(create(:user, :with_otp))
+        sign_in_as(create(:user))
       end
 
       it "renders a successful response" do

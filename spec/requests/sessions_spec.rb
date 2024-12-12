@@ -61,7 +61,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
     it_behaves_like "require_authentication"
 
     context "when user is authenticated" do
-      let(:user) { create(:user, :with_otp) }
+      let(:user) { create(:user) }
 
       before do
         sign_in_as(user)

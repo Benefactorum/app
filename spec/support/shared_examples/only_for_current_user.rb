@@ -1,7 +1,7 @@
 RSpec.shared_examples "only_for_current_user" do
   context "when the target user is not the current user" do
     before do
-      sign_in_as(create(:user, email: "current_user@mail.com", otp: create(:otp)))
+      sign_in_as(create(:user, email: "current_user@mail.com"))
     end
 
     it "redirects to root_path with an info message" do

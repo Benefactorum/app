@@ -1,7 +1,7 @@
 RSpec.shared_examples "only_for_guests" do
   context "when the user is authenticated" do
     before do
-      sign_in_as(create(:user, :with_otp))
+      sign_in_as(create(:user))
     end
 
     it "redirects to root_path with an info message" do
