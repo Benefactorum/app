@@ -76,7 +76,6 @@ RSpec.describe "Registrations", type: :request, inertia: true do
         expect(user.last_name).to eq("Nixon")
         expect(user.terms_and_privacy_accepted_at).to eq(Time.current)
 
-        user.reload.otp
         assert_enqueued_email_with UserMailer, :otp, params: {user:}
 
         expect(response).to redirect_to(new_session_path)

@@ -87,7 +87,7 @@ RSpec.describe "Connection", type: :request, inertia: true do
 
       context "when OTP is not expired nor used" do
         let(:otp) { create(:otp) }
-        it "redirects to /se-connecter but does not send OTP email again if OTP is still valid" do
+        it "redirects to /se-connecter but does not send OTP email again" do
           assert_no_emails do
             subject
           end

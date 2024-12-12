@@ -15,8 +15,8 @@ class UserMailer < ApplicationMailer
 
   def otp
     @user = params[:user]
-    otp = @user.otp.renew!
-    @formatted_otp = format(otp.code)
+    otp = @user.otp.generate_new_code!
+    @formatted_otp = format(otp)
 
     mail(to: @user.email, subject: "Benefactorum : Voici votre code de connexion")
   end

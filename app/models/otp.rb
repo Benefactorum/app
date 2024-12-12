@@ -9,10 +9,12 @@ class Otp < ApplicationRecord
     !used? && !expired?
   end
 
-  def renew!
-    increment!(:counter)
-    update!(used: false)
-    self
+  def generate_new_code!
+    transaction do
+      increment!(:counter)
+      update!(used: false)
+    end
+    code
   end
 
   def code
@@ -45,8 +47,6 @@ class Otp < ApplicationRecord
   end
 
   def assign_secret
-    raise "Secret already assigned" if secret.present?
-
     self.secret = ROTP::Base32.random_base32
   end
 
