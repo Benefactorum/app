@@ -11,6 +11,7 @@ class Otp < ApplicationRecord
 
   def renew!
     increment!(:counter)
+    update!(used: false)
     self
   end
 
