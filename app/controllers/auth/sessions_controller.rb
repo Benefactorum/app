@@ -23,7 +23,7 @@ module Auth
       if otp.verify?(params[:code])
         user.update!(verified: true)
         sign_in(user)
-        otp.destroy!
+        otp.revoke!
         redirect_to my_profile_path, success: "Vous êtes connecté."
       else
         redirect_to new_session_path, inertia: {errors: otp.errors}

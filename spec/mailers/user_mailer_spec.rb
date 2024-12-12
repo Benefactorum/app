@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe UserMailer, type: :mailer do
   describe "otp" do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :with_otp) }
     let(:mail) { UserMailer.with(user:).otp }
 
     it "renders email" do

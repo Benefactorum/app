@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "ProfilePictures", type: :request, inertia: true do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_otp) }
 
   describe "PATCH /update" do
     subject { patch user_profile_picture_path(user), params: params }

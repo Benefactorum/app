@@ -56,7 +56,8 @@ RSpec.describe "Connection", type: :request, inertia: true do
     end
 
     context "when user is known" do
-      let(:user) { create(:user, otp_expires_at: DateTime.current) }
+      let(:user) { create(:user, otp: create(:otp, :used)) }
+
       let(:params) { {email: user.email} }
 
       it "redirects to /se-connecter and sends OTP email" do
@@ -69,7 +70,7 @@ RSpec.describe "Connection", type: :request, inertia: true do
       end
 
       it "redirects to /se-connecter but does not send OTP email again if OTP is still valid" do
-        user.otp.create!
+        user.create_otp!
         assert_no_emails do
           subject
         end

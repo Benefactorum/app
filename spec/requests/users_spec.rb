@@ -18,7 +18,7 @@ RSpec.describe "Users", type: :request, inertia: true do
 
     context "when authenticated" do
       before do
-        sign_in_as(create(:user))
+        sign_in_as(create(:user, :with_otp))
       end
 
       it "returns http success" do
@@ -29,7 +29,7 @@ RSpec.describe "Users", type: :request, inertia: true do
   end
 
   xdescribe "PATCH /user/:id" do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :with_otp) }
     let(:valid_params) { {first_name: "John"} }
     subject { patch user_path(user), params: valid_params }
 

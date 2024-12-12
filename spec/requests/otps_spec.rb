@@ -19,7 +19,7 @@ RSpec.describe "Otp", type: :request, inertia: true do
     end
 
     context "when user is known" do
-      let(:user) { create(:user) }
+      let(:user) { create(:user, :with_otp) }
       let(:params) { {email: user.email} }
 
       it "sends OTP email and redirects to /se-connecter" do
@@ -30,7 +30,7 @@ RSpec.describe "Otp", type: :request, inertia: true do
       end
 
       it "sends OTP email again even if OTP is still valid and redirects to /se-connecter" do
-        otp_code = user.otp.create!.code
+        otp_code = user.create_otp!.code
         assert_enqueued_emails 1 do
           subject
         end

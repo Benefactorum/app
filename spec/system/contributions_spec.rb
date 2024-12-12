@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Contributions", type: :system do
   describe "/mes-contributions" do
     before do
-      connect_as(create(:user))
+      connect_as(create(:user, :with_otp))
     end
     it "displays page" do
       visit my_new_contribution_path

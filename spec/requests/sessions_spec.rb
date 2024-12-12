@@ -29,7 +29,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
       end
 
       context "when code is invalid" do
-        let!(:user) { create(:user) }
+        let!(:user) { create(:user, :with_otp) }
         let(:params) { {email: user.email, code: ""} }
 
         it "redirects back with errors" do
@@ -42,7 +42,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
     end
 
     context "with valid params" do
-      let(:user) { create(:user) }
+      let(:user) { create(:user, :with_otp) }
       let(:params) { {email: user.email, code: user.otp.code} }
 
       it "signs in the user" do
@@ -61,7 +61,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
     it_behaves_like "require_authentication"
 
     context "when user is authenticated" do
-      let(:user) { create(:user) }
+      let(:user) { create(:user, :with_otp) }
 
       before do
         sign_in_as(user)
