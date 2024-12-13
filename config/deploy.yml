@@ -7,13 +7,17 @@ image: mpressen/benefactorum
 # Deploy to these servers.
 servers:
   web:
-    - 51.159.163.19
+    hosts:
+      - benefactorum.benefactorum.org
+    options:
+      memory: 256m
   vite_ssr:
     hosts:
-      - 51.159.163.19
+      - benefactorum.benefactorum.org
     cmd: bundle exec vite ssr
     options:
       network-alias: vite_ssr
+      memory: 256m
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -23,7 +27,7 @@ servers:
 # Set ssl: false if using something like Cloudflare to terminate SSL (but keep host!).
 proxy:
   ssl: true
-  host: prod.benefactorum.org
+  host: benefactorum-production.benefactorum.org
 
 # Credentials for your image host.
 registry:
@@ -43,7 +47,7 @@ env:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
-
+    RAILS_ENV: production
     VITE_RUBY_HOST: "vite_ssr"
     INERTIA_SSR_URL: "http://vite_ssr:13714"
     # Set number of processes dedicated to Solid Queue (default: 1)
