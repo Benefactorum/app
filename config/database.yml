@@ -20,6 +20,23 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
+review:
+  primary:
+    <<: *default
+    database: storage/<%= ENV['SERVICE_NAME'] %>_review.sqlite3
+  cache:
+    <<: *default
+    database: storage/<%= ENV['SERVICE_NAME'] %>_review_cache.sqlite3
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: storage/<%= ENV['SERVICE_NAME'] %>_review_queue.sqlite3
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: storage/<%= ENV['SERVICE_NAME'] %>_review_cable.sqlite3
+    migrations_paths: db/cable_migrate
+
 staging:
   primary:
     <<: *default
