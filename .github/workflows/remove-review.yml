@@ -54,10 +54,10 @@ jobs:
           slug=${slug%-}
           echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
 
-      - name: Delete Docker Image
-        uses: snok/container-retention-policy@v3.0.0
-        with:
-          account: user
-          token: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-          image-names: ${{ env.SERVICE_NAME }}
-          cut-off: 1s
+      - name: Delete Package
+        run: |
+          PACKAGE_NAME=${{ env.SERVICE_NAME }}
+          OWNER=mpressen
+          curl -X DELETE -H "Authorization: Bearer ${{ secrets.KAMAL_REGISTRY_PASSWORD }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/users/$OWNER/packages/container/$PACKAGE_NAME
