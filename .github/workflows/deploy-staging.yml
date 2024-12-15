@@ -1,15 +1,24 @@
-name: Deploy to Production
+name: Deploy to Staging
+
 concurrency:
-  group: production
+  group: staging
   cancel-in-progress: true
+
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
   deploy:
-    name: Deploy to Production
+    name: Deploy to Staging
     runs-on: ubuntu-latest
-    environment: production
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
@@ -40,5 +49,4 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           VERSION: ${{ github.sha }}
-          RAILS_ENV: production
-        run: bundle exec kamal deploy --version=$VERSION
+        run: bundle exec kamal deploy -d staging --version=$VERSION

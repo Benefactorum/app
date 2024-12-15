@@ -2,12 +2,6 @@ service: <%= ENV['SERVICE_NAME'] %> # We are going to use the name of the git br
 
 image: mpressen/<%= ENV['SERVICE_NAME'] %>
 
-registry:
-  server: ghcr.io
-  username: mpressen
-  password:
-    - GITHUB_REGISTRY_PASSWORD
-
 proxy:
   ssl: true
   host: <%= ENV['HOST'] %> # We are going to use the name of the git branch dynamically here
