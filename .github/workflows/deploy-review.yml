@@ -46,7 +46,6 @@ jobs:
           slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
           slug=${slug%-}
           echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
-          echo "HOST=${slug}.review.benefactorum.org" >> $GITHUB_ENV
           echo "REVIEW_APP_URL=https://${slug}.review.benefactorum.org" >> $GITHUB_ENV
 
       - name: Deploy with Kamal
@@ -55,5 +54,4 @@ jobs:
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           VERSION: ${{ github.sha }}
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
-          HOST: ${{ env.HOST }}
         run: bundle exec kamal deploy -d review --version=$VERSION

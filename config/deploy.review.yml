@@ -4,10 +4,10 @@ image: mpressen/<%= ENV['SERVICE_NAME'] %>
 
 proxy:
   ssl: true
-  host: <%= ENV['HOST'] %> # We are going to use the name of the git branch dynamically here
+  host: <%= ENV['SERVICE_NAME'] %>.review.benefactorum.org # We are going to use the name of the git branch dynamically here
 
 env:
   clear:
     RAILS_ENV: review
-    HOST: <%= ENV['HOST'] %>
+    HOST: <%= ENV['SERVICE_NAME'] %>.review.benefactorum.org
     SERVICE_NAME: <%= ENV['SERVICE_NAME'] %>
