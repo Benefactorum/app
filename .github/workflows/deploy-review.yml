@@ -5,18 +5,14 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
-    branches-ignore:
-      - main
+  pull_request:
+    branches: [main]
+
 
 jobs:
   deploy:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
@@ -42,9 +38,18 @@ jobs:
       - name: Release Kamal lock
         run: bundle exec kamal lock release
 
+      - name: Generate branch slug
+        run: |
+          ref=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
+          slug=${slug%-}
+          echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
+
       - name: Deploy with Kamal
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           VERSION: ${{ github.sha }}
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          HOST: ${{ env.SERVICE_NAME }}.review.benefactorum.org
         run: bundle exec kamal deploy -d review --version=$VERSION
