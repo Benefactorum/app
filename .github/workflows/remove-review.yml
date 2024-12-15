@@ -6,6 +6,7 @@ on:
 
 jobs:
   remove-container:
+    environment: review
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +37,21 @@ jobs:
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
           HOST: ${{ env.SERVICE_NAME }}.review.benefactorum.org
-        run: bundle exec kamal remove -y -d review
+        run: |
+          bundle exec kamal remove -y -d review
+          bundle exec kamal prune all
 
-      - name: Remove stopped containers and unused images
-        run: bundle exec kamal prune all
+  cleanup registry:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Delete Docker Image
+        uses: snok/container-retention-policy@v3.0.0
+        with:
+          image: mpressen/${{ env.SERVICE_NAME }}
+          keep: 0
+        env:
+          GITHUB_TOKEN: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
