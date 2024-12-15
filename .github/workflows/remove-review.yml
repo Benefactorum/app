@@ -47,11 +47,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate branch slug
+        run: |
+          ref=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
+          slug=${slug%-}
+          echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
 
       - name: Delete Docker Image
         uses: snok/container-retention-policy@v3.0.0
         with:
-          account: user
+          account: mpressen
           token: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-          image-names: mpressen/${{ env.SERVICE_NAME }}
+          image-names: ${{ env.SERVICE_NAME }}
           cut-off: 1s
