@@ -1,19 +1,11 @@
-name: Deploy to Review
-
-concurrency:
-  group: review-${{ github.head_ref }}
-  cancel-in-progress: true
+name: Remove Review App
 
 on:
   pull_request:
-    branches: [main]
-
+    types: [closed]
 
 jobs:
-  deploy:
-    environment:
-      name: review
-      url: ${{ env.REVIEW_APP_URL }}
+  remove-container:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,29 +23,20 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.7.1
-
-      - name: Expose GitHub Runtime for cache
-        uses: crazy-max/ghaction-github-runtime@v3.0.0
-
-      - name: Release Kamal lock
-        run: bundle exec kamal lock release
-
       - name: Generate branch slug
         run: |
           ref=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
           slug=${slug%-}
           echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
-          echo "HOST=${slug}.review.benefactorum.org" >> $GITHUB_ENV
-          echo "REVIEW_APP_URL=https://${slug}.review.benefactorum.org" >> $GITHUB_ENV
 
-      - name: Deploy with Kamal
+      - name: Remove Review App with Kamal
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-          VERSION: ${{ github.sha }}
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
-          HOST: ${{ env.HOST }}
-        run: bundle exec kamal deploy -d review --version=$VERSION
+          HOST: ${{ env.SERVICE_NAME }}.review.benefactorum.org
+        run: bundle exec kamal remove -y -d review
+
+      - name: Remove stopped containers and unused images
+        run: bundle exec kamal prune all

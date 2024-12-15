@@ -16,7 +16,9 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Staging
+    environment:
+      name: staging
+      url: https://staging.benefactorum.org
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
