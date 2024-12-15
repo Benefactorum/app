@@ -53,4 +53,5 @@ jobs:
         with:
           account: user
           token: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-          image: mpressen/${{ env.SERVICE_NAME }}
+          image-names: mpressen/${{ env.SERVICE_NAME }}
+          cut-off: 1s
