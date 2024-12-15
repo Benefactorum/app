@@ -8,6 +8,7 @@ on:
 
 jobs:
   standard_ruby:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -26,6 +27,7 @@ jobs:
         uses: standardrb/standard-ruby-action@v1
 
   scan_ruby:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +44,7 @@ jobs:
         run: bin/brakeman --no-pager
 
   scan_js:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
@@ -60,6 +63,7 @@ jobs:
         run: yarn install --frozen-lockfile && yarn audit --level high
 
   test:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
