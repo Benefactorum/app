@@ -6,6 +6,7 @@ on:
 
 jobs:
   remove-container:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     environment: review
     runs-on: ubuntu-latest
 
@@ -42,16 +43,14 @@ jobs:
           bundle exec kamal prune all
 
   cleanup-registry:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
 
       - name: Delete Docker Image
         uses: snok/container-retention-policy@v3.0.0
         with:
+          account: user
+          token: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           image: mpressen/${{ env.SERVICE_NAME }}
-          keep: 0
-        env:
-          GITHUB_TOKEN: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
