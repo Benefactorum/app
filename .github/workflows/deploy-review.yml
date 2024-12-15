@@ -11,6 +11,7 @@ on:
 
 jobs:
   deploy:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     environment:
       name: review
       url: ${{ env.REVIEW_APP_URL }}
