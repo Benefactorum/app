@@ -106,4 +106,4 @@ This project is licensed under the [GNU GPLv3](./License) License.
 For any inquiries, feel free to reach out:
 - Email: maximilien@benefactorum.org
 - Manifesto: [benefactorum.org](https://benefactorum.org)
-- Web app: https://benefactorum-staging.benefactorum.org (WIP)
+- Web app: https://staging.benefactorum.org (WIP)
