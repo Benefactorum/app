@@ -41,7 +41,7 @@ jobs:
           bundle exec kamal remove -y -d review
           bundle exec kamal prune all
 
-  cleanup registry:
+  cleanup-registry:
     runs-on: ubuntu-latest
 
     steps:
