@@ -57,7 +57,7 @@ jobs:
       - name: Delete Docker Image
         uses: snok/container-retention-policy@v3.0.0
         with:
-          account: mpressen
+          account: user
           token: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           image-names: ${{ env.SERVICE_NAME }}
           cut-off: 1s
