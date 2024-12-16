@@ -6,7 +6,7 @@ gem "inertia_rails"
 
 gem "vite_rails", "~> 3.0.19"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 2.3.1"
+gem "sqlite3", ">= 2.4.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 6.5.0"
 
@@ -37,7 +37,7 @@ gem "rotp", "~> 6.3"
 gem "mailjet", "~> 1.8"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+# gem "image_processing", "~> 1.13.0"
 gem "aws-sdk-s3", require: false
 
 group :development, :test do
