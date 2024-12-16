@@ -57,7 +57,7 @@ jobs:
       - name: Delete Package
         run: |
           PACKAGE_NAME=${{ env.SERVICE_NAME }}
-          OWNER=mpressen
+          ORG=benefactorum
           curl -X DELETE -H "Authorization: Bearer ${{ secrets.KAMAL_REGISTRY_PASSWORD }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/users/$OWNER/packages/container/$PACKAGE_NAME
+            https://api.github.com/orgs/$ORG/packages/container/$PACKAGE_NAME

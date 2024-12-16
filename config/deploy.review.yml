@@ -1,6 +1,6 @@
 service: <%= ENV['SERVICE_NAME'] %> # We are going to use the name of the git branch dynamically here, because the name must be unique
 
-image: mpressen/<%= ENV['SERVICE_NAME'] %>
+image: benefactorum/<%= ENV['SERVICE_NAME'] %>
 
 proxy:
   ssl: true

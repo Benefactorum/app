@@ -1,6 +1,6 @@
 service: benefactorum-staging
 
-image: mpressen/benefactorum-staging
+image: benefactorum/staging
 
 proxy:
   host: staging.benefactorum.org

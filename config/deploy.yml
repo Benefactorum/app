@@ -2,7 +2,7 @@
 service: benefactorum
 
 # Name of the container image.
-image: mpressen/benefactorum
+image: benefactorum/production
 
 # Deploy to these servers.
 servers:
