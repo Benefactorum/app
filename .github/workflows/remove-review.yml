@@ -1,5 +1,8 @@
 name: Remove Review App
 
+concurrency:
+  group: review-${{ github.head_ref }}
+
 on:
   pull_request:
     types: [closed]
@@ -31,6 +34,9 @@ jobs:
           slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
           slug=${slug%-}
           echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
+
+      - name: Release Kamal lock
+        run: bundle exec kamal lock release
 
       - name: Remove Review App with Kamal
         env:
