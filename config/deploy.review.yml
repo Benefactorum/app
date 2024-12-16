@@ -1,0 +1,13 @@
+service: <%= ENV['SERVICE_NAME'] %> # We are going to use the name of the git branch dynamically here, because the name must be unique
+
+image: mpressen/<%= ENV['SERVICE_NAME'] %>
+
+proxy:
+  ssl: true
+  host: <%= ENV['SERVICE_NAME'] %>.review.benefactorum.org # We are going to use the name of the git branch dynamically here
+
+env:
+  clear:
+    RAILS_ENV: review
+    HOST: <%= ENV['SERVICE_NAME'] %>.review.benefactorum.org
+    SERVICE_NAME: <%= ENV['SERVICE_NAME'] %>

@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  standard_ruby:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1.203.0
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run Standard Ruby
+        uses: standardrb/standard-ruby-action@v1
+
+  scan_ruby:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1.203.0
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+
+  scan_js:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup node
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 20
+
+      - name: setup yarn
+        run: npm install --global yarn
+
+      - name: Scan for security vulnerabilities in JavaScript dependencies
+        run: yarn install --frozen-lockfile && yarn audit --level high
+
+  test:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
+
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1.203.0
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 20
+
+      - name: setup yarn
+        run: npm install --global yarn
+
+      - name: Set up JavaScript dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Prepare db
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:test:prepare
+
+      - name: Run tests
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rspec
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v4.4.3
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/tmp/screenshots
+          if-no-files-found: ignore
+

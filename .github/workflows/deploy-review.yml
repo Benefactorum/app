@@ -1,15 +1,20 @@
-name: Deploy to Production
+name: Deploy to Review
+
 concurrency:
-  group: production
+  group: review-${{ github.head_ref }}
   cancel-in-progress: true
+
 on:
-  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
 
 jobs:
   deploy:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
     environment:
-      name: production
-      url: https://benefactorum-production.benefactorum.org
+      name: review
+      url: ${{ env.REVIEW_APP_URL }}
     runs-on: ubuntu-latest
 
     steps:
@@ -36,9 +41,18 @@ jobs:
       - name: Release Kamal lock
         run: bundle exec kamal lock release
 
+      - name: Generate branch slug
+        run: |
+          ref=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
+          slug=${slug%-}
+          echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
+          echo "REVIEW_APP_URL=https://${slug}.review.benefactorum.org" >> $GITHUB_ENV
+
       - name: Deploy with Kamal
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           VERSION: ${{ github.sha }}
-        run: bundle exec kamal deploy --version=$VERSION
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+        run: bundle exec kamal deploy -d review --version=$VERSION

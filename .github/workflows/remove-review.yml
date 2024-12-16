@@ -1,0 +1,63 @@
+name: Remove Review App
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  remove-container:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+    environment: review
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1.203.0
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Configure SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Generate branch slug
+        run: |
+          ref=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
+          slug=${slug%-}
+          echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
+
+      - name: Remove Review App with Kamal
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          HOST: ${{ env.SERVICE_NAME }}.review.benefactorum.org
+        run: |
+          bundle exec kamal remove -y -d review
+          bundle exec kamal prune all
+
+  cleanup-registry:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate branch slug
+        run: |
+          ref=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          slug=$(echo "$ref" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-')
+          slug=${slug%-}
+          echo "SERVICE_NAME=$slug" >> $GITHUB_ENV
+
+      - name: Delete Package
+        run: |
+          PACKAGE_NAME=${{ env.SERVICE_NAME }}
+          OWNER=mpressen
+          curl -X DELETE -H "Authorization: Bearer ${{ secrets.KAMAL_REGISTRY_PASSWORD }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/users/$OWNER/packages/container/$PACKAGE_NAME

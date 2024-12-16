@@ -3,7 +3,7 @@ service: benefactorum-staging
 image: mpressen/benefactorum-staging
 
 proxy:
-  host: benefactorum-staging.benefactorum.org
+  host: staging.benefactorum.org
 
 env:
   clear:
