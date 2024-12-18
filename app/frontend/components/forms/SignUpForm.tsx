@@ -58,7 +58,7 @@ export function SignUpForm (): ReactElement {
     })()
   }
 
-  function renderInput (
+  function renderTextInput (
     id: KeysWithStringValues<SignUpData>,
     label: string,
     placeholder: string
@@ -76,10 +76,11 @@ export function SignUpForm (): ReactElement {
       />
     )
   }
+
   return (
-    <form onSubmit={getCaptchaThenSubmit} className='w-full flex flex-col pt-4 gap-8'>
-      {renderInput('first_name', 'Prénom :', 'Alain')}
-      {renderInput('last_name', 'Nom :', 'Connu')}
+    <form onSubmit={getCaptchaThenSubmit} className='w-full flex flex-col pt-4 gap-8' aria-label='form'>
+      {renderTextInput('first_name', 'Prénom :', 'Alain')}
+      {renderTextInput('last_name', 'Nom :', 'Connu')}
 
       <MyCheckbox
         id='accepts_conditions'
