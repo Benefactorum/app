@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react'
 import { Fragment } from 'react'
 import { ContributionType } from './types'
-import { CurrentUserType } from '@/pages/types'
+import { CurrentUserType } from '@/types/types'
 
 interface IndexProps {
   currentUser: CurrentUserType

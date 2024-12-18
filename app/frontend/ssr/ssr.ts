@@ -2,7 +2,7 @@ import { createInertiaApp } from '@inertiajs/react'
 import createServer from '@inertiajs/react/server'
 import ReactDOMServer from 'react-dom/server'
 import { createElement } from 'react'
-import { getTitle, resolvePage } from '@/entrypoints/inertiaConfig'
+import { getTitle, resolvePage } from '@/lib/inertiaConfig'
 
 createServer(async (page) =>
   await createInertiaApp({

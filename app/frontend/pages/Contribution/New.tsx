@@ -1,6 +1,6 @@
 import { Head, useForm } from '@inertiajs/react'
 import { OsblFormType } from './types'
-import { CurrentUserType } from '@/pages/types'
+import { CurrentUserType } from '@/types/types'
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Label } from '@/components/ui/label'
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
 import { AlertCircle, Save } from 'lucide-react'
+// @ts-expect-error
 import GoodIdea from '@/assets/icons/good-idea.svg?react'
 
 interface NewProps {

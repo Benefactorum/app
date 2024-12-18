@@ -29,6 +29,7 @@ import { cn } from '@/lib/utils'
 
 import NoProfilePicture from '@/assets/images/user/no-profile-picture.svg'
 import { Settings, Pencil, Trash2, AlertCircle } from 'lucide-react'
+// @ts-expect-error
 import Facebook from '@/assets/icons/facebook.svg?react'
 // @ts-expect-error
 import Instagram from '@/assets/icons/instagram.svg?react'
@@ -39,7 +40,14 @@ import Linkedin from '@/assets/icons/linkedin.svg?react'
 
 import FormattedDate from '@/lib/formattedDate'
 
-import { CurrentUserType, ProfilePictureUrlType } from '@/pages/types'
+import { CurrentUserType, ProfilePictureUrlType } from '@/types/types'
+
+interface UserType {
+  id: number
+  first_name: string
+  last_name: string
+  created_at: string
+}
 
 const socialLinks = [
   {

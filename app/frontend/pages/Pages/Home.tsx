@@ -1,10 +1,10 @@
-import HeroSection from '@/components/homepage/HeroSection'
-import CharitySection from '@/components/homepage/CharitySection'
-import JoinUsSection from '@/components/homepage/JoinUsSection'
-import FaqSection from '@/components/homepage/FaqSection'
-import QuoteSection from '@/components/reusable/QuoteSection'
+import HeroSection from '@/components/pages/pages/home/HeroSection'
+import CharitySection from '@/components/pages/pages/home/CharitySection'
+import JoinUsSection from '@/components/pages/pages/home/JoinUsSection'
+import FaqSection from '@/components/pages/pages/home/FaqSection'
+import QuoteSection from '@/components/pages/QuoteSection'
 // @ts-expect-error
-import Smiley from '@/assets/images/homepage/quote/smiley.svg?react'
+import Smiley from '@/assets/images/pages/home/quote/smiley.svg?react'
 import { ReactElement } from 'react'
 
 export default function Home (): ReactElement {

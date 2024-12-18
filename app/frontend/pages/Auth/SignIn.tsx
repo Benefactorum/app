@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/input-otp'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 
-import QuoteSection from '@/components/reusable/QuoteSection'
+import QuoteSection from '@/components/pages/QuoteSection'
 
 export default function SignUp (): ReactElement {
   const [countdown, setCountdown] = useState(60)

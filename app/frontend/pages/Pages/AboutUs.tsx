@@ -1,9 +1,9 @@
 import { Head } from '@inertiajs/react'
-import HeroSection from '@/components/aboutUs/HeroSection'
-import OurMission from '@/components/aboutUs/OurMission'
-import Together from '@/components/aboutUs/Together'
-import NonProfit from '@/components/aboutUs/NonProfit'
-import QuoteSection from '@/components/reusable/QuoteSection'
+import HeroSection from '@/components/pages/pages/aboutUs/HeroSection'
+import OurMission from '@/components/pages/pages/aboutUs/OurMission'
+import Together from '@/components/pages/pages/aboutUs/Together'
+import NonProfit from '@/components/pages/pages/aboutUs/NonProfit'
+import QuoteSection from '@/components/pages/QuoteSection'
 import { ReactElement } from 'react'
 
 export default function AboutUs (): ReactElement {
