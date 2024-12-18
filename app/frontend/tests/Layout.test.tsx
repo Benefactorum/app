@@ -28,7 +28,7 @@ vi.mock('@/components/layout/AppSidebar', () => ({
 describe('Layout Component', () => {
   const renderLayout = (showSidebar: boolean): void => {
     render(
-      <Layout showSidebar={showSidebar}>
+      <Layout flash={{}} showSidebar={showSidebar}>
         <div>Test Content</div>
       </Layout>
     )
