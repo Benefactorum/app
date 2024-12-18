@@ -150,7 +150,7 @@ GEM
     inertia_rails (3.6.0)
       railties (>= 6)
     io-console (0.8.0)
-    irb (1.14.2)
+    irb (1.14.3)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
@@ -229,7 +229,7 @@ GEM
       ast (~> 2.4.1)
       racc
     prism (1.2.0)
-    psych (5.2.1)
+    psych (5.2.2)
       date
       stringio
     public_suffix (6.0.1)
@@ -279,10 +279,10 @@ GEM
     rake (13.2.1)
     rbs (3.7.0)
       logger
-    rdoc (6.9.0)
+    rdoc (6.10.0)
       psych (>= 4.0.0)
     regexp_parser (2.9.3)
-    reline (0.5.12)
+    reline (0.6.0)
       io-console (~> 0.5)
     rexml (3.4.0)
     rotp (6.3.0)
@@ -341,7 +341,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    solid_cable (3.0.4)
+    solid_cable (3.0.5)
       actioncable (>= 7.2)
       activejob (>= 7.2)
       activerecord (>= 7.2)
