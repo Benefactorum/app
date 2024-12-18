@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_12_102506) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_17_175100) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -105,6 +105,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_12_102506) do
     t.datetime "terms_and_privacy_accepted_at", null: false
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.check_constraint "email LIKE '%_@_%._%'", name: "email_format_check"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
