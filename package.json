@@ -6,15 +6,17 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "lint:fix": "ts-standard app/frontend --fix",
-    "lint": "ts-standard app/frontend --report"
+    "lint": "ts-standard app/frontend --report",
+    "format": "prettier-standard --format"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.2",
     "@types/react-google-recaptcha": "^2.1.9",
     "@vitest/ui": "^2.1.6",
     "jsdom": "^25.0.1",
+    "prettier-standard": "^16.4.1",
     "ts-standard": "^12.0.2",
     "vite": "^6.0.1",
     "vite-plugin-ruby": "^5.1.1",
