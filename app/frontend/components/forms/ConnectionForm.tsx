@@ -5,18 +5,13 @@ import { MyInput } from './MyInput'
 import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
 
-const emailSchema = z.string().email({ message: 'Veuillez entrer une adresse email valide.' })
-
 export function ConnectionForm (): ReactElement {
   const { data, updateField, submit, processing, errors } = useFormHandler({
     initialData: { email: sessionStorage.getItem('email') ?? '' },
     postUrl: '/connection',
-    validate: (data) => {
-      const validation = emailSchema.safeParse(data.email)
-      return validation.success
-        ? true
-        : { field: 'email', message: validation.error.errors[0].message }
-    },
+    validation: z.object({
+      email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' })
+    }),
     onSuccess: (page) => {
       if (page.url !== '/connexion') {
         sessionStorage.setItem('email', data.email)
