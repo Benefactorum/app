@@ -12,7 +12,7 @@ interface UseFormHandlerProps<T extends object> {
 interface FormHandler<T> {
   data: T
   updateField: (field: keyof T, value: T[keyof T]) => void
-  submit: (e?: FormEvent<HTMLFormElement>) => void
+  submit: (e: FormEvent<HTMLFormElement>) => void
   processing: boolean
   errors: Partial<Record<keyof T, string>>
 }
@@ -25,10 +25,8 @@ export function useFormHandler<T extends object> ({ initialData, postUrl, valida
     clearErrors(field)
   }
 
-  function submit (e?: FormEvent<HTMLFormElement>): void {
-    if (e !== undefined) {
-      e.preventDefault()
-    }
+  function submit (e: FormEvent<HTMLFormElement>): void {
+    e.preventDefault()
 
     if (validation !== undefined) {
       const result = validation.safeParse(data)

@@ -48,11 +48,14 @@ export function SignUpForm (): ReactElement {
     }
   }, [data.email])
 
-  async function submit2 (e: FormEvent<HTMLFormElement>): Promise<void> {
+  function getCaptchaThenSubmit (e: FormEvent<HTMLFormElement>): void {
     e.preventDefault()
-    const token = (recaptchaRef.current != null) ? await recaptchaRef.current.executeAsync() as string : ''
-    data.recaptcha_token = token
-    submit()
+    void (async () => {
+      data.recaptcha_token = (recaptchaRef.current != null)
+        ? await recaptchaRef.current.executeAsync() as string
+        : ''
+      submit(e)
+    })()
   }
 
   function renderInput (
@@ -73,9 +76,8 @@ export function SignUpForm (): ReactElement {
       />
     )
   }
-
   return (
-    <form onSubmit={e => { void submit2(e) }} className='w-full flex flex-col pt-4 gap-8'>
+    <form onSubmit={getCaptchaThenSubmit} className='w-full flex flex-col pt-4 gap-8'>
       {renderInput('first_name', 'Prénom :', 'Alain')}
       {renderInput('last_name', 'Nom :', 'Connu')}
 
