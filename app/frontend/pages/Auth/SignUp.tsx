@@ -1,7 +1,8 @@
 import { Head } from '@inertiajs/react'
 import { ReactElement } from 'react'
 import { SignUpForm } from '@/components/forms/SignUpForm'
-import QuoteSection from '@/components/reusable/QuoteSection'
+import QuoteSection from '@/components/pages/QuoteSection'
+// @ts-expect-error
 import Vomi from '@/assets/images/auth/vomi.svg?react'
 
 export default function SignUp (): ReactElement {

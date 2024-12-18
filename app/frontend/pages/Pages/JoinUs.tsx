@@ -1,10 +1,10 @@
 import { Head } from '@inertiajs/react'
-import HeroSection from '@/components/joinUs/HeroSection'
-import DonorSection from '@/components/joinUs/DonorSection'
-import MemberSection from '@/components/joinUs/MemberSection'
-import ModeratorSection from '@/components/joinUs/ModeratorSection'
-import ContributorSection from '@/components/joinUs/ContributorSection'
-import QuoteSection from '@/components/reusable/QuoteSection'
+import HeroSection from '@/components/pages/pages/joinUs/HeroSection'
+import DonorSection from '@/components/pages/pages/joinUs/DonorSection'
+import MemberSection from '@/components/pages/pages/joinUs/MemberSection'
+import ModeratorSection from '@/components/pages/pages/joinUs/ModeratorSection'
+import ContributorSection from '@/components/pages/pages/joinUs/ContributorSection'
+import QuoteSection from '@/components/pages/QuoteSection'
 import { ReactElement } from 'react'
 
 export default function JoinUs (): ReactElement {

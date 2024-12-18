@@ -1,7 +1,8 @@
 import { Head } from '@inertiajs/react'
 import { ReactElement } from 'react'
-import { ConnectionForm } from './ConnectionForm'
-import QuoteSection from '@/components/reusable/QuoteSection'
+import { ConnectionForm } from '../../components/forms/ConnectionForm'
+import QuoteSection from '@/components/pages/QuoteSection'
+// @ts-expect-error
 import Superwoman from '@/assets/images/auth/superwoman.svg?react'
 
 export default function Connection (): ReactElement {

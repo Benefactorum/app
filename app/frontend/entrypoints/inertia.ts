@@ -1,9 +1,9 @@
 import { createInertiaApp } from '@inertiajs/react'
 import { createElement } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
-import { getTitle, resolvePage } from './inertiaConfig'
+import { getTitle, resolvePage } from '@/lib/inertiaConfig'
 
-createInertiaApp({
+void createInertiaApp({
   title: getTitle,
   // Disable progress bar
   //
@@ -11,7 +11,7 @@ createInertiaApp({
   // progress: false,
   resolve: resolvePage,
   setup ({ el, App, props }) {
-    if (el) {
+    if (el !== null && el !== undefined) {
       if (el.dataset.serverRendered === 'true') {
         hydrateRoot(el, createElement(App, props))
       } else {

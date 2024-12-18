@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { InputError } from '@/components/InputError'
+import { InputError } from '@/components/forms/InputError'
 
 interface MyInputProps {
   id: string

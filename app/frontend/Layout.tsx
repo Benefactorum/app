@@ -1,24 +1,18 @@
+import { ReactElement, useEffect } from 'react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import { ReactElement, useEffect } from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
+import { AppSidebar } from '@/components/layout/AppSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/AppSidebar'
+
+const flashTypes = ['message', 'success', 'info', 'warning', 'error'] as const
 
 interface LayoutProps {
   children: ReactElement
   showSidebar?: boolean
-  flash?: { [key: string]: string }
+  flash: { [key in typeof flashTypes[number]]?: string }
 }
-
-const flashTypes: Array<keyof typeof toast> = [
-  'message',
-  'success',
-  'info',
-  'warning',
-  'error'
-]
 
 export default function Layout ({
   children,
@@ -28,7 +22,7 @@ export default function Layout ({
   useEffect(() => {
     flashTypes.forEach((type) => {
       if (flash[type] !== undefined && flash[type] !== '') {
-        toast[type](flash[type] as any)
+        toast[type](flash[type])
       }
     })
   }, [flash])
