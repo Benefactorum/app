@@ -3,18 +3,22 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { InputError } from '@/components/forms/InputError'
 
-interface MyInputProps {
-  id: string
-  labelText: string
+interface MyInputPropsBase {
   type: string
-  required: boolean
-  disabled: boolean
+  required?: boolean
+  disabled?: boolean
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder: string
   autoFocus?: boolean
   error?: string
+  id?: string
+  // labelText?: string // see below
 }
+
+type MyInputProps =
+  | (MyInputPropsBase & { labelText: string, id: string }) // If labelText is present, id is required
+  | MyInputPropsBase & { labelText?: undefined }
 
 export function MyInput (props: MyInputProps): ReactElement {
   const { id, labelText, type, required, disabled, value, onChange, placeholder, autoFocus, error } = props
@@ -22,7 +26,8 @@ export function MyInput (props: MyInputProps): ReactElement {
 
   return (
     <div className='flex flex-col'>
-      <Label htmlFor={id}>{labelText}</Label>
+      {(labelText !== undefined && labelText !== '') && <Label htmlFor={id}>{labelText}</Label>}
+
       <Input
         id={id}
         type={type}
