@@ -30,7 +30,13 @@ export function SignUpForm (): ReactElement {
       accepts_conditions: Boolean(sessionStorage.getItem('acceptsConditions')),
       recaptcha_token: ''
     },
-    postUrl: '/signup'
+    postUrl: '/registration',
+    onSuccess: () => {
+      sessionStorage.setItem('firstName', data.first_name)
+      sessionStorage.setItem('lastName', data.last_name)
+      sessionStorage.setItem('signUpBlocked', 'true')
+      sessionStorage.setItem('acceptsConditions', 'true')
+    }
   })
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)

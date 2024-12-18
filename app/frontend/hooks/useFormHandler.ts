@@ -1,10 +1,11 @@
 import { useForm } from '@inertiajs/react'
+import { ZodType } from 'zod'
 import { FormEvent } from 'react'
 
 interface UseFormHandlerProps<T extends object> {
   initialData: T
   postUrl: string
-  validate?: (data: T) => true | { field: keyof T, message: string }
+  validation?: ZodType<T>
   onSuccess?: (page: any) => void
 }
 
@@ -16,12 +17,7 @@ interface FormHandler<T> {
   errors: Partial<Record<keyof T, string>>
 }
 
-export function useFormHandler<T extends object> ({
-  initialData,
-  postUrl,
-  validate,
-  onSuccess
-}: UseFormHandlerProps<T>): FormHandler<T> {
+export function useFormHandler<T extends object> ({ initialData, postUrl, validation, onSuccess }: UseFormHandlerProps<T>): FormHandler<T> {
   const { data, setData, post, processing, errors, clearErrors, setError } = useForm<T>(initialData)
 
   function updateField (field: keyof T, value: T[keyof T]): void {
@@ -34,10 +30,13 @@ export function useFormHandler<T extends object> ({
       e.preventDefault()
     }
 
-    if (typeof validate === 'function') {
-      const validationResult = validate(data)
-      if (validationResult !== true) {
-        setError(validationResult.field, validationResult.message)
+    if (validation !== undefined) {
+      const result = validation.safeParse(data)
+      if (!result.success) {
+        const issues = result.error.issues
+        issues.forEach(issue => {
+          setError(issue.path.join('.') as keyof T, issue.message)
+        })
         return
       }
     }
