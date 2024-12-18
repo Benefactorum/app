@@ -30,6 +30,7 @@ export function ConnectionForm (): ReactElement {
       aria-label='form'
     >
       <MyInput
+        id='email'
         type='email'
         required
         autoFocus
