@@ -24,7 +24,7 @@ module Auth
       end
 
       UserMailer.with(user:).otp.deliver_later
-      redirect_to new_session_path
+      redirect_to new_session_path, flash: {success: "Email envoyé !"}
     rescue ActiveRecord::RecordInvalid => e
       redirect_to new_registration_path, inertia: {errors: e.record.errors}
     end

@@ -5,7 +5,7 @@ import { FormEvent } from 'react'
 interface UseFormHandlerProps<T extends object> {
   initialData: T
   postUrl: string
-  validation?: ZodType<T>
+  validation?: ZodType<Partial<T>>
   onSuccess?: (page: any) => void
 }
 
