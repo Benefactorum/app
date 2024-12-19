@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "include": [
     "app/frontend/**/*.ts",
-    "app/frontend/**/*.tsx"
+    "app/frontend/**/*.tsx",
+    "vite.config.ts"
   ],
   "compilerOptions": {
     "strictNullChecks": true

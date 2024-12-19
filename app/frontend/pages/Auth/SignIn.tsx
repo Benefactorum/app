@@ -1,67 +1,10 @@
-import { Head, useForm, router } from '@inertiajs/react'
-import { useEffect, useState, ReactElement } from 'react'
-import { toast } from 'sonner'
-
-import { Button } from '@/components/ui/button'
-import { StepForward, AlertCircle } from 'lucide-react'
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot
-} from '@/components/ui/input-otp'
-import { REGEXP_ONLY_DIGITS } from 'input-otp'
-
+import { ReactElement } from 'react'
+import { Head } from '@inertiajs/react'
 import QuoteSection from '@/components/pages/QuoteSection'
+import SignInForm from '@/components/forms/SignInForm'
 
-export default function SignUp (): ReactElement {
-  const [countdown, setCountdown] = useState(60)
-  const { data, setData, post, processing, errors } = useForm({
-    email: sessionStorage.getItem('email'),
-    code: ''
-  })
-
-  useEffect(() => {
-    if (data.email === null || data.email === '') {
-      router.get('/connexion')
-    }
-  }, [data.email])
-
-  useEffect(() => {
-    if (
-      errors.code?.includes(
-        'Votre code de connexion a expiré. Demandez-en un nouveau.'
-      ) ?? false
-    ) {
-      setCountdown(0)
-    }
-  }, [errors.code])
-
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1)
-      }, 1000)
-      return () => clearInterval(timer)
-    }
-  }, [countdown])
-
-  function resendCode (): void {
-    post('/otp', {
-      onSuccess: (page) => {
-        if (page.url === '/se-connecter') {
-          setData('code', '')
-          setCountdown(60)
-          toast.success(`Un nouveau code a été envoyé à ${data.email ?? ''}`)
-        }
-      }
-    })
-  }
-
-  function submit (e: React.FormEvent<HTMLFormElement>): void {
-    e.preventDefault()
-    post('/sessions')
-  }
+export default function SignIn (): ReactElement {
+  const email = sessionStorage.getItem('email')
 
   return (
     <>
@@ -76,71 +19,13 @@ export default function SignUp (): ReactElement {
           </h1>
           <div className='flex flex-col gap-4 mt-8 '>
             <p>
-              Une fois que vous aurez saisi le code que nous avons envoyé à{' '}
-              {data.email}, vous serez connecté.
+              Une fois que vous aurez saisi le code que nous avons envoyé à
+              l'adresse <span className='font-medium italic'>{email}</span>,
+              vous serez connecté.
             </p>
             <p>Il est valide durant 10 minutes.</p>
           </div>
-          <form onSubmit={submit} className='flex flex-col pt-4 mt-8 gap-8'>
-            <div className='flex flex-col mx-auto'>
-              <InputOTP
-                autoFocus
-                id='OTP' // capybara needs an id to find the input
-                required
-                maxLength={6}
-                value={data.code}
-                onChange={(value) => {
-                  setData('code', value)
-                  errors.code = ''
-                }}
-                pattern={REGEXP_ONLY_DIGITS}
-                containerClassName='mx-auto'
-              >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                </InputOTPGroup>
-                <InputOTPSeparator />
-                <InputOTPGroup>
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
-                </InputOTPGroup>
-              </InputOTP>
-              {errors.code != null && errors.code !== '' && (
-                <div className='flex items-center text-red-600 text-sm p-1 mt-1'>
-                  <AlertCircle className='w-4 h-4 mr-1' />
-                  {errors.code}
-                </div>
-              )}
-            </div>
-            <Button
-              type='submit'
-              disabled={processing || data.code.length !== 6 || (errors.code !== undefined && errors.code !== '')}
-            >
-              <StepForward />
-              Continuer
-            </Button>
-          </form>
-          {countdown > 0 && (
-            <p className='text-sm text-muted-foreground mt-16'>
-              Vous n'avez pas reçu le code ?{' '}
-              <span className='underline cursor-pointer'>
-                Renvoyer dans {countdown} secondes
-              </span>
-            </p>
-          )}
-          {countdown === 0 && (
-            <p className='text-sm text-muted-foreground mt-16'>
-              <button
-                onClick={resendCode}
-                className='underline hover:text-primary'
-              >
-                Renvoyer un nouveau code
-              </button>
-            </p>
-          )}
+          <SignInForm />
         </div>
       </div>
       <QuoteSection
