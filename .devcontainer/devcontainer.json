@@ -6,6 +6,10 @@
   "service": "benefactorum",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
+  "containerEnv": {
+    "VITE_RUBY_HOST": "0.0.0.0"
+  },
+
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -50,9 +54,9 @@
         ]
       },
       "extensions": [
-        "Shopify.ruby-lsp",
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "numso.prettier-standard-vscode",
+        "shopify.ruby-lsp",
+        "standard.vscode-standard"
       ]
     }
   },
