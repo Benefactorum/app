@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { InputError } from '@/components/forms/InputError'
+import InputError from '@/components/forms/InputError'
 
 interface MyInputProps {
   type: string
@@ -16,7 +16,7 @@ interface MyInputProps {
   labelText?: string
 }
 
-export function MyInput (props: MyInputProps): ReactElement {
+export default function MyInput (props: MyInputProps): ReactElement {
   const { id, labelText, type, required, disabled, value, onChange, placeholder, autoFocus, error } = props
   const errorClass = (error !== null && error !== undefined && error !== '') ? 'border-red-600' : ''
 

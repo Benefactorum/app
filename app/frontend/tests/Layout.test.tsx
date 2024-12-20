@@ -22,7 +22,7 @@ vi.mock('@/components/layout/Header', () => ({
   default: () => <div>Mock Header</div>
 }))
 vi.mock('@/components/layout/AppSidebar', () => ({
-  AppSidebar: () => <div>Mock App Sidebar</div>
+  default: () => <div>Mock App Sidebar</div>
 }))
 
 describe('Layout Component', () => {

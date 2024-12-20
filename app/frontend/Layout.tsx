@@ -3,7 +3,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
-import { AppSidebar } from '@/components/layout/AppSidebar'
+import AppSidebar from '@/components/layout/AppSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
 const flashTypes = ['message', 'success', 'info', 'warning', 'error'] as const

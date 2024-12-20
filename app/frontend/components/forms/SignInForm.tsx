@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { useFormHandler } from '@/hooks/useFormHandler'
+import useFormHandler from '@/hooks/useFormHandler'
 import { Label } from '@/components/ui/label'
 import {
   InputOTP,
@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/input-otp'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { z } from 'zod'
-import { InputError } from '@/components/forms/InputError'
+import InputError from '@/components/forms/InputError'
 import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
 import ResendCode from '@/components/pages/auth/signIn/ResendCode'

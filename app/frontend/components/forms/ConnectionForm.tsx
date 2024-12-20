@@ -1,11 +1,11 @@
 import { ReactElement } from 'react'
-import { useFormHandler } from '@/hooks/useFormHandler'
+import useFormHandler from '@/hooks/useFormHandler'
 import { z } from 'zod'
-import { MyInput } from './MyInput'
+import MyInput from './MyInput'
 import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
 
-export function ConnectionForm (): ReactElement {
+export default function ConnectionForm (): ReactElement {
   const { data, updateField, submit, processing, errors } = useFormHandler({
     initialData: { email: sessionStorage.getItem('email') ?? '' },
     postUrl: '/connection',

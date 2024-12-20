@@ -17,7 +17,7 @@ interface FormHandler<T> {
   errors: Partial<Record<keyof T, string>>
 }
 
-export function useFormHandler<T extends object> ({ initialData, postUrl, validation, onSuccess }: UseFormHandlerProps<T>): FormHandler<T> {
+export default function useFormHandler<T extends object> ({ initialData, postUrl, validation, onSuccess }: UseFormHandlerProps<T>): FormHandler<T> {
   const { data, setData, post, processing, errors, clearErrors, setError } = useForm<T>(initialData)
 
   function updateField (field: keyof T, value: T[keyof T]): void {

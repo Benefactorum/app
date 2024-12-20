@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { ConnectionForm } from '@/components/forms/ConnectionForm'
-import { useFormHandler } from '@/hooks/useFormHandler'
+import ConnectionForm from '@/components/forms/ConnectionForm'
+import useFormHandler from '@/hooks/useFormHandler'
 
 // Mock useFormHandler hook
 vi.mock('@/hooks/useFormHandler', () => ({
-  useFormHandler: vi.fn(() => ({
+  default: vi.fn(() => ({
     data: { email: '' },
     updateField: vi.fn(),
     submit: vi.fn((e: Event) => e.preventDefault()),

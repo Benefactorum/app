@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import SignInForm from '@/components/forms/SignInForm'
-import { useFormHandler } from '@/hooks/useFormHandler'
+import useFormHandler from '@/hooks/useFormHandler'
 
 vi.mock('@inertiajs/react', async () => {
   const actual = await vi.importActual('@inertiajs/react')
@@ -21,7 +21,7 @@ vi.mock('sonner', () => ({
 }))
 
 vi.mock('@/hooks/useFormHandler', () => ({
-  useFormHandler: vi.fn(() => ({
+  default: vi.fn(() => ({
     data: {
       email: 'test@example.com',
       code: ''

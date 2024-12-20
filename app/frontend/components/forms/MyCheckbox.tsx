@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import { InputError } from '@/components/forms/InputError'
+import InputError from '@/components/forms/InputError'
 
 interface MyCheckboxProps {
   id?: string
@@ -13,7 +13,7 @@ interface MyCheckboxProps {
   error?: string
 }
 
-export function MyCheckbox (props: MyCheckboxProps): ReactElement {
+export default function MyCheckbox (props: MyCheckboxProps): ReactElement {
   const { id, children, required, disabled, checked, onCheckedChange, error } =
     props
   const errorClass = (error !== null && error !== undefined && error !== '') ? 'border-red-600' : ''

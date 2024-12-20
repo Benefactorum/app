@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 import { forwardRef, useImperativeHandle } from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { SignUpForm } from '@/components/forms/SignUpForm'
-import { useFormHandler } from '@/hooks/useFormHandler'
+import SignUpForm from '@/components/forms/SignUpForm'
+import useFormHandler from '@/hooks/useFormHandler'
 
 vi.mock('@inertiajs/react', async () => {
   const actual = await vi.importActual('@inertiajs/react')
@@ -21,7 +21,7 @@ const executeAsyncSpy = vi.fn(async () => 'token')
 
 // Mock useFormHandler hook
 vi.mock('@/hooks/useFormHandler', () => ({
-  useFormHandler: vi.fn(() => ({
+  default: vi.fn(() => ({
     data: {
       email: '',
       first_name: '',

@@ -30,7 +30,7 @@ const items = [
   }
 ]
 
-export function AppSidebar (): ReactElement {
+export default function AppSidebar (): ReactElement {
   const { url } = usePage()
 
   return (
