@@ -1,10 +1,16 @@
-import { ReactElement } from 'react'
-import { Head } from '@inertiajs/react'
+import { ReactElement, useEffect } from 'react'
+import { router, Head } from '@inertiajs/react'
 import QuoteSection from '@/components/pages/QuoteSection'
 import SignInForm from '@/components/forms/SignInForm'
 
 export default function SignIn (): ReactElement {
-  const email = sessionStorage.getItem('email')
+  const email = sessionStorage.getItem('email') ?? ''
+
+  useEffect(() => {
+    if (email === '') {
+      router.get('/connexion')
+    }
+  }, [email])
 
   return (
     <>
@@ -25,7 +31,7 @@ export default function SignIn (): ReactElement {
             </p>
             <p>Il est valide durant 10 minutes.</p>
           </div>
-          <SignInForm />
+          <SignInForm email={email} />
         </div>
       </div>
       <QuoteSection
