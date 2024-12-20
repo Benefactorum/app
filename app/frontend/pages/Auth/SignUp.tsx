@@ -1,12 +1,18 @@
-import { Head } from '@inertiajs/react'
-import { ReactElement } from 'react'
-import { SignUpForm } from '@/components/forms/SignUpForm'
+import { Head, router } from '@inertiajs/react'
+import { ReactElement, useEffect } from 'react'
+import SignUpForm from '@/components/forms/SignUpForm'
 import QuoteSection from '@/components/pages/QuoteSection'
 // @ts-expect-error
 import Vomi from '@/assets/images/auth/vomi.svg?react'
 
 export default function SignUp (): ReactElement {
-  const email = sessionStorage.getItem('email')
+  const email = sessionStorage.getItem('email') ?? ''
+
+  useEffect(() => {
+    if (email === '') {
+      router.get('/connexion')
+    }
+  }, [email])
 
   return (
     <>
@@ -23,7 +29,7 @@ export default function SignUp (): ReactElement {
             Vous êtes en train de créer un compte sur Benefactorum avec
             l'adresse <span className='font-medium italic'>{email}</span>
           </p>
-          <SignUpForm />
+          <SignUpForm email={email} />
         </div>
       </div>
       <QuoteSection

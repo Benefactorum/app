@@ -1,9 +1,9 @@
-import { useEffect, useRef, ReactElement, FormEvent } from 'react'
-import { router, Link } from '@inertiajs/react'
-import { useFormHandler } from '@/hooks/useFormHandler'
+import { useRef, ReactElement, FormEvent } from 'react'
+import { Link } from '@inertiajs/react'
+import useFormHandler from '@/hooks/useFormHandler'
 import { KeysWithStringValues } from '@/types/utilityTypes'
-import { MyInput } from './MyInput'
-import { MyCheckbox } from './MyCheckbox'
+import MyInput from './MyInput'
+import MyCheckbox from './MyCheckbox'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
@@ -16,7 +16,7 @@ interface SignUpData {
   recaptcha_token: string
 }
 
-export function SignUpForm (): ReactElement {
+export default function SignUpForm ({ email }: { email: string }): ReactElement {
   const {
     data,
     processing,
@@ -24,7 +24,7 @@ export function SignUpForm (): ReactElement {
     submit
   } = useFormHandler<SignUpData>({
     initialData: {
-      email: sessionStorage.getItem('email') ?? '',
+      email,
       first_name: sessionStorage.getItem('firstName') ?? '',
       last_name: sessionStorage.getItem('lastName') ?? '',
       accepts_conditions: Boolean(sessionStorage.getItem('acceptsConditions')),
@@ -41,12 +41,6 @@ export function SignUpForm (): ReactElement {
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const signUpBlocked = Boolean(sessionStorage.getItem('signUpBlocked'))
-
-  useEffect(() => {
-    if (data.email === '') {
-      router.get('/connexion')
-    }
-  }, [data.email])
 
   function getCaptchaThenSubmit (e: FormEvent<HTMLFormElement>): void {
     e.preventDefault()

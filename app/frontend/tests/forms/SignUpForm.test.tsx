@@ -89,7 +89,7 @@ describe('SignUpForm', () => {
   })
 
   it('renders all form inputs and button', () => {
-    render(<SignUpForm />)
+    render(<SignUpForm email='place@hold.er' />)
 
     const firstNameInput = screen.getByLabelText('Prénom :')
     const lastNameInput = screen.getByLabelText('Nom :')
@@ -103,7 +103,7 @@ describe('SignUpForm', () => {
   })
 
   it('updates fields when inputs are changed', () => {
-    render(<SignUpForm />)
+    render(<SignUpForm email='place@hold.er' />)
 
     const firstNameInput = screen.getByLabelText('Prénom :')
     fireEvent.change(firstNameInput, { target: { value: 'John' } })
@@ -127,14 +127,14 @@ describe('SignUpForm', () => {
       errors: {}
     })
 
-    render(<SignUpForm />)
+    render(<SignUpForm email='place@hold.er' />)
 
     const button = screen.getByRole('button', { name: /Continuer/i })
     expect(button).toBeDisabled()
   })
 
   it('submits the form after ReCAPTCHA validation and calls executeAsync', async () => {
-    render(<SignUpForm />)
+    render(<SignUpForm email='place@hold.er' />)
 
     const firstNameInput = screen.getByLabelText('Prénom :')
     const lastNameInput = screen.getByLabelText('Nom :')
