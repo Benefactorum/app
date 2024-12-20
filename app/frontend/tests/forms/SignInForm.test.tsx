@@ -1,8 +1,7 @@
-import { describe, it, expect, vi, beforeEach, beforeAll, Mock } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import SignInForm from '@/components/forms/SignInForm'
 import { useFormHandler } from '@/hooks/useFormHandler'
-import { router } from '@inertiajs/react'
 
 vi.mock('@inertiajs/react', async () => {
   const actual = await vi.importActual('@inertiajs/react')
@@ -58,7 +57,7 @@ describe('SignInForm', () => {
   })
 
   it('renders the OTP input and submit button', () => {
-    render(<SignInForm />)
+    render(<SignInForm email='place@hold.er' />)
 
     const inputOTP = screen.getByRole('textbox')
     expect(inputOTP).toBeInTheDocument()
@@ -68,14 +67,14 @@ describe('SignInForm', () => {
   })
 
   it('calls updateField on OTP input change', () => {
-    render(<SignInForm />)
+    render(<SignInForm email='place@hold.er' />)
     const slots = screen.getAllByRole('textbox')
     fireEvent.change(slots[0], { target: { value: '1' } })
     expect(mockedUpdateField).toHaveBeenCalledWith('code', '1')
   })
 
   it('submits the form when "Continuer" is clicked', () => {
-    const { container } = render(<SignInForm />)
+    const { container } = render(<SignInForm email='place@hold.er' />)
     const form = container.querySelector('form')
     expect(form).not.toBeNull()
     if (form === null) throw new Error('Form not found')
@@ -96,25 +95,8 @@ describe('SignInForm', () => {
       errors: {}
     })
 
-    render(<SignInForm />)
+    render(<SignInForm email='place@hold.er' />)
     const button = screen.getByRole('button', { name: /Continuer/i })
     expect(button).toBeDisabled()
-  })
-
-  it('navigates back if no email is found', () => {
-    const useFormHandlerMock = vi.mocked(useFormHandler)
-    useFormHandlerMock.mockReturnValueOnce({
-      data: {
-        email: '',
-        code: ''
-      },
-      updateField: mockedUpdateField,
-      submit: mockedSubmit,
-      processing: false,
-      errors: {}
-    })
-
-    render(<SignInForm />)
-    expect(router.get).toHaveBeenCalledWith('/connexion')
   })
 })
