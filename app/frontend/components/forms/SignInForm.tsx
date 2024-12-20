@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { router } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
+import { Label } from '@/components/ui/label'
 import {
   InputOTP,
   InputOTPGroup,
@@ -22,19 +23,11 @@ interface SignInData {
 export default function SignInForm (): ReactElement {
   const [countdown, setCountdown] = useState<number>(60)
 
-  const initialData: SignInData = {
-    email: sessionStorage.getItem('email') ?? '',
-    code: ''
-  }
-
-  const {
-    data,
-    updateField,
-    submit,
-    processing,
-    errors
-  } = useFormHandler<SignInData>({
-    initialData,
+  const { data, updateField, submit, processing, errors } = useFormHandler<SignInData>({
+    initialData: {
+      email: sessionStorage.getItem('email') ?? '',
+      code: ''
+    },
     postUrl: '/sessions',
     validation: z.object({
       code: z.string().length(6, { message: 'Le code doit contenir 6 chiffres.' })
@@ -48,8 +41,8 @@ export default function SignInForm (): ReactElement {
   }, [data.email])
 
   useEffect(() => {
-    // if (errors.code?.includes('Votre code de connexion a expiré. Demandez-en un nouveau.')) {
-    if (typeof errors.code === 'string' && errors.code.includes('Votre code de connexion a expiré. Demandez-en un nouveau.')) {
+    // inconsistency between @inertia/react use-form type (string) and rails usage(string[])
+    if (Array.isArray(errors.code) && errors.code.includes('Votre code de connexion a expiré. Demandez-en un nouveau.')) {
       setCountdown(0)
     }
   }, [errors.code])
@@ -64,7 +57,9 @@ export default function SignInForm (): ReactElement {
   }, [countdown])
 
   function resendCode (): void {
-    router.post('/otp', {}, {
+    router.post('/otp', {
+      email: data.email
+    }, {
       onSuccess: (page) => {
         if (page.url === '/se-connecter') {
           updateField('code', '')
@@ -75,11 +70,10 @@ export default function SignInForm (): ReactElement {
     })
   }
 
-  // const canSubmit = !processing && data.code.length === 6 && errors.code === undefined
-
   return (
     <form onSubmit={submit} className='flex flex-col pt-4 mt-8 gap-8'>
       <div className='flex flex-col mx-auto'>
+        <Label htmlFor='OTP' className='sr-only'>Code</Label>
         <InputOTP
           autoFocus
           id='OTP'
