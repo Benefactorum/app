@@ -17,25 +17,24 @@ interface SignUpData {
 }
 
 export default function SignUpForm ({ email }: { email: string }): ReactElement {
+  console.log(window.history.state)
   const {
     data,
     processing,
     updateField,
     submit
   } = useFormHandler<SignUpData>({
+    rememberStateKey: 'signUp',
     initialData: {
       email,
-      first_name: sessionStorage.getItem('firstName') ?? '',
-      last_name: sessionStorage.getItem('lastName') ?? '',
-      accepts_conditions: Boolean(sessionStorage.getItem('acceptsConditions')),
+      first_name: '',
+      last_name: '',
+      accepts_conditions: false,
       recaptcha_token: ''
     },
     postUrl: '/registration',
     onSuccess: () => {
-      sessionStorage.setItem('firstName', data.first_name)
-      sessionStorage.setItem('lastName', data.last_name)
       sessionStorage.setItem('signUpBlocked', 'true')
-      sessionStorage.setItem('acceptsConditions', 'true')
     }
   })
 

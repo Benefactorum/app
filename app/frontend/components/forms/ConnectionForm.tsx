@@ -6,22 +6,23 @@ import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
 
 export default function ConnectionForm (): ReactElement {
-  const { data, updateField, submit, processing, errors } = useFormHandler({
-    initialData: { email: sessionStorage.getItem('email') ?? '' },
-    postUrl: '/connection',
-    validation: z.object({
-      email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' })
-    }),
-    onSuccess: (page) => {
-      if (page.url !== '/connexion') {
-        sessionStorage.setItem('email', data.email)
-        sessionStorage.removeItem('firstName')
-        sessionStorage.removeItem('lastName')
-        sessionStorage.removeItem('signUpBlocked')
-        sessionStorage.removeItem('acceptsConditions')
+  const { data, updateField, submit, processing, errors } = useFormHandler(
+    {
+      rememberStateKey: 'connection',
+      initialData: {
+        email: ''
+      },
+      postUrl: '/connection',
+      validation: z.object({
+        email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' })
+      }),
+      onSuccess: (page) => {
+        if (page.url !== '/connexion') {
+          sessionStorage.setItem('email', data.email)
+          sessionStorage.removeItem('signUpBlocked')
+        }
       }
-    }
-  })
+    })
 
   return (
     <form
