@@ -3,14 +3,14 @@ import { useForm } from '@inertiajs/react'
 import { z } from 'zod'
 import MyInput from './MyInput'
 import { Button } from '@/components/ui/button'
-import { StepForward } from 'lucide-react'
+import { StepForward, ArrowLeft } from 'lucide-react'
 
 export default function ConnectionForm (): ReactElement {
   const validationSchema = z.object({
     email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' })
   })
 
-  const { data, setData, post, processing, errors, clearErrors, setError } = useForm('connection', {
+  const { data, setData, post, processing, errors, clearErrors, setError } = useForm('test', {
     email: ''
   })
 
@@ -44,6 +44,10 @@ export default function ConnectionForm (): ReactElement {
     })
   }
 
+  function goBack (): void {
+    window.history.back()
+  }
+
   return (
     <form onSubmit={submit} className='w-full flex flex-col gap-8' aria-label='form'>
       <MyInput
@@ -57,10 +61,17 @@ export default function ConnectionForm (): ReactElement {
         error={errors.email}
       />
 
-      <Button type='submit' disabled={processing || Boolean(errors.email)}>
-        <StepForward />
-        Continuer
-      </Button>
+      <div className='flex justify-between'>
+        <Button type='button' onClick={goBack} disabled={processing}>
+          <ArrowLeft />
+          Retour
+        </Button>
+
+        <Button type='submit' disabled={processing || Boolean(errors.email)}>
+          <StepForward />
+          Continuer
+        </Button>
+      </div>
     </form>
   )
 }
