@@ -5,8 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
+import MyInput from '@/components/forms/MyInput'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,7 +21,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import { Pencil, Trash2, AlertCircle } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 
 interface UserAvatarProps {
   userId: number
@@ -34,7 +33,7 @@ export default function UserAvatarEdit ({
   hasProfilePicture
 }: UserAvatarProps): ReactElement {
   const { data, setData, patch, processing, errors, clearErrors, hasErrors } = useForm({
-    profile_picture: null as File | string | null
+    profile_picture: '' as File | string
   })
   const [uploadProgress, setUploadProgress] = useState<number | null>(null)
   const [activeStorage, setActiveStorage] = useState<typeof import('@rails/activestorage') | null>(null)
@@ -52,7 +51,6 @@ export default function UserAvatarEdit ({
 
     if (
       activeStorage === null ||
-      data.profile_picture === null ||
       !(data.profile_picture instanceof File)
     ) { return }
 
@@ -119,35 +117,25 @@ export default function UserAvatarEdit ({
               aria-label='Supprimer la photo de profil'
               className={`${buttonVariants({
                     variant: 'destructive'
-                  })} absolute top-4 right-4 w-7 h-7`}
+                  })} absolute top-2 right-2 w-7 h-7`}
             >
               <Trash2 />
             </AlertDialogTrigger>
           )}
-
           <form onSubmit={submit} className='flex flex-col gap-4'>
-            <Label className='text-xl' htmlFor='picture'>
-              Photo de profil
-            </Label>
-            <div>
-              <Input
-                aria-label='Sélectionner une image'
-                type='file'
-                required
-                onChange={(e) => {
-                  const files = e.target.files
-                  if (files == null) return
-                  setData('profile_picture', files[0])
-                  clearErrors('profile_picture')
-                }}
-              />
-              {errors.profile_picture !== undefined && (
-                <div className='flex items-center text-red-600 text-sm p-1'>
-                  <AlertCircle className='w-4 h-4 mr-1' />
-                  {errors.profile_picture}
-                </div>
-              )}
-            </div>
+            <MyInput
+              labelText='Photo de profil'
+              id='profile_picture'
+              type='file'
+              required
+              onChange={(e) => {
+                const files = e.target.files
+                if (files == null) return
+                setData('profile_picture', files[0])
+                clearErrors('profile_picture')
+              }}
+              error={errors.profile_picture}
+            />
             <Button
               type='submit'
               disabled={

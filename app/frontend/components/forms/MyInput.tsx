@@ -3,18 +3,28 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import InputError from '@/components/forms/InputError'
 
-interface MyInputProps {
+interface BaseMyInputProps {
   type: string
   required?: boolean
   disabled?: boolean
-  value: string
+  value?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  placeholder: string
   autoFocus?: boolean
   error?: string
   id: string
-  labelText?: string
 }
+
+interface WithLabel extends BaseMyInputProps {
+  labelText: string
+  placeholder?: string
+}
+
+interface WithoutLabel extends BaseMyInputProps {
+  labelText?: undefined
+  placeholder: string
+}
+
+type MyInputProps = WithLabel | WithoutLabel
 
 export default function MyInput (props: MyInputProps): ReactElement {
   const { id, labelText, type, required, disabled, value, onChange, placeholder, autoFocus, error } = props
