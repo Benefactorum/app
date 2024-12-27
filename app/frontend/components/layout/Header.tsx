@@ -47,6 +47,7 @@ const excludedPatterns = [/^\/connexion$/, /^\/se-connecter$/, /^\/s-inscrire$/]
 
 export default function Header (): ReactElement {
   const [isOpen, setOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const headerRef = useRef<HTMLDivElement>(null)
 
   const { url } = usePage()
@@ -57,6 +58,7 @@ export default function Header (): ReactElement {
 
   const handleLinkClick = (): void => {
     setOpen(false)
+    setDropdownOpen(false)
   }
 
   // Handle click outside
@@ -166,7 +168,7 @@ export default function Header (): ReactElement {
               </NavigationMenuItem>
             )}
             <NavigationMenuItem className='py-2 px-4 rounded-md hover:bg-secondary/50 focus-visible:bg-secondary'>
-              <DropdownMenu>
+              <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                 <DropdownMenuTrigger className='flex gap-2 items-center outline-none'>
                   <CirclePlus className='w-4 h-4 text-foreground' />
                   Plus
