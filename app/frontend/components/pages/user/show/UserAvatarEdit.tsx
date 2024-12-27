@@ -102,6 +102,7 @@ export default function UserAvatarEdit ({
     <AlertDialog>
       <Popover>
         <PopoverTrigger
+          aria-label='Modifier la photo de profil'
           className={cn(
             buttonVariants({
               variant: 'secondary',
@@ -115,6 +116,7 @@ export default function UserAvatarEdit ({
         <PopoverContent className='relative'>
           {hasProfilePicture && (
             <AlertDialogTrigger
+              aria-label='Supprimer la photo de profil'
               className={`${buttonVariants({
                     variant: 'destructive'
                   })} absolute top-4 right-4 w-7 h-7`}
@@ -129,6 +131,7 @@ export default function UserAvatarEdit ({
             </Label>
             <div>
               <Input
+                aria-label='Sélectionner une image'
                 type='file'
                 required
                 onChange={(e) => {
