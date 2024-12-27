@@ -28,6 +28,8 @@ import { Button } from '@/components/ui/button'
 
 import Logo from '@/assets/logo.svg'
 
+import type { CurrentUserType } from '@/types/types'
+
 const subNavLinks = [
   {
     title: 'Nous rejoindre',
@@ -50,7 +52,7 @@ export default function Header (): ReactElement {
   const { url } = usePage()
   const isExcluded = excludedPatterns.some((pattern) => pattern.test(url))
 
-  const user = usePage().props.currentUser
+  const user = usePage().props.currentUser as CurrentUserType | null
   const sessionId = usePage().props.sessionId as string
 
   const handleLinkClick = (): void => {

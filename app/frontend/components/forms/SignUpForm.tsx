@@ -34,8 +34,8 @@ export default function SignUpForm ({ email }: { email: string }): ReactElement 
     onSuccess: () => {
       sessionStorage.setItem('firstName', data.first_name)
       sessionStorage.setItem('lastName', data.last_name)
-      sessionStorage.setItem('signUpBlocked', 'true')
       sessionStorage.setItem('acceptsConditions', 'true')
+      sessionStorage.setItem('signUpBlocked', 'true')
     }
   })
 

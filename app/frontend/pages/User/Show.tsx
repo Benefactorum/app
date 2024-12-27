@@ -1,34 +1,8 @@
-import { Head, router, useForm, Link } from '@inertiajs/react'
-import { useState, useEffect, ReactElement } from 'react'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-
-// doesn't work with SSR
-// import { DirectUpload } from "@rails/activestorage"
-
-import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
-
+import { ReactElement } from 'react'
+import { Head, Link } from '@inertiajs/react'
 import NoProfilePicture from '@/assets/images/user/no-profile-picture.svg'
-import { Settings, Pencil, Trash2, AlertCircle } from 'lucide-react'
+import UserAvatarEdit from '@/components/pages/user/show/UserAvatarEdit'
+import { Settings } from 'lucide-react'
 // @ts-expect-error
 import Facebook from '@/assets/icons/facebook.svg?react'
 // @ts-expect-error
@@ -37,17 +11,10 @@ import Instagram from '@/assets/icons/instagram.svg?react'
 import Github from '@/assets/icons/github.svg?react'
 // @ts-expect-error
 import Linkedin from '@/assets/icons/linkedin.svg?react'
-
 import FormattedDate from '@/lib/formattedDate'
+import { buttonVariants } from '@/components/ui/button'
 
-import { CurrentUserType, ProfilePictureUrlType } from '@/types/types'
-
-interface UserType {
-  id: number
-  first_name: string
-  last_name: string
-  created_at: string
-}
+import type { CurrentUserType, ProfilePictureUrlType } from '@/types/types'
 
 const socialLinks = [
   {
@@ -68,80 +35,24 @@ const socialLinks = [
   }
 ]
 
-interface IndexProps {
-  user: UserType & { id: string | number }
-  profile_picture_url: ProfilePictureUrlType
+interface UserType {
+  id: number
+  first_name: string
+  last_name: string
+  created_at: string
+}
+
+interface UserShowProps {
+  user: UserType
   currentUser: CurrentUserType
+  profile_picture_url: ProfilePictureUrlType
 }
 
 export default function Show ({
   user,
   profile_picture_url, // eslint-disable-line
   currentUser
-}: IndexProps): ReactElement {
-  const { data, setData, patch, processing, errors } = useForm({
-    profile_picture: null
-  })
-  const [uploadProgress, setUploadProgress] = useState<number | null>(null)
-  const [activeStorage, setActiveStorage] = useState(null)
-
-  useEffect(() => {
-    async function loadActiveStorage (): void {
-      const module = await import('@rails/activestorage')
-      module.start()
-      setActiveStorage(module)
-    }
-
-    loadActiveStorage()
-  }, [])
-
-  function submit (e: React.FormEvent): void {
-    e.preventDefault()
-
-    const upload = new activeStorage.DirectUpload(
-      data.profile_picture,
-      '/rails/active_storage/direct_uploads?subfolder=profile_pictures',
-      {
-        directUploadWillStoreFileWithXHR: (request) => {
-          request.upload.addEventListener('progress', (event: ProgressEvent) => {
-            if (event.lengthComputable) {
-              const progress = (event.loaded / event.total) * 100
-              setUploadProgress(progress)
-            }
-          })
-        }
-      }
-    )
-
-    upload.create((error, blob) => {
-      setUploadProgress(null)
-      if (error != null) {
-        toast.error(
-          "Une erreur est survenue lors de l'enregistrement de votre photo de profil. Veuillez réessayer."
-        )
-      } else {
-        data.profile_picture = blob.signed_id
-        patch(`/users/${user.id}/profile_picture`, {
-          onSuccess: () => {
-            if (!errors.profile_picture) {
-              toast.success(
-                'Votre photo de profil a été mise à jour avec succès.'
-              )
-            }
-          }
-        })
-      }
-    })
-  }
-
-  function destroy () {
-    router.delete(`/users/${user.id}/profile_picture`, {
-      onSuccess: () => {
-        toast.success('Votre photo de profil a été supprimée.')
-      }
-    })
-  }
-
+}: UserShowProps): ReactElement {
   return (
     <>
       <Head>
@@ -153,84 +64,13 @@ export default function Show ({
           <img
             alt='avatar de profil'
             className='w-[212px] h-[212px] rounded-full object-cover'
-            src={profile_picture_url || NoProfilePicture}
+            src={profile_picture_url ?? NoProfilePicture}
           />
-          {user.id === currentUser?.id && (
-            <AlertDialog>
-              <Popover>
-                <PopoverTrigger
-                  className={cn(
-                    buttonVariants({
-                      variant: 'secondary',
-                      size: 'icon'
-                    }),
-                    'hover:bg-foreground/100 hover:text-white absolute right-0 top-4 rounded-full'
-                  )}
-                >
-                  <Pencil />
-                </PopoverTrigger>
-                <PopoverContent className='relative'>
-                  {profile_picture_url && (
-                    <AlertDialogTrigger
-                      className={`${buttonVariants({
-                        variant: 'destructive'
-                      })} absolute top-4 right-4 w-7 h-7`}
-                    >
-                      <Trash2 />
-                    </AlertDialogTrigger>
-                  )}
-
-                  <form onSubmit={submit} className='flex flex-col gap-4'>
-                    <Label className='text-xl' htmlFor='picture'>
-                      Photo de profil
-                    </Label>
-                    <div>
-                      <Input
-                        type='file'
-                        required
-                        className=''
-                        onChange={(e) => {
-                          setData('profile_picture', e.target.files[0])
-                          errors.profile_picture = null
-                        }}
-                      />
-                      {errors.profile_picture && (
-                        <div className='flex items-center text-red-600 text-sm p-1'>
-                          <AlertCircle className='w-4 h-4 mr-1' />
-                          {errors.profile_picture}
-                        </div>
-                      )}
-                    </div>
-                    <Button
-                      type='submit'
-                      disabled={
-                        uploadProgress || processing || !!errors.profile_picture
-                      }
-                    >
-                      Mettre à jour
-                    </Button>
-                  </form>
-                  <Progress
-                    className={uploadProgress ? 'mt-4' : ' hidden'}
-                    value={uploadProgress}
-                  />
-                </PopoverContent>
-              </Popover>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>En êtes-vous sûr ?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Vous êtes sur le point de supprimer votre photo de profil.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Retour</AlertDialogCancel>
-                  <AlertDialogAction onClick={destroy}>
-                    Continuer
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+          {user.id === currentUser.id && (
+            <UserAvatarEdit
+              userId={user.id}
+              hasProfilePicture={profile_picture_url !== null}
+            />
           )}
         </div>
         <div className='mx-auto flex'>
@@ -257,13 +97,12 @@ export default function Show ({
             <p>
               Inscrit depuis le <FormattedDate isoDate={user.created_at} />.
             </p>
-            {user.id === currentUser?.id && <p>Profil complété à 20 %.</p>}
+            {user.id === currentUser.id && <p>Profil complété à 20 %.</p>}
             <p>0 points d'impact.</p>
           </div>
         </div>
-
         <div className='flex flex-col justify-center ml-auto gap-8'>
-          {user.id === currentUser?.id && (
+          {user.id === currentUser.id && (
             <div className='flex justify-end'>
               <Link
                 href=''

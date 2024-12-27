@@ -17,8 +17,8 @@ export default function ConnectionForm (): ReactElement {
         sessionStorage.setItem('email', data.email)
         sessionStorage.removeItem('firstName')
         sessionStorage.removeItem('lastName')
-        sessionStorage.removeItem('signUpBlocked')
         sessionStorage.removeItem('acceptsConditions')
+        sessionStorage.removeItem('signUpBlocked')
       }
     }
   })

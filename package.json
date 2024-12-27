@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@types/node": "^22.10.2",
+    "@types/rails__activestorage": "^7.1.1",
     "@types/react-google-recaptcha": "^2.1.9",
     "@vitest/ui": "^2.1.6",
     "jsdom": "^25.0.1",
