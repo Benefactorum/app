@@ -46,8 +46,9 @@ export default function UserAvatarEdit ({
   const { data, setData, patch, processing, errors, setError, clearErrors, hasErrors } = useForm({
     profile_picture: '' as File | string
   })
-  const [uploadProgress, setUploadProgress] = useState<number | null>(null)
   const [activeStorage, setActiveStorage] = useState<typeof import('@rails/activestorage') | null>(null)
+  const [open, setOpen] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null)
 
   useEffect(() => {
     void (async () => {
@@ -98,6 +99,7 @@ export default function UserAvatarEdit ({
         patch(`/users/${userId}/profile_picture`, {
           onSuccess: () => {
             if (!hasErrors) {
+              setOpen(false)
               toast.success('Votre photo de profil a été mise à jour avec succès.')
             }
           }
@@ -109,6 +111,7 @@ export default function UserAvatarEdit ({
   function destroy (): void {
     router.delete(`/users/${userId}/profile_picture`, {
       onSuccess: () => {
+        setOpen(false)
         toast.success('Votre photo de profil a été supprimée.')
       }
     })
@@ -116,7 +119,7 @@ export default function UserAvatarEdit ({
 
   return (
     <AlertDialog>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           aria-label='Modifier la photo de profil'
           className={cn(
