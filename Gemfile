@@ -6,7 +6,7 @@ gem "inertia_rails"
 
 gem "vite_rails", "~> 3.0.19"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 2.4.1"
+gem "sqlite3"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 6.5.0"
 
