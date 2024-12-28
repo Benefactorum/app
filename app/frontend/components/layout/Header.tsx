@@ -106,18 +106,16 @@ export default function Header (): ReactElement {
         </Link>
         <NavigationMenu className='hidden min-[1100px]:flex'>
           <NavigationMenuList className='xl:gap-8'>
-            <NavigationMenuItem
-              className={
-                'py-2 px-4 rounded-md' +
-                (url === '/trouver-une-association'
-                  ? ' bg-secondary'
-                  : ' hover:bg-secondary/50')
-              }
-            >
+            <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
                   href='/trouver-une-association'
-                  className='flex gap-2 items-center'
+                  className={
+                    'flex gap-2 items-center py-2 px-4 rounded-md' +
+                    (url === '/trouver-une-association'
+                      ? ' bg-secondary'
+                      : ' hover:bg-secondary/50')
+                  }
                   onClick={handleLinkClick}
                 >
                   <Search className='w-4 h-4 text-foreground' />
@@ -126,18 +124,16 @@ export default function Header (): ReactElement {
               </NavigationMenuLink>
             </NavigationMenuItem>
             {user != null && (
-              <NavigationMenuItem
-                className={
-                  'py-2 px-4 rounded-md' +
-                  (url.startsWith('/mes-contributions')
-                    ? ' bg-secondary'
-                    : ' hover:bg-secondary/50')
-                }
-              >
+              <NavigationMenuItem>
                 <NavigationMenuLink asChild>
                   <Link
                     href='/mes-contributions'
-                    className='flex gap-2 items-center'
+                    className={
+                      'flex gap-2 items-center py-2 px-4 rounded-md' +
+                      (url.startsWith('/mes-contributions')
+                        ? ' bg-secondary'
+                        : ' hover:bg-secondary/50')
+                    }
                     onClick={handleLinkClick}
                   >
                     <HandHeart className='w-4 h-4 text-foreground' />
@@ -147,18 +143,16 @@ export default function Header (): ReactElement {
               </NavigationMenuItem>
             )}
             {user === null && (
-              <NavigationMenuItem
-                className={
-                  'py-2 px-4 rounded-md' +
-                  (url === '/qui-nous-sommes'
-                    ? ' bg-secondary'
-                    : ' hover:bg-secondary/50')
-                }
-              >
+              <NavigationMenuItem>
                 <NavigationMenuLink asChild>
                   <Link
                     href='/qui-nous-sommes'
-                    className='flex gap-2 items-center'
+                    className={
+                      'flex gap-2 items-center py-2 px-4 rounded-md' +
+                      (url === '/qui-nous-sommes'
+                        ? ' bg-secondary'
+                        : ' hover:bg-secondary/50')
+                    }
                     onClick={handleLinkClick}
                   >
                     <HandMetal className='w-4 h-4 text-foreground' />
@@ -167,26 +161,24 @@ export default function Header (): ReactElement {
                 </NavigationMenuLink>
               </NavigationMenuItem>
             )}
-            <NavigationMenuItem className='py-2 px-4 rounded-md hover:bg-secondary/50 focus-visible:bg-secondary'>
+            <NavigationMenuItem>
               <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
-                <DropdownMenuTrigger className='flex gap-2 items-center outline-none'>
+                <DropdownMenuTrigger className='py-2 px-4 rounded-md hover:bg-secondary/50 flex gap-2 items-center outline-none'>
                   <CirclePlus className='w-4 h-4 text-foreground' />
                   Plus
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='p-4 flex flex-col gap-2'>
                   {user !== null && (
-                    <DropdownMenuItem
-                      className={
-                        'text-base py-2 px-4 rounded-md' +
-                        (url === '/qui-nous-sommes'
-                          ? ' bg-secondary focus:bg-secondary'
-                          : ' hover:bg-secondary/50 focus:bg-secondary/50')
-                      }
-                    >
+                    <DropdownMenuItem className='focus:bg-white'>
                       <NavigationMenuLink asChild>
                         <Link
                           href='/qui-nous-sommes'
-                          className='flex gap-2 items-center'
+                          className={
+                            'flex gap-2 items-centertext-base py-2 px-4 rounded-md' +
+                            (url === '/qui-nous-sommes'
+                              ? ' bg-secondary focus:bg-secondary'
+                              : ' hover:bg-secondary/50 focus:bg-secondary/50')
+                          }
                           onClick={handleLinkClick}
                         >
                           <HandMetal className='w-4 h-4 text-foreground' />
@@ -196,19 +188,16 @@ export default function Header (): ReactElement {
                     </DropdownMenuItem>
                   )}
                   {subNavLinks.map((link) => (
-                    <DropdownMenuItem
-                      key={link.href}
-                      className={
-                        'text-base py-2 px-4 rounded-md' +
-                        (url === link.href
-                          ? ' bg-secondary focus:bg-secondary'
-                          : ' hover:bg-secondary/50 focus:bg-secondary/50')
-                      }
-                    >
+                    <DropdownMenuItem key={link.href} className='focus:bg-white'>
                       <NavigationMenuLink asChild>
                         <Link
                           href={link.href}
-                          className='flex gap-2 items-center'
+                          className={
+                            'flex gap-2 items-center text-base py-2 px-4 rounded-md w-full' +
+                            (url === link.href
+                              ? ' bg-secondary focus:bg-secondary'
+                              : ' hover:bg-secondary/50 focus:bg-secondary/50')
+                          }
                           onClick={handleLinkClick}
                         >
                           <link.icon className='text-foreground' />
