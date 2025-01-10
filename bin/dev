@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
 export PORT="${PORT:-3000}"
-
+rm .overmind.sock
 bin/overmind start -f Procfile.dev
