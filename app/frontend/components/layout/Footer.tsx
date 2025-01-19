@@ -102,7 +102,7 @@ export default function Footer (): ReactElement {
         </div>
       </div>
       <p className='mx-auto flex text-center text-xs text-slate-200'>
-        2024 - &nbsp;
+        {new Date().getFullYear()} - &nbsp;
         <Link href='/mentions-legales' className='hover:underline'>
           Mentions légales
         </Link>
