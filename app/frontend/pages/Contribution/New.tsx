@@ -1,32 +1,56 @@
 import { Head, useForm } from '@inertiajs/react'
-import { OsblFormType } from './types'
-import { CurrentUserType } from '@/types/types'
-
+import { ReactElement } from 'react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-
-import { AlertCircle, Save } from 'lucide-react'
 // @ts-expect-error
 import GoodIdea from '@/assets/icons/good-idea.svg?react'
-
+import { Button } from '@/components/ui/button'
+import { Save } from 'lucide-react'
+import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
+import OsblDataSheet from '@/components/pages/contribution/new/OsblDataSheet'
+import { CurrentUserType } from '@/types/types'
+import { FormData } from './types'
+import z from 'zod'
 interface NewProps {
   currentUser: CurrentUserType
-  osbl: OsblType
+  causes: Array<[string, number]>
 }
 
-export default function New ({ currentUser, Osbl }: NewProps) {
-  const { data, setData, post, processing, errors } = useForm({
+const validation = z.object({
+  website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
+  osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
+  email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
+  tax_reduction: z.enum(['0.66', '0.75'], { message: 'La réduction d’impôt doit être de 66 % ou 75 %.' })
+})
+
+export default function New ({ currentUser }: NewProps): ReactElement {
+  const { data, setData, post, processing, errors, clearErrors, setError } = useForm<FormData>({
     name: '',
-    website: '',
-    logo: null,
-    description: ''
+    website: undefined,
+    logo: undefined,
+    description: '',
+    osbls_causes_attributes: [],
+    tax_reduction: undefined,
+    keywords: [],
+    geographical_scale: undefined,
+    operational_zones: [],
+    employees_count: undefined,
+    osbl_type: undefined,
+    creation_year: undefined,
+    contact_email: undefined
   })
 
-  function submit (e: React.FormEvent<HTMLFormElement>) {
+  function submit (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault()
+
+    const result = validation.safeParse(data) as { success: boolean, error: z.ZodError }
+    if (!result.success) {
+      const issues = result.error.issues
+      issues.forEach(issue => {
+        setError(issue.path.join('.') as keyof FormData, issue.message)
+      })
+      return
+    }
+
     post(`/users/${currentUser.id}/contributions`)
   }
 
@@ -50,114 +74,8 @@ export default function New ({ currentUser, Osbl }: NewProps) {
             <Save />
             Enregistrer
           </Button>
-          <div className='flex flex-wrap gap-16 mx-auto justify-center'>
-            <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
-              <h2 className='text-2xl font-semibold'>En-tête</h2>
-              <div className='flex flex-col gap-8'>
-                <div>
-                  <div className='flex gap-x-8 gap-y-2 items-center flex-wrap justify-between'>
-                    <Label htmlFor='name' className=''>
-                      Nom de l’association* :
-                    </Label>
-                    <Input
-                      type='text'
-                      id='name'
-                      required
-                      value={data.name}
-                      onChange={(e) => {
-                        setData('name', e.target.value)
-                        errors.name = ''
-                      }}
-                      className={
-                        'bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow' +
-                        (errors.name ? ' border-red-600' : '')
-                      }
-                    />
-                  </div>
-                  {errors.name && (
-                    <div className='flex items-center text-red-600 text-sm p-1 justify-end'>
-                      <AlertCircle className='w-4 h-4 mr-1' />
-                      {errors.name}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <div className='flex gap-x-8 gap-y-2 items-center flex-wrap'>
-                    <Label htmlFor='website' className=''>
-                      Site internet :
-                    </Label>
-                    <Input
-                      type='text'
-                      id='website'
-                      value={data.website}
-                      onChange={(e) => {
-                        setData('website', e.target.value)
-                        errors.website = ''
-                      }}
-                      className={
-                        'bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow' +
-                        (errors.website ? ' border-red-600' : '')
-                      }
-                    />
-                  </div>
-                  {errors.website && (
-                    <div className='flex items-center text-red-600 text-sm p-1 justify-end'>
-                      <AlertCircle className='w-4 h-4 mr-1' />
-                      {errors.website}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <div className='flex gap-x-24 gap-y-2 items-center flex-wrap'>
-                    <Label htmlFor='logo' className='flex-grow'>
-                      Logo :
-                    </Label>
-                    <Input
-                      type='file'
-                      id='logo'
-                      className='bg-secondary focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow'
-                      onChange={(e) => {
-                        setData('logo', e.target.files[0])
-                        errors.logo = null
-                      }}
-                    />
-                  </div>
-                  {errors.logo && (
-                    <div className='flex items-center text-red-600 text-sm p-1 justify-end'>
-                      <AlertCircle className='w-4 h-4 mr-1' />
-                      {errors.logo}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <div className='flex flex-col gap-2'>
-                    <Label htmlFor='description' className=''>
-                      Description de l'association:
-                    </Label>
-                    <Textarea
-                      id='description'
-                      placeholder='300 caractères maximum.'
-                      value={data.description}
-                      onChange={(e) => {
-                        setData('description', e.target.value)
-                        errors.description = ''
-                      }}
-                      className={
-                        'bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40' +
-                        (errors.description ? ' border-red-600' : '')
-                      }
-                    />
-                  </div>
-                  {errors.description && (
-                    <div className='flex items-center text-red-600 text-sm p-1 justify-end'>
-                      <AlertCircle className='w-4 h-4 mr-1' />
-                      {errors.description}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+          <OsblHeader data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+          <OsblDataSheet data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer

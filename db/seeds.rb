@@ -7,3 +7,23 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+causes = [
+  "environnement",
+  "protection-de-l-enfance",
+  "sante",
+  "lutte-contre-la-précarité",
+  "education",
+  "protection-animale",
+  "recherche",
+  "arts-culture-patrimoine",
+  "aide-internationale",
+  "handicap",
+  "justice-sociale",
+  "religion",
+  "autre"
+]
+
+causes.each do |cause|
+  Cause.find_or_create_by!(name: cause)
+end

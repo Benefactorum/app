@@ -14,7 +14,9 @@ module Users
     end
 
     def new
-      render inertia: "Contribution/New"
+      render inertia: "Contribution/New", props: {
+        causes: Cause.pluck(:name, :id).to_h
+      }
     end
 
     def create
@@ -34,7 +36,8 @@ module Users
     end
 
     def osbl_params
-      params.permit(:name, :website, :logo, :description)
+      params.permit(:name, :website, :logo, :description, :tax_reduction, :geographical_scale, :employees_count, :osbl_type, :creation_year, :contact_email, osbls_causes_attributes: [:cause_id])
+      # params.permit(:name, :website, :logo, :description, :causes, :tax_reduction, :keywords, :geographical_scale, :operational_zones, :employees_count, :osbl_type, :creation_year, :email)
     end
 
     def serialize_contribution(contribution)
