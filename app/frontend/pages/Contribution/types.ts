@@ -22,7 +22,8 @@ export interface FormData {
   description: string
   osbls_causes_attributes: Array<{ cause_id: string }>
   tax_reduction?: number
-  keywords: string[]
+  osbls_keywords_attributes: Array<{ keyword_id: string }>
+  new_keywords: string[]
   geographical_scale?: string
   operational_zones: string[]
   employees_count?: number
