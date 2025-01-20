@@ -51,11 +51,11 @@ const OsblTypeList = [
 ]
 
 export default function OsblDataSheet ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
-  const causes = usePage().props.causes as Array<[string, number]>
+  const causes = usePage().props.causes as Record<string, number>
 
   const syncedCausesList = CausesList.map(cause => ({
     ...cause,
-    value: String(causes[cause.value as keyof typeof causes])
+    value: String(causes[cause.value])
   }))
 
   return (
@@ -95,7 +95,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
                     <p>Elles ouvrent le droit à une réduction d'impôt de 66 %.</p>
                   </HelpTooltip>
                 </Label>
-                <RadioGroupItem value='standard' />
+                <RadioGroupItem value='intérêt_général' />
               </div>
               <div className='flex items-center justify-between'>
                 <Label htmlFor='option-two' className='flex items-center justify-between w-16'>
