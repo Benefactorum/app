@@ -82,14 +82,14 @@ export default function MyAsyncCreatableSelect ({
   }
 
   const isValidNewOption = (inputValue: string): boolean => {
-    const normalizedInput = inputValue.trim().toLowerCase().charAt(0).toUpperCase() + inputValue.trim().toLowerCase().slice(1)
+    const normalizedInput = inputValue.trim().toLowerCase().replace(/^./, char => char.toUpperCase())
     return inputValue.length >= 3 && inputValue.length <= 30 && !value.some(option => option.label === normalizedInput)
   }
 
   return (
     <AsyncCreatableSelect
       isMulti
-      cacheOptions
+      // cacheOptions
       value={value}
       loadOptions={promiseOptions}
       onCreateOption={handleCreate}
