@@ -4,6 +4,7 @@ import MyInput from '@/components/forms/MyInput'
 import { Textarea } from '@/components/ui/textarea'
 import InputError from '@/components/forms/InputError'
 import { FormProps } from '@/pages/Contribution/types'
+import HelpTooltip from '@/components/HelpTooltip'
 
 export default function OsblHeader ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
   return (
@@ -39,7 +40,16 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Form
           <MyInput
             id='logo'
             type='file'
-            labelText='Logo :'
+            labelText={
+              <p className='flex items-center gap-2'>
+                Logo
+                <HelpTooltip size='small'>
+                  <p>Le format SVG est à privilégier.</p>
+                  <p>À défaut, le format PNG, avec fond transparent, est aussi accepté.</p>
+                </HelpTooltip>
+                :
+              </p>
+          }
             onChange={(e) => {
               const files = e.target.files
               if (files === null) return

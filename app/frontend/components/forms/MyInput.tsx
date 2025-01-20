@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { ReactElement, ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import InputError from '@/components/forms/InputError'
@@ -15,7 +15,7 @@ interface BaseMyInputProps {
 }
 
 interface WithLabel extends BaseMyInputProps {
-  labelText: string
+  labelText: string | ReactNode
   placeholder?: string
 }
 

@@ -19,6 +19,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { usePage } from '@inertiajs/react'
 import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
+import HelpTooltip from '@/components/HelpTooltip'
 
 const CausesList = [
   { value: 'environnement', label: 'Environnement', icon: Trees },
@@ -87,11 +88,24 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               }}
             >
               <div className='flex items-center justify-between'>
-                <Label htmlFor='option-one'>66 % (organismes d'intérêt général)</Label>
+                <Label htmlFor='option-one' className='flex items-center justify-between w-16'>
+                  66 %
+                  <HelpTooltip>
+                    <h2 className='font-semibold mb-4'>Les associations d'intérêt général, ou reconnues d'utilité publique (ARUP).</h2>
+                    <p>Elles ouvrent le droit à une réduction d'impôt de 66 %.</p>
+                  </HelpTooltip>
+                </Label>
                 <RadioGroupItem value='standard' />
               </div>
               <div className='flex items-center justify-between'>
-                <Label htmlFor='option-two'>75 % (organismes d'aide aux personnes en difficulté)</Label>
+                <Label htmlFor='option-two' className='flex items-center justify-between w-16'>
+                  75 %
+                  <HelpTooltip>
+                    <h2 className='font-semibold mb-4'>Les organismes d'aide aux personnes en difficulté.</h2>
+                    <p>Elles ouvrent le droit à une réduction d'impôt de 75 %, jusqu'à 1 000 € de dons.</p>
+                    <p>Le régime standard de réduction à 66 % s'applique ensuite.</p>
+                  </HelpTooltip>
+                </Label>
                 <RadioGroupItem value='aide_aux_personnes_en_difficulté' />
               </div>
             </RadioGroup>
@@ -131,7 +145,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             </Select>
           </div>
           <div className='flex flex-col gap-2'>
-            <Label>Zone(s) d'opération :</Label>
+            <Label>Zone(s) d'action :</Label>
             <TagsInput
               value={data.operational_zones}
               onValueChange={(value) => {
@@ -155,7 +169,13 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             />
           </div>
           <div className='flex flex-col gap-4'>
-            <Label>Type d'OBSL :</Label>
+            <Label className='flex items-center gap-2'>
+              Type d'OSBL
+              <HelpTooltip size='small'>
+                <p>Organisation Sans But Lucratif.</p>
+              </HelpTooltip>
+              :
+            </Label>
             <Select onValueChange={(value) => setData('osbl_type', value)}>
               <SelectTrigger>
                 <SelectValue />
