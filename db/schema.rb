@@ -101,7 +101,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_102012) do
     t.index ["website"], name: "index_osbls_on_website", unique: true
     t.check_constraint "contact_email IS NULL OR contact_email LIKE '%_@_%._%'", name: "contact_email_format_check"
     t.check_constraint "creation_year > 0", name: "creation_year_positive"
-    t.check_constraint "employees_count > 0", name: "employees_count_positive"
+    t.check_constraint "employees_count >= 0", name: "employees_count_positive"
   end
 
   create_table "osbls_causes", force: :cascade do |t|
