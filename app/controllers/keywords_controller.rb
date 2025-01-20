@@ -16,7 +16,5 @@ class KeywordsController < ApplicationController
   def create
     keyword = Keyword.create!(name: params[:name])
     render json: keyword.slice(:id, :name), status: :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {error: e.message}, status: :unprocessable_entity
   end
 end

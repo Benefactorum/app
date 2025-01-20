@@ -55,6 +55,12 @@ export default function New ({ currentUser }: NewProps): ReactElement {
     post(`/users/${currentUser.id}/contributions`)
   }
 
+  function avoidUnintentionalSubmission (e: React.KeyboardEvent<HTMLFormElement>): void {
+    if (e.code === 'Enter') {
+      e.preventDefault()
+    }
+  }
+
   return (
     <>
       <Head title='Ajouter une association' />
@@ -70,7 +76,7 @@ export default function New ({ currentUser }: NewProps): ReactElement {
           </AlertDescription>
         </Alert>
 
-        <form onSubmit={submit} className='flex flex-col pt-4 gap-16'>
+        <form onKeyDown={avoidUnintentionalSubmission} onSubmit={submit} className='flex flex-col pt-4 gap-16'>
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer

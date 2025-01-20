@@ -3,6 +3,7 @@ import AsyncCreatableSelect from 'react-select/async-creatable'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
 import { FormProps, FormData } from '@/pages/Contribution/types'
+import { toast } from 'sonner'
 
 interface Option {
   readonly label: string
@@ -72,10 +73,17 @@ export default function MyAsyncCreatableSelect ({
         setData(attributeName, [...(data[attributeName] as any[]), {
           [`${resource.slice(0, -1)}_id`]: newOption.value
         }] as any)
+      } catch (error) {
+        toast.error(`Une erreur est survenue lors de la création de "${inputValue}"`)
       } finally {
         setIsLoading(false)
       }
     })()
+  }
+
+  const isValidNewOption = (inputValue: string): boolean => {
+    const normalizedInput = inputValue.trim().toLowerCase().charAt(0).toUpperCase() + inputValue.trim().toLowerCase().slice(1)
+    return inputValue.length >= 3 && inputValue.length <= 30 && !value.some(option => option.label === normalizedInput)
   }
 
   return (
@@ -86,7 +94,6 @@ export default function MyAsyncCreatableSelect ({
       loadOptions={promiseOptions}
       onCreateOption={handleCreate}
       onChange={(value) => {
-        console.log('value', value)
         setValue(value as Option[])
         setData(attributeName, (value as Option[]).map(option => ({
           [`${resource.slice(0, -1)}_id`]: option.value
@@ -99,6 +106,10 @@ export default function MyAsyncCreatableSelect ({
         multiValueRemove: () => 'bg-secondary'
       }}
       placeholder={placeholder}
+      formatCreateLabel={(inputValue: string) => `Créer "${inputValue}"`}
+      isValidNewOption={isValidNewOption}
+      loadingMessage={() => 'Recherche...'}
+      noOptionsMessage={() => 'Aucune suggestion'}
     />
   )
 }

@@ -16,7 +16,5 @@ class InterventionAreasController < ApplicationController
   def create
     intervention_area = InterventionArea.create!(name: params[:name])
     render json: intervention_area.slice(:id, :name), status: :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {error: e.message}, status: :unprocessable_entity
   end
 end

@@ -30,6 +30,8 @@ fr:
   activerecord:
     models:
       user: "Utilisateur"
+      intervention_area: "Zone d'action"
+      keyword: "Mot-clé"
     attributes:
       user:
         email: "Adresse e-mail"
@@ -41,3 +43,7 @@ fr:
         user: "Utilisateur"
         status: "Statut"
         contributable: "Type de contribution"
+      intervention_area:
+        name: "Nom"
+      keyword:
+        name: "Nom"
