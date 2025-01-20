@@ -11,8 +11,7 @@ export default function KeywordAsyncCreatableSelect ({
       data={data}
       setData={setData}
       attributeName='osbls_keywords_attributes'
-      endpoint='keywords'
-      minInputLength={3}
+      resource='keywords'
       placeholder='droits des femmes, ...'
     />
   )

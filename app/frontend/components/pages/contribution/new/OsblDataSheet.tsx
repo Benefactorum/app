@@ -8,7 +8,6 @@ import { FormProps } from '@/pages/Contribution/types'
 import { Baby, Stethoscope, Coins, BookMarked, PawPrint, Trees, Church, Microscope, Globe, Accessibility, Scale, Shuffle, Brush } from 'lucide-react'
 import InputError from '@/components/forms/InputError'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-// import { TagsInput } from '@/components/ui/tags-input'
 import {
   Select,
   SelectContent,
@@ -132,17 +131,6 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               </SelectContent>
             </Select>
           </div>
-          {/* <div className='flex flex-col gap-2'>
-            <Label>Zone(s) d'action :</Label>
-            <TagsInput
-              value={data.operational_zones}
-              onValueChange={(value) => {
-                setData('operational_zones', value)
-                clearErrors('operational_zones')
-              }}
-              placeholder='Un pays, une région, ...'
-            />
-          </div> */}
           <div className='flex flex-col gap-2'>
             <Label>Zones d'action :</Label>
             <InterventionAreaAsyncCreatableSelect

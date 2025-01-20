@@ -2,7 +2,6 @@ import { ReactElement } from 'react'
 import { Label } from '@/components/ui/label'
 import MyInput from '@/components/forms/MyInput'
 import { Textarea } from '@/components/ui/textarea'
-import InputError from '@/components/forms/InputError'
 import { FormProps } from '@/pages/Contribution/types'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 
@@ -66,21 +65,18 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Form
               </Label>
               <Textarea
                 id='description'
-                placeholder='300 caractères maximum.'
+                placeholder='Mission, actions, ...'
                 value={data.description}
                 onChange={(e) => {
                   setData('description', e.target.value)
                   clearErrors('description')
                 }}
-                className={
-                        'bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40' +
-                        (errors.description !== undefined ? ' border-red-600' : '')
-                      }
+                className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40'
               />
+              <div className={`text-xs text-right ${data.description.length > 300 ? 'text-red-600' : 'text-gray-500'}`}>
+                {data.description.length}/300 caractères
+              </div>
             </div>
-            {errors.description !== undefined && (
-              <InputError>{errors.description}</InputError>
-            )}
           </div>
         </div>
       </div>
