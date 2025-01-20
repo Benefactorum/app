@@ -4,9 +4,19 @@ class Osbl < ApplicationRecord
   has_many :osbls_causes, dependent: :destroy # join table
   has_many :causes, through: :osbls_causes
 
+  has_many :osbls_keywords, dependent: :destroy # join table
+  has_many :keywords, through: :osbls_keywords
+
+  TAX_REDUCTION_VALUES = {
+    "standard" => 0.66,
+    "aide_aux_personnes_en_difficulté" => 0.75,
+    "fondation_du_patrimoine" => 0.75
+  }.freeze
+
   enum :tax_reduction, {
-    "0.66" => 0,
-    "0.75" => 1
+    "standard" => 0,
+    "aide_aux_personnes_en_difficulté" => 1,
+    "fondation_du_patrimoine" => 2
   }
 
   enum :geographical_scale, {
@@ -29,4 +39,16 @@ class Osbl < ApplicationRecord
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
 
   accepts_nested_attributes_for :osbls_causes, allow_destroy: true
+  accepts_nested_attributes_for :osbls_keywords, allow_destroy: true
+
+  attribute :new_keywords, default: -> { [] }
+  before_save :assign_new_keywords
+
+  private
+
+  def assign_new_keywords
+    new_keywords.each do |keyword|
+      keywords.build(name: keyword)
+    end
+  end
 end

@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { usePage } from '@inertiajs/react'
+import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
 
 const CausesList = [
   { value: 'environnement', label: 'Environnement', icon: Trees },
@@ -50,6 +51,7 @@ const OsblTypeList = [
 
 export default function OsblDataSheet ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
   const causes = usePage().props.causes as Array<[string, number]>
+
   const syncedCausesList = CausesList.map(cause => ({
     ...cause,
     value: String(causes[cause.value as keyof typeof causes])
@@ -76,7 +78,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             {Boolean(errors.osbls_causes_attributes) && <InputError>{errors.osbls_causes_attributes}</InputError>}
           </div>
           <div className='flex flex-col gap-4'>
-            <Label>Réduction d’impôt * :</Label>
+            <Label>Réduction d'impôt * :</Label>
             <RadioGroup
               required
               value={String(data.tax_reduction)} onValueChange={(value) => {
@@ -85,25 +87,34 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               }}
             >
               <div className='flex items-center justify-between'>
-                <Label htmlFor='option-one'>66 %</Label>
-                <RadioGroupItem value='0.66' />
+                <Label htmlFor='option-one'>66 % (organismes d'intérêt général)</Label>
+                <RadioGroupItem value='standard' />
               </div>
               <div className='flex items-center justify-between'>
-                <Label htmlFor='option-two'>75 %</Label>
-                <RadioGroupItem value='0.75' />
+                <Label htmlFor='option-two'>75 % (organismes d'aide aux personnes en difficulté)</Label>
+                <RadioGroupItem value='aide_aux_personnes_en_difficulté' />
               </div>
             </RadioGroup>
             {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
           </div>
-          <div className='flex flex-col gap-2'>
-            <Label>Mots-clés :</Label>
+          {/* <div className='flex flex-col gap-2'>
+            <Label>Nouveaux Mots-clés :</Label>
             <TagsInput
-              value={data.keywords}
+              value={data.new_keywords}
               onValueChange={(value) => {
-                setData('keywords', value)
-                clearErrors('keywords')
+                setData('new_keywords', value)
+                clearErrors('new_keywords')
               }}
               placeholder='droits des femmes, ...'
+            />
+          </div> */}
+          <div className='flex flex-col gap-2'>
+            <Label>Mots-clés :</Label>
+            <KeywordAsyncCreatableSelect
+              data={data}
+              setData={setData}
+              errors={errors}
+              clearErrors={clearErrors}
             />
           </div>
           <div className='flex flex-col gap-2'>

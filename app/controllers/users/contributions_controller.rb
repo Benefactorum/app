@@ -36,8 +36,8 @@ module Users
     end
 
     def osbl_params
-      params.permit(:name, :website, :logo, :description, :tax_reduction, :geographical_scale, :employees_count, :osbl_type, :creation_year, :contact_email, osbls_causes_attributes: [:cause_id])
-      # params.permit(:name, :website, :logo, :description, :causes, :tax_reduction, :keywords, :geographical_scale, :operational_zones, :employees_count, :osbl_type, :creation_year, :email)
+      params.permit(:name, :website, :logo, :description, {osbls_causes_attributes: [:cause_id]}, :tax_reduction, {osbls_keywords_attributes: [:keyword_id]}, {new_keywords: []}, :geographical_scale, :employees_count, :osbl_type, :creation_year, :contact_email)
+      # missing :operational_zones
     end
 
     def serialize_contribution(contribution)
