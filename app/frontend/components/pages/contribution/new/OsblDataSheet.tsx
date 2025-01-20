@@ -8,7 +8,7 @@ import { FormProps } from '@/pages/Contribution/types'
 import { Baby, Stethoscope, Coins, BookMarked, PawPrint, Trees, Church, Microscope, Globe, Accessibility, Scale, Shuffle, Brush } from 'lucide-react'
 import InputError from '@/components/forms/InputError'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { TagsInput } from '@/components/ui/tags-input'
+// import { TagsInput } from '@/components/ui/tags-input'
 import {
   Select,
   SelectContent,
@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input'
 import { usePage } from '@inertiajs/react'
 import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
 import HelpTooltip from '@/components/HelpTooltip'
+import InterventionAreaAsyncCreatableSelect from './InterventionAreaAsyncCreatableSelect'
 
 const CausesList = [
   { value: 'environnement', label: 'Environnement', icon: Trees },
@@ -111,24 +112,11 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             </RadioGroup>
             {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
           </div>
-          {/* <div className='flex flex-col gap-2'>
-            <Label>Nouveaux Mots-clés :</Label>
-            <TagsInput
-              value={data.new_keywords}
-              onValueChange={(value) => {
-                setData('new_keywords', value)
-                clearErrors('new_keywords')
-              }}
-              placeholder='droits des femmes, ...'
-            />
-          </div> */}
           <div className='flex flex-col gap-2'>
             <Label>Mots-clés :</Label>
             <KeywordAsyncCreatableSelect
               data={data}
               setData={setData}
-              // errors={errors}
-              // clearErrors={clearErrors}
             />
           </div>
           <div className='flex flex-col gap-2'>
@@ -144,7 +132,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               </SelectContent>
             </Select>
           </div>
-          <div className='flex flex-col gap-2'>
+          {/* <div className='flex flex-col gap-2'>
             <Label>Zone(s) d'action :</Label>
             <TagsInput
               value={data.operational_zones}
@@ -153,6 +141,13 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
                 clearErrors('operational_zones')
               }}
               placeholder='Un pays, une région, ...'
+            />
+          </div> */}
+          <div className='flex flex-col gap-2'>
+            <Label>Zones d'action :</Label>
+            <InterventionAreaAsyncCreatableSelect
+              data={data}
+              setData={setData}
             />
           </div>
           <div className='flex flex-col'>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_19_083634) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_20_102012) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -71,6 +71,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_19_083634) do
     t.index ["osbl_id"], name: "index_documents_on_osbl_id"
   end
 
+  create_table "intervention_areas", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_intervention_areas_on_name", unique: true
+  end
+
   create_table "keywords", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -102,6 +109,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_19_083634) do
     t.integer "cause_id", null: false
     t.index ["cause_id", "osbl_id"], name: "index_osbls_causes_on_cause_id_and_osbl_id", unique: true
     t.index ["osbl_id", "cause_id"], name: "index_osbls_causes_on_osbl_id_and_cause_id", unique: true
+  end
+
+  create_table "osbls_intervention_areas", force: :cascade do |t|
+    t.integer "osbl_id", null: false
+    t.integer "intervention_area_id", null: false
+    t.index ["intervention_area_id", "osbl_id"], name: "idx_on_intervention_area_id_osbl_id_cc1fbf5e72", unique: true
+    t.index ["osbl_id", "intervention_area_id"], name: "idx_on_osbl_id_intervention_area_id_0e27c7488c", unique: true
   end
 
   create_table "osbls_keywords", force: :cascade do |t|
@@ -152,6 +166,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_19_083634) do
   add_foreign_key "documents", "osbls"
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade
+  add_foreign_key "osbls_intervention_areas", "intervention_areas", on_delete: :cascade
+  add_foreign_key "osbls_intervention_areas", "osbls", on_delete: :cascade
   add_foreign_key "osbls_keywords", "keywords", on_delete: :cascade
   add_foreign_key "osbls_keywords", "osbls", on_delete: :cascade
   add_foreign_key "otps", "users"

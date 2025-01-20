@@ -23,9 +23,8 @@ export interface FormData {
   osbls_causes_attributes: Array<{ cause_id: string }>
   tax_reduction?: number
   osbls_keywords_attributes: Array<{ keyword_id: string }>
-  // new_keywords: string[]
   geographical_scale?: string
-  operational_zones: string[]
+  osbls_intervention_areas_attributes: Array<{ intervention_area_id: string }>
   employees_count?: number
   osbl_type?: string
   creation_year?: number

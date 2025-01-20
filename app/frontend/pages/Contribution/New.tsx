@@ -32,7 +32,7 @@ export default function New ({ currentUser }: NewProps): ReactElement {
     tax_reduction: undefined,
     osbls_keywords_attributes: [],
     geographical_scale: undefined,
-    operational_zones: [],
+    osbls_intervention_areas_attributes: [],
     employees_count: undefined,
     osbl_type: undefined,
     creation_year: undefined,
