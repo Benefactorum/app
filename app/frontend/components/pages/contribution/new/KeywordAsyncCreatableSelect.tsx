@@ -1,6 +1,7 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useState, useCallback } from 'react'
 import AsyncCreatableSelect from 'react-select/async-creatable' // https://react-select.com/home#welcome
 import axios from 'axios'
+import debounce from 'lodash.debounce' // Install lodash.debounce if not already installed: npm install lodash.debounce
 import { FormProps } from '@/pages/Contribution/types'
 
 interface Option {
@@ -15,19 +16,31 @@ const createOption = (data: { id: number, name: string }): Option => ({
 
 export default function KeywordAsyncCreatableSelect ({
   data,
-  setData,
-  errors,
-  clearErrors
-}: FormProps): ReactElement {
+  setData
+}: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const [isLoading, setIsLoading] = useState(false)
   const [value, setValue] = useState<Option[]>([]) // Manage selected options here
 
-  const promiseOptions = async (inputValue: string): Promise<Option[]> => {
+  const fetchOptions = async (inputValue: string): Promise<Option[]> => {
     if (inputValue.length < 3) return []
 
     const response = await fetch(`/keywords?query=${encodeURIComponent(inputValue)}`)
     const data = await response.json()
     return data.map((data: { id: number, name: string }) => createOption(data))
+  }
+
+  // Use lodash's debounce to delay the API call
+  const debouncedFetchOptions = useCallback(
+    debounce((inputValue: string, callback: (options: Option[]) => void) => {
+      void fetchOptions(inputValue).then(callback)
+    }, 300),
+    []
+  )
+
+  const promiseOptions = async (inputValue: string): Promise<Option[]> => {
+    return await new Promise((resolve) => {
+      debouncedFetchOptions(inputValue, resolve)
+    })
   }
 
   const handleCreate = (inputValue: string): void => {
@@ -46,8 +59,7 @@ export default function KeywordAsyncCreatableSelect ({
         )
         const newOption = createOption(response.data)
         setValue((prev) => [...prev, newOption]) // Add the new option to the state
-        setData('new_keywords', [...value.map((v) => v.value), newOption.value]) // Update parent data
-        clearErrors('new_keywords') // Clear errors if any
+        setData('osbls_keywords_attributes', [...data.osbls_keywords_attributes, { keyword_id: newOption.value }])
       } finally {
         setIsLoading(false)
       }
@@ -63,9 +75,8 @@ export default function KeywordAsyncCreatableSelect ({
       onCreateOption={handleCreate}
       onChange={(value) => {
         console.log('value', value)
-        setValue(value)
-        // setData('new_keywords', value.map(keyword => keyword.value))
-        // clearErrors('new_keywords')
+        setValue(value as Option[])
+        setData('osbls_keywords_attributes', value.map(keyword => ({ keyword_id: keyword.value })))
       }}
       isDisabled={isLoading}
       isLoading={isLoading}
