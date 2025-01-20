@@ -7,7 +7,7 @@ interface BaseMyInputProps {
   type: string
   required?: boolean
   disabled?: boolean
-  value?: string | number
+  value?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   autoFocus?: boolean
   error?: string

@@ -11,15 +11,13 @@ class Osbl < ApplicationRecord
   has_many :intervention_areas, through: :osbls_intervention_areas
 
   TAX_REDUCTION_VALUES = {
-    "standard" => 0.66,
-    "aide_aux_personnes_en_difficulté" => 0.75,
-    "fondation_du_patrimoine" => 0.75
+    "intérêt_général" => 0.66,
+    "aide_aux_personnes_en_difficulté" => 0.75
   }.freeze
 
   enum :tax_reduction, {
-    "standard" => 0,
-    "aide_aux_personnes_en_difficulté" => 1,
-    "fondation_du_patrimoine" => 2
+    "intérêt_général" => 0,
+    "aide_aux_personnes_en_difficulté" => 1
   }
 
   enum :geographical_scale, {
@@ -39,7 +37,7 @@ class Osbl < ApplicationRecord
   validates :website, uniqueness: true, allow_nil: true
   validates :description, length: {maximum: 300}, allow_nil: true
   # validates :employees_count, numericality: { greater_than: 0 }, allow_nil: true
-  validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true # greater_than: 0,
+  validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
 
   accepts_nested_attributes_for :osbls_causes # , allow_destroy: true

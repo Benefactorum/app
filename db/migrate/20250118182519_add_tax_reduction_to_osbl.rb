@@ -8,7 +8,6 @@ class AddTaxReductionToOsbl < ActiveRecord::Migration[8.0]
     add_column :osbls, :contact_email, :string
 
     add_check_constraint :osbls, "employees_count >= 0", name: "employees_count_positive"
-    add_check_constraint :osbls, "creation_year > 0", name: "creation_year_positive"
     add_check_constraint :osbls, "contact_email IS NULL OR (contact_email IS NOT NULL AND contact_email LIKE '%_@_%._%')", name: "contact_email_format_check"
   end
 end

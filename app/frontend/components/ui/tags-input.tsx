@@ -1,4 +1,4 @@
-"use client";
+// not used at the moment but could be useful in the future
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
