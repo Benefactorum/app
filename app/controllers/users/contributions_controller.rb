@@ -36,7 +36,8 @@ module Users
     end
 
     def osbl_params
-      params.permit(:name, :website, :logo, :description, {osbls_causes_attributes: [:cause_id]}, :tax_reduction, {osbls_keywords_attributes: [:keyword_id]}, {new_keywords: []}, :geographical_scale, :employees_count, :osbl_type, :creation_year, :contact_email)
+      params.permit(:name, :website, :logo, :description, {osbls_causes_attributes: [:cause_id]}, :tax_reduction, {osbls_keywords_attributes: [:keyword_id]}, :geographical_scale, :employees_count, :osbl_type, :creation_year, :contact_email)
+      # params.permit(:name, :website, :logo, :description, {osbls_causes_attributes: [:cause_id]}, :tax_reduction, {osbls_keywords_attributes: [:keyword_id]}, {new_keywords: []}, :geographical_scale, :employees_count, :osbl_type, :creation_year, :contact_email)
       # missing :operational_zones
     end
 

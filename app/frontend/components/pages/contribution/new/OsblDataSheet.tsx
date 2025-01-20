@@ -113,8 +113,8 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             <KeywordAsyncCreatableSelect
               data={data}
               setData={setData}
-              errors={errors}
-              clearErrors={clearErrors}
+              // errors={errors}
+              // clearErrors={clearErrors}
             />
           </div>
           <div className='flex flex-col gap-2'>

@@ -31,7 +31,6 @@ export default function New ({ currentUser }: NewProps): ReactElement {
     osbls_causes_attributes: [],
     tax_reduction: undefined,
     osbls_keywords_attributes: [],
-    new_keywords: [],
     geographical_scale: undefined,
     operational_zones: [],
     employees_count: undefined,
