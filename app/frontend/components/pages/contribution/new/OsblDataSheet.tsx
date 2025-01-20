@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { usePage } from '@inertiajs/react'
 import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
-import HelpTooltip from '@/components/HelpTooltip'
+import HelpTooltip from '@/components/shared/HelpTooltip'
 import InterventionAreaAsyncCreatableSelect from './InterventionAreaAsyncCreatableSelect'
 
 const CausesList = [

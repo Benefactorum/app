@@ -4,7 +4,7 @@ import MyInput from '@/components/forms/MyInput'
 import { Textarea } from '@/components/ui/textarea'
 import InputError from '@/components/forms/InputError'
 import { FormProps } from '@/pages/Contribution/types'
-import HelpTooltip from '@/components/HelpTooltip'
+import HelpTooltip from '@/components/shared/HelpTooltip'
 
 export default function OsblHeader ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
   return (
