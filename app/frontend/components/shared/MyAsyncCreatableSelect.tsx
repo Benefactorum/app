@@ -2,7 +2,7 @@ import { ReactElement, useState, useCallback } from 'react'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
-import { FormProps } from '@/pages/Contribution/types'
+import { FormProps, FormData } from '@/pages/Contribution/types'
 
 interface Option {
   readonly label: string
@@ -10,8 +10,8 @@ interface Option {
 }
 
 interface MyAsyncCreatableSelectProps extends Pick<FormProps, 'data' | 'setData'> {
-  attributeName: string
-  endpoint: string
+  attributeName: keyof FormData
+  resource: string
   minInputLength?: number
   placeholder: string
 }
@@ -21,12 +21,12 @@ const createOption = (data: { id: number, name: string }): Option => ({
   value: String(data.id)
 })
 
-export default function MyAsyncCreatableSelect({
+export default function MyAsyncCreatableSelect ({
   data,
   setData,
   attributeName,
-  endpoint,
-  minInputLength = 2,
+  resource,
+  minInputLength = 3,
   placeholder
 }: MyAsyncCreatableSelectProps): ReactElement {
   const [isLoading, setIsLoading] = useState(false)
@@ -35,7 +35,7 @@ export default function MyAsyncCreatableSelect({
   const fetchOptions = async (inputValue: string): Promise<Option[]> => {
     if (inputValue.length < minInputLength) return []
 
-    const response = await fetch(`/${endpoint}?query=${encodeURIComponent(inputValue)}`)
+    const response = await fetch(`/${resource}?query=${encodeURIComponent(inputValue)}`)
     const data = await response.json()
     return data.map((data: { id: number, name: string }) => createOption(data))
   }
@@ -59,7 +59,7 @@ export default function MyAsyncCreatableSelect({
       try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
         const response = await axios.post(
-          `/${endpoint}`,
+          `/${resource}`,
           { name: inputValue },
           {
             headers: {
@@ -69,7 +69,9 @@ export default function MyAsyncCreatableSelect({
         )
         const newOption = createOption(response.data)
         setValue((prev) => [...prev, newOption])
-        setData(attributeName, [...data[attributeName], { [`${endpoint.slice(0, -1)}_id`]: newOption.value }])
+        setData(attributeName, [...(data[attributeName] as any[]), {
+          [`${resource.slice(0, -1)}_id`]: newOption.value
+        }] as any)
       } finally {
         setIsLoading(false)
       }
@@ -86,9 +88,9 @@ export default function MyAsyncCreatableSelect({
       onChange={(value) => {
         console.log('value', value)
         setValue(value as Option[])
-        setData(attributeName, value.map(option => ({
-          [`${endpoint.slice(0, -1)}_id`]: option.value
-        })))
+        setData(attributeName, (value as Option[]).map(option => ({
+          [`${resource.slice(0, -1)}_id`]: option.value
+        })) as any)
       }}
       isDisabled={isLoading}
       isLoading={isLoading}

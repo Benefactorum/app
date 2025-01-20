@@ -37,6 +37,7 @@ class Osbl < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :website, uniqueness: true, allow_nil: true
+  validates :description, length: {maximum: 300}, allow_nil: true
   # validates :employees_count, numericality: { greater_than: 0 }, allow_nil: true
   validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true # greater_than: 0,
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true

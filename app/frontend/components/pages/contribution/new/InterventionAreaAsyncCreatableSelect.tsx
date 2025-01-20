@@ -11,7 +11,7 @@ export default function InterventionAreaAsyncCreatableSelect ({
       data={data}
       setData={setData}
       attributeName='osbls_intervention_areas_attributes'
-      endpoint='intervention_areas'
+      resource='intervention_areas'
       minInputLength={2}
       placeholder='pays, région, ...'
     />

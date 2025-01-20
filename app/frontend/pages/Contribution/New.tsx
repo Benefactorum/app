@@ -17,6 +17,7 @@ interface NewProps {
 
 const validation = z.object({
   website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
+  description: z.string().max(300).optional(),
   osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
   email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
   tax_reduction: z.enum(['standard', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d’impôt accordée doit être de 66 % ou 75 %.' })
