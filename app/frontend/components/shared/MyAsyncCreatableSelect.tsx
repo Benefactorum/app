@@ -2,15 +2,16 @@ import { ReactElement, useState, useCallback } from 'react'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
-import { FormProps, FormData } from '@/pages/Contribution/types'
 
 interface Option {
   readonly label: string
   readonly value: string
 }
 
-interface MyAsyncCreatableSelectProps extends Pick<FormProps, 'data' | 'setData'> {
-  attributeName: keyof FormData
+interface MyAsyncCreatableSelectProps {
+  data: any
+  setData: (key: string, value: any) => void
+  attributeName: 'osbls_intervention_areas_attributes' | 'osbls_keywords_attributes'
   resource: string
   minInputLength?: number
   placeholder: string
@@ -69,7 +70,7 @@ export default function MyAsyncCreatableSelect ({
         )
         const newOption = createOption(response.data)
         setValue((prev) => [...prev, newOption])
-        setData(attributeName, [...(data[attributeName] as any[]), {
+        setData(attributeName, [...(data[attributeName] ?? []), {
           [`${resource.slice(0, -1)}_id`]: newOption.value
         }] as any)
       } finally {
@@ -127,7 +128,7 @@ export default function MyAsyncCreatableSelect ({
         })
       }}
       placeholder={placeholder}
-      formatCreateLabel={(inputValue: string) => `Créer "${inputValue}"`}
+      formatCreateLabel={(inputValue: string) => `Ajouter "${inputValue}"`}
       isValidNewOption={isValidNewOption}
       loadingMessage={() => 'Recherche...'}
       noOptionsMessage={() => 'Aucune suggestion'}

@@ -16,7 +16,7 @@ export interface OsblType {
 export type OsblFormType = Omit<OsblType, 'id'>
 
 export interface AnnualFinance {
-  year: number
+  year?: number
   budget?: number
   treasury?: number
   employees_count?: number

@@ -15,11 +15,11 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { usePage } from '@inertiajs/react'
 import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import InterventionAreaAsyncCreatableSelect from './InterventionAreaAsyncCreatableSelect'
+import MyNumberInput from '@/components/forms/MyNumberInput'
 
 const CausesList = [
   { value: 'environnement', label: 'Environnement', icon: Trees },
@@ -157,20 +157,18 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               </SelectContent>
             </Select>
           </div>
-          <div className='flex flex-col'>
-            <Label htmlFor='creation_year'>Année de création :</Label>
-            <Input
-              id='creation_year'
-              type='number'
-              max={new Date().getFullYear()}
-              value={data.creation_year ?? ''}
-              onChange={(e) => {
-                setData('creation_year', Number(e.target.value))
-              }}
-              className='bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary focus-visible:ring-offset-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-            />
-          </div>
-
+          <MyNumberInput
+            id='creation_year'
+            labelText='Année de création :'
+            max={new Date().getFullYear()}
+            value={data.creation_year ?? ''}
+            onChange={(e) => {
+              setData('creation_year', Number(e.target.value))
+            }}
+            onReset={() => {
+              setData('creation_year', undefined)
+            }}
+          />
           <MyInput
             id='osbl_email'
             type='email'
