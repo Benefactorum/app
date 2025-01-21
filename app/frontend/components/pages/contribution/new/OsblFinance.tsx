@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { FormProps } from '@/pages/Contribution/types'
 import MyNumberInput from '@/components/forms/MyNumberInput'
-// import HelpTooltip from '@/components/shared/HelpTooltip'
+import HelpTooltip from '@/components/shared/HelpTooltip'
 
 export default function OsblFinance ({ data, setData }: FormProps): ReactElement {
   const currentFinance = (data.annual_finances_attributes?.[0] ?? {})
@@ -13,7 +13,17 @@ export default function OsblFinance ({ data, setData }: FormProps): ReactElement
         <div className='flex flex-col gap-8'>
           <MyNumberInput
             id='year'
-            labelText='Année :'
+            labelText={
+              <>
+                Année
+                <HelpTooltip size='small' className='mx-2'>
+                  <p>Année du bilan comptable.</p>
+                  <p>Si à cheval sur deux ans, entrez la dernière année.</p>
+                </HelpTooltip>
+                :
+              </>
+            }
+            placeholder={String(new Date().getFullYear() - 1)}
             min={1901}
             max={new Date().getFullYear()}
             value={currentFinance.year ?? ''}
