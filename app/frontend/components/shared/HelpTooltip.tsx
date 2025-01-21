@@ -11,17 +11,19 @@ import { cn } from '@/lib/utils'
 interface HelpTooltipProps {
   children: ReactNode
   size?: 'small' | 'large'
+  className?: string
 }
 
 export default function HelpTooltip ({
   children,
-  size = 'large'
+  size = 'large',
+  className
 }: HelpTooltipProps): ReactElement {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <CircleHelp className='inline-block w-4 h-4 text-primary' />
+          <CircleHelp className={cn('inline-block w-4 h-4 text-primary', className)} />
         </TooltipTrigger>
         <TooltipContent
           className={cn(
