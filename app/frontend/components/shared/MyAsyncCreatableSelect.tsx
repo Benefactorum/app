@@ -101,9 +101,33 @@ export default function MyAsyncCreatableSelect ({
       }}
       isDisabled={isLoading}
       isLoading={isLoading}
-      classNames={{
-        multiValueLabel: () => 'bg-secondary',
-        multiValueRemove: () => 'bg-secondary'
+      styles={{
+        control: (base, state) => ({
+          ...base,
+          borderRadius: '0.375rem', // border-radius-md
+          border: state.isFocused ? 'none' : '1px solid hsl(var(--border))',
+          outline: state.isFocused ? '1px solid hsl(var(--primary))' : 'none',
+          '&:hover': {
+            borderColor: 'hsl(var(--border))'
+          }
+        }),
+        multiValue: (base) => ({
+          ...base,
+          border: '1px solid hsla(var(--foreground) / 0.1)',
+          borderRadius: '9999px',
+          backgroundColor: 'hsl(var(--secondary))',
+          padding: '0rem 0.3rem',
+          fontWeight: 600,
+          fontSize: '0.825rem',
+          lineHeight: '1rem'
+        }),
+        multiValueRemove: (base) => ({
+          ...base,
+          '&:hover': {
+            backgroundColor: 'hsl(var(--secondary))',
+            color: 'hsl(var(--foreground))'
+          }
+        })
       }}
       placeholder={placeholder}
       formatCreateLabel={(inputValue: string) => `Créer "${inputValue}"`}
