@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Save } from 'lucide-react'
 import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
 import OsblDataSheet from '@/components/pages/contribution/new/OsblDataSheet'
+import OsblFinance from '@/components/pages/contribution/new/OsblFinance'
 import { CurrentUserType } from '@/types/types'
 import { FormData } from './types'
 import z from 'zod'
@@ -19,25 +20,15 @@ const validation = z.object({
   website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
   description: z.string().max(300).optional(),
   osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
-  email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
+  contact_email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
   tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d’impôt accordée doit être de 66 % ou 75 %.' })
+  // add more validations on annual_finances_attributes
 })
-
 export default function New ({ currentUser }: NewProps): ReactElement {
   const { data, setData, post, processing, errors, clearErrors, setError } = useForm<FormData>({
     name: '',
-    website: undefined,
-    logo: undefined,
-    description: '',
     osbls_causes_attributes: [],
-    tax_reduction: undefined,
-    osbls_keywords_attributes: [],
-    geographical_scale: undefined,
-    osbls_intervention_areas_attributes: [],
-    employees_count: undefined,
-    osbl_type: undefined,
-    creation_year: undefined,
-    contact_email: undefined
+    tax_reduction: ''
   })
 
   function submit (e: React.FormEvent<HTMLFormElement>): void {
@@ -83,6 +74,7 @@ export default function New ({ currentUser }: NewProps): ReactElement {
           </Button>
           <OsblHeader data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
           <OsblDataSheet data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+          <OsblFinance data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer

@@ -28,7 +28,7 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Form
             id='website'
             type='text'
             labelText='Site internet :'
-            value={data.website}
+            value={data.website ?? ''}
             onChange={(e) => {
               setData('website', e.target.value)
               clearErrors('website')
@@ -59,7 +59,7 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Form
           />
 
           <div>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-4'>
               <Label htmlFor='description' className=''>
                 Description de l'association :
               </Label>
@@ -73,8 +73,8 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Form
                 }}
                 className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40'
               />
-              <div className={`text-xs text-right ${data.description.length > 300 ? 'text-red-600' : 'text-gray-500'}`}>
-                {data.description.length}/300 caractères
+              <div className={`text-xs text-right ${(data.description ?? '').length > 300 ? 'text-red-600' : 'text-gray-500'}`}>
+                {(data.description ?? '').length}/300 caractères
               </div>
             </div>
           </div>

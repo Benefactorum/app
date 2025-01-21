@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_20_102012) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_21_105215) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -40,6 +40,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_102012) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "annual_finances", force: :cascade do |t|
+    t.integer "year", null: false
+    t.decimal "treasury", precision: 15, scale: 2
+    t.decimal "budget", precision: 15, scale: 2
+    t.boolean "certified"
+    t.integer "employees_count"
+    t.integer "osbl_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["osbl_id"], name: "index_annual_finances_on_osbl_id"
+    t.check_constraint "budget >= 0", name: "budget_positive"
+    t.check_constraint "employees_count >= 0", name: "employees_count_positive"
   end
 
   create_table "causes", force: :cascade do |t|
@@ -93,14 +107,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_102012) do
     t.text "description"
     t.integer "tax_reduction", null: false
     t.integer "geographical_scale"
-    t.integer "employees_count"
     t.integer "osbl_type"
     t.integer "creation_year"
     t.string "contact_email"
+    t.boolean "public_utility", default: false, null: false
     t.index ["name"], name: "index_osbls_on_name", unique: true
     t.index ["website"], name: "index_osbls_on_website", unique: true
     t.check_constraint "contact_email IS NULL OR (contact_email IS NOT NULL AND contact_email LIKE '%_@_%._%')", name: "contact_email_format_check"
-    t.check_constraint "employees_count >= 0", name: "employees_count_positive"
   end
 
   create_table "osbls_causes", force: :cascade do |t|
@@ -160,6 +173,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_20_102012) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "annual_finances", "osbls"
   add_foreign_key "contributions", "users"
   add_foreign_key "documents", "contributions"
   add_foreign_key "documents", "osbls"

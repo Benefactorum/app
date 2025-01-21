@@ -46,10 +46,10 @@ module Users
         {osbls_keywords_attributes: [:keyword_id]},
         :geographical_scale,
         {osbls_intervention_areas_attributes: [:intervention_area_id]},
-        :employees_count,
         :osbl_type,
         :creation_year,
-        :contact_email
+        :contact_email,
+        {annual_finances_attributes: [:year, :budget, :treasury, :employees_count]}
       )
     end
 

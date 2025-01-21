@@ -63,7 +63,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
       <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
         <h2 className='text-2xl font-semibold'>Fiche technique</h2>
         <div className='flex flex-col gap-8'>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <Label>Causes * :</Label>
             <MultiSelect
               options={syncedCausesList}
@@ -111,14 +111,14 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             </RadioGroup>
             {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <Label>Mots-clés :</Label>
             <KeywordAsyncCreatableSelect
               data={data}
               setData={setData}
             />
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <Label>Échelle :</Label>
             <Select onValueChange={(value) => setData('geographical_scale', value)}>
               <SelectTrigger>
@@ -131,24 +131,11 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               </SelectContent>
             </Select>
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <Label>Zones d'action :</Label>
             <InterventionAreaAsyncCreatableSelect
               data={data}
               setData={setData}
-            />
-          </div>
-          <div className='flex flex-col'>
-            <Label htmlFor='employees_count'>Nombre d'employé :</Label>
-            <Input
-              id='employees_count'
-              type='number'
-              min={0}
-              value={data.employees_count}
-              onChange={(e) => {
-                setData('employees_count', Number(e.target.value))
-              }}
-              className='bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary focus-visible:ring-offset-0'
             />
           </div>
           <div className='flex flex-col gap-4'>
@@ -176,11 +163,11 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               id='creation_year'
               type='number'
               max={new Date().getFullYear()}
-              value={data.creation_year}
+              value={data.creation_year ?? ''}
               onChange={(e) => {
                 setData('creation_year', Number(e.target.value))
               }}
-              className='bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary focus-visible:ring-offset-0'
+              className='bg-white mt-4 focus-visible:ring-0 focus-visible:border-primary focus-visible:ring-offset-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
             />
           </div>
 
@@ -188,7 +175,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             id='osbl_email'
             type='email'
             labelText='Email de contact :'
-            value={data.contact_email}
+            value={data.contact_email ?? ''}
             onChange={(e) => {
               setData('contact_email', e.target.value)
               clearErrors('contact_email')

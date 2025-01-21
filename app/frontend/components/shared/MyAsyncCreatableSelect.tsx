@@ -3,7 +3,6 @@ import AsyncCreatableSelect from 'react-select/async-creatable'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
 import { FormProps, FormData } from '@/pages/Contribution/types'
-import { toast } from 'sonner'
 
 interface Option {
   readonly label: string
@@ -73,8 +72,6 @@ export default function MyAsyncCreatableSelect ({
         setData(attributeName, [...(data[attributeName] as any[]), {
           [`${resource.slice(0, -1)}_id`]: newOption.value
         }] as any)
-      } catch (error) {
-        toast.error(`Une erreur est survenue lors de la création de "${inputValue}"`)
       } finally {
         setIsLoading(false)
       }

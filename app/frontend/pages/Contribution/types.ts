@@ -15,17 +15,24 @@ export interface OsblType {
 
 export type OsblFormType = Omit<OsblType, 'id'>
 
+export interface AnnualFinance {
+  year: number
+  budget?: number
+  treasury?: number
+  employees_count?: number
+}
+
 export interface FormData {
   name: string
   website?: string
   logo?: File
-  description: string
+  description?: string
   osbls_causes_attributes: Array<{ cause_id: string }>
-  tax_reduction?: number
-  osbls_keywords_attributes: Array<{ keyword_id: string }>
+  tax_reduction: string
+  osbls_keywords_attributes?: Array<{ keyword_id: string }>
   geographical_scale?: string
-  osbls_intervention_areas_attributes: Array<{ intervention_area_id: string }>
-  employees_count?: number
+  osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string }>
+  annual_finances_attributes?: AnnualFinance[]
   osbl_type?: string
   creation_year?: number
   contact_email?: string
