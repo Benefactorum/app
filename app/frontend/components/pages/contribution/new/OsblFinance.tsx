@@ -24,7 +24,7 @@ export default function OsblFinance ({ data, setData }: FormProps): ReactElement
               </>
             }
             placeholder={String(new Date().getFullYear() - 1)}
-            min={1901}
+            min={1000}
             max={new Date().getFullYear()}
             value={currentFinance.year ?? ''}
             onChange={(e) => {

@@ -13,11 +13,13 @@ class CreateAnnualFinances < ActiveRecord::Migration[8.0]
 
     add_check_constraint :annual_finances, "employees_count >= 0", name: "employees_count_positive"
     add_check_constraint :annual_finances, "budget >= 0", name: "budget_positive"
+    add_check_constraint :annual_finances, "year >= 1000", name: "year_as_4_digits"
   end
 
   def down
     remove_check_constraint :annual_finances, name: "budget_positive"
     remove_check_constraint :annual_finances, name: "employees_count_positive"
+    remove_check_constraint :annual_finances, name: "year_as_4_digits"
     drop_table :annual_finances
   end
 end

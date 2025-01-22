@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_21_105215) do
     t.index ["osbl_id"], name: "index_annual_finances_on_osbl_id"
     t.check_constraint "budget >= 0", name: "budget_positive"
     t.check_constraint "employees_count >= 0", name: "employees_count_positive"
+    t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 
   create_table "causes", force: :cascade do |t|
@@ -114,6 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_21_105215) do
     t.index ["name"], name: "index_osbls_on_name", unique: true
     t.index ["website"], name: "index_osbls_on_website", unique: true
     t.check_constraint "contact_email IS NULL OR (contact_email IS NOT NULL AND contact_email LIKE '%_@_%._%')", name: "contact_email_format_check"
+    t.check_constraint "creation_year >= 1000", name: "creation_year_as_4_digits"
   end
 
   create_table "osbls_causes", force: :cascade do |t|
