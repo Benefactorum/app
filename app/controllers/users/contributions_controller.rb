@@ -47,6 +47,7 @@ module Users
         :geographical_scale,
         {osbls_intervention_areas_attributes: [:intervention_area_id]},
         :osbl_type,
+        :public_utility,
         :creation_year,
         :contact_email,
         {annual_finances_attributes: [:year, :budget, :treasury, :employees_count]}

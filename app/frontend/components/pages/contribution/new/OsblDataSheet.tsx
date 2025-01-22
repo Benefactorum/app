@@ -20,6 +20,7 @@ import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import InterventionAreaAsyncCreatableSelect from './InterventionAreaAsyncCreatableSelect'
 import MyNumberInput from '@/components/forms/MyNumberInput'
+import MyCheckbox from '@/components/forms/MyCheckbox'
 
 const CausesList = [
   { value: 'environnement', label: 'Environnement', icon: Trees },
@@ -62,6 +63,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
     <div className='flex flex-wrap gap-16 mx-auto justify-center'>
       <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
         <h2 className='text-2xl font-semibold'>Fiche technique</h2>
+
         <div className='flex flex-col gap-8'>
           <div className='flex flex-col gap-4'>
             <Label>Causes * :</Label>
@@ -78,6 +80,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             />
             {Boolean(errors.osbls_causes_attributes) && <InputError>{errors.osbls_causes_attributes}</InputError>}
           </div>
+
           <div className='flex flex-col gap-4'>
             <Label>Réduction d'impôt * :</Label>
             <RadioGroup
@@ -111,6 +114,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             </RadioGroup>
             {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
           </div>
+
           <div className='flex flex-col gap-4'>
             <Label>Mots-clés :</Label>
             <KeywordAsyncCreatableSelect
@@ -118,6 +122,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               setData={setData}
             />
           </div>
+
           <div className='flex flex-col gap-4'>
             <Label>Échelle :</Label>
             <Select onValueChange={(value) => setData('geographical_scale', value)}>
@@ -131,6 +136,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               </SelectContent>
             </Select>
           </div>
+
           <div className='flex flex-col gap-4'>
             <Label>Zones d'action :</Label>
             <InterventionAreaAsyncCreatableSelect
@@ -138,6 +144,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               setData={setData}
             />
           </div>
+
           <div className='flex flex-col gap-4'>
             <Label className='flex items-center gap-2'>
               Type d'OSBL
@@ -156,7 +163,17 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
                 ))}
               </SelectContent>
             </Select>
+            {data.osbl_type === 'association' && (
+              <MyCheckbox
+                id='public_utility'
+                checked={data.public_utility ?? false}
+                onCheckedChange={checked => setData('public_utility', checked)}
+              >
+                Reconnue d'utilité publique (ARUP)
+              </MyCheckbox>
+            )}
           </div>
+
           <MyNumberInput
             id='creation_year'
             labelText='Année de création :'
@@ -170,6 +187,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               setData('creation_year', undefined)
             }}
           />
+
           <MyInput
             id='osbl_email'
             type='email'
