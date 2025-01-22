@@ -21,8 +21,7 @@ const validation = z.object({
   description: z.string().max(300).optional(),
   osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
   contact_email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
-  tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d’impôt accordée doit être de 66 % ou 75 %.' })
-  // add more validations on annual_finances_attributes
+  tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d\'impôt accordée doit être de 66 % ou 75 %.' })
 })
 export default function New ({ currentUser }: NewProps): ReactElement {
   const { data, setData, post, processing, errors, clearErrors, setError } = useForm<FormData>({

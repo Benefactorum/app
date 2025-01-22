@@ -160,6 +160,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
           <MyNumberInput
             id='creation_year'
             labelText='Année de création :'
+            min={1000}
             max={new Date().getFullYear()}
             value={data.creation_year ?? ''}
             onChange={(e) => {
