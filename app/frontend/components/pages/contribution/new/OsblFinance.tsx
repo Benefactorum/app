@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 import { FormProps } from '@/pages/Contribution/types'
 import MyNumberInput from '@/components/forms/MyNumberInput'
 import HelpTooltip from '@/components/shared/HelpTooltip'
+import { Label } from '@/components/ui/label'
 
 export default function OsblFinance ({ data, setData }: FormProps): ReactElement {
   const currentFinance = (data.annual_finances_attributes?.[0] ?? {})
@@ -97,6 +98,10 @@ export default function OsblFinance ({ data, setData }: FormProps): ReactElement
               }])
             }}
           />
+
+          <div className='flex flex-col'>
+            <Label>Sources de financement</Label>
+          </div>
         </div>
       </div>
     </div>

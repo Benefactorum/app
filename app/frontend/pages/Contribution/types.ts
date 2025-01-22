@@ -15,11 +15,18 @@ export interface OsblType {
 
 export type OsblFormType = Omit<OsblType, 'id'>
 
+export interface FundSource {
+  type?: string
+  percent?: number
+  amount?: number
+}
+
 export interface AnnualFinance {
   year?: number
   budget?: number
   treasury?: number
   employees_count?: number
+  fund_sources_attributes?: FundSource[]
 }
 
 export interface FormData {

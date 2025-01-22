@@ -50,7 +50,17 @@ module Users
         :public_utility,
         :creation_year,
         :contact_email,
-        {annual_finances_attributes: [:year, :budget, :treasury, :employees_count]}
+        {annual_finances_attributes: [
+          :year,
+          :budget,
+          :treasury,
+          :employees_count,
+          {fund_sources_attributes: [
+            :type,
+            :percent,
+            :amount
+          ]}
+        ]}
       )
     end
 
