@@ -34,6 +34,7 @@ export interface FormData {
   osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string }>
   annual_finances_attributes?: AnnualFinance[]
   osbl_type?: string
+  public_utility?: boolean
   creation_year?: number
   contact_email?: string
 }

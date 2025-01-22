@@ -22,7 +22,10 @@ export default function HelpTooltip ({
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger onClick={(e) => {
+          e.preventDefault()
+        }}
+        >
           <CircleHelp className={cn('inline-block w-4 h-4 text-primary', className)} />
         </TooltipTrigger>
         <TooltipContent
