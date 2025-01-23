@@ -125,6 +125,10 @@ export default function MyAsyncCreatableSelect ({
             backgroundColor: 'hsl(var(--secondary))',
             color: 'hsl(var(--foreground))'
           }
+        }),
+        placeholder: (base) => ({
+          ...base,
+          fontSize: '0.875rem'
         })
       }}
       placeholder={placeholder}
