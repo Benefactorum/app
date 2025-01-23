@@ -2,7 +2,6 @@ import { ReactElement, ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import InputError from '@/components/forms/InputError'
-import { X } from 'lucide-react'
 
 interface BaseMyNumberInputProps {
   required?: boolean
@@ -15,8 +14,9 @@ interface BaseMyNumberInputProps {
   min?: number
   max?: number
   step?: number
-  hideSpinButton?: boolean
-  onReset?: () => void
+  hideIncrementor?: boolean
+  suffix?: string
+  noErrorMessage?: boolean
 }
 
 interface WithLabel extends BaseMyNumberInputProps {
@@ -39,18 +39,20 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
     disabled,
     value,
     onChange,
-    onReset,
     placeholder,
     autoFocus,
     error,
     min,
     max,
     step,
-    hideSpinButton = true
+    hideIncrementor = true,
+    suffix,
+    noErrorMessage = false
   } = props
 
   const errorClass = error != null ? 'border-red-600' : ''
-  const spinButtonClass = hideSpinButton ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''
+  const hideIncrementorClass = hideIncrementor ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''
+  const suffixClass = suffix !== undefined ? 'pr-6' : ''
 
   return (
     <div className='flex flex-col'>
@@ -73,20 +75,15 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
           min={min}
           max={max}
           step={step}
-          className={`bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errorClass} ${spinButtonClass} ${Boolean(value) && (onReset != null) ? 'pr-8' : ''}`}
+          className={`bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errorClass} ${hideIncrementorClass} ${suffixClass}`}
         />
-        {value !== '' && (onReset != null) && (
-          <button
-            type='button'
-            onClick={onReset}
-            className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none'
-            aria-label='Clear input'
-          >
-            <X size={16} />
-          </button>
+        {suffix !== undefined && Number(value) > 0 && (
+          <span className='absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none'>
+            {suffix}
+          </span>
         )}
       </div>
-      {Boolean(error) && <InputError>{error}</InputError>}
+      {Boolean(error) && !noErrorMessage && <InputError>{error}</InputError>}
     </div>
   )
 }

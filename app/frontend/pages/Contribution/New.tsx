@@ -11,9 +11,10 @@ import OsblFinance from '@/components/pages/contribution/new/OsblFinance'
 import { CurrentUserType } from '@/types/types'
 import { FormData } from './types'
 import z from 'zod'
+import deepCleanData from '@/lib/deepCleanData'
 interface NewProps {
   currentUser: CurrentUserType
-  causes: Array<[string, number]>
+  causes: Record<string, number>
 }
 
 const validation = z.object({
@@ -21,10 +22,30 @@ const validation = z.object({
   description: z.string().max(300).optional(),
   osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
   contact_email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
-  tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d\'impôt accordée doit être de 66 % ou 75 %.' })
+  tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d\'impôt accordée doit être de 66 % ou 75 %.' }),
+  annual_finances_attributes: z.array(z.object({
+    year: z.string({ message: 'Veuillez entrer une année.' }).min(1, { message: 'Veuillez entrer une année.' }),
+    budget: z.string().optional(),
+    treasury: z.string().optional(),
+    employees_count: z.string().optional(),
+    fund_sources_attributes: z.array(z.object({
+      type: z.string(),
+      percent: z.string().min(1),
+      amount: z.string().optional()
+    })).optional()
+  }).refine((data): data is typeof data => {
+    if (Object.values(data).filter(v => v.length > 0).length === 1 && data.year !== '') {
+      return false
+    }
+    return true
+  }, {
+    message: 'Complétez les comptes pour cette année.',
+    path: ['missing_information']
+  })).optional()
 })
+
 export default function New ({ currentUser }: NewProps): ReactElement {
-  const { data, setData, post, processing, errors, clearErrors, setError } = useForm<FormData>({
+  const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<FormData>({
     name: '',
     osbls_causes_attributes: [],
     tax_reduction: ''
@@ -33,6 +54,7 @@ export default function New ({ currentUser }: NewProps): ReactElement {
   function submit (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault()
 
+    transform((data) => (deepCleanData(data)))
     const result = validation.safeParse(data) as { success: boolean, error: z.ZodError }
     if (!result.success) {
       const issues = result.error.issues
@@ -73,7 +95,13 @@ export default function New ({ currentUser }: NewProps): ReactElement {
           </Button>
           <OsblHeader data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
           <OsblDataSheet data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
-          <OsblFinance data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+          <OsblFinance
+            data={data}
+            setData={setData}
+            errors={errors}
+            clearErrors={clearErrors}
+            setError={(field, message) => setError(field as keyof FormData, message)}
+          />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer

@@ -181,10 +181,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             max={new Date().getFullYear()}
             value={data.creation_year ?? ''}
             onChange={(e) => {
-              setData('creation_year', Number(e.target.value))
-            }}
-            onReset={() => {
-              setData('creation_year', undefined)
+              setData('creation_year', e.target.value)
             }}
           />
 
