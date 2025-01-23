@@ -77,7 +77,7 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
           step={step}
           className={`bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errorClass} ${hideIncrementorClass} ${suffixClass}`}
         />
-        {suffix !== undefined && Number(value) > 0 && (
+        {suffix !== undefined && value !== undefined && Number(value) > 0 && (
           <span className='absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none'>
             {suffix}
           </span>

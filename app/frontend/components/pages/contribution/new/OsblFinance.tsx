@@ -177,7 +177,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
               </Button>
             </div>
 
-            {errors['annual_finances_attributes.0.fund_sources_attributes.total_percent'] && (
+            {Boolean(errors['annual_finances_attributes.0.fund_sources_attributes.total_percent']) && (
               <InputError>
                 {errors['annual_finances_attributes.0.fund_sources_attributes.total_percent']}
               </InputError>
