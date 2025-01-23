@@ -10,6 +10,7 @@ class CreateFundSources < ActiveRecord::Migration[8.0]
 
       t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
       t.check_constraint "amount > 0", name: "amount_positive"
+      t.index [:annual_finance_id, :type], unique: true, name: "index_fund_sources_on_annual_finance_id_and_type"
     end
   end
 end

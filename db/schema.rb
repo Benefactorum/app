@@ -93,6 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_064136) do
     t.integer "annual_finance_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["annual_finance_id", "type"], name: "index_fund_sources_on_annual_finance_id_and_type", unique: true
     t.index ["annual_finance_id"], name: "index_fund_sources_on_annual_finance_id"
     t.check_constraint "amount > 0", name: "amount_positive"
     t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
