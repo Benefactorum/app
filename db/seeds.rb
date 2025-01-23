@@ -501,8 +501,49 @@ biggest_french_cities.each do |city|
   InterventionArea.find_or_create_by!(name: city)
 end
 
-# geographical_scales = [
-#   "france",
-#   "europe",
-#   "monde",
-# ]
+continental_scales = [
+  "Europe",
+  "Afrique",
+  "Asie",
+  "Amérique du Nord",
+  "Amérique du Sud",
+  "Océanie",
+  "Antarctique"
+]
+
+continental_scales.each do |scale|
+  InterventionArea.find_or_create_by!(name: scale)
+end
+
+labels = [
+  {
+    name: "Don en confiance",
+    description: <<~DESC,
+      Don en Confiance, créé en 1989, est un organisme à but non lucratif qui labellise et contrôle les associations et
+      fondations faisant appel à la générosité du public. Son label garantit le respect de principes déontologiques tels
+      que la transparence financière, l'efficacité de l'action, la probité et le respect des donateurs. Les organisations
+      labellisées s'engagent à publier annuellement "L'Essentiel", un document synthétique informant les donateurs sur
+      l'utilisation des fonds collectés.
+    DESC
+    website: "https://www.donenconfiance.org"
+  },
+  {
+    name: "Label IDEAS",
+    description: <<~DESC,
+      Le Label IDEAS, créé en 2010, est une certification indépendante pour les organismes à but non lucratif en France.
+      Il atteste de bonnes pratiques en matière de gouvernance, de gestion financière et d'évaluation de l'action.
+      L'obtention du label implique une démarche d'amélioration continue basée sur le Guide IDEAS des Bonnes Pratiques,
+      comprenant 14 objectifs et plus de 120 indicateurs. Le processus de labellisation dure en moyenne 18 mois et le
+      label est valable 3 ans. Il constitue un gage de confiance pour les partenaires et financeurs, renforçant la
+      crédibilité des organisations labellisées.
+    DESC
+    website: "https://ideas.asso.fr/"
+  }
+]
+
+labels.each do |label|
+  Label.find_or_create_by!(name: label[:name]) do |l|
+    l.description = label[:description]
+    l.website = label[:website]
+  end
+end

@@ -53,6 +53,7 @@ const OsblTypeList = [
 
 export default function OsblDataSheet ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
   const causes = usePage().props.causes as Record<string, number>
+  const labels = usePage().props.labels as Array<{ value: string, label: string }>
 
   const syncedCausesList = CausesList.map(cause => ({
     ...cause,
@@ -185,6 +186,21 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               setData('creation_year', e.target.value)
             }}
           />
+
+          <div className='flex flex-col gap-4'>
+            <Label>Labels :</Label>
+            <MultiSelect
+              options={labels}
+              onValueChange={(value) => {
+                setData('osbls_labels_attributes', value.map(label => ({ label_id: label })))
+                clearErrors('osbls_labels_attributes')
+              }}
+              placeholder=''
+              variant='default'
+              animation={0}
+              maxCount={2}
+            />
+          </div>
 
           <MyInput
             id='osbl_email'

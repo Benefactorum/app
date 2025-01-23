@@ -4,6 +4,9 @@ class Osbl < ApplicationRecord
   has_many :osbls_causes, dependent: :destroy # join table
   has_many :causes, through: :osbls_causes
 
+  has_many :osbls_labels, dependent: :destroy # join table
+  has_many :labels, through: :osbls_labels
+
   has_many :osbls_keywords, dependent: :destroy # join table
   has_many :keywords, through: :osbls_keywords
 
@@ -43,6 +46,7 @@ class Osbl < ApplicationRecord
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
 
   accepts_nested_attributes_for :osbls_causes # , allow_destroy: true
+  accepts_nested_attributes_for :osbls_labels # , allow_destroy: true
   accepts_nested_attributes_for :osbls_keywords # , allow_destroy: true
   accepts_nested_attributes_for :osbls_intervention_areas # , allow_destroy: true
   accepts_nested_attributes_for :annual_finances

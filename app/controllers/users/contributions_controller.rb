@@ -15,7 +15,8 @@ module Users
 
     def new
       render inertia: "Contribution/New", props: {
-        causes: Cause.pluck(:name, :id).to_h
+        causes: Cause.pluck(:name, :id).to_h,
+        labels: Label.pluck(:id, :name).map { |id, name| {value: id, label: name} }
       }
     end
 
@@ -49,6 +50,7 @@ module Users
         :osbl_type,
         :public_utility,
         :creation_year,
+        {osbls_labels_attributes: [:label_id]},
         :contact_email,
         {annual_finances_attributes: [
           :year,

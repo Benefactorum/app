@@ -1,4 +1,4 @@
-class OsblsCause < ApplicationRecord
+class OsblsLabel < ApplicationRecord
   belongs_to :osbl
   belongs_to :label
 
