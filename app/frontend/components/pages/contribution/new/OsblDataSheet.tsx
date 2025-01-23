@@ -163,6 +163,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
                 ))}
               </SelectContent>
             </Select>
+
             {data.osbl_type === 'association' && (
               <MyCheckbox
                 id='public_utility'

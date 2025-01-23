@@ -33,9 +33,13 @@ const validation = z.object({
       percent: z.string().min(1),
       amount: z.string().optional()
     })).optional()
-      .refine((sources) => {
-        if (!sources?.length) return true
-        const sum = sources.reduce((acc, source) => acc + Number(source.percent || 0), 0)
+      .refine((sources): sources is typeof sources => {
+        if (sources === undefined || sources.length === 0) return true
+
+        const sum = sources.reduce((acc: number, source) => {
+          const percent = source.percent !== undefined ? Number(source.percent) : 0
+          return acc + percent
+        }, 0)
         return sum === 100
       }, {
         message: 'La somme des pourcentages doit être égale à 100%.',
