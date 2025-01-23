@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import InputError from '@/components/forms/InputError'
 
 const FundSourceTypeList = [
   { value: 'dons', label: 'Dons', group: 'main' },
@@ -61,8 +62,13 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
     )
 
     updateFinanceAttribute('fund_sources_attributes', updatedSources)
+
     if (value !== '') {
       clearErrors(`annual_finances_attributes.0.fund_sources_attributes.${index}.${field}`)
+    }
+
+    if (field === 'percent' && value !== '') {
+      clearErrors('annual_finances_attributes.0.fund_sources_attributes.total_percent')
     }
   }
 
@@ -134,6 +140,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             id='budget'
             labelText='Budget'
             min={0}
+            step={0.01}
             value={currentFinance.budget ?? ''}
             onChange={(e) => updateFinanceAttribute('budget', e.target.value)}
             suffix='€'
@@ -142,6 +149,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
           <MyNumberInput
             id='treasury'
             labelText='Trésorerie'
+            step={0.01}
             value={currentFinance.treasury ?? ''}
             onChange={(e) => updateFinanceAttribute('treasury', e.target.value)}
             suffix='€'
@@ -168,6 +176,12 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
                 Ajouter
               </Button>
             </div>
+
+            {errors['annual_finances_attributes.0.fund_sources_attributes.total_percent'] && (
+              <InputError>
+                {errors['annual_finances_attributes.0.fund_sources_attributes.total_percent']}
+              </InputError>
+            )}
 
             {currentFinance.fund_sources_attributes?.map((fundSource, index) => (
               <div
@@ -209,6 +223,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
                   id='percent'
                   min={0}
                   max={100}
+                  step={0.01}
                   value={fundSource.percent ?? ''}
                   onChange={(e) => handleFundSourceChange(index, 'percent', e.target.value)}
                   placeholder='%'
@@ -219,6 +234,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
 
                 <MyNumberInput
                   id='amount'
+                  step={0.01}
                   value={fundSource.amount ?? ''}
                   onChange={(e) => handleFundSourceChange(index, 'amount', e.target.value)}
                   placeholder='Montant'

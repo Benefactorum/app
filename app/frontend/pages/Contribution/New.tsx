@@ -33,6 +33,14 @@ const validation = z.object({
       percent: z.string().min(1),
       amount: z.string().optional()
     })).optional()
+      .refine((sources) => {
+        if (!sources?.length) return true
+        const sum = sources.reduce((acc, source) => acc + Number(source.percent || 0), 0)
+        return sum === 100
+      }, {
+        message: 'La somme des pourcentages doit être égale à 100%.',
+        path: ['total_percent']
+      })
   }).refine((data): data is typeof data => {
     if (Object.values(data).filter(v => v.length > 0).length === 1 && data.year !== '') {
       return false
