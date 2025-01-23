@@ -27,6 +27,7 @@ export interface AnnualFinance {
   treasury?: number
   employees_count?: number
   fund_sources_attributes?: FundSource[]
+  fund_allocations_attributes?: FundSource[]
 }
 
 export interface FormData {

@@ -44,6 +44,23 @@ const validation = z.object({
       }, {
         message: 'La somme des pourcentages doit être égale à 100%.',
         path: ['total_percent']
+      }),
+    fund_allocations_attributes: z.array(z.object({
+      type: z.string(),
+      percent: z.string().min(1),
+      amount: z.string().optional()
+    })).optional()
+      .refine((allocations): allocations is typeof allocations => {
+        if (allocations === undefined || allocations.length === 0) return true
+
+        const sum = allocations.reduce((acc: number, allocation) => {
+          const percent = allocation.percent !== undefined ? Number(allocation.percent) : 0
+          return acc + percent
+        }, 0)
+        return sum === 100
+      }, {
+        message: 'La somme des pourcentages doit être égale à 100%.',
+        path: ['total_percent']
       })
   }).refine((data): data is typeof data => {
     if (Object.values(data).filter(v => v.length > 0).length === 1 && data.year !== '') {

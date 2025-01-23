@@ -59,6 +59,11 @@ module Users
             :type,
             :percent,
             :amount
+          ]},
+          {fund_allocations_attributes: [
+            :type,
+            :percent,
+            :amount
           ]}
         ]}
       )
