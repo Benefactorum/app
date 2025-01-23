@@ -1,19 +1,8 @@
-import { Fragment, ReactElement } from 'react'
-import { FormProps, AnnualFinance, FundSource } from '@/pages/Contribution/types'
+import { ReactElement } from 'react'
+import { FormProps, AnnualFinance } from '@/pages/Contribution/types'
 import MyNumberInput from '@/components/forms/MyNumberInput'
 import HelpTooltip from '@/components/shared/HelpTooltip'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectSeparator
-} from '@/components/ui/select'
-import { PlusIcon, TrashIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import InputError from '@/components/forms/InputError'
+import FundManagementSection from './FundManagementSection'
 
 const FundSourceTypeList = [
   { value: 'dons', label: 'Dons', group: 'main' },
@@ -61,108 +50,6 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
       clearErrors('annual_finances_attributes.0.year')
       clearErrors('annual_finances_attributes.0.missing_information')
       clearErrors('annual_finances_attributes.0.fund_sources_attributes.total_percent')
-    }
-  }
-
-  function handleFundSourceChange (index: number, field: keyof FundSource, value: any): void {
-    const updatedSources = currentFinance.fund_sources_attributes?.map((fs, i) =>
-      i === index ? { ...fs, [field]: value } : fs
-    )
-
-    updateFinanceAttribute('fund_sources_attributes', updatedSources)
-
-    if (value !== '') {
-      clearErrors(`annual_finances_attributes.0.fund_sources_attributes.${index}.${field}`)
-    }
-
-    if (field === 'percent' && value !== '') {
-      clearErrors('annual_finances_attributes.0.fund_sources_attributes.total_percent')
-    }
-  }
-
-  function handleFundAllocationChange (index: number, field: keyof FundSource, value: any): void {
-    const updatedAllocations = currentFinance.fund_allocations_attributes?.map((fa, i) =>
-      i === index ? { ...fa, [field]: value } : fa
-    )
-
-    updateFinanceAttribute('fund_allocations_attributes', updatedAllocations)
-
-    if (value !== '') {
-      clearErrors(`annual_finances_attributes.0.fund_allocations_attributes.${index}.${field}`)
-    }
-
-    if (field === 'percent' && value !== '') {
-      clearErrors('annual_finances_attributes.0.fund_allocations_attributes.total_percent')
-    }
-  }
-
-  function handleAddFundSource (e: React.MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault()
-    // e.stopPropagation()
-    const newSource = { type: undefined, percent: undefined, amount: undefined }
-    updateFinanceAttribute('fund_sources_attributes',
-      [...(currentFinance.fund_sources_attributes ?? []), newSource]
-    )
-  }
-
-  function handleAddFundAllocation (e: React.MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault()
-    // e.stopPropagation()
-    const newAllocation = { type: undefined, percent: undefined, amount: undefined }
-    updateFinanceAttribute('fund_allocations_attributes',
-      [...(currentFinance.fund_allocations_attributes ?? []), newAllocation]
-    )
-  }
-
-  function handleRemoveFundSource (e: React.MouseEvent<HTMLButtonElement>, index: number): void {
-    e.preventDefault()
-
-    // Create new array without the removed fund source
-    const updatedSources = (currentFinance.fund_sources_attributes ?? [])
-      .filter((_, i) => i !== index)
-
-    updateFinanceAttribute('fund_sources_attributes', updatedSources)
-
-    // Clear errors for the removed index
-    clearErrors(`annual_finances_attributes.0.fund_sources_attributes.${index}.type`)
-    clearErrors(`annual_finances_attributes.0.fund_sources_attributes.${index}.percent`)
-
-    // Update error indices for remaining items
-    for (let i = index + 1; i < (currentFinance.fund_sources_attributes?.length ?? 0); i++) {
-      ['type', 'percent'].forEach(field => {
-        const errorPath = `annual_finances_attributes.0.fund_sources_attributes.${i}.${field}`
-        const error = errors?.[errorPath]
-        if (error !== undefined) {
-          setError(`annual_finances_attributes.0.fund_sources_attributes.${i - 1}.${field}`, error)
-          clearErrors(errorPath)
-        }
-      })
-    }
-  }
-
-  function handleRemoveFundAllocation (e: React.MouseEvent<HTMLButtonElement>, index: number): void {
-    e.preventDefault()
-
-    // Create new array without the removed fund source
-    const updatedAllocations = (currentFinance.fund_allocations_attributes ?? [])
-      .filter((_, i) => i !== index)
-
-    updateFinanceAttribute('fund_allocations_attributes', updatedAllocations)
-
-    // Clear errors for the removed index
-    clearErrors(`annual_finances_attributes.0.fund_allocations_attributes.${index}.type`)
-    clearErrors(`annual_finances_attributes.0.fund_allocations_attributes.${index}.percent`)
-
-    // Update error indices for remaining items
-    for (let i = index + 1; i < (currentFinance.fund_allocations_attributes?.length ?? 0); i++) {
-      ['type', 'percent'].forEach(field => {
-        const errorPath = `annual_finances_attributes.0.fund_allocations_attributes.${i}.${field}`
-        const error = errors?.[errorPath]
-        if (error !== undefined) {
-          setError(`annual_finances_attributes.0.fund_allocations_attributes.${i - 1}.${field}`, error)
-          clearErrors(errorPath)
-        }
-      })
     }
   }
 
@@ -218,181 +105,27 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             onChange={(e) => updateFinanceAttribute('employees_count', e.target.value)}
           />
 
-          <div className='flex flex-col'>
-            <div className='flex items-center justify-between gap-16'>
-              <Label>Sources de financement</Label>
-              <Button
-                onClick={handleAddFundSource}
-                disabled={
-                  Boolean((currentFinance.fund_sources_attributes?.length ?? 0) >= 4)
-                }
-              >
-                <PlusIcon className='w-4 h-4' />
-                Ajouter
-              </Button>
-            </div>
+          <FundManagementSection
+            title='Sources de financement'
+            items={currentFinance.fund_sources_attributes ?? []}
+            typeList={FundSourceTypeList}
+            baseErrorPath='annual_finances_attributes.0.fund_sources_attributes'
+            errors={errors}
+            onUpdate={(items) => updateFinanceAttribute('fund_sources_attributes', items)}
+            clearErrors={clearErrors}
+            setError={setError}
+          />
 
-            {Boolean(errors['annual_finances_attributes.0.fund_sources_attributes.total_percent']) && (
-              <InputError>
-                {errors['annual_finances_attributes.0.fund_sources_attributes.total_percent']}
-              </InputError>
-            )}
-
-            {currentFinance.fund_sources_attributes?.map((fundSource, index) => (
-              <div
-                key={`fund-source-${fundSource.type ?? 'new'}-${index}`}
-                className='flex items-center space-x-4'
-              >
-                <Select
-                  value={fundSource.type}
-                  onValueChange={(value) => handleFundSourceChange(index, 'type', value)}
-                >
-                  <SelectTrigger
-                    className={`w-[200px] data-[placeholder]:text-muted-foreground mt-4 ${errors[`annual_finances_attributes.0.fund_sources_attributes.${index}.type`] !== undefined ? 'border-red-600' : ''}`}
-                  >
-                    <SelectValue placeholder='Type' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {FundSourceTypeList.filter(type =>
-                      fundSource.type === type.value ||
-                      !(currentFinance.fund_sources_attributes ?? []).some(source => source.type === type.value)
-                    ).map((type, i) => (
-                      <Fragment key={type.value}>
-                        {i > 0 &&
-                         type.group === 'detailed' &&
-                         FundSourceTypeList[i - 1]?.group === 'main' && (
-                           <SelectSeparator className='my-2' />
-                        )}
-                        <SelectItem
-                          value={type.value}
-                          className={type.group === 'detailed' ? 'text-muted-foreground' : ''}
-                        >
-                          {type.label}
-                        </SelectItem>
-                      </Fragment>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <MyNumberInput
-                  id='percent'
-                  min={0}
-                  max={100}
-                  step={0.01}
-                  value={fundSource.percent ?? ''}
-                  onChange={(e) => handleFundSourceChange(index, 'percent', e.target.value)}
-                  placeholder='%'
-                  suffix='%'
-                  error={errors[`annual_finances_attributes.0.fund_sources_attributes.${index}.percent`]}
-                  noErrorMessage
-                />
-
-                <MyNumberInput
-                  id='amount'
-                  step={0.01}
-                  value={fundSource.amount ?? ''}
-                  onChange={(e) => handleFundSourceChange(index, 'amount', e.target.value)}
-                  placeholder='Montant'
-                  suffix='€'
-                />
-
-                <button
-                  onClick={(e) => handleRemoveFundSource(e, index)}
-                  className='text-red-500 hover:text-red-700 focus:outline-none mt-4'
-                >
-                  <TrashIcon className='w-4 h-4' />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className='flex flex-col'>
-            <div className='flex items-center justify-between gap-16'>
-              <Label>Allocation des fonds</Label>
-              <Button
-                onClick={handleAddFundAllocation}
-                disabled={
-                  Boolean((currentFinance.fund_allocations_attributes?.length ?? 0) >= 4)
-                }
-              >
-                <PlusIcon className='w-4 h-4' />
-                Ajouter
-              </Button>
-            </div>
-
-            {Boolean(errors['annual_finances_attributes.0.fund_allocations_attributes.total_percent']) && (
-              <InputError>
-                {errors['annual_finances_attributes.0.fund_allocations_attributes.total_percent']}
-              </InputError>
-            )}
-
-            {currentFinance.fund_allocations_attributes?.map((fundAllocation, index) => (
-              <div
-                key={`fund-allocation-${fundAllocation.type ?? 'new'}-${index}`}
-                className='flex items-center space-x-4'
-              >
-                <Select
-                  value={fundAllocation.type}
-                  onValueChange={(value) => handleFundAllocationChange(index, 'type', value)}
-                >
-                  <SelectTrigger
-                    className={`w-[200px] data-[placeholder]:text-muted-foreground mt-4 ${errors[`annual_finances_attributes.0.fund_allocations_attributes.${index}.type`] !== undefined ? 'border-red-600' : ''}`}
-                  >
-                    <SelectValue placeholder='Type' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {FundAllocationTypeList.filter(type =>
-                      fundAllocation.type === type.value ||
-                      !(currentFinance.fund_allocations_attributes ?? []).some(allocation => allocation.type === type.value)
-                    ).map((type, i) => (
-                      <Fragment key={type.value}>
-                        {i > 0 &&
-                         type.group === 'detailed' &&
-                         FundAllocationTypeList[i - 1]?.group === 'main' && (
-                           <SelectSeparator className='my-2' />
-                        )}
-                        <SelectItem
-                          value={type.value}
-                          className={type.group === 'detailed' ? 'text-muted-foreground' : ''}
-                        >
-                          {type.label}
-                        </SelectItem>
-                      </Fragment>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <MyNumberInput
-                  id='percent'
-                  min={0}
-                  max={100}
-                  step={0.01}
-                  value={fundAllocation.percent ?? ''}
-                  onChange={(e) => handleFundAllocationChange(index, 'percent', e.target.value)}
-                  placeholder='%'
-                  suffix='%'
-                  error={errors[`annual_finances_attributes.0.fund_allocations_attributes.${index}.percent`]}
-                  noErrorMessage
-                />
-
-                <MyNumberInput
-                  id='amount'
-                  step={0.01}
-                  value={fundAllocation.amount ?? ''}
-                  onChange={(e) => handleFundAllocationChange(index, 'amount', e.target.value)}
-                  placeholder='Montant'
-                  suffix='€'
-                />
-
-                <button
-                  onClick={(e) => handleRemoveFundAllocation(e, index)}
-                  className='text-red-500 hover:text-red-700 focus:outline-none mt-4'
-                >
-                  <TrashIcon className='w-4 h-4' />
-                </button>
-              </div>
-            ))}
-          </div>
+          <FundManagementSection
+            title='Allocation des fonds'
+            items={currentFinance.fund_allocations_attributes ?? []}
+            typeList={FundAllocationTypeList}
+            baseErrorPath='annual_finances_attributes.0.fund_allocations_attributes'
+            errors={errors}
+            onUpdate={(items) => updateFinanceAttribute('fund_allocations_attributes', items)}
+            clearErrors={clearErrors}
+            setError={setError}
+          />
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ class AnnualFinance < ApplicationRecord
   # validates :employees_count, numericality: { greater_than: 0 }, allow_nil: true
 
   accepts_nested_attributes_for :fund_sources
+  accepts_nested_attributes_for :fund_allocations
 
   validate :at_least_one_information
   validate :fund_sources_total_percentage_is_100

@@ -15,7 +15,7 @@ export interface OsblType {
 
 export type OsblFormType = Omit<OsblType, 'id'>
 
-export interface FundSource {
+export interface FundRecord {
   type?: string
   percent?: number
   amount?: number
@@ -26,8 +26,8 @@ export interface AnnualFinance {
   budget?: number
   treasury?: number
   employees_count?: number
-  fund_sources_attributes?: FundSource[]
-  fund_allocations_attributes?: FundSource[]
+  fund_sources_attributes?: FundRecord[]
+  fund_allocations_attributes?: FundRecord[]
 }
 
 export interface FormData {
