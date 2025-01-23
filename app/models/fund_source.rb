@@ -1,11 +1,17 @@
 class FundSource < ApplicationRecord
+  self.inheritance_column = nil
+
   belongs_to :annual_finance
 
   enum :type, {
-    :dons => 0,
-    :argent_publique => 1,
-    :activité_commerciale => 2,
-    :autres => 3
+    "dons" => 0,
+    "aides_publiques" => 1,
+    "revenus_d_activités" => 2,
+    "autre" => 3
+    # "dons_des_particuliers" => 4,
+    # "mécénat" => 5,
+    # "fonds_dédiés" => 6,
+    # "activité_commerciale" => 7
   }
 
   # validates :type, presence: true
