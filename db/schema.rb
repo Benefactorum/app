@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_22_064136) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_23_132131) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -84,6 +84,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_064136) do
     t.datetime "updated_at", null: false
     t.index ["contribution_id"], name: "index_documents_on_contribution_id"
     t.index ["osbl_id"], name: "index_documents_on_osbl_id"
+  end
+
+  create_table "fund_allocations", force: :cascade do |t|
+    t.integer "type", null: false
+    t.decimal "percent", precision: 5, scale: 2, null: false
+    t.decimal "amount", precision: 15, scale: 2
+    t.integer "annual_finance_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["annual_finance_id", "type"], name: "index_fund_allocations_on_annual_finance_id_and_type", unique: true
+    t.index ["annual_finance_id"], name: "index_fund_allocations_on_annual_finance_id"
+    t.check_constraint "amount > 0", name: "amount_positive"
+    t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
   end
 
   create_table "fund_sources", force: :cascade do |t|
@@ -192,6 +205,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_064136) do
   add_foreign_key "contributions", "users"
   add_foreign_key "documents", "contributions"
   add_foreign_key "documents", "osbls"
+  add_foreign_key "fund_allocations", "annual_finances"
   add_foreign_key "fund_sources", "annual_finances"
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade

@@ -103,5 +103,63 @@ RSpec.describe AnnualFinance, type: :model do
         end
       end
     end
+
+    context "#fund_allocations_total_percentage_is_100" do
+      context "when creating fund allocations" do
+        it "allows creating 1 fund_allocation with 100%" do
+          annual_finance.fund_allocations.build(
+            percent: 100,
+            type: "missions_sociales"
+          )
+          expect {
+            annual_finance.save!
+          }.not_to raise_error
+        end
+
+        it "allows creating several fund_allocations with 100%" do
+          annual_finance.fund_allocations.build(
+            percent: 49.9,
+            type: "missions_sociales"
+          )
+          annual_finance.fund_allocations.build(
+            percent: 50.1,
+            type: "frais_de_fonctionnement"
+          )
+          expect {
+            annual_finance.save!
+          }.not_to raise_error
+        end
+
+        it "prevents creating sources that exceed 100%" do
+          annual_finance.fund_allocations.build(
+            percent: 50.1,
+            type: "missions_sociales"
+          )
+          annual_finance.fund_allocations.build(
+            percent: 50,
+            type: "frais_de_fonctionnement"
+          )
+
+          expect {
+            annual_finance.save!
+          }.to raise_error ActiveRecord::RecordInvalid
+        end
+
+        it "prevents creating sources that sum below 100%" do
+          annual_finance.fund_allocations.build(
+            percent: 49.9,
+            type: "missions_sociales"
+          )
+          annual_finance.fund_allocations.build(
+            percent: 50,
+            type: "frais_de_fonctionnement"
+          )
+
+          expect {
+            annual_finance.save!
+          }.to raise_error ActiveRecord::RecordInvalid
+        end
+      end
+    end
   end
 end
