@@ -8,6 +8,7 @@ class AnnualFinance < ApplicationRecord
   accepts_nested_attributes_for :fund_sources
 
   validate :at_least_one_information
+  validate :fund_sources_total_percentage_is_100
 
   private
 
@@ -17,6 +18,14 @@ class AnnualFinance < ApplicationRecord
     attributes_to_check = attributes.except("id", "year", "osbl_id", "created_at", "updated_at")
     if attributes_to_check.values.all?(&:blank?)
       errors.add(:base, "Au moins une information est requise en plus de l'année.")
+    end
+  end
+
+  def fund_sources_total_percentage_is_100
+    return if fund_sources.empty?
+
+    if fund_sources.sum(&:percent) != 100
+      errors.add(:fund_sources, "La somme des pourcentages doit être exactement 100%.")
     end
   end
 end

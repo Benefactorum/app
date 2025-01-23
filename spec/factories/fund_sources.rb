@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :fund_source do
-    type { :dons }
-    percent { 10 }
-
-    annual_finance { nil }
+    association :annual_finance
+    type { "dons" }
+    percent { 100 }
   end
 end

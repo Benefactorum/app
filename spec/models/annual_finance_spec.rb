@@ -4,26 +4,40 @@ RSpec.describe AnnualFinance, type: :model do
   describe "validations" do
     let(:osbl) { create(:osbl) }
     subject(:annual_finance) { build(:annual_finance, osbl: osbl) }
-
-    context "when only year is present" do
-      before do
-        annual_finance.attributes = {
-          year: Time.current.year,
-          employees_count: nil
-        }
-      end
-
-      it "is invalid" do
-        expect(annual_finance).not_to be_valid
-        expect(annual_finance.errors[:base]).to include("Au moins une information est requise en plus de l'année.")
-      end
-
-      context "but has fund sources" do
+    context "#at_least_one_information" do
+      context "when only year is present" do
         before do
-          annual_finance.fund_sources.build(
-            percent: 100,
-            type: "dons"
-          )
+          annual_finance.attributes = {
+            year: Time.current.year,
+            employees_count: nil
+          }
+        end
+
+        it "is invalid" do
+          expect(annual_finance).not_to be_valid
+          expect(annual_finance.errors[:base]).to include("Au moins une information est requise en plus de l'année.")
+        end
+
+        context "but has fund sources" do
+          before do
+            annual_finance.fund_sources.build(
+              percent: 100,
+              type: "dons"
+            )
+          end
+
+          it "is valid" do
+            expect(annual_finance).to be_valid
+          end
+        end
+      end
+
+      context "when year and another attribute are present" do
+        before do
+          annual_finance.attributes = {
+            year: Time.current.year,
+            employees_count: 5
+          }
         end
 
         it "is valid" do
@@ -32,16 +46,61 @@ RSpec.describe AnnualFinance, type: :model do
       end
     end
 
-    context "when year and another attribute are present" do
-      before do
-        annual_finance.attributes = {
-          year: Time.current.year,
-          employees_count: 5
-        }
-      end
+    context "#fund_sources_total_percentage_is_100" do
+      context "when creating fund sources" do
+        it "allows creating 1 fund_source with 100%" do
+          annual_finance.fund_sources.build(
+            percent: 100,
+            type: "dons"
+          )
+          expect {
+            annual_finance.save!
+          }.not_to raise_error
+        end
 
-      it "is valid" do
-        expect(annual_finance).to be_valid
+        it "allows creating several fund_sources with 100%" do
+          annual_finance.fund_sources.build(
+            percent: 49.9,
+            type: "dons"
+          )
+          annual_finance.fund_sources.build(
+            percent: 50.1,
+            type: "aides_publiques"
+          )
+          expect {
+            annual_finance.save!
+          }.not_to raise_error
+        end
+
+        it "prevents creating sources that exceed 100%" do
+          annual_finance.fund_sources.build(
+            percent: 50.1,
+            type: "dons"
+          )
+          annual_finance.fund_sources.build(
+            percent: 50,
+            type: "aides_publiques"
+          )
+
+          expect {
+            annual_finance.save!
+          }.to raise_error ActiveRecord::RecordInvalid
+        end
+
+        it "prevents creating sources that sum below 100%" do
+          annual_finance.fund_sources.build(
+            percent: 49.9,
+            type: "dons"
+          )
+          annual_finance.fund_sources.build(
+            percent: 50,
+            type: "aides_publiques"
+          )
+
+          expect {
+            annual_finance.save!
+          }.to raise_error ActiveRecord::RecordInvalid
+        end
       end
     end
   end
