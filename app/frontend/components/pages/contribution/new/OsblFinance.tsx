@@ -3,6 +3,8 @@ import { FormProps, AnnualFinance } from '@/pages/Contribution/types'
 import MyNumberInput from '@/components/forms/MyNumberInput'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import FundManagementSection from './FundManagementSection'
+import MyCheckbox from '@/components/forms/MyCheckbox'
+import { Separator } from '@/components/ui/separator'
 
 const FundSourceTypeList = [
   { value: 'dons', label: 'Dons', group: 'main' },
@@ -78,6 +80,19 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             error={errors['annual_finances_attributes.0.year'] !== undefined ? errors['annual_finances_attributes.0.year'] : errors['annual_finances_attributes.0.missing_information']}
           />
 
+          <MyCheckbox
+            id='certified'
+            checked={currentFinance.certified ?? false}
+            onCheckedChange={(checked) => updateFinanceAttribute('certified', checked)}
+          >
+            <div className='flex items-center'>
+              Comptes certifiés
+              <HelpTooltip className='ml-2'>
+                Un commissaire aux comptes a validé la comptabilité de l'OSBL.
+              </HelpTooltip>
+            </div>
+          </MyCheckbox>
+
           <MyNumberInput
             id='budget'
             labelText='Budget'
@@ -95,14 +110,6 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             value={currentFinance.treasury ?? ''}
             onChange={(e) => updateFinanceAttribute('treasury', e.target.value)}
             suffix='€'
-          />
-
-          <MyNumberInput
-            id='employees_count'
-            labelText="Nombre d'employé"
-            min={0}
-            value={currentFinance.employees_count ?? ''}
-            onChange={(e) => updateFinanceAttribute('employees_count', e.target.value)}
           />
 
           <FundManagementSection
@@ -125,6 +132,16 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             onUpdate={(items) => updateFinanceAttribute('fund_allocations_attributes', items)}
             clearErrors={clearErrors}
             setError={setError}
+          />
+
+          <Separator />
+
+          <MyNumberInput
+            id='employees_count'
+            labelText="Nombre d'employé"
+            min={0}
+            value={currentFinance.employees_count ?? ''}
+            onChange={(e) => updateFinanceAttribute('employees_count', e.target.value)}
           />
         </div>
       </div>

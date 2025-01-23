@@ -29,7 +29,7 @@ export default function MyCheckbox (props: MyCheckboxProps): ReactElement {
           onCheckedChange={onCheckedChange}
           className={errorClass}
         />
-        <Label htmlFor={id} className='leading-normal font-normal'>
+        <Label htmlFor={id}>
           {children}
         </Label>
       </div>

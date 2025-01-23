@@ -28,6 +28,7 @@ export interface AnnualFinance {
   employees_count?: number
   fund_sources_attributes?: FundRecord[]
   fund_allocations_attributes?: FundRecord[]
+  certified?: boolean
 }
 
 export interface FormData {

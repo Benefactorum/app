@@ -83,23 +83,24 @@ export default function SignUpForm ({ email }: { email: string }): ReactElement 
         checked={data.accepts_conditions}
         onCheckedChange={checked => updateField('accepts_conditions', checked)}
       >
-        Je confirme avoir lu et accepté les{' '}
-        <Link
-          href='/mentions-legales'
-          target='_blank'
-          className='underline hover:text-primary'
-        >
-          Termes et Conditions
-        </Link>{' '}
-        et la{' '}
-        <Link
-          href='/donnees-personnelles'
-          target='_blank'
-          className='underline hover:text-primary'
-        >
-          Politique de Confidentialité
-        </Link>{' '}
-        de Benefactorum.
+        <span className='leading-relaxed font-normal'>Je confirme avoir lu et accepté les{' '}
+          <Link
+            href='/mentions-legales'
+            target='_blank'
+            className='underline hover:text-primary'
+          >
+            Termes et Conditions
+          </Link>{' '}
+          et la{' '}
+          <Link
+            href='/donnees-personnelles'
+            target='_blank'
+            className='underline hover:text-primary'
+          >
+            Politique de Confidentialité
+          </Link>{' '}
+          de Benefactorum.
+        </span>
       </MyCheckbox>
 
       <ReCAPTCHA

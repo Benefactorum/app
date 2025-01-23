@@ -52,6 +52,7 @@ module Users
         :contact_email,
         {annual_finances_attributes: [
           :year,
+          :certified,
           :budget,
           :treasury,
           :employees_count,
