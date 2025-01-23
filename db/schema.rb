@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_132131) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_23_150020) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -126,6 +126,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_132131) do
     t.index ["name"], name: "index_keywords_on_name", unique: true
   end
 
+  create_table "labels", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "website"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_labels_on_name", unique: true
+  end
+
   create_table "osbls", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -163,6 +172,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_132131) do
     t.integer "keyword_id", null: false
     t.index ["keyword_id", "osbl_id"], name: "index_osbls_keywords_on_keyword_id_and_osbl_id", unique: true
     t.index ["osbl_id", "keyword_id"], name: "index_osbls_keywords_on_osbl_id_and_keyword_id", unique: true
+  end
+
+  create_table "osbls_labels", force: :cascade do |t|
+    t.integer "osbl_id", null: false
+    t.integer "label_id", null: false
+    t.index ["label_id", "osbl_id"], name: "index_osbls_labels_on_label_id_and_osbl_id", unique: true
+    t.index ["osbl_id", "label_id"], name: "index_osbls_labels_on_osbl_id_and_label_id", unique: true
   end
 
   create_table "otps", force: :cascade do |t|
@@ -213,6 +229,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_132131) do
   add_foreign_key "osbls_intervention_areas", "osbls", on_delete: :cascade
   add_foreign_key "osbls_keywords", "keywords", on_delete: :cascade
   add_foreign_key "osbls_keywords", "osbls", on_delete: :cascade
+  add_foreign_key "osbls_labels", "labels", on_delete: :cascade
+  add_foreign_key "osbls_labels", "osbls", on_delete: :cascade
   add_foreign_key "otps", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "users", "accounts"
