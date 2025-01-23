@@ -53,6 +53,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
     if (shouldReset) {
       clearErrors('annual_finances_attributes.0.year')
       clearErrors('annual_finances_attributes.0.missing_information')
+      clearErrors('annual_finances_attributes.0.fund_sources_attributes.total_percent')
     }
   }
 
@@ -88,11 +89,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
     const updatedSources = (currentFinance.fund_sources_attributes ?? [])
       .filter((_, i) => i !== index)
 
-    // Directly set the new array as the value
-    setData('annual_finances_attributes', [{
-      ...currentFinance,
-      fund_sources_attributes: updatedSources
-    }])
+    updateFinanceAttribute('fund_sources_attributes', updatedSources)
 
     // Clear errors for the removed index
     clearErrors(`annual_finances_attributes.0.fund_sources_attributes.${index}.type`)
