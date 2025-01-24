@@ -14,7 +14,7 @@ class Document < ApplicationRecord
     autre: 4
   }.freeze
 
-  validate :file, presence: true
-  # validate :type, presence: true
-  # validate :year, presence: true, if: -> { type.in?([1, 2]) }
+  validates :file, presence: true
+  # validates :type, presence: true
+  # validates :year, presence: true, if: -> { type.in?([1, 2]) }
 end
