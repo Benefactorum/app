@@ -101,7 +101,7 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
                     onValueChange={(value) => handleDocumentChange(index, 'type', value)}
                     required
                   >
-                    <SelectTrigger className='w-60'>
+                    <SelectTrigger className='w-60 data-[placeholder]:text-muted-foreground'>
                       <SelectValue placeholder='Type de document *' />
                     </SelectTrigger>
                     <SelectContent>

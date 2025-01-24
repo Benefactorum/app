@@ -24,7 +24,7 @@ const FundAllocationTypeList = [
   { value: 'autre', label: 'Autre', group: 'main' }
 ]
 
-export default function OsblFinance ({ data, setData, errors, clearErrors, setError }: FormProps & { setError: (field: string, message: string) => void }): ReactElement {
+export default function OsblFinance ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
   const currentFinance = (data.annual_finances_attributes?.[0] ?? {})
 
   function updateFinanceAttribute (attribute: keyof AnnualFinance, value: any): void {
@@ -120,7 +120,6 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             errors={errors}
             onUpdate={(items) => updateFinanceAttribute('fund_sources_attributes', items)}
             clearErrors={clearErrors}
-            setError={setError}
           />
 
           <FundManagementSection
@@ -131,7 +130,6 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
             errors={errors}
             onUpdate={(items) => updateFinanceAttribute('fund_allocations_attributes', items)}
             clearErrors={clearErrors}
-            setError={setError}
           />
 
           <Separator />

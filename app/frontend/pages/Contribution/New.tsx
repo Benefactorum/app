@@ -126,7 +126,6 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
             setData={setData}
             errors={errors}
             clearErrors={clearErrors}
-            setError={(field, message) => setError(field as keyof FormData, message)}
           />
           <OsblDocuments data={data} setData={setData} />
           <Button type='submit' disabled={processing} className='mx-auto'>
