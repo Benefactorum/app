@@ -46,6 +46,15 @@ export interface FormData {
   public_utility?: boolean
   creation_year?: number
   contact_email?: string
+  document_attachments_attributes?: Array<{ document_attributes: DocumentRecord }>
+}
+
+export interface DocumentRecord {
+  type?: string
+  file?: File
+  name?: string
+  year?: number
+  description?: string
 }
 
 export interface FormProps {
@@ -53,4 +62,5 @@ export interface FormProps {
   setData: (key: keyof FormData | string, value: FormData[keyof FormData] | any) => void
   errors: Record<keyof FormData | string, string>
   clearErrors: (...fields: Array<keyof FormData | any>) => void
+  documents_attributes?: DocumentRecord[]
 }

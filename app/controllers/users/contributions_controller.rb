@@ -68,6 +68,15 @@ module Users
             :percent,
             :amount
           ]}
+        ]},
+        {document_attachments_attributes: [
+          {document_attributes: [
+            :type,
+            :file,
+            :name,
+            :year,
+            :description
+          ]}
         ]}
       )
     end

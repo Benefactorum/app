@@ -8,14 +8,11 @@ import { Save } from 'lucide-react'
 import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
 import OsblDataSheet from '@/components/pages/contribution/new/OsblDataSheet'
 import OsblFinance from '@/components/pages/contribution/new/OsblFinance'
+import OsblDocuments from '@/components/pages/contribution/new/OsblDocuments'
 import { CurrentUserType } from '@/types/types'
 import { FormData } from './types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
-interface NewProps {
-  currentUser: CurrentUserType
-  causes: Record<string, number>
-}
 
 const validation = z.object({
   website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
@@ -73,7 +70,7 @@ const validation = z.object({
   })).optional()
 })
 
-export default function New ({ currentUser }: NewProps): ReactElement {
+export default function New ({ currentUser }: { currentUser: CurrentUserType }): ReactElement {
   const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<FormData>({
     name: '',
     osbls_causes_attributes: [],
@@ -131,6 +128,7 @@ export default function New ({ currentUser }: NewProps): ReactElement {
             clearErrors={clearErrors}
             setError={(field, message) => setError(field as keyof FormData, message)}
           />
+          <OsblDocuments data={data} setData={setData} />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer
