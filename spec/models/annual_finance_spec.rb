@@ -30,6 +30,19 @@ RSpec.describe AnnualFinance, type: :model do
             expect(annual_finance).to be_valid
           end
         end
+
+        context "but has fund allocations" do
+          before do
+            annual_finance.fund_allocations.build(
+              percent: 100,
+              type: "missions_sociales"
+            )
+          end
+
+          it "is valid" do
+            expect(annual_finance).to be_valid
+          end
+        end
       end
 
       context "when year and another attribute are present" do

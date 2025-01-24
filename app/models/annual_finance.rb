@@ -16,6 +16,7 @@ class AnnualFinance < ApplicationRecord
 
   def at_least_one_information
     return if fund_sources.any?
+    return if fund_allocations.any?
 
     attributes_to_check = attributes.except("id", "year", "osbl_id", "created_at", "updated_at")
     if attributes_to_check.values.all?(&:blank?)
