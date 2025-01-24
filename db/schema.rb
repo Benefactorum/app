@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_150020) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_24_085346) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -75,15 +75,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_150020) do
     t.index ["user_id"], name: "index_contributions_on_user_id"
   end
 
+  create_table "document_attachments", force: :cascade do |t|
+    t.integer "document_id", null: false
+    t.string "attachable_type", null: false
+    t.integer "attachable_id", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_document_attachments_on_attachable"
+    t.index ["document_id", "attachable_type", "attachable_id"], name: "index_document_attachments_uniqueness", unique: true
+    t.index ["document_id"], name: "index_document_attachments_on_document_id"
+  end
+
   create_table "documents", force: :cascade do |t|
-    t.integer "contribution_id"
-    t.integer "osbl_id"
     t.integer "type", null: false
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["contribution_id"], name: "index_documents_on_contribution_id"
-    t.index ["osbl_id"], name: "index_documents_on_osbl_id"
+    t.text "description"
+    t.integer "year"
+    t.check_constraint "type NOT IN (1, 2) OR (type IN (1, 2) AND year IS NOT NULL)", name: "year_required_for_specific_types"
+    t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 
   create_table "fund_allocations", force: :cascade do |t|
@@ -219,8 +228,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_150020) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annual_finances", "osbls"
   add_foreign_key "contributions", "users"
-  add_foreign_key "documents", "contributions"
-  add_foreign_key "documents", "osbls"
+  add_foreign_key "document_attachments", "documents"
   add_foreign_key "fund_allocations", "annual_finances"
   add_foreign_key "fund_sources", "annual_finances"
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade

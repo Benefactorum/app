@@ -162,12 +162,13 @@ export default function FundManagementSection ({
             suffix='€'
           />
 
-          <button
+          <Button
             onClick={(e) => handleRemove(e, index)}
-            className='text-red-500 hover:text-red-700 focus:outline-none mt-4'
+            variant='ghost'
+            className='text-red-500 hover:text-red-700 p-0 h-auto mt-4'
           >
             <TrashIcon className='w-4 h-4' />
-          </button>
+          </Button>
         </div>
       ))}
     </div>
