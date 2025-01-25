@@ -14,6 +14,7 @@ import MyNumberInput from '@/components/forms/MyNumberInput'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import MyFileInput from '@/components/shared/MyFileInput'
 
 const DocumentTypeList = [
   { value: 'statuts', label: 'Statuts' },
@@ -23,7 +24,7 @@ const DocumentTypeList = [
   { value: 'autre', label: 'Autre' }
 ]
 
-export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
+export default function OsblDocuments ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
   const documents = data.document_attachments_attributes ?? []
 
   function handleDocumentChange (
@@ -44,6 +45,10 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
     )
 
     setData('document_attachments_attributes', updatedDocuments)
+
+    if (field === 'file' && value instanceof File) {
+      clearErrors(`document_attachments_attributes.${index}.document_attributes.file`)
+    }
   }
 
   function handleAdd (e: React.MouseEvent<HTMLButtonElement>): void {
@@ -130,12 +135,13 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
                   />
                 )}
 
-                <MyInput
-                  type='file'
+                <MyFileInput
                   id={`document-file-${index}`}
                   placeholder='Sélectionner un fichier *'
                   onChange={(e) => handleDocumentChange(index, 'file', e.target.files?.[0])}
+                  accept='.pdf'
                   required
+                  error={errors[`document_attachments_attributes.${index}.document_attributes.file`]}
                 />
                 <Collapsible>
                   <CollapsibleTrigger className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors'>

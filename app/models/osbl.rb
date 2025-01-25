@@ -1,5 +1,7 @@
 class Osbl < ApplicationRecord
-  include Osbl::Logo
+  include AttachableValidation
+
+  has_one_attached :logo
 
   has_many :osbls_causes, dependent: :destroy # join table
   has_many :causes, through: :osbls_causes
@@ -47,6 +49,11 @@ class Osbl < ApplicationRecord
   validates :description, length: {maximum: 300}, allow_nil: true
   validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
+  validates_attachment(
+    name: :logo,
+    max_size: 1.megabytes,
+    content_types: %w[image/png image/svg image/webp]
+  )
 
   accepts_nested_attributes_for :osbls_causes # , allow_destroy: true
   accepts_nested_attributes_for :osbls_labels # , allow_destroy: true

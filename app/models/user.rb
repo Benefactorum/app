@@ -1,7 +1,14 @@
 class User < ApplicationRecord
-  include User::ProfilePicture
+  include AttachableValidation
 
   has_one :otp, dependent: :destroy
+  has_one_attached :profile_picture
+
+  validates_attachment(
+    name: :profile_picture,
+    max_size: 1.megabytes,
+    content_types: %w[image/png image/jpg image/jpeg image/webp]
+  )
 
   has_secure_password validations: false
 

@@ -1,4 +1,6 @@
 class Document < ApplicationRecord
+  include AttachableValidation
+
   self.inheritance_column = nil
 
   has_one_attached :file
@@ -18,4 +20,9 @@ class Document < ApplicationRecord
   # validates :type, presence: true
   # validates :year, presence: true, if: -> { type.in?(%i[rapport_activite rapport_financier]) }
   # validates :name, presence: true, if: -> { type.in?(%i[proces_verbal autre]) }
+  validates_attachment(
+    name: :file,
+    max_size: 5.megabytes,
+    content_types: %w[application/pdf]
+  )
 end

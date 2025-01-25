@@ -1,7 +1,6 @@
 import { useState, useEffect, ReactElement } from 'react'
 import { useForm, router } from '@inertiajs/react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import MyInput from '@/components/forms/MyInput'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,13 +18,14 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Pencil, Trash2 } from 'lucide-react'
 import { z } from 'zod'
+import MyFileInput from '@/components/shared/MyFileInput'
 
-const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp']
+const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/webp']
 const MAX_PROFILE_PICTURE_SIZE = 1 * 1024 * 1024 // 1MB
 
 const profilePicSchema = z.object({
   profile_picture: z
-    .instanceof(File, { message: 'Veuillez sélectionner un fichier.' })
+    .instanceof(File)
     .refine((file) => {
       return file.size <= MAX_PROFILE_PICTURE_SIZE
     }, 'La taille du fichier doit être inférieure à 1 MB.')
@@ -142,11 +142,11 @@ export default function UserAvatarEdit ({
             </AlertDialogTrigger>
           )}
           <form onSubmit={submit} className='flex flex-col gap-4'>
-            <MyInput
+            <MyFileInput
               labelText='Photo de profil'
               id='profile_picture'
               required
-              type='file'
+              accept='image/png, image/webp, image/jpg'
               onChange={(e) => {
                 const files = e.target.files
                 if (files == null) return

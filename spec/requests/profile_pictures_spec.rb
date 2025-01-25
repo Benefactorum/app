@@ -37,7 +37,8 @@ RSpec.describe "ProfilePictures", type: :request, inertia: true do
         let(:params) { {profile_picture: fixture_file_upload("valid_file.png")} }
 
         before do
-          stub_const("User::ProfilePicture::MAX_PROFILE_PICTURE_SIZE", 0.megabytes)
+          # Stub the byte_size to be larger than the maximum allowed size
+          allow_any_instance_of(ActiveStorage::Blob).to receive(:byte_size).and_return(11.megabytes)
         end
         it "does not update and returns an error" do
           subject

@@ -14,8 +14,21 @@ import { FormData } from './types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
 
+const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
+const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024 // 5MB
+const ALLOWED_LOGO_TYPES = ['image/svg', 'image/png', 'image/webp']
+const ALLOWED_DOCUMENT_TYPES = ['application/pdf']
+
 const validation = z.object({
   website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
+  logo: z.instanceof(File)
+    .refine((file) => {
+      return file.size <= MAX_LOGO_SIZE
+    }, 'La taille du fichier doit être inférieure à 1 MB.')
+    .refine((file) => {
+      return ALLOWED_LOGO_TYPES.includes(file.type)
+    }, 'Le type de fichier est invalide. Format accepté : SVG, PNG, WEBP.')
+    .optional(),
   description: z.string().max(300).optional(),
   osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
   contact_email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
@@ -67,6 +80,17 @@ const validation = z.object({
   }, {
     message: 'Complétez les comptes pour cette année.',
     path: ['missing_information']
+  })).optional(),
+  document_attachments_attributes: z.array(z.object({
+    document_attributes: z.object({
+      file: z.instanceof(File)
+        .refine((file) => {
+          return file.size <= MAX_DOCUMENT_SIZE
+        }, 'La taille du fichier doit être inférieure à 5 MB.')
+        .refine((file) => {
+          return ALLOWED_DOCUMENT_TYPES.includes(file.type)
+        }, 'Le type de fichier est invalide. Format accepté : PDF.')
+    })
   })).optional()
 })
 
@@ -127,7 +151,7 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
             errors={errors}
             clearErrors={clearErrors}
           />
-          <OsblDocuments data={data} setData={setData} />
+          <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer

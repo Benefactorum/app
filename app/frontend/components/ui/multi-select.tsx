@@ -201,8 +201,9 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto shadow-none",
-              className
+              "flex w-full p-1 rounded-md border focus-visible:border-primary focus-visible:ring-offset-0 focus-visible:ring-0 active:border-primary focus:border-primary min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto shadow-none",
+              className,
+              isPopoverOpen ? 'border-primary' : ''
             )}
           >
             {selectedValues.length > 0 ? (
