@@ -60,16 +60,6 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
     setData('document_attachments_attributes', updatedDocuments)
   }
 
-  function handleFileChange (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void {
-    const file = event.target.files?.[0]
-    if (file != null) {
-      handleDocumentChange(index, 'file', file)
-    }
-  }
-
   return (
     <div className='flex flex-wrap gap-16 mx-auto justify-center'>
       <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
@@ -144,7 +134,7 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
                   type='file'
                   id={`document-file-${index}`}
                   placeholder='Sélectionner un fichier *'
-                  onChange={(e) => handleFileChange(index, e)}
+                  onChange={(e) => handleDocumentChange(index, 'file', e.target.files?.[0])}
                   required
                 />
                 <Collapsible>
