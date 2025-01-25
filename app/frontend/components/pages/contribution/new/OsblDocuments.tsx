@@ -19,7 +19,7 @@ const DocumentTypeList = [
   { value: 'statuts', label: 'Statuts' },
   { value: 'rapport_activite', label: 'Rapport d\'activité' },
   { value: 'rapport_financier', label: 'Rapport financier' },
-  { value: 'procès_verbal', label: 'Procès verbal' },
+  { value: 'proces_verbal', label: 'Procès verbal' },
   { value: 'autre', label: 'Autre' }
 ]
 
@@ -29,7 +29,7 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
   function handleDocumentChange (
     index: number,
     field: keyof DocumentRecord,
-    value: any
+    value: DocumentRecord[typeof field]
   ): void {
     const updatedDocuments = documents.map((doc, i: number) =>
       i === index
@@ -48,14 +48,7 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
 
   function handleAdd (e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault()
-    const newDocument = {
-      document_attributes: {
-        type: undefined,
-        name: undefined,
-        file: undefined
-      }
-    }
-    setData('document_attachments_attributes', [...documents, newDocument])
+    setData('document_attachments_attributes', [...documents, { document_attributes: {} }])
   }
 
   function handleRemove (

@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 const FundSourceTypeList = [
   { value: 'dons', label: 'Dons', group: 'main' },
   { value: 'aides_publiques', label: 'Aides publiques', group: 'main' },
-  { value: 'revenus_d_activités', label: 'Revenus d\'activités', group: 'main' },
+  { value: 'revenus_d_activites', label: 'Revenus d\'activités', group: 'main' },
   { value: 'autre', label: 'Autre', group: 'main' }
   // { value: 'dons_des_particuliers', label: 'Dons des particuliers', group: 'detailed' },
   // { value: 'mécénat', label: 'Mécénat d\'entreprises', group: 'detailed' },

@@ -16,5 +16,5 @@ class Document < ApplicationRecord
 
   validates :file, presence: true
   # validates :type, presence: true
-  # validates :year, presence: true, if: -> { type.in?([1, 2]) }
+  # validates :year, presence: true, if: -> { type.in?(%i[rapport_activite rapport_financier]) }
 end

@@ -51,8 +51,7 @@ export default function FundManagementSection ({
 
   function handleAdd (e: React.MouseEvent<HTMLButtonElement>): void {
     e.preventDefault()
-    const newItem = { type: undefined, percent: undefined, amount: undefined }
-    onUpdate([...items, newItem])
+    onUpdate([...items, {}])
   }
 
   function handleRemove (
