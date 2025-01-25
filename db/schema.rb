@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_24_085346) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -92,6 +92,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_24_085346) do
     t.text "description"
     t.integer "year"
     t.check_constraint "type NOT IN (1, 2) OR (type IN (1, 2) AND year IS NOT NULL)", name: "year_required_for_specific_types"
+    t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 

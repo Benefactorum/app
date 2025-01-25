@@ -129,6 +129,17 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
                   />
                 )}
 
+                {['proces_verbal', 'autre'].includes(doc.document_attributes?.type ?? '') && (
+                  <MyInput
+                    type='string'
+                    id={`document-name-${index}`}
+                    placeholder='Nom du document *'
+                    value={doc.document_attributes?.name ?? ''}
+                    onChange={(e) => handleDocumentChange(index, 'name', e.target.value)}
+                    required
+                  />
+                )}
+
                 <MyInput
                   type='file'
                   id={`document-file-${index}`}
@@ -143,13 +154,15 @@ export default function OsblDocuments ({ data, setData }: Pick<FormProps, 'data'
                   </CollapsibleTrigger>
 
                   <CollapsibleContent className='space-y-4 pt-4'>
-                    <MyInput
-                      type='string'
-                      id={`document-name-${index}`}
-                      placeholder='Nom du document'
-                      value={doc.document_attributes?.name ?? ''}
-                      onChange={(e) => handleDocumentChange(index, 'name', e.target.value)}
-                    />
+                    {!['proces_verbal', 'autre'].includes(doc.document_attributes?.type ?? '') && (
+                      <MyInput
+                        type='string'
+                        id={`document-name-${index}`}
+                        value={doc.document_attributes?.name ?? ''}
+                        onChange={(e) => handleDocumentChange(index, 'name', e.target.value)}
+                        placeholder='Nom du document'
+                      />
+                    )}
 
                     {!['rapport_activite', 'rapport_financier'].includes(doc.document_attributes?.type ?? '') && (
                       <MyNumberInput
