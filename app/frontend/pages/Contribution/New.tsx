@@ -153,7 +153,7 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
             clearErrors={clearErrors}
           />
           <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
-          <OsblLocations data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+          <OsblLocations data={data} setData={setData} />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer

@@ -7,7 +7,7 @@ class Location < ApplicationRecord
   enum :type, {
     siege_social: 0,
     antenne_locale: 1,
-    lieux_d_activite: 2,
+    lieu_d_activite: 2,
     autre: 3
   }.freeze
 

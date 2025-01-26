@@ -18,11 +18,11 @@ import MyAsyncSelect from '@/components/shared/MyAsyncSelect'
 const LocationTypeList = [
   { value: 'siege_social', label: 'Siège social' },
   { value: 'antenne_locale', label: 'Antenne locale' },
-  { value: 'lieux_d_activite', label: 'Lieux d\'activité' },
+  { value: 'lieu_d_activite', label: 'Lieu d\'activité' },
   { value: 'autre', label: 'Autre' }
 ]
 
-export default function OsblLocations ({ data, setData, clearErrors }: FormProps): ReactElement {
+export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const locations = data.locations_attributes ?? []
 
   const hasSiegeSocial = locations.some(loc => loc.type === 'siege_social')
@@ -42,7 +42,6 @@ export default function OsblLocations ({ data, setData, clearErrors }: FormProps
     )
 
     setData('locations_attributes', updatedLocations)
-    clearErrors(`locations_attributes.${index}.${field}`)
   }
 
   function handleAddressChange (index: number, value: any, field?: string): void {
@@ -50,7 +49,7 @@ export default function OsblLocations ({ data, setData, clearErrors }: FormProps
       i === index
         ? {
             ...loc,
-            address_attributes: field
+            address_attributes: field != null
               ? { ...loc.address_attributes, [field]: value }
               : value
           }

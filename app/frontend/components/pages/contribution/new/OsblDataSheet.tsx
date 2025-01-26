@@ -201,18 +201,6 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
               maxCount={2}
             />
           </div>
-
-          <MyInput
-            id='osbl_email'
-            type='email'
-            labelText='Email de contact :'
-            value={data.contact_email ?? ''}
-            onChange={(e) => {
-              setData('contact_email', e.target.value)
-              clearErrors('contact_email')
-            }}
-            error={errors.contact_email}
-          />
         </div>
       </div>
     </div>

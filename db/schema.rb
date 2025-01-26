@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_26_140903) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_26_180000) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -184,11 +184,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_26_140903) do
     t.integer "geographical_scale"
     t.integer "osbl_type"
     t.integer "creation_year"
-    t.string "contact_email"
     t.boolean "public_utility", default: false, null: false
     t.index ["name"], name: "index_osbls_on_name", unique: true
     t.index ["website"], name: "index_osbls_on_website", unique: true
-    t.check_constraint "contact_email IS NULL OR (contact_email IS NOT NULL AND contact_email LIKE '%_@_%._%')", name: "contact_email_format_check"
     t.check_constraint "creation_year >= 1000", name: "creation_year_as_4_digits"
   end
 
