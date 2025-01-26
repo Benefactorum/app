@@ -21,6 +21,8 @@ class Osbl < ApplicationRecord
   has_many :document_attachments, as: :attachable, dependent: :destroy # join table
   has_many :documents, through: :document_attachments
 
+  has_many :locations, dependent: :destroy
+
   TAX_REDUCTION_VALUES = {
     "intérêt_général" => 0.66,
     "aide_aux_personnes_en_difficulté" => 0.75
@@ -61,4 +63,5 @@ class Osbl < ApplicationRecord
   accepts_nested_attributes_for :osbls_intervention_areas # , allow_destroy: true
   accepts_nested_attributes_for :annual_finances
   accepts_nested_attributes_for :document_attachments
+  accepts_nested_attributes_for :locations
 end

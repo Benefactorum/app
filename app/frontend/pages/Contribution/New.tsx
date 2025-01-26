@@ -9,6 +9,7 @@ import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
 import OsblDataSheet from '@/components/pages/contribution/new/OsblDataSheet'
 import OsblFinance from '@/components/pages/contribution/new/OsblFinance'
 import OsblDocuments from '@/components/pages/contribution/new/OsblDocuments'
+import OsblLocations from '@/components/pages/contribution/new/OsblLocations'
 import { CurrentUserType } from '@/types/types'
 import { FormData } from './types'
 import z from 'zod'
@@ -152,6 +153,7 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
             clearErrors={clearErrors}
           />
           <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+          <OsblLocations data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
           <Button type='submit' disabled={processing} className='mx-auto'>
             <Save />
             Enregistrer
