@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { FormProps, DocumentRecord } from '@/pages/Contribution/types'
+import { FormProps, Document } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
 import { PlusIcon, TrashIcon, ChevronDown } from 'lucide-react'
 import MyInput from '@/components/forms/MyInput'
@@ -29,8 +29,8 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors }: F
 
   function handleDocumentChange (
     index: number,
-    field: keyof DocumentRecord,
-    value: DocumentRecord[typeof field]
+    field: keyof Document,
+    value: Document[typeof field]
   ): void {
     const updatedDocuments = documents.map((doc, i: number) =>
       i === index

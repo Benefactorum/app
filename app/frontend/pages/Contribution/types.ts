@@ -31,7 +31,7 @@ export interface AnnualFinance {
   certified?: boolean
 }
 
-export interface DocumentRecord {
+export interface Document {
   type?: string
   file?: File
   name?: string
@@ -80,7 +80,7 @@ export interface FormData {
   public_utility?: boolean
   creation_year?: number
   contact_email?: string
-  document_attachments_attributes?: Array<{ document_attributes: DocumentRecord }>
+  document_attachments_attributes?: Array<{ document_attributes: Document }>
   locations_attributes?: Location[]
 }
 

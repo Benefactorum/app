@@ -51,7 +51,6 @@ module Users
         :public_utility,
         :creation_year,
         {osbls_labels_attributes: [:label_id]},
-        :contact_email,
         {annual_finances_attributes: [
           :year,
           :certified,
