@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_26_140903) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -40,6 +40,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street_number"
+    t.string "street_name", null: false
+    t.string "additional_info"
+    t.string "postal_code", null: false
+    t.string "city", null: false
+    t.string "country", default: "France", null: false
+    t.decimal "latitude", precision: 10, scale: 6, null: false
+    t.decimal "longitude", precision: 10, scale: 6, null: false
+    t.string "addressable_type", null: false
+    t.integer "addressable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", unique: true
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Location'"
   end
 
   create_table "annual_finances", force: :cascade do |t|
@@ -145,6 +162,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.index ["name"], name: "index_labels_on_name", unique: true
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.integer "type", null: false
+    t.string "name"
+    t.text "description"
+    t.string "website"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "osbl_id", null: false
+    t.index ["osbl_id"], name: "index_locations_on_osbl_id"
+    t.index ["osbl_id"], name: "index_locations_on_osbl_id_siege_social", unique: true, where: "type = 0"
+  end
+
   create_table "osbls", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -232,6 +261,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
   add_foreign_key "document_attachments", "documents"
   add_foreign_key "fund_allocations", "annual_finances"
   add_foreign_key "fund_sources", "annual_finances"
+  add_foreign_key "locations", "osbls"
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade
   add_foreign_key "osbls_intervention_areas", "intervention_areas", on_delete: :cascade

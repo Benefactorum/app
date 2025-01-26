@@ -77,6 +77,21 @@ module Users
             :year,
             :description
           ]}
+        ]},
+        {locations_attributes: [
+          :type,
+          :name,
+          :description,
+          :website,
+          {address_attributes: [
+            :street_number,
+            :street_name,
+            :additional_info,
+            :postal_code,
+            :city,
+            :latitude,
+            :longitude
+          ]}
         ]}
       )
     end

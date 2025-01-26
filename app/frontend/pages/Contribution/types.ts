@@ -31,6 +31,40 @@ export interface AnnualFinance {
   certified?: boolean
 }
 
+export interface DocumentRecord {
+  type?: string
+  file?: File
+  name?: string
+  year?: number
+  description?: string
+}
+
+export interface Address {
+  street_number?: string
+  street_name?: string
+  additional_info?: string
+  postal_code?: string
+  city?: string
+  latitude?: number
+  longitude?: number
+}
+
+export interface Location {
+  type?: string
+  name?: string
+  address_attributes?: Address
+  // opening_hours?: Record<string, { open: string; close: string }>
+  //  is_accessible?: boolean // Accessibilité PMR
+  // contact_info?: {
+  //   email?: string
+  //   phone?: string
+  //   contact_person?: string
+  // }
+  // services?: string[] // Liste des services proposés
+  description?: Text
+  website?: string
+}
+
 export interface FormData {
   name: string
   website?: string
@@ -47,14 +81,7 @@ export interface FormData {
   creation_year?: number
   contact_email?: string
   document_attachments_attributes?: Array<{ document_attributes: DocumentRecord }>
-}
-
-export interface DocumentRecord {
-  type?: string
-  file?: File
-  name?: string
-  year?: number
-  description?: string
+  locations_attributes?: Location[]
 }
 
 export interface FormProps {
