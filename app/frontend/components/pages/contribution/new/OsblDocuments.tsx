@@ -66,18 +66,18 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors }: F
   }
 
   return (
-    <div className='flex flex-wrap gap-16 mx-auto justify-center'>
-      <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
-        <div className='flex gap-16 items-center justify-between'>
-          <h2 className='text-2xl font-semibold'>Documents</h2>
-          <Button onClick={handleAdd}>
-            <PlusIcon className='w-4 h-4 mr-2' />
-            Ajouter
-          </Button>
-        </div>
+    <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full h-full'>
+      <div className='flex flex-wrap gap-4 items-center justify-between'>
+        <h2 className='text-2xl font-semibold w-[145px]'>Documents</h2>
+        <Button onClick={handleAdd} variant='outline'>
+          <PlusIcon className='w-4 h-4' />
+          <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
+        </Button>
+      </div>
 
+      {documents.length > 0 && (
         <div className='flex flex-col gap-4'>
-          {documents?.map((doc, index) => (
+          {documents.map((doc, index) => (
             <Card
               key={`document-${doc.document_attributes?.type ?? 'new'}-${index}`}
               className='bg-background'
@@ -191,8 +191,7 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors }: F
             </Card>
           ))}
         </div>
-      </div>
+      )}
     </div>
-
   )
 }

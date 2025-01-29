@@ -128,38 +128,35 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
     <>
       <Head title='Ajouter une association' />
 
-      <div className='2xl:container mx-auto flex flex-col px-2 sm:px-8 md:px-16 pt-8 pb-16 gap-8'>
-        <h1 className='font-semibold text-3xl'>Ajouter une association</h1>
-        <Alert>
+      <form onKeyDown={avoidUnintentionalSubmission} onSubmit={submit} className='2xl:container mx-auto flex flex-col px-2 sm:px-8 md:px-16 pt-8 pb-16 gap-8'>
+        <div className='flex gap-16 items-center flex-wrap justify-center md:justify-start'>
+          <h1 className='font-semibold text-3xl'>Ajouter une association</h1>
+          <Button type='submit' disabled={processing} className='text-lg'>
+            <Save className='mr-2' />
+            Enregistrer
+          </Button>
+        </div>
+        {/* <Alert>
           <GoodIdea className='min-w-8 min-h-8' />
           <AlertDescription>
             Pour que votre contribution soit validée, le modérateur doit pouvoir
             vérifier les informations fournies. Facilitez son travail en
             indiquant clairement vos sources !
           </AlertDescription>
-        </Alert>
+        </Alert> */}
 
-        <form onKeyDown={avoidUnintentionalSubmission} onSubmit={submit} className='flex flex-col pt-4 gap-16'>
-          <Button type='submit' disabled={processing} className='mx-auto'>
-            <Save />
-            Enregistrer
-          </Button>
-          <OsblHeader data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
-          <OsblDataSheet data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
-          <OsblFinance
-            data={data}
-            setData={setData}
-            errors={errors}
-            clearErrors={clearErrors}
-          />
-          <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
-          <OsblLocations data={data} setData={setData} />
-          <Button type='submit' disabled={processing} className='mx-auto'>
-            <Save />
-            Enregistrer
-          </Button>
-        </form>
-      </div>
+        <div className='flex flex-col pt-4 gap-8'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+            <OsblHeader data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+            <OsblDataSheet data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+          </div>
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+            <OsblFinance data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+            <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+            <OsblLocations data={data} setData={setData} />
+          </div>
+        </div>
+      </form>
     </>
   )
 }
