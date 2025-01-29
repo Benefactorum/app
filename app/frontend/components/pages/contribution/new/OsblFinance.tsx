@@ -66,16 +66,16 @@ export default function OsblFinance ({ data, setData, errors, clearErrors }: For
   }
 
   return (
-    <div className='flex flex-wrap gap-16 mx-auto justify-center'>
-      <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
-        <div className='flex gap-16 items-center justify-between'>
-          <h2 className='text-2xl font-semibold'>Comptes</h2>
-          <Button onClick={handleFinanceAdd}>
-            <PlusIcon className='w-4 h-4 mr-2' />
-            Ajouter
-          </Button>
-        </div>
+    <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full h-full'>
+      <div className='flex items-center gap-4 justify-between flex-wrap'>
+        <h2 className='text-2xl font-semibold w-[145px]'>Comptes</h2>
+        <Button onClick={handleFinanceAdd} variant='outline'>
+          <PlusIcon className='w-4 h-4' />
+          <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
+        </Button>
+      </div>
 
+      {finances.length > 0 && (
         <div className='flex flex-col gap-4'>
           {finances.map((finance, index) => (
             <Card
@@ -181,7 +181,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors }: For
             </Card>
           ))}
         </div>
-      </div>
+      )}
     </div>
   )
 }

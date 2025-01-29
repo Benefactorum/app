@@ -1,6 +1,5 @@
 import { ReactElement } from 'react'
 import { Label } from '@/components/ui/label'
-import MyInput from '@/components/forms/MyInput'
 import {
   MultiSelect
 } from '@/components/ui/multi-select'
@@ -61,146 +60,145 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
   }))
 
   return (
-    <div className='flex flex-wrap gap-16 mx-auto justify-center'>
-      <div className='bg-white w-full sm:w-auto rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col'>
-        <h2 className='text-2xl font-semibold'>Fiche technique</h2>
+    <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full'>
+      <h2 className='text-2xl font-semibold'>Fiche technique</h2>
 
-        <div className='flex flex-col gap-8'>
-          <div className='flex flex-col gap-4'>
-            <Label>Causes * :</Label>
-            <MultiSelect
-              options={syncedCausesList}
-              onValueChange={(value) => {
-                setData('osbls_causes_attributes', value.map(cause => ({ cause_id: cause })))
-                clearErrors('osbls_causes_attributes')
-              }}
-              placeholder=''
-              variant='secondary'
-              animation={0}
-              maxCount={1}
-            />
-            {Boolean(errors.osbls_causes_attributes) && <InputError>{errors.osbls_causes_attributes}</InputError>}
-          </div>
-
-          <div className='flex flex-col gap-4'>
-            <Label>Réduction d'impôt * :</Label>
-            <RadioGroup
-              required
-              value={String(data.tax_reduction)} onValueChange={(value) => {
-                setData('tax_reduction', value)
-                clearErrors('tax_reduction')
-              }}
-            >
-              <div className='flex items-center justify-between'>
-                <Label htmlFor='option-one' className='flex items-center justify-between w-16'>
-                  66 %
-                  <HelpTooltip>
-                    <h2 className='font-semibold mb-4'>Les associations d'intérêt général, ou reconnues d'utilité publique (ARUP).</h2>
-                    <p>Elles ouvrent le droit à une réduction d'impôt de 66 %.</p>
-                  </HelpTooltip>
-                </Label>
-                <RadioGroupItem value='intérêt_général' />
-              </div>
-              <div className='flex items-center justify-between'>
-                <Label htmlFor='option-two' className='flex items-center justify-between w-16'>
-                  75 %
-                  <HelpTooltip>
-                    <h2 className='font-semibold mb-4'>Les organismes d'aide aux personnes en difficulté.</h2>
-                    <p>Elles ouvrent le droit à une réduction d'impôt de 75 %, jusqu'à 1 000 € de dons.</p>
-                    <p>Le régime standard de réduction à 66 % s'applique ensuite.</p>
-                  </HelpTooltip>
-                </Label>
-                <RadioGroupItem value='aide_aux_personnes_en_difficulté' />
-              </div>
-            </RadioGroup>
-            {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
-          </div>
-
-          <div className='flex flex-col gap-4'>
-            <Label>Mots-clés :</Label>
-            <KeywordAsyncCreatableSelect
-              data={data}
-              setData={setData}
-            />
-          </div>
-
-          <div className='flex flex-col gap-4'>
-            <Label>Échelle :</Label>
-            <Select onValueChange={(value) => setData('geographical_scale', value)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {GeographicalScaleList.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className='flex flex-col gap-4'>
-            <Label>Zones d'action :</Label>
-            <InterventionAreaAsyncCreatableSelect
-              data={data}
-              setData={setData}
-            />
-          </div>
-
-          <div className='flex flex-col gap-4'>
-            <Label className='flex items-center gap-2'>
-              Type d'OSBL
-              <HelpTooltip size='small'>
-                <p>Organisation Sans But Lucratif.</p>
-              </HelpTooltip>
-              :
-            </Label>
-            <Select onValueChange={(value) => setData('osbl_type', value)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {OsblTypeList.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {data.osbl_type === 'association' && (
-              <MyCheckbox
-                id='public_utility'
-                checked={data.public_utility ?? false}
-                onCheckedChange={checked => setData('public_utility', checked)}
-              >
-                Reconnue d'utilité publique (ARUP)
-              </MyCheckbox>
-            )}
-          </div>
-
-          <MyNumberInput
-            id='creation_year'
-            labelText='Année de création :'
-            min={1000}
-            max={new Date().getFullYear()}
-            value={data.creation_year ?? ''}
-            onChange={(e) => {
-              setData('creation_year', e.target.value)
+      <div className='flex flex-col gap-8'>
+        <div className='flex flex-col gap-4'>
+          <Label>Causes * :</Label>
+          <MultiSelect
+            options={syncedCausesList}
+            onValueChange={(value) => {
+              setData('osbls_causes_attributes', value.map(cause => ({ cause_id: cause })))
+              clearErrors('osbls_causes_attributes')
             }}
+            placeholder=''
+            variant='secondary'
+            animation={0}
+            maxCount={1}
           />
+          {Boolean(errors.osbls_causes_attributes) && <InputError>{errors.osbls_causes_attributes}</InputError>}
+        </div>
 
-          <div className='flex flex-col gap-4'>
-            <Label>Labels :</Label>
-            <MultiSelect
-              options={labels}
-              onValueChange={(value) => {
-                setData('osbls_labels_attributes', value.map(label => ({ label_id: label })))
-                clearErrors('osbls_labels_attributes')
-              }}
-              placeholder=''
-              variant='default'
-              animation={0}
-              maxCount={2}
-            />
-          </div>
+        <div className='flex flex-col gap-4'>
+          <Label>Réduction d'impôt * :</Label>
+          <RadioGroup
+            required // doesn't work as expected
+            value={String(data.tax_reduction)}
+            onValueChange={(value) => {
+              setData('tax_reduction', value)
+              clearErrors('tax_reduction')
+            }}
+          >
+            <div className='flex items-center justify-between'>
+              <Label htmlFor='option-one' className='flex items-center justify-between w-16'>
+                66 %
+                <HelpTooltip>
+                  <h2 className='font-semibold mb-4'>Les associations d'intérêt général, ou reconnues d'utilité publique (ARUP).</h2>
+                  <p>Elles ouvrent le droit à une réduction d'impôt de 66 %.</p>
+                </HelpTooltip>
+              </Label>
+              <RadioGroupItem value='intérêt_général' />
+            </div>
+            <div className='flex items-center justify-between'>
+              <Label htmlFor='option-two' className='flex items-center justify-between w-16'>
+                75 %
+                <HelpTooltip>
+                  <h2 className='font-semibold mb-4'>Les organismes d'aide aux personnes en difficulté.</h2>
+                  <p>Elles ouvrent le droit à une réduction d'impôt de 75 %, jusqu'à 1 000 € de dons.</p>
+                  <p>Le régime standard de réduction à 66 % s'applique ensuite.</p>
+                </HelpTooltip>
+              </Label>
+              <RadioGroupItem value='aide_aux_personnes_en_difficulté' />
+            </div>
+          </RadioGroup>
+          {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
+        </div>
+
+        <div className='flex flex-col gap-4'>
+          <Label>Mots-clés :</Label>
+          <KeywordAsyncCreatableSelect
+            data={data}
+            setData={setData}
+          />
+        </div>
+
+        <div className='flex flex-col gap-4'>
+          <Label>Échelle :</Label>
+          <Select onValueChange={(value) => setData('geographical_scale', value)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {GeographicalScaleList.map((item) => (
+                <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className='flex flex-col gap-4'>
+          <Label>Zones d'action :</Label>
+          <InterventionAreaAsyncCreatableSelect
+            data={data}
+            setData={setData}
+          />
+        </div>
+
+        <div className='flex flex-col gap-4'>
+          <Label className='flex items-center gap-2'>
+            Type d'OSBL
+            <HelpTooltip size='small'>
+              <p>Organisation Sans But Lucratif.</p>
+            </HelpTooltip>
+            :
+          </Label>
+          <Select onValueChange={(value) => setData('osbl_type', value)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {OsblTypeList.map((item) => (
+                <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {data.osbl_type === 'association' && (
+            <MyCheckbox
+              id='public_utility'
+              checked={data.public_utility ?? false}
+              onCheckedChange={checked => setData('public_utility', checked)}
+            >
+              Reconnue d'utilité publique (ARUP)
+            </MyCheckbox>
+          )}
+        </div>
+
+        <MyNumberInput
+          id='creation_year'
+          labelText='Année de création :'
+          min={1000}
+          max={new Date().getFullYear()}
+          value={data.creation_year ?? ''}
+          onChange={(e) => {
+            setData('creation_year', e.target.value)
+          }}
+        />
+
+        <div className='flex flex-col gap-4'>
+          <Label>Labels :</Label>
+          <MultiSelect
+            options={labels}
+            onValueChange={(value) => {
+              setData('osbls_labels_attributes', value.map(label => ({ label_id: label })))
+              clearErrors('osbls_labels_attributes')
+            }}
+            placeholder=''
+            variant='default'
+            animation={0}
+            maxCount={2}
+          />
         </div>
       </div>
     </div>
