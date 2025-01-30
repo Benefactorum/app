@@ -98,14 +98,15 @@ const validation = z.object({
       message: 'Complétez les comptes pour cette année.',
       path: ['missing_information']
     })
-  ).refine((finances) => {
-    if (finances === undefined || finances.length === 0) return true
-    const years = finances.map(f => f.year)
-    return new Set(years).size === years.length
-  }, {
-    message: 'Une année ne peut être ajoutée qu\'une seule fois.',
-    path: ['duplicate_years']
-  }),
+  ).optional()
+    .refine((finances) => {
+      if (finances === undefined || finances.length === 0) return true
+      const years = finances.map(f => f.year)
+      return new Set(years).size === years.length
+    }, {
+      message: 'Une année ne peut être ajoutée qu\'une seule fois.',
+      path: ['duplicate_years']
+    }),
   document_attachments_attributes: z.array(z.object({
     document_attributes: z.object({
       file: z.instanceof(File)
