@@ -10,7 +10,8 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
+  useSidebar
 } from '@/components/ui/sidebar'
 
 const items = [
@@ -33,6 +34,13 @@ const items = [
 
 export default function AppSidebar (): ReactElement {
   const { url } = usePage()
+  const { setOpenMobile, isMobile } = useSidebar()
+
+  const handleClick = (): void => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
 
   return (
     <Sidebar>
@@ -50,6 +58,7 @@ export default function AppSidebar (): ReactElement {
                           ? ' bg-secondary'
                           : ' hover:bg-secondary/50'
                       }
+                      onClick={handleClick}
                     >
                       <item.icon />
                       <span className='font-semibold'>{item.title}</span>
