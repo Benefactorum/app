@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { FormProps, AnnualFinance } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
-import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react'
+import { PencilIcon, PlusIcon, TrashIcon, ArrowUpDown } from 'lucide-react'
 import {
   Sheet,
   SheetTrigger
@@ -10,6 +10,7 @@ import OsblFinanceSheet from './OsblFinanceSheet'
 import InputError from '@/components/forms/InputError'
 
 export default function OsblFinance ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
+  const [sortAscending, setSortAscending] = useState(false)
   const finances = data.annual_finances_attributes ?? []
   const newFinanceIndex = finances.length - 1
 
@@ -87,11 +88,42 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
     })
   }
 
+  function handleSort (): void {
+    setSortAscending(!sortAscending)
+    const sortedFinances = [...finances]
+      .filter(finance => Object.keys(finance).length > 0)
+      .sort((a, b) => sortAscending
+        ? (a.year ?? 0) - (b.year ?? 0)
+        : (b.year ?? 0) - (a.year ?? 0))
+    setData('annual_finances_attributes', sortedFinances)
+  }
+
+  const hasFinanceErrors = Object.keys(errors).some(key =>
+    key.startsWith('annual_finances_attributes')
+  )
+
   return (
     <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full h-full'>
       <div className='flex items-center gap-4 justify-between flex-wrap'>
-        <h2 className='text-2xl font-semibold w-[145px]'>Comptes</h2>
-        {/* <Sheet open={open} onOpenChange={(open) => handleValidation(open, newFinanceIndex)}> */}
+        <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-2 w-[145px]'>
+
+            <h2 className='text-2xl font-semibold'>Comptes</h2>
+            {finances.filter(finance => Object.keys(finance).length > 1).length > 1 && (
+              <Button
+                variant='ghost'
+                size='icon'
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleSort()
+                }}
+                disabled={hasFinanceErrors}
+              >
+                <ArrowUpDown />
+              </Button>
+            )}
+          </div>
+        </div>
         <Sheet>
           <SheetTrigger asChild>
             <Button variant='outline' onClick={handleFinanceAdd}>
@@ -119,7 +151,6 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
         <div className='flex flex-col gap-4'>
           {finances
             .filter(finance => Object.keys(finance).length > 0)
-            // .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
             .map((finance, index) => {
               const hasError = errors[`annual_finances_attributes.${index}.missing_information`] != null ||
                            errors[`annual_finances_attributes.${index}.fund_sources_attributes.total_percent`] != null ||
