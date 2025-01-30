@@ -40,7 +40,6 @@ export default function MyAsyncCreatableSelect ({
 
     const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${inputValue}`)
     const data = await response.json()
-    console.log(data)
     return data.features.map((feature: any) => createOption(feature))
   }
 

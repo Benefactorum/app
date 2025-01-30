@@ -91,17 +91,31 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             }}
           >
             <div className='flex items-center justify-between'>
-              <Label htmlFor='option-one' className='flex items-center justify-between w-16'>
+              <Label
+                htmlFor='interet-general'
+                className='flex items-center justify-between w-16 cursor-pointer'
+                onClick={() => {
+                  setData('tax_reduction', 'intérêt_général')
+                  clearErrors('tax_reduction')
+                }}
+              >
                 66 %
                 <HelpTooltip>
                   <h2 className='font-semibold mb-4'>Les associations d'intérêt général, ou reconnues d'utilité publique (ARUP).</h2>
                   <p>Elles ouvrent le droit à une réduction d'impôt de 66 %.</p>
                 </HelpTooltip>
               </Label>
-              <RadioGroupItem value='intérêt_général' />
+              <RadioGroupItem value='intérêt_général' id='interet-general' />
             </div>
             <div className='flex items-center justify-between'>
-              <Label htmlFor='option-two' className='flex items-center justify-between w-16'>
+              <Label
+                htmlFor='aide-difficulte'
+                className='flex items-center justify-between w-16 cursor-pointer'
+                onClick={() => {
+                  setData('tax_reduction', 'aide_aux_personnes_en_difficulté')
+                  clearErrors('tax_reduction')
+                }}
+              >
                 75 %
                 <HelpTooltip>
                   <h2 className='font-semibold mb-4'>Les organismes d'aide aux personnes en difficulté.</h2>
@@ -109,7 +123,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
                   <p>Le régime standard de réduction à 66 % s'applique ensuite.</p>
                 </HelpTooltip>
               </Label>
-              <RadioGroupItem value='aide_aux_personnes_en_difficulté' />
+              <RadioGroupItem value='aide_aux_personnes_en_difficulté' id='aide-difficulte' />
             </div>
           </RadioGroup>
           {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}

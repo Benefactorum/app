@@ -16,6 +16,7 @@ interface BaseMyNumberInputProps {
   step?: number
   hideIncrementor?: boolean
   suffix?: string
+  noErrorMessage?: boolean
 }
 
 interface WithLabel extends BaseMyNumberInputProps {
@@ -45,7 +46,8 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
     max,
     step,
     hideIncrementor = true,
-    suffix
+    suffix,
+    noErrorMessage = false
   } = props
 
   const errorClass = error != null ? 'border-red-600' : ''
@@ -81,7 +83,7 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
           </span>
         )}
       </div>
-      {Boolean(error) && <InputError>{error}</InputError>}
+      {Boolean(error) && !noErrorMessage && <InputError>{error}</InputError>}
     </div>
   )
 }

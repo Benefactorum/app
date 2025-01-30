@@ -1,34 +1,17 @@
 import React, { ReactElement } from 'react'
 import { FormProps, AnnualFinance } from '@/pages/Contribution/types'
-import MyNumberInput from '@/components/forms/MyNumberInput'
-import HelpTooltip from '@/components/shared/HelpTooltip'
-import FundManagementSection from './FundManagementSection'
-import MyCheckbox from '@/components/forms/MyCheckbox'
-import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
-import { PlusIcon, TrashIcon } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react'
+import {
+  Sheet,
+  SheetTrigger
+} from '@/components/ui/sheet'
+import OsblFinanceSheet from './OsblFinanceSheet'
+import InputError from '@/components/forms/InputError'
 
-const FundSourceTypeList = [
-  { value: 'dons', label: 'Dons', group: 'main' },
-  { value: 'aides_publiques', label: 'Aides publiques', group: 'main' },
-  { value: 'revenus_d_activites', label: 'Revenus d\'activités', group: 'main' },
-  { value: 'autre', label: 'Autre', group: 'main' }
-  // { value: 'dons_des_particuliers', label: 'Dons des particuliers', group: 'detailed' },
-  // { value: 'mécénat', label: 'Mécénat d\'entreprises', group: 'detailed' },
-  // { value: 'fonds_dédiés', label: 'Reprise sur fonds dédiés', group: 'detailed' },
-  // { value: 'activité_commerciale', label: 'Activité commerciale', group: 'detailed' }
-]
-
-const FundAllocationTypeList = [
-  { value: 'missions_sociales', label: 'Missions sociales', group: 'main' },
-  { value: 'frais_de_fonctionnement', label: 'Frais de fonctionnement', group: 'main' },
-  { value: 'frais_de_recherche_de_fonds', label: 'Frais de recherche de fonds', group: 'main' },
-  { value: 'autre', label: 'Autre', group: 'main' }
-]
-
-export default function OsblFinance ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
+export default function OsblFinance ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const finances = data.annual_finances_attributes ?? []
+  const newFinanceIndex = finances.length - 1
 
   function updateFinanceAttribute (index: number, attribute: keyof AnnualFinance, value: any): void {
     const updatedFinances = finances.map((finance, i) =>
@@ -42,15 +25,29 @@ export default function OsblFinance ({ data, setData, errors, clearErrors }: For
 
     setData('annual_finances_attributes', updatedFinances)
 
-    // Je rentre une information, je veux que le message d'erreur soit supprimé
-    if (attribute !== 'year' && value !== '') {
+    if (attribute !== 'year') {
       clearErrors(`annual_finances_attributes.${index}.missing_information`)
+    }
+
+    if (attribute === 'year') {
+      clearErrors(`annual_finances_attributes.${index}.year`)
+      clearErrors(`annual_finances_attributes.${index}.missing_information`)
+
+      const modifiedYear = finances[index]?.year
+      const remainingYears = finances.filter((_, i) => i !== index).map(f => f.year)
+      if (Number(modifiedYear) > 0 && remainingYears.includes(modifiedYear)) {
+        clearErrors('annual_finances_attributes.duplicate_years')
+      }
     }
   }
 
-  function handleFinanceAdd (e: React.MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault()
-    setData('annual_finances_attributes', [...finances, {}])
+  function handleFinanceAdd (): void {
+    const lastFinance = finances[newFinanceIndex]
+    const isLastFinanceEmpty = lastFinance !== undefined && Object.keys(lastFinance).length === 0
+
+    if (!isLastFinanceEmpty) {
+      setData('annual_finances_attributes', [...finances, {}])
+    }
   }
 
   function handleFinanceRemove (
@@ -63,123 +60,112 @@ export default function OsblFinance ({ data, setData, errors, clearErrors }: For
 
     clearErrors(`annual_finances_attributes.${index}.missing_information`)
     clearErrors(`annual_finances_attributes.${index}.fund_sources_attributes.total_percent`)
+    clearErrors(`annual_finances_attributes.${index}.year`)
+
+    const removedYear = finances[index]?.year
+    const remainingYears = finances.filter((_, i) => i !== index).map(f => f.year)
+    if (removedYear != null && remainingYears.includes(removedYear)) {
+      clearErrors('annual_finances_attributes.duplicate_years')
+    }
+
+    // Update error indices for remaining items after the removed index
+    Object.keys(errors).forEach(errorKey => {
+      if (errorKey.startsWith('annual_finances_attributes.')) {
+        const match = errorKey.match(/annual_finances_attributes\.(\d+)/)
+        if (match != null) {
+          const errorIndex = parseInt(match[1])
+          if (errorIndex > index) {
+            const newKey = errorKey.replace(
+              `annual_finances_attributes.${errorIndex}`,
+              `annual_finances_attributes.${errorIndex - 1}`
+            )
+            setError?.(newKey, errors[errorKey])
+            clearErrors(errorKey)
+          }
+        }
+      }
+    })
   }
 
   return (
     <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full h-full'>
       <div className='flex items-center gap-4 justify-between flex-wrap'>
         <h2 className='text-2xl font-semibold w-[145px]'>Comptes</h2>
-        <Button onClick={handleFinanceAdd} variant='outline'>
-          <PlusIcon className='w-4 h-4' />
-          <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
-        </Button>
+        {/* <Sheet open={open} onOpenChange={(open) => handleValidation(open, newFinanceIndex)}> */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant='outline' onClick={handleFinanceAdd}>
+              <PlusIcon className='w-4 h-4' />
+              <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
+            </Button>
+          </SheetTrigger>
+          <OsblFinanceSheet
+            finance={finances[newFinanceIndex] ?? {}}
+            index={newFinanceIndex}
+            errors={errors}
+            onUpdate={(attribute, value) => updateFinanceAttribute(newFinanceIndex, attribute, value)}
+            clearErrors={clearErrors}
+            setError={(field: string, message: string) => setError?.(field, message)}
+          />
+        </Sheet>
       </div>
+      {errors['annual_finances_attributes.duplicate_years'] !== undefined && (
+        <InputError>
+          {errors['annual_finances_attributes.duplicate_years']}
+        </InputError>
+      )}
 
-      {finances.length > 0 && (
+      {finances.filter(finance => Object.keys(finance).length > 0).length > 0 && (
         <div className='flex flex-col gap-4'>
-          {finances.map((finance, index) => (
-            <Card
-              key={`finance-${index}`}
-              className='bg-background'
-            >
-              <CardHeader className='flex flex-row items-center pb-2'>
-                <div className='ml-auto'>
-                  <Button
-                    onClick={(e) => handleFinanceRemove(e, index)}
-                    variant='ghost'
-                    className='text-red-500 hover:text-red-700 p-0 h-auto'
-                  >
-                    <TrashIcon className='w-4 h-4' />
-                  </Button>
-                </div>
-              </CardHeader>
+          {finances
+            .filter(finance => Object.keys(finance).length > 0)
+            // .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+            .map((finance, index) => {
+              const hasError = errors[`annual_finances_attributes.${index}.missing_information`] != null ||
+                           errors[`annual_finances_attributes.${index}.fund_sources_attributes.total_percent`] != null ||
+                           (finance.fund_sources_attributes?.some((_, i) =>
+                             errors[`annual_finances_attributes.${index}.fund_sources_attributes.${i}.percent`] != null ||
+                             errors[`annual_finances_attributes.${index}.fund_sources_attributes.${i}.type`] != null
+                           ) ?? false) ||
+                           errors[`annual_finances_attributes.${index}.fund_allocations_attributes.total_percent`] != null ||
+                           (finance.fund_allocations_attributes?.some((_, i) =>
+                             errors[`annual_finances_attributes.${index}.fund_allocations_attributes.${i}.percent`] != null ||
+                             errors[`annual_finances_attributes.${index}.fund_allocations_attributes.${i}.type`] != null
+                           ) ?? false) ||
+                           finance.year == null ||
+                           errors[`annual_finances_attributes.${index}.year`] !== undefined
 
-              <CardContent className='flex flex-col gap-8'>
-                <MyNumberInput
-                  id={`year-${index}`}
-                  labelText={
-                    <>
-                      Année *
-                      <HelpTooltip size='small' className='mx-2'>
-                        <p>Année du bilan comptable.</p>
-                        <p>Si à cheval sur deux ans, entrez la dernière année.</p>
-                      </HelpTooltip>
-                      :
-                    </>
-                  }
-                  min={1000}
-                  max={new Date().getFullYear()}
-                  placeholder={String(new Date().getFullYear() - 1)}
-                  value={finance.year ?? ''}
-                  onChange={(e) => updateFinanceAttribute(index, 'year', e.target.value)}
-                  required
-                  error={errors[`annual_finances_attributes.${index}.missing_information`]}
-                />
-
-                <MyCheckbox
-                  id={`certified-${index}`}
-                  checked={finance.certified ?? false}
-                  onCheckedChange={(checked) => updateFinanceAttribute(index, 'certified', checked)}
-                >
-                  <div className='flex items-center'>
-                    Comptes certifiés
-                    <HelpTooltip className='ml-2'>
-                      Un commissaire aux comptes a validé la comptabilité de l'OSBL.
-                    </HelpTooltip>
+              return (
+                <Sheet key={`finance-${index}`}>
+                  <div className={`flex items-center justify-between p-4 border rounded-lg ${hasError ? 'bg-red-50 border-red-500' : 'bg-white'}`}>
+                    <p>{finance.year}</p>
+                    <div className='flex gap-2'>
+                      <SheetTrigger asChild>
+                        <Button variant='outline' className='bg-white text-primary border-none'>
+                          <PencilIcon />
+                        </Button>
+                      </SheetTrigger>
+                      <Button
+                        onClick={(e) => handleFinanceRemove(e, index)}
+                        variant='outline'
+                        className='bg-white text-red-500 border-none'
+                      >
+                        <TrashIcon className='w-4 h-4' />
+                      </Button>
+                    </div>
                   </div>
-                </MyCheckbox>
 
-                <MyNumberInput
-                  id={`budget-${index}`}
-                  labelText='Budget'
-                  min={0}
-                  step={0.01}
-                  value={finance.budget ?? ''}
-                  onChange={(e) => updateFinanceAttribute(index, 'budget', e.target.value)}
-                  suffix='€'
-                />
-
-                <MyNumberInput
-                  id={`treasury-${index}`}
-                  labelText='Trésorerie'
-                  step={0.01}
-                  value={finance.treasury ?? ''}
-                  onChange={(e) => updateFinanceAttribute(index, 'treasury', e.target.value)}
-                  suffix='€'
-                />
-
-                <FundManagementSection
-                  title='Sources de financement'
-                  items={finance.fund_sources_attributes ?? []}
-                  typeList={FundSourceTypeList}
-                  baseErrorPath={`annual_finances_attributes.${index}.fund_sources_attributes`}
-                  errors={errors}
-                  onUpdate={(items) => updateFinanceAttribute(index, 'fund_sources_attributes', items)}
-                  clearErrors={clearErrors}
-                />
-
-                <FundManagementSection
-                  title='Allocation des fonds'
-                  items={finance.fund_allocations_attributes ?? []}
-                  typeList={FundAllocationTypeList}
-                  baseErrorPath={`annual_finances_attributes.${index}.fund_allocations_attributes`}
-                  errors={errors}
-                  onUpdate={(items) => updateFinanceAttribute(index, 'fund_allocations_attributes', items)}
-                  clearErrors={clearErrors}
-                />
-
-                <Separator />
-
-                <MyNumberInput
-                  id={`employees_count-${index}`}
-                  labelText="Nombre d'employé"
-                  min={0}
-                  value={finance.employees_count ?? ''}
-                  onChange={(e) => updateFinanceAttribute(index, 'employees_count', e.target.value)}
-                />
-              </CardContent>
-            </Card>
-          ))}
+                  <OsblFinanceSheet
+                    finance={finance}
+                    index={index}
+                    errors={errors}
+                    onUpdate={(attribute, value) => updateFinanceAttribute(index, attribute, value)}
+                    clearErrors={clearErrors}
+                    setError={(field: string, message: string) => setError?.(field, message)}
+                  />
+                </Sheet>
+              )
+            })}
         </div>
       )}
     </div>

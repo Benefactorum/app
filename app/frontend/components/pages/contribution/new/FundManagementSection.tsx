@@ -22,6 +22,7 @@ interface FundManagementSectionProps {
   errors: Record<string, string>
   onUpdate: (items: FundRecord[]) => void
   clearErrors: (path: string) => void
+  setError: (field: string, message: string) => void
 }
 
 export default function FundManagementSection ({
@@ -31,7 +32,8 @@ export default function FundManagementSection ({
   baseErrorPath,
   errors,
   onUpdate,
-  clearErrors
+  clearErrors,
+  setError
 }: FundManagementSectionProps): ReactElement {
   function handleFundChange (
     index: number,
@@ -43,6 +45,10 @@ export default function FundManagementSection ({
     )
 
     onUpdate(updatedItems)
+
+    if (value !== '') {
+      clearErrors(`${baseErrorPath}.${index}.${field}`)
+    }
 
     if (field === 'percent' && value !== '') {
       clearErrors(`${baseErrorPath}.total_percent`)
@@ -61,6 +67,21 @@ export default function FundManagementSection ({
     e.preventDefault()
     const updatedItems = items.filter((_, i) => i !== index)
     onUpdate(updatedItems)
+
+    clearErrors(`${baseErrorPath}.${index}.type`)
+    clearErrors(`${baseErrorPath}.${index}.percent`)
+    clearErrors(`${baseErrorPath}.total_percent`)
+
+    for (let i = index + 1; i < items.length; i++) {
+      ['type', 'percent'].forEach(field => {
+        const errorPath = `${baseErrorPath}.${i}.${field}`
+        const error = errors?.[errorPath]
+        if (error !== undefined) {
+          setError(`${baseErrorPath}.${i - 1}.${field}`, error)
+          clearErrors(errorPath)
+        }
+      })
+    }
   }
 
   return (
@@ -69,6 +90,8 @@ export default function FundManagementSection ({
         <Label>{title}</Label>
         <Button
           onClick={handleAdd}
+          variant='outline'
+          className='bg-white'
           disabled={Boolean((items?.length ?? 0) >= typeList.length)}
         >
           <PlusIcon className='w-4 h-4' />
@@ -93,7 +116,9 @@ export default function FundManagementSection ({
             required
           >
             <SelectTrigger
-              className='w-60 data-[placeholder]:text-muted-foreground mt-4'
+              className={`w-60 data-[placeholder]:text-muted-foreground mt-4 ${
+                errors[`${baseErrorPath}.${index}.type`] !== undefined ? 'border-red-600' : ''
+              }`}
             >
               <SelectValue placeholder='Type *' />
             </SelectTrigger>
@@ -121,7 +146,7 @@ export default function FundManagementSection ({
 
           <MyNumberInput
             id='percent'
-            min={0}
+            min={0.01}
             max={100}
             step={0.01}
             value={item.percent ?? ''}
@@ -129,6 +154,9 @@ export default function FundManagementSection ({
             placeholder='% *'
             suffix='%'
             required
+            error={errors[`${baseErrorPath}.${index}.percent`]}
+            noErrorMessage
+
           />
 
           <MyNumberInput
