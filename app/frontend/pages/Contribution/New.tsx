@@ -158,21 +158,21 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
       <Head title='Ajouter une association' />
 
       <form onKeyDown={avoidUnintentionalSubmission} onSubmit={submit} className='2xl:container mx-auto flex flex-col px-2 sm:px-8 md:px-16 pt-8 pb-16 gap-8'>
-        <div className='flex gap-16 items-center flex-wrap justify-center md:justify-start'>
-          <h1 className='font-semibold text-3xl'>Ajouter une association</h1>
+        <div className='flex gap-8 sm:gap-16 items-center flex-wrap justify-center md:justify-start'>
+          <h1 className='font-semibold text-2xl sm:text-3xl'>Ajouter une association</h1>
           <Button type='submit' disabled={processing} className='text-lg'>
             <Save className='mr-2' />
             Enregistrer
           </Button>
         </div>
-        {/* <Alert>
+        <Alert>
           <GoodIdea className='min-w-8 min-h-8' />
           <AlertDescription>
             Pour que votre contribution soit validée, le modérateur doit pouvoir
             vérifier les informations fournies. Facilitez son travail en
             indiquant clairement vos sources !
           </AlertDescription>
-        </Alert> */}
+        </Alert>
 
         <div className='flex flex-col pt-4 gap-8'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
@@ -185,6 +185,10 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
             <OsblLocations data={data} setData={setData} />
           </div>
         </div>
+        <Button type='submit' disabled={processing} className='text-lg ml-auto mt-4 sm:mt-8'>
+          <Save className='mr-2' />
+          Enregistrer
+        </Button>
       </form>
     </>
   )
