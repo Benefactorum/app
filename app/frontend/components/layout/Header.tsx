@@ -1,4 +1,5 @@
-import { Link, router, usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
+import MyLink from '@/components/shared/MyLink'
 import { ReactElement, useState, useEffect, useRef } from 'react'
 import { Spin as Hamburger } from 'hamburger-react'
 import {
@@ -89,7 +90,7 @@ export default function Header (): ReactElement {
         id='mainHeader'
         className='2xl:container 2xl:mx-auto flex items-center px-2 justify-between'
       >
-        <Link
+        <MyLink
           href='/'
           className='flex gap-2 items-center'
           onClick={handleLinkClick}
@@ -103,12 +104,12 @@ export default function Header (): ReactElement {
               Association de bienfaiteurs
             </h2>
           </div>
-        </Link>
+        </MyLink>
         <NavigationMenu className='hidden min-[1100px]:flex'>
           <NavigationMenuList className='xl:gap-8'>
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
-                <Link
+                <MyLink
                   href='/trouver-une-association'
                   className={
                     'flex gap-2 items-center py-2 px-4 rounded-md' +
@@ -120,13 +121,13 @@ export default function Header (): ReactElement {
                 >
                   <Search className='w-4 h-4 text-foreground' />
                   Trouver une association
-                </Link>
+                </MyLink>
               </NavigationMenuLink>
             </NavigationMenuItem>
             {user != null && (
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
-                  <Link
+                  <MyLink
                     href='/mes-contributions'
                     className={
                       'flex gap-2 items-center py-2 px-4 rounded-md' +
@@ -138,14 +139,14 @@ export default function Header (): ReactElement {
                   >
                     <HandHeart className='w-4 h-4 text-foreground' />
                     Mes contributions
-                  </Link>
+                  </MyLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             )}
             {user === null && (
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
-                  <Link
+                  <MyLink
                     href='/qui-nous-sommes'
                     className={
                       'flex gap-2 items-center py-2 px-4 rounded-md' +
@@ -157,7 +158,7 @@ export default function Header (): ReactElement {
                   >
                     <HandMetal className='w-4 h-4 text-foreground' />
                     Qui sommes-nous ?
-                  </Link>
+                  </MyLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             )}
@@ -171,7 +172,7 @@ export default function Header (): ReactElement {
                   {user !== null && (
                     <DropdownMenuItem className='focus:bg-white'>
                       <NavigationMenuLink asChild>
-                        <Link
+                        <MyLink
                           href='/qui-nous-sommes'
                           className={
                             'flex gap-2 items-centertext-base py-2 px-4 rounded-md' +
@@ -183,14 +184,14 @@ export default function Header (): ReactElement {
                         >
                           <HandMetal className='w-4 h-4 text-foreground' />
                           Qui sommes-nous ?
-                        </Link>
+                        </MyLink>
                       </NavigationMenuLink>
                     </DropdownMenuItem>
                   )}
                   {subNavLinks.map((link) => (
                     <DropdownMenuItem key={link.href} className='focus:bg-white'>
                       <NavigationMenuLink asChild>
-                        <Link
+                        <MyLink
                           href={link.href}
                           className={
                             'flex gap-2 items-center text-base py-2 px-4 rounded-md w-full' +
@@ -202,7 +203,7 @@ export default function Header (): ReactElement {
                         >
                           <link.icon className='text-foreground' />
                           {link.title}
-                        </Link>
+                        </MyLink>
                       </NavigationMenuLink>
                     </DropdownMenuItem>
                   ))}
@@ -217,12 +218,12 @@ export default function Header (): ReactElement {
           </div>
           <div className='hidden sm:flex'>
             {user === null && !isExcluded && (
-              <Link href='/connexion' onClick={handleLinkClick}>
+              <MyLink href='/connexion' onClick={handleLinkClick}>
                 <Button>
                   <LogIn />
                   Se connecter
                 </Button>
-              </Link>
+              </MyLink>
             )}
             {user !== null && (
               <Button variant='secondary' onClick={logOut}>
@@ -243,7 +244,7 @@ export default function Header (): ReactElement {
       >
         <ul className='flex flex-col mt-4'>
           <li>
-            <Link
+            <MyLink
               href='/trouver-une-association'
               className={
                 'flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md' +
@@ -255,10 +256,10 @@ export default function Header (): ReactElement {
             >
               <Search className='w-4 h-4 text-foreground' />
               Trouver une association
-            </Link>
+            </MyLink>
           </li>
           <li>
-            <Link
+            <MyLink
               href='/qui-nous-sommes'
               className={
                 'flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md' +
@@ -270,11 +271,11 @@ export default function Header (): ReactElement {
             >
               <HandMetal className='w-4 h-4 text-foreground' />
               Qui sommes-nous ?
-            </Link>
+            </MyLink>
           </li>
           {user !== null && (
             <li>
-              <Link
+              <MyLink
                 href='/mes-contributions'
                 className={
                   'flex items-center justify-center gap-2 px-4 py-2 mb-2 rounded-md' +
@@ -286,13 +287,13 @@ export default function Header (): ReactElement {
               >
                 <HandHeart className='w-4 h-4 text-foreground' />
                 Mes contributions
-              </Link>
+              </MyLink>
             </li>
           )}
           <hr className='border-t border-gray-300 my-2' />
           {subNavLinks.map((link) => (
             <li key={link.href}>
-              <Link
+              <MyLink
                 href={link.href}
                 className={
                   'flex items-center justify-center gap-2 px-4 py-1 mb-1 rounded-md text-sm text-muted-foreground' +
@@ -304,7 +305,7 @@ export default function Header (): ReactElement {
               >
                 <link.icon className='w-4 h-4 text-muted-foreground' />
                 {link.title}
-              </Link>
+              </MyLink>
             </li>
           ))}
           {user === null && !isExcluded && (
@@ -312,12 +313,12 @@ export default function Header (): ReactElement {
               <hr className='border-t border-gray-300 my-2' />
               <li className='sm:hidden flex justify-center'>
                 <div className='py-4 flex sm:hidden'>
-                  <Link href='/connexion' onClick={handleLinkClick}>
+                  <MyLink href='/connexion' onClick={handleLinkClick}>
                     <Button>
                       <LogIn />
                       Se connecter
                     </Button>
-                  </Link>
+                  </MyLink>
                 </div>
               </li>
             </>
