@@ -1,6 +1,5 @@
-import { Link } from '@inertiajs/react'
 import { ReactElement } from 'react'
-
+import MyLink from '@/components/shared/MyLink'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -58,7 +57,7 @@ export default function Footer (): ReactElement {
   return (
     <footer className='flex flex-col bg-foreground text-white'>
       <div className='2xl:container 2xl:mx-auto flex flex-col lg:flex-row gap-8 items-center px-8 py-8 lg:py-2 justify-center sm:justify-between'>
-        <Link href='/' className='flex gap-2 items-center'>
+        <MyLink href='/' className='flex gap-2 items-center'>
           <div className='text-right'>
             <h1 className='text-2xl sm:text-3xl font-bold leading-none sm:leading-none'>
               Benefactorum
@@ -67,19 +66,19 @@ export default function Footer (): ReactElement {
               Association de bienfaiteurs
             </h2>
           </div>
-        </Link>
+        </MyLink>
         <NavigationMenu>
           <NavigationMenuList className='flex flex-col sm:flex-row gap-2 sm:gap-4 lg:gap-16'>
             {navLinks.map((link) => (
               <NavigationMenuItem key={link.href}>
                 <NavigationMenuLink asChild>
-                  <Link
+                  <MyLink
                     href={link.href}
                     className='flex gap-2 items-center hover:underline'
                   >
                     <link.icon className='invert' />
                     {link.title}
-                  </Link>
+                  </MyLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -103,13 +102,13 @@ export default function Footer (): ReactElement {
       </div>
       <p className='mx-auto flex text-center text-xs text-slate-200'>
         {new Date().getFullYear()} - &nbsp;
-        <Link href='/mentions-legales' className='hover:underline'>
+        <MyLink href='/mentions-legales' className='hover:underline'>
           Mentions légales
-        </Link>
+        </MyLink>
         &nbsp;-&nbsp;
-        <Link href='/donnees-personnelles' className='hover:underline'>
+        <MyLink href='/donnees-personnelles' className='hover:underline'>
           Données personnelles
-        </Link>
+        </MyLink>
       </p>
     </footer>
   )

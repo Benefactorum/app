@@ -1,6 +1,7 @@
 import { FilePlus2, Library, NotebookPen } from 'lucide-react'
-import { Link, usePage } from '@inertiajs/react'
+import { usePage } from '@inertiajs/react'
 import { ReactElement } from 'react'
+import MyLink from '@/components/shared/MyLink'
 
 import {
   Sidebar,
@@ -42,7 +43,7 @@ export default function AppSidebar (): ReactElement {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link
+                    <MyLink
                       href={item.url}
                       className={
                         url === item.url
@@ -52,7 +53,7 @@ export default function AppSidebar (): ReactElement {
                     >
                       <item.icon />
                       <span className='font-semibold'>{item.title}</span>
-                    </Link>
+                    </MyLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
