@@ -14,6 +14,7 @@ import { CurrentUserType } from '@/types/types'
 import { FormData } from './types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
+import { toast } from 'sonner'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024 // 5MB
@@ -138,6 +139,8 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
       issues.forEach(issue => {
         setError(issue.path.join('.') as keyof FormData, issue.message)
       })
+
+      toast.error('Veuillez corriger les erreurs avant de continuer.')
       return
     }
 
