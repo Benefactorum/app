@@ -13,6 +13,7 @@ import { PlusIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import MyNumberInput from '@/components/forms/MyNumberInput'
 import InputError from '@/components/forms/InputError'
+import { Separator } from '@/components/ui/separator'
 
 interface FundManagementSectionProps {
   title: string
@@ -94,7 +95,7 @@ export default function FundManagementSection ({
           className='bg-white'
           disabled={Boolean((items?.length ?? 0) >= typeList.length)}
         >
-          <PlusIcon className='w-4 h-4' />
+          <PlusIcon />
           Ajouter
         </Button>
       </div>
@@ -106,76 +107,77 @@ export default function FundManagementSection ({
       )}
 
       {items?.map((item, index) => (
-        <div
-          key={`${baseErrorPath}-${item.type ?? 'new'}-${index}`}
-          className='flex items-center space-x-4'
-        >
-          <Select
-            value={item.type}
-            onValueChange={(value) => handleFundChange(index, 'type', value)}
-            required
+        <Fragment key={`${baseErrorPath}-${item.type ?? 'new'}-${index}`}>
+          <div
+            className='flex flex-wrap items-center gap-x-4 sm:flex-nowrap sm:items-center sm:space-x-4'
           >
-            <SelectTrigger
-              className={`w-60 data-[placeholder]:text-muted-foreground mt-4 ${
+            <Select
+              value={item.type}
+              onValueChange={(value) => handleFundChange(index, 'type', value)}
+              required
+            >
+              <SelectTrigger
+                className={`w-60 data-[placeholder]:text-muted-foreground mt-4 ${
                 errors[`${baseErrorPath}.${index}.type`] !== undefined ? 'border-red-600' : ''
               }`}
-            >
-              <SelectValue placeholder='Type *' />
-            </SelectTrigger>
-            <SelectContent>
-              {typeList.filter(type =>
-                item.type === type.value ||
+              >
+                <SelectValue placeholder='Type *' />
+              </SelectTrigger>
+              <SelectContent>
+                {typeList.filter(type =>
+                  item.type === type.value ||
                 !items.some(source => source.type === type.value)
-              ).map((type, i) => (
-                <Fragment key={type.value}>
-                  {i > 0 &&
+                ).map((type, i) => (
+                  <Fragment key={type.value}>
+                    {i > 0 &&
                     type.group === 'detailed' &&
                     typeList[i - 1]?.group === 'main' && (
                       <SelectSeparator className='my-2' />
-                  )}
-                  <SelectItem
-                    value={type.value}
-                    className={type.group === 'detailed' ? 'text-muted-foreground' : ''}
-                  >
-                    {type.label}
-                  </SelectItem>
-                </Fragment>
-              ))}
-            </SelectContent>
-          </Select>
+                    )}
+                    <SelectItem
+                      value={type.value}
+                      className={type.group === 'detailed' ? 'text-muted-foreground' : ''}
+                    >
+                      {type.label}
+                    </SelectItem>
+                  </Fragment>
+                ))}
+              </SelectContent>
+            </Select>
 
-          <MyNumberInput
-            id='percent'
-            min={0.01}
-            max={100}
-            step={0.01}
-            value={item.percent ?? ''}
-            onChange={(e) => handleFundChange(index, 'percent', e.target.value)}
-            placeholder='% *'
-            suffix='%'
-            required
-            error={errors[`${baseErrorPath}.${index}.percent`]}
-            noErrorMessage
+            <MyNumberInput
+              id='percent'
+              min={0.01}
+              max={100}
+              step={0.01}
+              value={item.percent ?? ''}
+              onChange={(e) => handleFundChange(index, 'percent', e.target.value)}
+              placeholder='% *'
+              suffix='%'
+              required
+              error={errors[`${baseErrorPath}.${index}.percent`]}
+              noErrorMessage
+            />
 
-          />
+            <MyNumberInput
+              id='amount'
+              step={0.01}
+              value={item.amount ?? ''}
+              onChange={(e) => handleFundChange(index, 'amount', e.target.value)}
+              placeholder='Montant'
+              suffix='€'
+            />
 
-          <MyNumberInput
-            id='amount'
-            step={0.01}
-            value={item.amount ?? ''}
-            onChange={(e) => handleFundChange(index, 'amount', e.target.value)}
-            placeholder='Montant'
-            suffix='€'
-          />
-
-          <Button
-            onClick={(e) => handleRemove(e, index)}
-            variant='ghost'
-            className='text-red-500 hover:text-red-700 p-0 h-auto mt-4'
-          >
-            <TrashIcon className='w-4 h-4' />
-          </Button>
-        </div>
+            <Button
+              onClick={(e) => handleRemove(e, index)}
+              variant='ghost'
+              className='text-red-500 hover:text-red-700 p-0 h-auto mt-4'
+            >
+              <TrashIcon className='w-4 h-4' />
+            </Button>
+          </div>
+          <Separator className='mt-4' />
+        </Fragment>
       ))}
     </div>
   )

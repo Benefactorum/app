@@ -64,7 +64,7 @@ export default function OsblFinanceSheet ({
       <form ref={formRef}>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>
+          <SheetDescription className='sr-only'>
             Renseignez les informations financières pour cette année.
           </SheetDescription>
         </SheetHeader>
@@ -155,11 +155,13 @@ export default function OsblFinanceSheet ({
             value={finance.employees_count ?? ''}
             onChange={(e) => onUpdate('employees_count', e.target.value)}
           />
+
+          <Separator />
         </div>
 
         <SheetFooter>
           <SheetClose asChild>
-            <Button onClick={(e) => handleSubmit(e)} variant='default' size='xl' className='mx-auto mt-32'>
+            <Button onClick={(e) => handleSubmit(e)} variant='default' size='lg' className='mx-auto mt-8'>
               <CheckIcon className='mr-2' />
               {submitLabel}
             </Button>
