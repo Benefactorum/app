@@ -168,7 +168,7 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
 
               return (
                 <Sheet key={`finance-${index}`}>
-                  <div className={`flex items-center justify-between p-4 border rounded-lg ${hasError ? 'bg-red-50 border-red-500' : 'bg-white'}`}>
+                  <div className={`flex items-center justify-between p-4 border rounded-lg ${hasError ? 'bg-red-50 border-red-600' : 'bg-white'}`}>
                     <p>{finance.year}</p>
                     <div className='flex gap-2'>
                       <SheetTrigger asChild>

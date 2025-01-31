@@ -48,7 +48,7 @@ class Osbl < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :website, uniqueness: true, allow_nil: true
-  validates :description, length: {maximum: 300}, allow_nil: true
+  validates :description, length: {maximum: 300}, allow_nil: true # TODO: enforce this at db level once we're sure it's enough
   validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
   validates_attachment(
@@ -56,6 +56,7 @@ class Osbl < ApplicationRecord
     max_size: 1.megabytes,
     content_types: %w[image/png image/svg image/webp]
   )
+  validates :osbls_causes, presence: {message: "Au moins une cause est requise."}
 
   accepts_nested_attributes_for :osbls_causes # , allow_destroy: true
   accepts_nested_attributes_for :osbls_labels # , allow_destroy: true

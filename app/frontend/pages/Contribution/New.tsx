@@ -32,9 +32,8 @@ const validation = z.object({
     }, 'Le type de fichier est invalide. Format accepté : SVG, PNG, WEBP.')
     .optional(),
   description: z.string().max(300).optional(),
-  osbls_causes_attributes: z.array(z.object({ cause_id: z.string() }), { message: 'Au moins une cause est requise.' }),
-  contact_email: z.string().email({ message: 'Veuillez entrer une adresse email valide.' }).optional(),
-  tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'La réduction d\'impôt accordée doit être de 66 % ou 75 %.' }),
+  osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
+  tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'Veuillez sélectionner un pourcentage.' }),
   annual_finances_attributes: z.array(
     z.object({
       year: z.string({ message: 'Veuillez entrer une année.' })
@@ -44,7 +43,6 @@ const validation = z.object({
           const yearNum = Number(year)
           return yearNum <= new Date().getFullYear()
         }, { message: 'L\'année ne peut pas être dans le futur.' }),
-      certified: z.boolean().optional(),
       budget: z.string().optional(),
       treasury: z.string().optional(),
       employees_count: z.string().optional(),
@@ -91,10 +89,9 @@ const validation = z.object({
           path: ['total_percent']
         })
     }).refine((finance) => {
-      if (finance === undefined || Object.keys(finance).length === 0) return true
-      // If only year is present, Object.keys will return length of 1
+      const financeCleaned = deepCleanData(finance)
       // We want at least one other field besides year
-      return !(Object.keys(finance).length === 1 && finance.year !== undefined)
+      return !(Object.keys(financeCleaned).length === 1 && financeCleaned.year !== undefined)
     }, {
       message: 'Complétez les comptes pour cette année.',
       path: ['missing_information']
@@ -132,8 +129,8 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
     e.preventDefault()
 
     transform((data) => (deepCleanData(data)))
-    // const result = validation.safeParse(data) as { success: boolean, error: z.ZodError }
-    const result = validation.safeParse(deepCleanData(data)) as { success: boolean, error: z.ZodError }
+    const result = validation.safeParse(data) as { success: boolean, error: z.ZodError }
+    // const result = validation.safeParse(deepCleanData(data)) as { success: boolean, error: z.ZodError }
     if (!result.success) {
       const issues = result.error.issues
       issues.forEach(issue => {

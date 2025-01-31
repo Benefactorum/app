@@ -76,6 +76,7 @@ export default function OsblDataSheet ({ data, setData, errors, clearErrors }: F
             variant='secondary'
             animation={0}
             maxCount={1}
+            className={errors.osbls_causes_attributes !== undefined ? 'border-red-600' : ''}
           />
           {Boolean(errors.osbls_causes_attributes) && <InputError>{errors.osbls_causes_attributes}</InputError>}
         </div>
