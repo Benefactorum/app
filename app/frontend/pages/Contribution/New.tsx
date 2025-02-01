@@ -34,7 +34,7 @@ const validation = z.object({
   description: z.string().max(300).optional(),
   osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
   tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'Veuillez sélectionner un pourcentage.' }),
-  annual_finances_attributes: z.array(
+  annual_finances_attributes: z.preprocess((finances) => deepCleanData(finances), z.array(
     z.object({
       year: z.string({ message: 'Veuillez entrer une année.' })
         .regex(/^\d{4}$/, { message: 'L\'année doit contenir exactement 4 chiffres.' })
@@ -104,16 +104,30 @@ const validation = z.object({
     }, {
       message: 'Une année ne peut être ajoutée qu\'une seule fois.',
       path: ['duplicate_years']
-    }),
+    })),
   document_attachments_attributes: z.array(z.object({
-    document_attributes: z.object({
-      file: z.instanceof(File)
+    document_attributes: z.preprocess((document) => deepCleanData(document), z.object({
+      type: z.string({ message: 'Champs requis.' }),
+      file: z.instanceof(File, { message: 'Champs requis.' })
         .refine((file) => {
           return file.size <= MAX_DOCUMENT_SIZE
         }, 'La taille du fichier doit être inférieure à 5 MB.')
         .refine((file) => {
           return ALLOWED_DOCUMENT_TYPES.includes(file.type)
-        }, 'Le type de fichier est invalide. Format accepté : PDF.')
+        }, 'Le type de fichier est invalide. Format accepté : PDF.'),
+      year: z.string().optional()
+    }).optional()).refine((document) => {
+      if (document === undefined) return true
+      return !['rapport_activite', 'rapport_financier'].includes(document.type) || document.year !== undefined
+    }, {
+      message: 'L\'année est requise pour ce type de document.',
+      path: ['year']
+    }).refine((document) => {
+      if (document === undefined) return true
+      return !['autre', 'proces_verbal'].includes(document.type) || document.name !== undefined
+    }, {
+      message: 'Le nom du document est requis pour ce type de document.',
+      path: ['name']
     })
   })).optional()
 })
@@ -178,7 +192,7 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             <OsblFinance data={data} setData={setData} errors={errors} clearErrors={clearErrors} setError={(field, message) => setError(field as keyof FormData, message)} />
-            <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} />
+            <OsblDocuments data={data} setData={setData} errors={errors} clearErrors={clearErrors} setError={(field, message) => setError(field as keyof FormData, message)} />
             <OsblLocations data={data} setData={setData} />
           </div>
         </div>

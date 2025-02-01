@@ -10,6 +10,7 @@ interface MyFileInputProps {
   error?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
+  ref?: React.RefObject<HTMLInputElement>
 }
 
 export default function MyFileInput ({
@@ -19,9 +20,10 @@ export default function MyFileInput ({
   required,
   error,
   onChange,
-  placeholder = 'Sélectionner un fichier'
+  placeholder = 'Sélectionner un fichier',
+  ref
 }: MyFileInputProps): ReactElement {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = ref ?? useRef<HTMLInputElement>(null)
 
   const handleReset = (): void => {
     if (inputRef.current != null) {
