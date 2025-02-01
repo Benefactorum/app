@@ -69,7 +69,7 @@ export default function OsblFinanceSheet ({
           </SheetDescription>
         </SheetHeader>
 
-        <div className='flex flex-col gap-8 mt-6'>
+        <div className='flex flex-col gap-8 mt-8'>
           <MyNumberInput
             autoFocus
             id={`year-${index}`}

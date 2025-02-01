@@ -14,23 +14,23 @@ export default function OsblFinance ({ data, setData, errors, clearErrors, setEr
   const finances = data.annual_finances_attributes ?? []
   const newFinanceIndex = finances.length - 1
 
-  function updateFinanceAttribute (index: number, attribute: keyof AnnualFinance, value: any): void {
+  function updateFinanceAttribute (index: number, field: keyof AnnualFinance, value: any): void {
     const updatedFinances = finances.map((finance, i) =>
       i === index
         ? {
             ...finance,
-            [attribute]: value
+            [field]: value
           }
         : finance
     )
 
     setData('annual_finances_attributes', updatedFinances)
 
-    if (attribute !== 'year') {
+    if (field !== 'year') {
       clearErrors(`annual_finances_attributes.${index}.missing_information`)
     }
 
-    if (attribute === 'year') {
+    if (field === 'year') {
       clearErrors(`annual_finances_attributes.${index}.year`)
       clearErrors(`annual_finances_attributes.${index}.missing_information`)
 
