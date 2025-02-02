@@ -1,5 +1,5 @@
-import { ReactElement, RefObject, useRef } from 'react'
-import { Document } from '@/pages/Contribution/types'
+import { ReactElement, useRef, useState } from 'react'
+import { Document, FormProps } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
 import MyInput from '@/components/forms/MyInput'
 import {
@@ -21,53 +21,84 @@ import {
   SheetTitle,
   SheetDescription
 } from '@/components/ui/sheet'
-import InputError from '@/components/forms/InputError'
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible'
 import { Label } from '@/components/ui/label'
+import deepCleanData from '@/lib/deepCleanData'
+import { z } from 'zod'
+import { DocumentTypeList } from '@/lib/constants'
 
-interface Props {
+interface Props extends Omit<FormProps, 'data' | 'setData'> {
   document: Partial<Document>
   index: number
-  errors: Record<string, string>
-  onUpdate: (attribute: keyof Document, value: any) => void
-  submitLabel?: string
-  title?: string
+  onUpdate: (document: Document) => void
 }
 
-const DocumentTypeList = [
-  { value: 'statuts', label: 'Statuts' },
-  { value: 'rapport_activite', label: "Rapport d'activité" },
-  { value: 'rapport_financier', label: 'Rapport financier' },
-  { value: 'proces_verbal', label: 'Procès verbal' },
-  { value: 'autre', label: 'Autre' }
-]
+const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024 // 5MB
+const ALLOWED_DOCUMENT_TYPES = ['application/pdf']
+
+const documentValidation = z.object({
+  file: z.instanceof(File)
+    .refine((file) => {
+      return file.size <= MAX_DOCUMENT_SIZE
+    }, 'La taille du fichier doit être inférieure à 5 MB.')
+    .refine((file) => {
+      return ALLOWED_DOCUMENT_TYPES.includes(file.type)
+    }, 'Le type de fichier est invalide. Format accepté : PDF.')
+})
 
 export default function OsblDocumentSheet ({
   document,
   index,
-  errors,
   onUpdate,
-  submitLabel = 'Valider',
-  title = 'Document'
+  errors,
+  clearErrors,
+  setError
 }: Props): ReactElement {
-  const formRef = useRef<HTMLFormElement>(null) as React.RefObject<HTMLFormElement>
-  const inputRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const [sheetDocument, setSheetDocument] = useState<Partial<Document>>(document)
+  const [isOpen, setIsOpen] = useState(() => {
+    const checks = [
+      (!['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && sheetDocument.year !== undefined),
+      (!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && sheetDocument.name !== undefined),
+      sheetDocument.description !== undefined
+    ]
+    return checks.some(check => check)
+  })
+
+  function updateSheetDocument (field: keyof Document, value: any): void {
+    setSheetDocument(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
 
   function handleSubmit (e: React.MouseEvent<HTMLButtonElement>): void {
-    if (!formRef.current.reportValidity()) {
+    if (formRef.current === null || !formRef.current.reportValidity()) {
       e.preventDefault()
+      return
     }
+
+    // Add file validation
+    const result = documentValidation.safeParse({ file: sheetDocument.file })
+    if (!result.success) {
+      e.preventDefault()
+      const errorMessage = result.error.issues[0].message
+      setError(`document_attachments_attributes.${index}.document_attributes.file`, errorMessage)
+      return
+    }
+
+    onUpdate(deepCleanData(sheetDocument))
   }
 
   return (
-    <SheetContent className='w-full sm:max-w-[600px] overflow-y-auto'>
+    <SheetContent onInteractOutside={(e) => e.preventDefault()} className='w-full sm:max-w-[600px] overflow-y-auto'>
       <form ref={formRef}>
         <SheetHeader>
-          <SheetTitle>{title}</SheetTitle>
+          <SheetTitle>Document</SheetTitle>
           <SheetDescription className='sr-only'>
             Renseignez les informations du document.
           </SheetDescription>
@@ -77,14 +108,14 @@ export default function OsblDocumentSheet ({
           <div className='flex flex-col gap-4'>
             <Label>Type de document *</Label>
             <Select
-              value={document.type}
-              onValueChange={(value) => onUpdate('type', value)}
+              value={sheetDocument.type}
+              onValueChange={(value) => updateSheetDocument('type', value)}
               required
             >
               <SelectTrigger className='w-full'>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent id={`document-type-${index}`}>
                 {DocumentTypeList.map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
@@ -92,100 +123,89 @@ export default function OsblDocumentSheet ({
                 ))}
               </SelectContent>
             </Select>
-            {errors[`document_attachments_attributes.${index}.document_attributes.type`] !== undefined && (
-              <InputError>
-                {errors[`document_attachments_attributes.${index}.document_attributes.type`]}
-              </InputError>
-            )}
           </div>
 
-          {['rapport_activite', 'rapport_financier'].includes(document.type ?? '') && (
+          {['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && (
             <MyNumberInput
               labelText='Année *'
               id={`document-year-${index}`}
               min={1000}
               max={new Date().getFullYear()}
-              value={document.year ?? ''}
-              onChange={(e) => onUpdate('year', e.target.value)}
+              value={sheetDocument.year ?? ''}
+              onChange={(e) => updateSheetDocument('year', e.target.value)}
               required
-              error={errors[`document_attachments_attributes.${index}.document_attributes.year`]}
             />
           )}
 
-          {['proces_verbal', 'autre'].includes(document.type ?? '') && (
+          {['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
             <MyInput
               labelText='Nom du document *'
               id={`document-name-${index}`}
               type='string'
-              value={document.name ?? ''}
-              onChange={(e) => onUpdate('name', e.target.value)}
+              value={sheetDocument.name ?? ''}
+              onChange={(e) => updateSheetDocument('name', e.target.value)}
               required
-              error={errors[`document_attachments_attributes.${index}.document_attributes.name`]}
             />
           )}
 
           <div className='flex flex-col gap-2'>
             <MyFileInput
-              ref={inputRef as RefObject<HTMLInputElement>}
+              file={sheetDocument.file ?? undefined}
               labelText='Fichier *'
               id={`document-file-${index}`}
-              placeholder='Sélectionner un fichier *'
-              onChange={(e) => onUpdate('file', e.target.files?.[0])}
+              onChange={(file) => {
+                updateSheetDocument('file', file)
+                clearErrors(`document_attachments_attributes.${index}.document_attributes.file`)
+              }}
               accept='.pdf'
-              required
               error={errors[`document_attachments_attributes.${index}.document_attributes.file`]}
+              required
             />
-            {
-              document.file !== undefined && (inputRef.current?.files?.[0] === undefined) && (
-                <div className='flex items-center gap-2 justify-center'>
-                  <CheckIcon className='text-primary' />
-                  <p className='text-sm text-muted-foreground'>{document.file.name}</p>
-                </div>
-              )
-            }
           </div>
 
-          <Collapsible>
+          {/* Collapsible section with isOpen state */}
+          <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger asChild>
               <div className='flex justify-between items-center cursor-pointer text-muted-foreground hover:text-muted-foreground/80'>
                 <span>Informations additionnelles</span>
-                <ChevronDown className='h-4 w-4' />
+                <ChevronDown className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className='mt-8 flex flex-col gap-8'>
-              {!['proces_verbal', 'autre'].includes(document.type ?? '') && (
+              {!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
                 <MyInput
                   labelText='Nom du document'
                   id={`document-name-${index}`}
                   type='string'
-                  value={document.name ?? ''}
-                  onChange={(e) => onUpdate('name', e.target.value)}
+                  value={sheetDocument.name ?? ''}
+                  onChange={(e) => updateSheetDocument('name', e.target.value)}
                 />
               )}
 
-              {!['rapport_activite', 'rapport_financier'].includes(document.type ?? '') && (
+              {!['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && (
                 <MyNumberInput
                   id={`document-year-${index}`}
                   labelText='Année'
                   min={1000}
                   max={new Date().getFullYear()}
-                  value={document.year ?? ''}
-                  onChange={(e) => onUpdate('year', e.target.value)}
+                  value={sheetDocument.year ?? ''}
+                  onChange={(e) => updateSheetDocument('year', e.target.value)}
                 />
               )}
 
-              <div className='space-y-2'>
+              <div className='flex flex-col gap-4'>
                 <label htmlFor={`document-description-${index}`} className='text-sm font-medium'>
                   Description du document
                 </label>
                 <Textarea
                   id={`document-description-${index}`}
-                  value={document.description ?? ''}
-                  onChange={(e) => onUpdate('description', e.target.value)}
+                  value={sheetDocument.description ?? ''}
+                  maxLength={300}
+                  onChange={(e) => updateSheetDocument('description', e.target.value)}
                   className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-full h-40'
                 />
-                <div className={`text-xs text-right ${(document.description ?? '').length > 300 ? 'text-red-600' : 'text-gray-500'}`}>
-                  {(document.description ?? '').length}/300 caractères
+                <div className='text-xs text-right'>
+                  {(sheetDocument.description ?? '').length}/300 caractères
                 </div>
               </div>
             </CollapsibleContent>
@@ -194,9 +214,14 @@ export default function OsblDocumentSheet ({
 
         <SheetFooter>
           <SheetClose asChild>
-            <Button onClick={(e) => handleSubmit(e)} variant='default' size='lg' className='mx-auto mt-8'>
+            <Button
+              onClick={handleSubmit}
+              variant='default'
+              size='lg'
+              className='mx-auto mt-8'
+            >
               <CheckIcon className='mr-2' />
-              {submitLabel}
+              Valider
             </Button>
           </SheetClose>
         </SheetFooter>

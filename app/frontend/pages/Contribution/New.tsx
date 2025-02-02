@@ -17,9 +17,7 @@ import deepCleanData from '@/lib/deepCleanData'
 import { toast } from 'sonner'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
-const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_LOGO_TYPES = ['image/svg', 'image/png', 'image/webp']
-const ALLOWED_DOCUMENT_TYPES = ['application/pdf']
 
 const validation = z.object({
   website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
@@ -104,32 +102,7 @@ const validation = z.object({
     }, {
       message: 'Une année ne peut être ajoutée qu\'une seule fois.',
       path: ['duplicate_years']
-    })),
-  document_attachments_attributes: z.array(z.object({
-    document_attributes: z.preprocess((document) => deepCleanData(document), z.object({
-      type: z.string({ message: 'Champs requis.' }),
-      file: z.instanceof(File, { message: 'Champs requis.' })
-        .refine((file) => {
-          return file.size <= MAX_DOCUMENT_SIZE
-        }, 'La taille du fichier doit être inférieure à 5 MB.')
-        .refine((file) => {
-          return ALLOWED_DOCUMENT_TYPES.includes(file.type)
-        }, 'Le type de fichier est invalide. Format accepté : PDF.'),
-      year: z.string().optional()
-    }).optional()).refine((document) => {
-      if (document === undefined) return true
-      return !['rapport_activite', 'rapport_financier'].includes(document.type) || document.year !== undefined
-    }, {
-      message: 'L\'année est requise pour ce type de document.',
-      path: ['year']
-    }).refine((document) => {
-      if (document === undefined) return true
-      return !['autre', 'proces_verbal'].includes(document.type) || document.name !== undefined
-    }, {
-      message: 'Le nom du document est requis pour ce type de document.',
-      path: ['name']
-    })
-  })).optional()
+    }))
 })
 
 export default function New ({ currentUser }: { currentUser: CurrentUserType }): ReactElement {

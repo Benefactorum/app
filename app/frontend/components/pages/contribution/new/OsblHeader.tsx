@@ -6,7 +6,7 @@ import { FormProps } from '@/pages/Contribution/types'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import MyFileInput from '@/components/shared/MyFileInput'
 
-export default function OsblHeader ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
+export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
   const descriptionLength = (data.description ?? '').length
 
   return (
@@ -51,8 +51,8 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Form
               :
             </p>
           }
-          onChange={(e) => {
-            setData('logo', e.target.files?.[0])
+          onChange={(file) => {
+            setData('logo', file)
             clearErrors('logo')
           }}
           error={errors.logo}
