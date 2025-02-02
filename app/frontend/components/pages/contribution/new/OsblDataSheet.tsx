@@ -50,7 +50,7 @@ const OsblTypeList = [
   { value: 'fondation', label: 'Fondation' }
 ]
 
-export default function OsblDataSheet ({ data, setData, errors, clearErrors }: FormProps): ReactElement {
+export default function OsblDataSheet ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
   const causes = usePage().props.causes as Record<string, number>
   const labels = usePage().props.labels as Array<{ value: string, label: string }>
 

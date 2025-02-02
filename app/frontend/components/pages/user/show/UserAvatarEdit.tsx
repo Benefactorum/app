@@ -147,10 +147,8 @@ export default function UserAvatarEdit ({
               id='profile_picture'
               required
               accept='image/png, image/webp, image/jpg'
-              onChange={(e) => {
-                const files = e.target.files
-                if (files == null) return
-                setData('profile_picture', files[0])
+              onChange={(file) => {
+                setData('profile_picture', file ?? '')
                 clearErrors('profile_picture')
               }}
               error={errors.profile_picture}
