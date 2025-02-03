@@ -167,10 +167,10 @@ export default function OsblDocumentSheet ({
             <CollapsibleTrigger asChild>
               <div className='flex justify-between items-center cursor-pointer text-muted-foreground hover:text-muted-foreground/80'>
                 <span>Informations additionnelles</span>
-                <ChevronDown className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent>
+            <CollapsibleContent className='CollapsibleContent'>
               <div className='flex flex-col gap-8 mt-8'>
                 {!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
                   <MyInput
@@ -213,7 +213,7 @@ export default function OsblDocumentSheet ({
           </Collapsible>
         </div>
 
-        <SheetFooter className='mt-16'>
+        <SheetFooter className='mt-16 gap-y-2'>
           <SheetClose asChild>
             <Button variant='ghost' size='lg'>
               <X className='mr-2' />
