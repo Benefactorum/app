@@ -3,6 +3,23 @@ import AsyncSelect from 'react-select/async'
 import debounce from 'lodash.debounce'
 import { Address } from '@/pages/Contribution/types'
 
+interface AddressApiResponse {
+  features: AddressFeature[]
+}
+
+interface AddressFeature {
+  properties: {
+    label: string
+    housenumber: string
+    street: string
+    postcode: string
+    city: string
+  }
+  geometry: {
+    coordinates: [number, number]
+  }
+}
+
 interface Option {
   readonly label: string
   readonly value: Address
@@ -17,7 +34,7 @@ interface MyAsyncCreatableSelectProps {
   value: string
 }
 
-const createOption = (feature: any): Option => ({
+const createOption = (feature: AddressFeature): Option => ({
   label: feature.properties.label,
   value: {
     street_number: feature.properties.housenumber,
@@ -38,12 +55,19 @@ export default function MyAsyncCreatableSelect ({
   value
 }: MyAsyncCreatableSelectProps): ReactElement {
   const fetchOptions = async (inputValue: string): Promise<Option[]> => {
-    console.log('inputValue', inputValue)
     if (inputValue.trim().length < minInputLength) return []
 
-    const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${inputValue}`)
-    const data = await response.json()
-    return data.features.map((feature: any) => createOption(feature))
+    try {
+      const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${inputValue}`)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch addresses: ${inputValue} / ${response.statusText}`)
+      }
+      const data = await response.json() as AddressApiResponse
+      return data.features.map((feature: AddressFeature) => createOption(feature))
+    } catch (error) {
+      console.error(error)
+      return []
+    }
   }
 
   const debouncedFetchOptions = useCallback(

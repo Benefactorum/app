@@ -52,7 +52,7 @@ export default function MyInput ({
           {...props}
           ref={ref}
         />
-        {showResetButton && (onReset != null) && (
+        {showResetButton && (onReset !== undefined) && (
           <button
             type='button'
             onClick={onReset}

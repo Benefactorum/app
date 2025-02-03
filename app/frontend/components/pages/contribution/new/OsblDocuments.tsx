@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/sheet'
 import OsblDocumentSheet from './OsblDocumentSheet'
 import { DocumentTypeList } from '@/lib/constants'
+import { SelectOption } from '@/types/types'
 
 export default function OsblDocuments ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const documents = data.document_attachments_attributes ?? []
@@ -30,7 +31,7 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors, set
     }
 
     if (['rapport_activite', 'rapport_financier'].includes(document.type)) {
-      const documentType = DocumentTypeList.find(type => type.value === document.type) as { label: string }
+      const documentType = DocumentTypeList.find(type => type.value === document.type) as SelectOption
       return `${documentType.label} ${document.year as number}`
     }
 

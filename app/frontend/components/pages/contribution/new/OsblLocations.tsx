@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/sheet'
 import OsblLocationSheet from './OsblLocationSheet'
 import { LocationTypeList } from '@/lib/constants'
+import { SelectOption } from '@/types/types'
 
 export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const locations = data.locations_attributes ?? []
@@ -28,8 +29,8 @@ export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data'
   function getLocationDisplayName (location: Location): string {
     if (location.name !== undefined) return location.name
 
-    const type = LocationTypeList.find(t => t.value === location.type)
-    return type?.label as string
+    const type = LocationTypeList.find(t => t.value === location.type) as SelectOption
+    return type.label
   }
 
   return (
