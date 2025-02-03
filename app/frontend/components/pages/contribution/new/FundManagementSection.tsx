@@ -89,9 +89,7 @@ export default function FundManagementSection ({
               required
             >
               <SelectTrigger
-                className={`w-60 data-[placeholder]:text-muted-foreground mt-4 ${
-                errors[`${baseErrorPath}.${index}.type`] !== undefined ? 'border-red-600' : ''
-              }`}
+                className='w-60 data-[placeholder]:text-muted-foreground mt-4'
               >
                 <SelectValue placeholder='Type *' />
               </SelectTrigger>
@@ -127,8 +125,6 @@ export default function FundManagementSection ({
               placeholder='% *'
               suffix='%'
               required
-              error={errors[`${baseErrorPath}.${index}.percent`]}
-              noErrorMessage
             />
 
             <MyNumberInput
