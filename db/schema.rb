@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_03_115228) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_03_160100) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -57,6 +57,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_115228) do
     t.datetime "updated_at", null: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", unique: true
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Location'"
+    t.check_constraint "latitude >= -90 AND latitude <= 90", name: "check_latitude_range"
+    t.check_constraint "longitude >= -180 AND longitude <= 180", name: "check_longitude_range"
   end
 
   create_table "annual_finances", force: :cascade do |t|
@@ -144,6 +146,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_115228) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_intervention_areas_on_name", unique: true
+    t.check_constraint "length(name) >= 3 AND length(name) <= 100", name: "intervention_areas_name_length_check"
   end
 
   create_table "keywords", force: :cascade do |t|
@@ -151,6 +154,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_115228) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_keywords_on_name", unique: true
+    t.check_constraint "length(name) >= 3 AND length(name) <= 100", name: "keywords_name_length_check"
   end
 
   create_table "labels", force: :cascade do |t|

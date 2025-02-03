@@ -20,7 +20,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { z } from 'zod'
 import MyFileInput from '@/components/shared/MyFileInput'
 
-const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/webp']
+const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/webp', 'image/jpeg']
 const MAX_PROFILE_PICTURE_SIZE = 1 * 1024 * 1024 // 1MB
 
 const profilePicSchema = z.object({

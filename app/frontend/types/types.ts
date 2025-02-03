@@ -4,3 +4,8 @@ export interface CurrentUserType {
 }
 
 export type ProfilePictureUrlType = string | null
+
+export interface SelectOption {
+  readonly label: string
+  readonly value: any
+}
