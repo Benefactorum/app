@@ -17,7 +17,20 @@ Object.defineProperty(window, 'matchMedia', {
   }))
 })
 
-// Error: usePage must be used within the Inertia component
+// Mock Inertia components
+vi.mock('@inertiajs/react', async () => {
+  const actual = await vi.importActual('@inertiajs/react')
+  return {
+    ...actual,
+    usePage: () => ({
+      props: {
+        // Mock your page props here
+      }
+    }),
+    Head: ({ children }: { children: React.ReactNode }) => <>{children}</>
+  }
+})
+
 vi.mock('@/components/layout/Header', () => ({
   default: () => <div>Mock Header</div>
 }))
