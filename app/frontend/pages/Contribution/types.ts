@@ -22,7 +22,7 @@ export interface FundRecord {
 }
 
 export interface AnnualFinance {
-  year?: number
+  year: number
   budget?: number
   treasury?: number
   employees_count?: number

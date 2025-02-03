@@ -12,7 +12,7 @@ import {
 import MyNumberInput from '@/components/forms/MyNumberInput'
 import { Textarea } from '@/components/ui/textarea'
 import MyFileInput from '@/components/shared/MyFileInput'
-import { CheckIcon, ChevronDown } from 'lucide-react'
+import { CheckIcon, ChevronDown, X } from 'lucide-react'
 import {
   SheetClose,
   SheetContent,
@@ -77,12 +77,11 @@ export default function OsblDocumentSheet ({
   }
 
   function handleSubmit (e: React.MouseEvent<HTMLButtonElement>): void {
-    if (formRef.current === null || !formRef.current.reportValidity()) {
+    if (formRef.current?.reportValidity() === false) {
       e.preventDefault()
       return
     }
 
-    // Add file validation
     const result = documentValidation.safeParse({ file: sheetDocument.file })
     if (!result.success) {
       e.preventDefault()
@@ -95,7 +94,7 @@ export default function OsblDocumentSheet ({
   }
 
   return (
-    <SheetContent onInteractOutside={(e) => e.preventDefault()} className='w-full sm:max-w-[600px] overflow-y-auto'>
+    <SheetContent className='w-full sm:max-w-[600px] overflow-y-auto'>
       <form ref={formRef}>
         <SheetHeader>
           <SheetTitle>Document</SheetTitle>
@@ -171,55 +170,59 @@ export default function OsblDocumentSheet ({
                 <ChevronDown className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className='mt-8 flex flex-col gap-8'>
-              {!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
-                <MyInput
-                  labelText='Nom du document'
-                  id={`document-name-${index}`}
-                  type='string'
-                  value={sheetDocument.name ?? ''}
-                  onChange={(e) => updateSheetDocument('name', e.target.value)}
-                />
-              )}
+            <CollapsibleContent>
+              <div className='flex flex-col gap-8 mt-8'>
+                {!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
+                  <MyInput
+                    labelText='Nom du document'
+                    id={`document-name-${index}`}
+                    type='string'
+                    value={sheetDocument.name ?? ''}
+                    onChange={(e) => updateSheetDocument('name', e.target.value)}
+                  />
+                )}
 
-              {!['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && (
-                <MyNumberInput
-                  id={`document-year-${index}`}
-                  labelText='Année'
-                  min={1000}
-                  max={new Date().getFullYear()}
-                  value={sheetDocument.year ?? ''}
-                  onChange={(e) => updateSheetDocument('year', e.target.value)}
-                />
-              )}
+                {!['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && (
+                  <MyNumberInput
+                    id={`document-year-${index}`}
+                    labelText='Année'
+                    min={1000}
+                    max={new Date().getFullYear()}
+                    value={sheetDocument.year ?? ''}
+                    onChange={(e) => updateSheetDocument('year', e.target.value)}
+                  />
+                )}
 
-              <div className='flex flex-col gap-4'>
-                <label htmlFor={`document-description-${index}`} className='text-sm font-medium'>
-                  Description du document
-                </label>
-                <Textarea
-                  id={`document-description-${index}`}
-                  value={sheetDocument.description ?? ''}
-                  maxLength={300}
-                  onChange={(e) => updateSheetDocument('description', e.target.value)}
-                  className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-full h-40'
-                />
-                <div className='text-xs text-right'>
-                  {(sheetDocument.description ?? '').length}/300 caractères
+                <div className='flex flex-col gap-4'>
+                  <label htmlFor={`document-description-${index}`} className='text-sm font-medium'>
+                    Description du document
+                  </label>
+                  <Textarea
+                    id={`document-description-${index}`}
+                    value={sheetDocument.description ?? ''}
+                    maxLength={300}
+                    onChange={(e) => updateSheetDocument('description', e.target.value)}
+                    className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-full h-40'
+                  />
+                  <div className='text-xs text-right'>
+                    {(sheetDocument.description ?? '').length}/300 caractères
+                  </div>
                 </div>
               </div>
             </CollapsibleContent>
           </Collapsible>
         </div>
 
-        <SheetFooter>
+        <SheetFooter className='mt-16'>
           <SheetClose asChild>
-            <Button
-              onClick={handleSubmit}
-              variant='default'
-              size='lg'
-              className='mx-auto mt-8'
-            >
+            <Button variant='ghost' size='lg'>
+              <X className='mr-2' />
+              Annuler
+            </Button>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Button onClick={handleSubmit} variant='default' size='lg'>
               <CheckIcon className='mr-2' />
               Valider
             </Button>

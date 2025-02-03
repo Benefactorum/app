@@ -1,12 +1,12 @@
-import React, { ReactElement, useRef } from 'react'
-import { AnnualFinance } from '@/pages/Contribution/types'
+import React, { ReactElement, useRef, useState } from 'react'
+import { AnnualFinance, FormProps } from '@/pages/Contribution/types'
 import MyNumberInput from '@/components/forms/MyNumberInput'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import FundManagementSection from './FundManagementSection'
 import MyCheckbox from '@/components/forms/MyCheckbox'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
-import { CheckIcon } from 'lucide-react'
+import { CheckIcon, X } from 'lucide-react'
 import {
   SheetClose,
   SheetContent,
@@ -15,55 +15,116 @@ import {
   SheetTitle,
   SheetDescription
 } from '@/components/ui/sheet'
+import deepCleanData from '@/lib/deepCleanData'
+import { FundSourceTypeList, FundAllocationTypeList } from '@/lib/constants'
+import { z } from 'zod'
 
-interface Props {
+interface Props extends Omit<FormProps, 'setData'> {
   finance: Partial<AnnualFinance>
   index: number
-  errors: Record<string, string>
-  onUpdate: (attribute: keyof AnnualFinance, value: any) => void
-  clearErrors: (path: string) => void
-  submitLabel?: string
-  title?: string
-  setError: (field: string, message: string) => void
+  onUpdate: (finance: AnnualFinance) => void
 }
 
-const FundSourceTypeList = [
-  { value: 'dons', label: 'Dons', group: 'main' },
-  { value: 'aides_publiques', label: 'Aides publiques', group: 'main' },
-  { value: 'revenus_d_activites', label: 'Revenus d\'activités', group: 'main' },
-  { value: 'autre', label: 'Autre', group: 'main' }
-]
+// Fix the return type and validation
+const financeValidation = (data: AnnualFinance[], currentIndex: number): z.ZodType<any> => z.object({
+  year: z.string().refine(
+    (year) =>
+      !data.some((f, i) => i !== currentIndex && f.year === Number(year)),
+    { message: 'Un bilan comptable est déjà enregistré pour cette année.', path: ['annual_finances_attributes', currentIndex, 'year'] }
+  ),
+  fund_sources_attributes: z.array(z.object({
+    percent: z.string()
+  })).optional()
+    .refine((sources): sources is typeof sources => {
+      if (sources === undefined || sources.length === 0) return true
 
-const FundAllocationTypeList = [
-  { value: 'missions_sociales', label: 'Missions sociales', group: 'main' },
-  { value: 'frais_de_fonctionnement', label: 'Frais de fonctionnement', group: 'main' },
-  { value: 'frais_de_recherche_de_fonds', label: 'Frais de recherche de fonds', group: 'main' },
-  { value: 'autre', label: 'Autre', group: 'main' }
-]
+      const sum = sources?.reduce((acc: number, source) => {
+        const percent = source.percent !== undefined ? Number(source.percent) : 0
+        return acc + percent
+      }, 0)
+      return sum === 100
+    }, {
+      message: 'La somme des pourcentages doit être égale à 100%.',
+      path: ['total_percent']
+    }),
+  fund_allocations_attributes: z.array(z.object({
+    percent: z.string()
+  })).optional()
+    .refine((allocations): allocations is typeof allocations => {
+      if (allocations === undefined || allocations.length === 0) return true
+
+      const sum = allocations?.reduce((acc: number, allocation) => {
+        const percent = allocation.percent !== undefined ? Number(allocation.percent) : 0
+        return acc + percent
+      }, 0)
+      return sum === 100
+    }, {
+      message: 'La somme des pourcentages doit être égale à 100%.',
+      path: ['total_percent']
+    })
+}).passthrough()
+  .refine(
+    (finance) => {
+      const financeCleaned = deepCleanData(finance)
+      return !(Object.keys(financeCleaned).length === 1)
+    },
+    { message: 'Complétez les comptes pour cette année.', path: ['annual_finances_attributes', currentIndex, 'missing_information'] }
+  )
 
 export default function OsblFinanceSheet ({
   finance,
+  data,
   index,
   errors,
   onUpdate,
   clearErrors,
-  setError,
-  submitLabel = 'Valider',
-  title = 'Comptes annuels'
+  setError
 }: Props): ReactElement {
-  const formRef = useRef<HTMLFormElement>(null) as React.RefObject<HTMLFormElement>
+  const formRef = useRef<HTMLFormElement>(null)
+  const [sheetFinance, setSheetFinance] = useState<Partial<AnnualFinance>>(finance)
+
+  function updateSheetFinance (field: keyof AnnualFinance, value: any): void {
+    setSheetFinance(prev => ({
+      ...prev,
+      [field]: value
+    }))
+
+    if (field === 'year' && value === '') {
+      clearErrors(`annual_finances_attributes.${index}.missing_information`)
+    }
+    if (field !== 'year' && value !== '') {
+      clearErrors(`annual_finances_attributes.${index}.missing_information`)
+    }
+
+    if (field === 'year') {
+      clearErrors(`annual_finances_attributes.${index}.year`)
+    }
+  }
 
   function handleSubmit (e: React.MouseEvent<HTMLButtonElement>): void {
-    if (formRef.current.reportValidity() === false) {
+    if (formRef.current?.reportValidity() === false) {
       e.preventDefault()
+      return
     }
+
+    const result = financeValidation(data.annual_finances_attributes ?? [], index).safeParse(sheetFinance)
+    if (!result.success) {
+      e.preventDefault()
+      const issues = result.error.issues
+      issues.forEach(issue => {
+        setError(issue.path.join('.'), issue.message)
+      })
+      return
+    }
+
+    onUpdate(deepCleanData(sheetFinance) as AnnualFinance)
   }
 
   return (
     <SheetContent className='w-full sm:max-w-[600px] overflow-y-auto'>
       <form ref={formRef}>
         <SheetHeader>
-          <SheetTitle>{title}</SheetTitle>
+          <SheetTitle>Comptes annuels</SheetTitle>
           <SheetDescription className='sr-only'>
             Renseignez les informations financières pour cette année.
           </SheetDescription>
@@ -86,16 +147,16 @@ export default function OsblFinanceSheet ({
             min={1000}
             max={new Date().getFullYear()}
             placeholder={String(new Date().getFullYear() - 1)}
-            value={finance.year ?? ''}
-            onChange={(e) => onUpdate('year', e.target.value)}
+            value={sheetFinance.year ?? ''}
+            onChange={(e) => updateSheetFinance('year', e.target.value)}
             required
             error={errors[`annual_finances_attributes.${index}.year`] ?? errors[`annual_finances_attributes.${index}.missing_information`]}
           />
 
           <MyCheckbox
             id={`certified-${index}`}
-            checked={finance.certified ?? false}
-            onCheckedChange={(checked) => onUpdate('certified', checked)}
+            checked={sheetFinance.certified ?? false}
+            onCheckedChange={(checked) => updateSheetFinance('certified', checked)}
           >
             <div className='flex items-center'>
               Comptes certifiés
@@ -110,8 +171,8 @@ export default function OsblFinanceSheet ({
             labelText='Budget'
             min={0}
             step={0.01}
-            value={finance.budget ?? ''}
-            onChange={(e) => onUpdate('budget', e.target.value)}
+            value={sheetFinance.budget ?? ''}
+            onChange={(e) => updateSheetFinance('budget', e.target.value)}
             suffix='€'
           />
 
@@ -119,31 +180,29 @@ export default function OsblFinanceSheet ({
             id={`treasury-${index}`}
             labelText='Trésorerie'
             step={0.01}
-            value={finance.treasury ?? ''}
-            onChange={(e) => onUpdate('treasury', e.target.value)}
+            value={sheetFinance.treasury ?? ''}
+            onChange={(e) => updateSheetFinance('treasury', e.target.value)}
             suffix='€'
           />
 
           <FundManagementSection
             title='Sources de financement'
-            items={finance.fund_sources_attributes ?? []}
-            typeList={FundSourceTypeList}
-            baseErrorPath={`annual_finances_attributes.${index}.fund_sources_attributes`}
+            items={sheetFinance.fund_sources_attributes ?? []}
+            typeList={[...FundSourceTypeList] as Array<{ value: string, label: string, group: string }>}
+            baseErrorPath='fund_sources_attributes'
+            onUpdate={(items) => updateSheetFinance('fund_sources_attributes', items)}
             errors={errors}
-            onUpdate={(items) => onUpdate('fund_sources_attributes', items)}
             clearErrors={clearErrors}
-            setError={setError}
           />
 
           <FundManagementSection
             title='Allocation des fonds'
-            items={finance.fund_allocations_attributes ?? []}
-            typeList={FundAllocationTypeList}
-            baseErrorPath={`annual_finances_attributes.${index}.fund_allocations_attributes`}
+            items={sheetFinance.fund_allocations_attributes ?? []}
+            typeList={[...FundAllocationTypeList] as Array<{ value: string, label: string, group: string }>}
+            baseErrorPath='fund_allocations_attributes'
+            onUpdate={(items) => updateSheetFinance('fund_allocations_attributes', items)}
             errors={errors}
-            onUpdate={(items) => onUpdate('fund_allocations_attributes', items)}
             clearErrors={clearErrors}
-            setError={setError}
           />
 
           <Separator />
@@ -152,18 +211,23 @@ export default function OsblFinanceSheet ({
             id={`employees_count-${index}`}
             labelText="Nombre d'employé"
             min={0}
-            value={finance.employees_count ?? ''}
-            onChange={(e) => onUpdate('employees_count', e.target.value)}
+            value={sheetFinance.employees_count ?? ''}
+            onChange={(e) => updateSheetFinance('employees_count', e.target.value)}
           />
-
-          <Separator />
         </div>
 
-        <SheetFooter>
+        <SheetFooter className='mt-16'>
           <SheetClose asChild>
-            <Button onClick={(e) => handleSubmit(e)} variant='default' size='lg' className='mx-auto mt-8'>
+            <Button variant='ghost' size='lg'>
+              <X className='mr-2' />
+              Annuler
+            </Button>
+          </SheetClose>
+
+          <SheetClose asChild>
+            <Button onClick={handleSubmit} variant='default' size='lg'>
               <CheckIcon className='mr-2' />
-              {submitLabel}
+              Valider
             </Button>
           </SheetClose>
         </SheetFooter>
