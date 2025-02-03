@@ -6,18 +6,9 @@ export interface ContributionType {
   contributable_type: string
 }
 
-export type ContributionFormType = Omit<ContributionType, 'id'>
-
-export interface OsblType {
-  id: number
-  name: string
-}
-
-export type OsblFormType = Omit<OsblType, 'id'>
-
 export interface FundRecord {
-  type?: string
-  percent?: number
+  type: string
+  percent: number
   amount?: number
 }
 
@@ -41,27 +32,19 @@ export interface Document {
 
 export interface Address {
   street_number?: string
-  street_name?: string
+  street_name: string
   additional_info?: string
-  postal_code?: string
-  city?: string
-  latitude?: number
-  longitude?: number
+  postal_code: string
+  city: string
+  latitude: number
+  longitude: number
 }
 
 export interface Location {
-  type?: string
+  type: string
+  address_attributes: Address
   name?: string
-  address_attributes?: Address
-  // opening_hours?: Record<string, { open: string; close: string }>
-  //  is_accessible?: boolean // Accessibilité PMR
-  // contact_info?: {
-  //   email?: string
-  //   phone?: string
-  //   contact_person?: string
-  // }
-  // services?: string[] // Liste des services proposés
-  description?: Text
+  description?: string
   website?: string
 }
 

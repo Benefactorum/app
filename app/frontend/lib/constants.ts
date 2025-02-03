@@ -19,3 +19,10 @@ export const FundAllocationTypeList = [
   { value: 'frais_de_recherche_de_fonds', label: 'Frais de recherche de fonds', group: 'main' },
   { value: 'autre', label: 'Autre', group: 'main' }
 ] as const
+
+export const LocationTypeList = [
+  { value: 'siege_social', label: 'Siège social' },
+  { value: 'antenne_locale', label: 'Antenne locale' },
+  { value: 'lieu_d_activite', label: "Lieu d'activité" },
+  { value: 'autre', label: 'Autre' }
+] as const

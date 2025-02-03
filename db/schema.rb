@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_26_180000) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_03_115228) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -172,6 +172,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_26_180000) do
     t.integer "osbl_id", null: false
     t.index ["osbl_id"], name: "index_locations_on_osbl_id"
     t.index ["osbl_id"], name: "index_locations_on_osbl_id_siege_social", unique: true, where: "type = 0"
+    t.check_constraint "type NOT IN (1, 2, 3) OR (type IN (1, 2, 3) AND name IS NOT NULL)", name: "name_required_for_specific_types"
   end
 
   create_table "osbls", force: :cascade do |t|
