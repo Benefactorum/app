@@ -7,8 +7,6 @@ import HelpTooltip from '@/components/shared/HelpTooltip'
 import MyFileInput from '@/components/shared/MyFileInput'
 
 export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
-  const descriptionLength = (data.description ?? '').length
-
   return (
     <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full'>
       <h2 className='text-2xl font-semibold'>En-tête</h2>
@@ -67,14 +65,15 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit
               id='description'
               placeholder='Mission, actions, ...'
               value={data.description}
+              maxLength={300}
               onChange={(e) => {
                 setData('description', e.target.value)
                 clearErrors('description')
               }}
-              className={`bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40 ${descriptionLength > 300 ? 'border-red-600' : ''}`}
+              className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40'
             />
-            <div className={`text-xs text-right ${descriptionLength > 300 ? 'text-red-600' : 'text-gray-500'}`}>
-              {descriptionLength}/300 caractères
+            <div className='text-xs text-right'>
+              {(data.description ?? '').length}/300 caractères
             </div>
           </div>
         </div>

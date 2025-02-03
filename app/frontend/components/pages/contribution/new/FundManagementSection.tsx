@@ -20,10 +20,9 @@ interface FundManagementSectionProps {
   items: FundRecord[]
   typeList: Array<{ value: string, label: string, group: string }>
   baseErrorPath: string
-  errors: Record<string, string>
   onUpdate: (items: FundRecord[]) => void
+  errors: Record<string, string>
   clearErrors: (path: string) => void
-  setError: (field: string, message: string) => void
 }
 
 export default function FundManagementSection ({
@@ -31,58 +30,31 @@ export default function FundManagementSection ({
   items,
   typeList,
   baseErrorPath,
-  errors,
   onUpdate,
-  clearErrors,
-  setError
+  errors,
+  clearErrors
 }: FundManagementSectionProps): ReactElement {
-  function handleFundChange (
-    index: number,
-    field: keyof FundRecord,
-    value: any
-  ): void {
+  function handleFundChange (index: number, field: keyof FundRecord, value: any): void {
     const updatedItems = items.map((item: FundRecord, i: number) =>
       i === index ? { ...item, [field]: value } : item
     )
 
     onUpdate(updatedItems)
 
-    if (value !== '') {
-      clearErrors(`${baseErrorPath}.${index}.${field}`)
-    }
-
-    if (field === 'percent' && value !== '') {
+    if (field === 'percent') {
       clearErrors(`${baseErrorPath}.total_percent`)
     }
   }
 
   function handleAdd (e: React.MouseEvent<HTMLButtonElement>): void {
-    e.preventDefault()
+    e.preventDefault() // prevent form submission
     onUpdate([...items, {}])
   }
 
-  function handleRemove (
-    e: React.MouseEvent<HTMLButtonElement>,
-    index: number
-  ): void {
+  function handleRemove (e: React.MouseEvent<HTMLButtonElement>, index: number): void {
     e.preventDefault()
-    const updatedItems = items.filter((_, i) => i !== index)
-    onUpdate(updatedItems)
-
-    clearErrors(`${baseErrorPath}.${index}.type`)
-    clearErrors(`${baseErrorPath}.${index}.percent`)
+    onUpdate(items.filter((_, i) => i !== index))
     clearErrors(`${baseErrorPath}.total_percent`)
-
-    for (let i = index + 1; i < items.length; i++) {
-      ['type', 'percent'].forEach(field => {
-        const errorPath = `${baseErrorPath}.${i}.${field}`
-        const error = errors?.[errorPath]
-        if (error !== undefined) {
-          setError(`${baseErrorPath}.${i - 1}.${field}`, error)
-          clearErrors(errorPath)
-        }
-      })
-    }
   }
 
   return (
@@ -93,7 +65,7 @@ export default function FundManagementSection ({
           onClick={handleAdd}
           variant='outline'
           className='bg-white'
-          disabled={Boolean((items?.length ?? 0) >= typeList.length)}
+          disabled={items.length >= typeList.length}
         >
           <PlusIcon />
           Ajouter
@@ -106,8 +78,8 @@ export default function FundManagementSection ({
         </InputError>
       )}
 
-      {items?.map((item, index) => (
-        <Fragment key={`${baseErrorPath}-${item.type ?? 'new'}-${index}`}>
+      {items.map((item, index) => (
+        <Fragment key={`${baseErrorPath}-${index}`}>
           <div
             className='flex flex-wrap items-center gap-x-4 sm:flex-nowrap sm:items-center sm:space-x-4'
           >
