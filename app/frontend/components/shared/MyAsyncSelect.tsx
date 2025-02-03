@@ -12,8 +12,9 @@ interface MyAsyncCreatableSelectProps {
   setData: (key: string, value: any) => void
   attributeName: string
   minInputLength?: number
-  placeholder: string
+  placeholder?: string
   required?: boolean
+  value: string
 }
 
 const createOption = (feature: any): Option => ({
@@ -33,9 +34,11 @@ export default function MyAsyncCreatableSelect ({
   attributeName,
   minInputLength = 3,
   placeholder,
-  required = false
+  required = false,
+  value
 }: MyAsyncCreatableSelectProps): ReactElement {
   const fetchOptions = async (inputValue: string): Promise<Option[]> => {
+    console.log('inputValue', inputValue)
     if (inputValue.trim().length < minInputLength) return []
 
     const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${inputValue}`)
@@ -55,14 +58,16 @@ export default function MyAsyncCreatableSelect ({
       debouncedFetchOptions(inputValue, resolve)
     })
   }
+
   return (
     <AsyncSelect
-      required={required}
+      required={required && value === undefined}
       loadOptions={promiseOptions}
       onChange={(newValue: Option | null) => {
         if (newValue === null) return
         setData(attributeName, newValue.value)
       }}
+      defaultInputValue={value}
       styles={{
         control: (base, state) => ({
           ...base,
@@ -73,16 +78,6 @@ export default function MyAsyncCreatableSelect ({
             borderColor: 'hsl(var(--border))'
           }
         }),
-        // singleValue: (base) => ({
-        //   ...base,
-        //   border: '1px solid hsla(var(--foreground) / 0.1)',
-        //   borderRadius: '9999px',
-        //   backgroundColor: 'hsl(var(--white))',
-        //   padding: '0rem 0.3rem',
-        //   fontWeight: 600,
-        //   fontSize: '0.825rem',
-        //   lineHeight: '1rem'
-        // }),
         placeholder: (base) => ({
           ...base,
           fontSize: '0.875rem'

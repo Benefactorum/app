@@ -114,7 +114,7 @@ export default function OsblDocumentSheet ({
               <SelectTrigger className='w-full'>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent id={`document-type-${index}`}>
+              <SelectContent>
                 {DocumentTypeList.map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
@@ -140,7 +140,7 @@ export default function OsblDocumentSheet ({
             <MyInput
               labelText='Nom du document *'
               id={`document-name-${index}`}
-              type='string'
+              type='text'
               value={sheetDocument.name ?? ''}
               onChange={(e) => updateSheetDocument('name', e.target.value)}
               required
@@ -176,7 +176,7 @@ export default function OsblDocumentSheet ({
                   <MyInput
                     labelText='Nom du document'
                     id={`document-name-${index}`}
-                    type='string'
+                    type='text'
                     value={sheetDocument.name ?? ''}
                     onChange={(e) => updateSheetDocument('name', e.target.value)}
                   />

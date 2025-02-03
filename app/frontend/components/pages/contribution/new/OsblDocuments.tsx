@@ -62,39 +62,36 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors, set
 
       {documents.length > 0 && (
         <div className='flex flex-col gap-4'>
-          {documents
-            .map((doc, index) => {
-              return (
-                <Sheet key={`document-${index}`}>
-                  <div className='flex items-center justify-between p-4 border rounded-lg bg-white'>
-                    <p>{getDocumentDisplayName(doc.document_attributes)}</p>
-                    <div className='flex gap-2 '>
-                      <SheetTrigger asChild>
-                        <Button variant='outline' className='bg-white text-primary border-none'>
-                          <PencilIcon />
-                        </Button>
-                      </SheetTrigger>
-                      <Button
-                        onClick={(e) => handleDocumentRemove(e, index)}
-                        variant='outline'
-                        className='bg-white text-red-500 border-none'
-                      >
-                        <TrashIcon className='w-4 h-4' />
-                      </Button>
-                    </div>
-                  </div>
+          {documents.map((doc, index) => (
+            <Sheet key={`document-${index}`}>
+              <div className='flex items-center justify-between p-4 border rounded-lg bg-white'>
+                <p>{getDocumentDisplayName(doc.document_attributes)}</p>
+                <div className='flex gap-2 '>
+                  <SheetTrigger asChild>
+                    <Button variant='outline' className='bg-white text-primary border-none'>
+                      <PencilIcon />
+                    </Button>
+                  </SheetTrigger>
+                  <Button
+                    onClick={(e) => handleDocumentRemove(e, index)}
+                    variant='outline'
+                    className='bg-white text-red-500 border-none'
+                  >
+                    <TrashIcon className='w-4 h-4' />
+                  </Button>
+                </div>
+              </div>
 
-                  <OsblDocumentSheet
-                    document={doc.document_attributes}
-                    index={index}
-                    onUpdate={(doc) => addDocument(doc, index)}
-                    errors={errors}
-                    clearErrors={clearErrors}
-                    setError={setError}
-                  />
-                </Sheet>
-              )
-            })}
+              <OsblDocumentSheet
+                document={doc.document_attributes}
+                index={index}
+                onUpdate={(doc) => addDocument(doc, index)}
+                errors={errors}
+                clearErrors={clearErrors}
+                setError={setError}
+              />
+            </Sheet>
+          ))}
         </div>
       )}
     </div>
