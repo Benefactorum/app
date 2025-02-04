@@ -17,7 +17,7 @@ interface WithLabel extends BaseMyInputProps {
 }
 
 interface WithoutLabel extends BaseMyInputProps {
-  labelText: never
+  labelText?: never
   placeholder: string
 }
 

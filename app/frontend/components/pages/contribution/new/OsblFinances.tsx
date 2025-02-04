@@ -6,7 +6,7 @@ import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
-import OsblFinanceSheet from './OsblFinances/OsblFinanceSheet'
+import OsblFinanceSheet from '@/components/pages/contribution/new/OsblFinances/OsblFinanceSheet'
 
 export default function OsblFinances ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const [sortAscending, setSortAscending] = useState(false)

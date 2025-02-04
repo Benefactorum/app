@@ -1,5 +1,5 @@
 import { ReactElement, useRef, useState } from 'react'
-import MyInput from './MyInput'
+import MyInput from '@/components/shared/MyInput'
 
 interface MyFileInputProps {
   id: string
