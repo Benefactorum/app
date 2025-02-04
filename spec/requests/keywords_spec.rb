@@ -20,7 +20,7 @@ RSpec.describe "Keywords", type: :request, inertia: true do
         let(:params) { {query: "tes"} }
 
         it "returns first 3 keywords matching the query" do
-          create_list(:keyword, 4)
+          4.times { |i| create(:keyword, name: "Test#{i + 1}") }
           subject
           expect(response).to have_http_status(:ok)
           expect(JSON.parse(response.body)).to eq([
