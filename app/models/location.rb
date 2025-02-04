@@ -5,10 +5,10 @@ class Location < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
 
   enum :type, {
-    siege_social: 0,
-    antenne_locale: 1,
-    lieu_d_activite: 2,
-    autre: 3
+    "Siège social" => 0,
+    "Antenne locale" => 1,
+    "Lieu d'activité" => 2,
+    "Autre" => 3
   }.freeze
 
   validates :address, presence: true

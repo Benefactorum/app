@@ -16,7 +16,11 @@ module Users
     def new
       render inertia: "Contribution/New", props: {
         causes: Cause.pluck(:name, :id).to_h,
-        labels: Label.pluck(:id, :name).map { |id, name| {value: id, label: name} }
+        labels: Label.pluck(:id, :name).map { |id, name| {value: id, label: name} },
+        location_types: Location.types.keys,
+        document_types: Document.types.keys,
+        fund_source_types: FundSource.types.keys,
+        fund_allocation_types: FundAllocation.types.keys
       }
     end
 

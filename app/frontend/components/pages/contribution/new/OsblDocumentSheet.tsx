@@ -29,8 +29,7 @@ import {
 import { Label } from '@/components/ui/label'
 import deepCleanData from '@/lib/deepCleanData'
 import { z } from 'zod'
-import { DocumentTypeList } from '@/lib/constants'
-
+import { usePage } from '@inertiajs/react'
 interface Props extends Omit<FormProps, 'data' | 'setData'> {
   document: Partial<Document>
   index: number
@@ -58,12 +57,13 @@ export default function OsblDocumentSheet ({
   clearErrors,
   setError
 }: Props): ReactElement {
+  const documentTypes = usePage().props.document_types as string[]
   const formRef = useRef<HTMLFormElement>(null)
   const [sheetDocument, setSheetDocument] = useState<Partial<Document>>(document)
   const [isOpen, setIsOpen] = useState(() => {
     const checks = [
-      (!['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && sheetDocument.year !== undefined),
-      (!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && sheetDocument.name !== undefined),
+      (!['Rapport d\'activité', 'Rapport financier'].includes(sheetDocument.type ?? '') && sheetDocument.year !== undefined),
+      (!['Procès verbal', 'Autre'].includes(sheetDocument.type ?? '') && sheetDocument.name !== undefined),
       sheetDocument.description !== undefined
     ]
     return checks.some(check => check)
@@ -115,16 +115,16 @@ export default function OsblDocumentSheet ({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {DocumentTypeList.map((type) => (
-                  <SelectItem key={type.value} value={type.value}>
-                    {type.label}
+                {documentTypes.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
 
-          {['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && (
+          {['Rapport d\'activité', 'Rapport financier'].includes(sheetDocument.type ?? '') && (
             <MyNumberInput
               labelText='Année *'
               id={`document-year-${index}`}
@@ -136,7 +136,7 @@ export default function OsblDocumentSheet ({
             />
           )}
 
-          {['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
+          {['Procès verbal', 'Autre'].includes(sheetDocument.type ?? '') && (
             <MyInput
               labelText='Nom du document *'
               id={`document-name-${index}`}
@@ -172,7 +172,7 @@ export default function OsblDocumentSheet ({
             </CollapsibleTrigger>
             <CollapsibleContent className='CollapsibleContent'>
               <div className='flex flex-col gap-8 mt-8'>
-                {!['proces_verbal', 'autre'].includes(sheetDocument.type ?? '') && (
+                {!['Procès verbal', 'Autre'].includes(sheetDocument.type ?? '') && (
                   <MyInput
                     labelText='Nom du document'
                     id={`document-name-${index}`}
@@ -182,7 +182,7 @@ export default function OsblDocumentSheet ({
                   />
                 )}
 
-                {!['rapport_activite', 'rapport_financier'].includes(sheetDocument.type ?? '') && (
+                {!['Rapport d\'activité', 'Rapport financier'].includes(sheetDocument.type ?? '') && (
                   <MyNumberInput
                     id={`document-year-${index}`}
                     labelText='Année'

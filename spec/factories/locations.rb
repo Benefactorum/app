@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :location do
     association :osbl
-    type { :siege_social }
+    type { "Siège social" }
 
     after(:build) do |location|
       location.address ||= build(:address, addressable: location)
@@ -12,21 +12,21 @@ FactoryBot.define do
     end
 
     trait :siege_social do
-      type { :siege_social }
+      type { "Siège social" }
     end
 
     trait :antenne_locale do
-      type { :antenne_locale }
+      type { "Antenne locale" }
       with_name
     end
 
     trait :lieu_d_activite do
-      type { :lieu_d_activite }
+      type { "Lieu d'activité" }
       with_name
     end
 
     trait :autre do
-      type { :autre }
+      type { "Autre" }
       with_name
     end
   end

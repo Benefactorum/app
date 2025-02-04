@@ -9,11 +9,11 @@ class Document < ApplicationRecord
   # has_many :attachables, through: :document_attachments, source_type: "Osbl"
 
   enum :type, {
-    statuts: 0,
-    rapport_activite: 1,
-    rapport_financier: 2,
-    proces_verbal: 3,
-    autre: 4
+    "Statuts" => 0,
+    "Rapport d'activité" => 1,
+    "Rapport financier" => 2,
+    "Procès verbal" => 3,
+    "Autre" => 4
   }.freeze
 
   validates :file, presence: true

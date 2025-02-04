@@ -16,8 +16,8 @@ import {
   SheetDescription
 } from '@/components/ui/sheet'
 import deepCleanData from '@/lib/deepCleanData'
-import { FundSourceTypeList, FundAllocationTypeList } from '@/lib/constants'
 import { z } from 'zod'
+import { usePage } from '@inertiajs/react'
 
 interface Props extends Omit<FormProps, 'setData'> {
   finance: Partial<AnnualFinance>
@@ -80,6 +80,8 @@ export default function OsblFinanceSheet ({
   clearErrors,
   setError
 }: Props): ReactElement {
+  const fundSourceTypes = usePage().props.fund_source_types as string[]
+  const fundAllocationTypes = usePage().props.fund_allocation_types as string[]
   const formRef = useRef<HTMLFormElement>(null)
   const [sheetFinance, setSheetFinance] = useState<Partial<AnnualFinance>>(finance)
 
@@ -188,7 +190,7 @@ export default function OsblFinanceSheet ({
           <FundManagementSection
             title='Sources de financement'
             items={sheetFinance.fund_sources_attributes ?? []}
-            typeList={[...FundSourceTypeList] as Array<{ value: string, label: string, group: string }>}
+            typeList={fundSourceTypes}
             baseErrorPath='fund_sources_attributes'
             onUpdate={(items) => updateSheetFinance('fund_sources_attributes', items)}
             errors={errors}
@@ -198,7 +200,7 @@ export default function OsblFinanceSheet ({
           <FundManagementSection
             title='Allocation des fonds'
             items={sheetFinance.fund_allocations_attributes ?? []}
-            typeList={[...FundAllocationTypeList] as Array<{ value: string, label: string, group: string }>}
+            typeList={fundAllocationTypes}
             baseErrorPath='fund_allocations_attributes'
             onUpdate={(items) => updateSheetFinance('fund_allocations_attributes', items)}
             errors={errors}

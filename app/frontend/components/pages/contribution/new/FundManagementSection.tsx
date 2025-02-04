@@ -6,8 +6,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-  SelectSeparator
+  SelectValue
 } from '@/components/ui/select'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -18,7 +17,7 @@ import { Separator } from '@/components/ui/separator'
 interface FundManagementSectionProps {
   title: string
   items: FundRecord[]
-  typeList: Array<{ value: string, label: string, group: string }>
+  typeList: string[]
   baseErrorPath: string
   onUpdate: (items: Array<Partial<FundRecord>>) => void
   errors: Record<string, string>
@@ -95,22 +94,15 @@ export default function FundManagementSection ({
               </SelectTrigger>
               <SelectContent>
                 {typeList.filter(type =>
-                  item.type === type.value ||
-                !items.some(source => source.type === type.value)
-                ).map((type, i) => (
-                  <Fragment key={type.value}>
-                    {i > 0 &&
-                    type.group === 'detailed' &&
-                    typeList[i - 1]?.group === 'main' && (
-                      <SelectSeparator className='my-2' />
-                    )}
-                    <SelectItem
-                      value={type.value}
-                      className={type.group === 'detailed' ? 'text-muted-foreground' : ''}
-                    >
-                      {type.label}
-                    </SelectItem>
-                  </Fragment>
+                  item.type === type ||
+                !items.some(source => source.type === type)
+                ).map((type) => (
+                  <SelectItem
+                    key={type}
+                    value={type}
+                  >
+                    {type}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
