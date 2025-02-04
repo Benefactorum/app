@@ -15,6 +15,7 @@ import { FormData } from './types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
 import { toast } from 'sonner'
+import { FormDataConvertible } from '@inertiajs/core'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg', 'image/png', 'image/webp']
@@ -33,8 +34,14 @@ const validation = z.object({
   tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'Veuillez sélectionner un pourcentage.' })
 })
 
+type StrictForm<T> = T & {
+  [K in keyof T]: T[K] extends FormDataConvertible ? T[K] : never
+} & {
+  [key: string]: FormDataConvertible
+}
+
 export default function New ({ currentUser }: { currentUser: CurrentUserType }): ReactElement {
-  const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<FormData>({
+  const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<StrictForm<FormData>>({
     name: '',
     osbls_causes_attributes: [],
     tax_reduction: ''
