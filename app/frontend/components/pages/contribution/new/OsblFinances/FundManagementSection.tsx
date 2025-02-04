@@ -33,7 +33,7 @@ export default function FundManagementSection ({
   errors,
   clearErrors
 }: FundManagementSectionProps): ReactElement {
-  function handleFundChange (index: number, field: keyof FundRecord, value: any): void {
+  function handleFundChange (index: number, field: keyof FundRecord, value: FundRecord[keyof FundRecord]): void {
     const updatedItems = items.map((item: FundRecord, i: number) =>
       i === index ? { ...item, [field]: value } : item
     )

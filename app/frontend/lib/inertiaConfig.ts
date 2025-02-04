@@ -19,7 +19,7 @@ export const resolvePage: PageResolver = (name) => {
   const page = pages[`../pages/${name}.tsx`]
 
   if (page === undefined) {
-    console.error(`Missing Inertia page component: '${name}.tsx'`)
+    throw new Error(`Page ${name}.tsx not found`)
   }
 
   page.default.layout = (pageContent) =>
