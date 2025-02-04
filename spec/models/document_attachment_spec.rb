@@ -36,7 +36,7 @@ RSpec.describe DocumentAttachment, type: :model do
 
       it "prevents attaching the same document twice to the same record" do
         expect {
-          duplicate_attachment = create(:document_attachment, document: document, attachable: osbl)
+          create(:document_attachment, document: document, attachable: osbl)
         }.to raise_error(ActiveRecord::RecordNotUnique)
       end
 
