@@ -3,7 +3,7 @@ import AsyncCreatableSelect from 'react-select/async-creatable'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
 import { SelectOption } from '@/types/types'
-import { MultiValue } from 'node_modules/react-select/dist/declarations/src/types'
+import { MultiValue } from 'react-select'
 import { toast } from 'sonner'
 interface MyAsyncCreatableSelectProps {
   data: any
@@ -96,7 +96,7 @@ export default function MyAsyncCreatableSelect ({
 
   function isValidNewOption (inputValue: string): boolean {
     const normalizedInput = inputValue.trim().toLowerCase().replace(/^./, char => char.toUpperCase())
-    return inputValue.length >= 3 && inputValue.length <= 100 && value.some(option => option.label === normalizedInput) === false && !options.some(option => option.label === normalizedInput)
+    return inputValue.length >= 3 && inputValue.length <= 100 && !value.some(option => option.label === normalizedInput) && !options.some(option => option.label === normalizedInput)
   }
 
   return (
