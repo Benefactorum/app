@@ -6,9 +6,9 @@ import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
-import OsblFinanceSheet from './OsblFinanceSheet'
+import OsblFinanceSheet from './OsblFinances/OsblFinanceSheet'
 
-export default function OsblFinance ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
+export default function OsblFinances ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const [sortAscending, setSortAscending] = useState(false)
   const finances = data.annual_finances_attributes ?? []
 

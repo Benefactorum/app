@@ -1,7 +1,7 @@
 import { ReactElement, useEffect } from 'react'
 import { router, Head } from '@inertiajs/react'
 import QuoteSection from '@/components/pages/QuoteSection'
-import SignInForm from '@/components/forms/SignInForm'
+import SignInForm from '@/components/pages/auth/signIn/SignInForm'
 
 export default function SignIn (): ReactElement {
   const email = sessionStorage.getItem('email') ?? ''

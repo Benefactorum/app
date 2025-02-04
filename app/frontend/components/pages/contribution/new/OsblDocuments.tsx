@@ -6,7 +6,7 @@ import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
-import OsblDocumentSheet from './OsblDocumentSheet'
+import OsblDocumentSheet from './OsblDocuments/OsblDocumentSheet'
 
 export default function OsblDocuments ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const documents = data.document_attachments_attributes ?? []

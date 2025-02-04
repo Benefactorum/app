@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/select'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import MyNumberInput from '@/components/forms/MyNumberInput'
-import InputError from '@/components/forms/InputError'
+import MyNumberInput from '@/components/shared/MyNumberInput'
+import InputError from '@/components/shared/InputError'
 import { Separator } from '@/components/ui/separator'
 
 interface FundManagementSectionProps {

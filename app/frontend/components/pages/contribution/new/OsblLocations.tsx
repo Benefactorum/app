@@ -6,7 +6,7 @@ import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
-import OsblLocationSheet from './OsblLocationSheet'
+import OsblLocationSheet from './OsblLocations/OsblLocationSheet'
 
 export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const locations = data.locations_attributes ?? []

@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/multi-select'
 import { FormProps } from '@/pages/Contribution/types'
 import { Baby, Stethoscope, Coins, BookMarked, PawPrint, Trees, Church, Microscope, Globe, Accessibility, Scale, Shuffle, Brush } from 'lucide-react'
-import InputError from '@/components/forms/InputError'
+import InputError from '@/components/shared/InputError'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Select,
@@ -15,11 +15,11 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { usePage } from '@inertiajs/react'
-import KeywordAsyncCreatableSelect from './KeywordAsyncCreatableSelect'
+import KeywordAsyncCreatableSelect from './OsblDatasheet/KeywordAsyncCreatableSelect'
 import HelpTooltip from '@/components/shared/HelpTooltip'
-import InterventionAreaAsyncCreatableSelect from './InterventionAreaAsyncCreatableSelect'
-import MyNumberInput from '@/components/forms/MyNumberInput'
-import MyCheckbox from '@/components/forms/MyCheckbox'
+import InterventionAreaAsyncCreatableSelect from './OsblDatasheet/InterventionAreaAsyncCreatableSelect'
+import MyNumberInput from '@/components/shared/MyNumberInput'
+import MyCheckbox from '@/components/shared/MyCheckbox'
 
 const CausesList = [
   { value: 'environnement', label: 'Environnement', icon: Trees },
@@ -50,7 +50,7 @@ const OsblTypeList = [
   { value: 'fondation', label: 'Fondation' }
 ]
 
-export default function OsblDataSheet ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
+export default function OsblDatasheet ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
   const causes = usePage().props.causes as Record<string, number>
   const labels = usePage().props.labels as Array<{ value: string, label: string }>
 

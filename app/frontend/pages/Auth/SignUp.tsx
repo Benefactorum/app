@@ -1,6 +1,6 @@
 import { Head, router } from '@inertiajs/react'
 import { ReactElement, useEffect } from 'react'
-import SignUpForm from '@/components/forms/SignUpForm'
+import SignUpForm from '@/components/pages/auth/signUp/SignUpForm'
 import QuoteSection from '@/components/pages/QuoteSection'
 // @ts-expect-error
 import Vomi from '@/assets/images/auth/vomi.svg?react'
