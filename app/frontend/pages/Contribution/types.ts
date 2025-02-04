@@ -70,7 +70,7 @@ export interface FormData {
 export interface FormProps {
   data: FormData
   setData: (key: keyof FormData | string, value: FormData[keyof FormData] | any) => void
-  errors: Record<keyof FormData | string, string>
+  errors: Partial<Record<keyof FormData | string, string>>
   clearErrors: (...fields: Array<keyof FormData | any>) => void
   setError: (field: string, error: any) => void
 }

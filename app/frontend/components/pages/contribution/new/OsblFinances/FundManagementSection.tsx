@@ -20,7 +20,7 @@ interface FundManagementSectionProps {
   typeList: string[]
   baseErrorPath: string
   onUpdate: (items: Array<Partial<FundRecord>>) => void
-  errors: Record<string, string>
+  errors: Partial<Record<string, string>>
   clearErrors: (path: string) => void
 }
 
