@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import useFormHandler from '@/hooks/useFormHandler'
 import { z } from 'zod'
-import MyInput from '../../../shared/MyInput'
+import MyInput from '@/components/shared/MyInput'
 import { Button } from '@/components/ui/button'
 import { StepForward } from 'lucide-react'
 

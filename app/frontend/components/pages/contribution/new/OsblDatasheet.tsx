@@ -15,9 +15,9 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { usePage } from '@inertiajs/react'
-import KeywordAsyncCreatableSelect from './OsblDatasheet/KeywordAsyncCreatableSelect'
+import KeywordAsyncCreatableSelect from '@/components/pages/contribution/new/OsblDatasheet/KeywordAsyncCreatableSelect'
 import HelpTooltip from '@/components/shared/HelpTooltip'
-import InterventionAreaAsyncCreatableSelect from './OsblDatasheet/InterventionAreaAsyncCreatableSelect'
+import InterventionAreaAsyncCreatableSelect from '@/components/pages/contribution/new/OsblDatasheet/InterventionAreaAsyncCreatableSelect'
 import MyNumberInput from '@/components/shared/MyNumberInput'
 import MyCheckbox from '@/components/shared/MyCheckbox'
 
