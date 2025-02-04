@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   has_one :otp, dependent: :destroy
   has_one_attached :profile_picture
+  has_many :contributions, dependent: :nullify
 
   validates_attachment(
     name: :profile_picture,

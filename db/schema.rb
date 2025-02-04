@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_04_104735) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_04_105521) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -259,11 +259,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_104735) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "annual_finances", "osbls"
+  add_foreign_key "annual_finances", "osbls", on_delete: :cascade
   add_foreign_key "contributions", "users"
-  add_foreign_key "document_attachments", "documents"
-  add_foreign_key "fund_allocations", "annual_finances"
-  add_foreign_key "fund_sources", "annual_finances"
+  add_foreign_key "document_attachments", "documents", on_delete: :cascade
+  add_foreign_key "fund_allocations", "annual_finances", on_delete: :cascade
+  add_foreign_key "fund_sources", "annual_finances", on_delete: :cascade
   add_foreign_key "locations", "osbls", on_delete: :cascade
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade
@@ -273,7 +273,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_104735) do
   add_foreign_key "osbls_keywords", "osbls", on_delete: :cascade
   add_foreign_key "osbls_labels", "labels", on_delete: :cascade
   add_foreign_key "osbls_labels", "osbls", on_delete: :cascade
-  add_foreign_key "otps", "users"
-  add_foreign_key "sessions", "users"
+  add_foreign_key "otps", "users", on_delete: :cascade
+  add_foreign_key "sessions", "users", on_delete: :cascade
   add_foreign_key "users", "accounts"
 end
