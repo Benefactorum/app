@@ -54,7 +54,7 @@ export default function OsblLocationSheet ({
     return checks.some(check => check)
   })
 
-  function updateSheetLocation (field: keyof Location, value: any): void {
+  function updateSheetLocation<K extends keyof Location> (field: K, value: Location[K]): void {
     setSheetLocation(prev => ({
       ...prev,
       [field]: value
@@ -79,13 +79,15 @@ export default function OsblLocationSheet ({
     onUpdate(deepCleanData(sheetLocation))
   }
 
-  function getLabel (): string {
-    return [
+  function getLabel (): string | undefined {
+    const label = [
       sheetLocation.address_attributes?.street_number,
       sheetLocation.address_attributes?.street_name,
       sheetLocation.address_attributes?.postal_code,
       sheetLocation.address_attributes?.city
     ].filter(Boolean).join(' ')
+
+    return label.length > 0 ? label : undefined
   }
 
   return (
@@ -174,6 +176,7 @@ export default function OsblLocationSheet ({
                 <MyInput
                   labelText='Site web'
                   type='url'
+                  placeholder='https://'
                   id={`location-website-${index}`}
                   value={sheetLocation.website ?? ''}
                   onChange={(e) => updateSheetLocation('website', e.target.value)}

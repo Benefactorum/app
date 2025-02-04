@@ -25,7 +25,6 @@ interface Props extends Omit<FormProps, 'setData'> {
   onUpdate: (finance: AnnualFinance) => void
 }
 
-// Fix the return type and validation
 const financeValidation = (data: AnnualFinance[], currentIndex: number): z.ZodType<any> => z.object({
   year: z.string().refine(
     (year) =>

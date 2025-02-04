@@ -33,9 +33,6 @@ export default function MyFileInput ({
     if (inputRef.current != null) {
       inputRef.current.value = ''
       setHasFile(false)
-      // Trigger onChange with a fake event to notify parent component
-      const event = new Event('change', { bubbles: true }) as unknown as React.ChangeEvent<HTMLInputElement>
-      Object.defineProperty(event, 'target', { value: { value: '', files: null } })
     }
     onChange(undefined)
   }

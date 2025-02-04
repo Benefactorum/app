@@ -84,8 +84,8 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
         <div className='flex flex-col gap-4'>
           <Label>Réduction d'impôt * :</Label>
           <RadioGroup
-            required // doesn't work as expected
-            value={String(data.tax_reduction)}
+            required // doesn't work. Comment kept for reference
+            value={data.tax_reduction}
             onValueChange={(value) => {
               setData('tax_reduction', value)
               clearErrors('tax_reduction')

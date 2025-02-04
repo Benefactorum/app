@@ -26,8 +26,9 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit
 
         <MyInput
           id='website'
-          type='text'
+          type='url'
           labelText='Site internet :'
+          placeholder='https://'
           value={data.website ?? ''}
           onChange={(e) => {
             setData('website', e.target.value)

@@ -31,7 +31,7 @@ interface MyAsyncCreatableSelectProps {
   minInputLength?: number
   placeholder?: string
   required?: boolean
-  value: string
+  value: string | undefined
 }
 
 const createOption = (feature: AddressFeature): Option => ({
