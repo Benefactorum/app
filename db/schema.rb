@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_03_160100) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_04_104735) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -264,7 +264,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_160100) do
   add_foreign_key "document_attachments", "documents"
   add_foreign_key "fund_allocations", "annual_finances"
   add_foreign_key "fund_sources", "annual_finances"
-  add_foreign_key "locations", "osbls"
+  add_foreign_key "locations", "osbls", on_delete: :cascade
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade
   add_foreign_key "osbls_intervention_areas", "intervention_areas", on_delete: :cascade
