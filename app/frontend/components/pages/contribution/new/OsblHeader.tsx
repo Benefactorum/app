@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import { Label } from '@/components/ui/label'
-import MyInput from '@/components/forms/MyInput'
+import MyInput from '@/components/shared/MyInput'
 import { Textarea } from '@/components/ui/textarea'
 import { FormProps } from '@/pages/Contribution/types'
 import HelpTooltip from '@/components/shared/HelpTooltip'

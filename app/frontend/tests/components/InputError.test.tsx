@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import InputError from '@/components/forms/InputError'
+import InputError from '@/components/shared/InputError'
 import { describe, it, expect } from 'vitest'
 
 describe('InputError', () => {

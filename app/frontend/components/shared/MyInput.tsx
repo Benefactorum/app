@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import InputError from '@/components/forms/InputError'
+import InputError from '@/components/shared/InputError'
 import { X } from 'lucide-react'
 
 interface BaseMyInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

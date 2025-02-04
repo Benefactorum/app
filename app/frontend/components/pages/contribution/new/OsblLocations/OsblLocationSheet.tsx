@@ -1,7 +1,7 @@
 import { ReactElement, useRef, useState } from 'react'
 import { Location } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
-import MyInput from '@/components/forms/MyInput'
+import MyInput from '@/components/shared/MyInput'
 import {
   Select,
   SelectContent,

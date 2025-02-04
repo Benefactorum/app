@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import ConnectionForm from '@/components/forms/ConnectionForm'
+import ConnectionForm from '@/components/pages/auth/connection/ConnectionForm'
 import useFormHandler from '@/hooks/useFormHandler'
 
 // Mock useFormHandler hook

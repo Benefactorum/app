@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import InputError from '@/components/forms/InputError'
+import InputError from '@/components/shared/InputError'
 
 interface MyCheckboxProps {
   id?: string
