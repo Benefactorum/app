@@ -17,7 +17,7 @@ RSpec.describe Location, type: :model do
     it "raises error when name is null for antenne_locale type" do
       expect {
         Location.create!(
-          type: :antenne_locale,
+          type: "Antenne locale",
           name: nil,
           osbl: create(:osbl),
           address_attributes: attributes_for(:address)
@@ -28,7 +28,7 @@ RSpec.describe Location, type: :model do
     it "raises error when name is null for lieu_d_activite type" do
       expect {
         Location.create!(
-          type: :lieu_d_activite,
+          type: "Lieu d'activité",
           name: nil,
           osbl: create(:osbl),
           address_attributes: attributes_for(:address)
@@ -39,7 +39,7 @@ RSpec.describe Location, type: :model do
     it "raises error when name is null for autre type" do
       expect {
         Location.create!(
-          type: :autre,
+          type: "Autre",
           name: nil,
           osbl: create(:osbl),
           address_attributes: attributes_for(:address)
@@ -49,10 +49,10 @@ RSpec.describe Location, type: :model do
 
     it "enforces unique siege_social per osbl" do
       osbl = create(:osbl)
-      create(:location, type: :siege_social, osbl: osbl)
+      create(:location, type: "Siège social", osbl: osbl)
 
       expect {
-        create(:location, type: :siege_social, osbl: osbl)
+        create(:location, type: "Siège social", osbl: osbl)
       }.to raise_error(ActiveRecord::RecordNotUnique)
     end
   end

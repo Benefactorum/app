@@ -7,12 +7,10 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblLocationSheet from './OsblLocationSheet'
-import { LocationTypeList } from '@/lib/constants'
-import { SelectOption } from '@/types/types'
 
 export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const locations = data.locations_attributes ?? []
-  const hasSiegeSocial = locations.some(loc => loc.type === 'siege_social')
+  const hasSiegeSocial = locations.some(loc => loc.type === 'Siège social')
 
   function addLocation (location: Location, index: number): void {
     const updatedLocations = [...locations]
@@ -29,8 +27,7 @@ export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data'
   function getLocationDisplayName (location: Location): string {
     if (location.name !== undefined) return location.name
 
-    const type = LocationTypeList.find(t => t.value === location.type) as SelectOption
-    return type.label
+    return location.type
   }
 
   return (

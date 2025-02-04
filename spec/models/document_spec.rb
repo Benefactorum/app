@@ -17,7 +17,7 @@ RSpec.describe Document, type: :model do
     it "raises error when year is null for rapport_activite type" do
       expect {
         Document.create!(
-          type: :rapport_activite,
+          type: "Rapport d'activité",
           year: nil,
           file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
         )
@@ -27,7 +27,7 @@ RSpec.describe Document, type: :model do
     it "raises error when year is null for rapport_financier type" do
       expect {
         Document.create!(
-          type: :rapport_financier,
+          type: "Rapport financier",
           year: nil,
           file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
         )
@@ -37,7 +37,7 @@ RSpec.describe Document, type: :model do
     it "raises error when year is less than 1000" do
       expect {
         Document.create!(
-          type: :rapport_activite,
+          type: "Rapport d'activité",
           year: 999,
           file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
         )
@@ -55,16 +55,13 @@ RSpec.describe Document, type: :model do
 
   describe "active storage attachment" do
     it "is invalid without a file" do
-      document = Document.new(type: :statuts)
+      document = build(:document, file: nil)
       expect(document).not_to be_valid
       expect(document.errors[:file]).to be_present
     end
 
     it "is invalid with non-PDF file" do
-      document = Document.new(
-        type: :statuts,
-        file: fixture_file_upload("spec/fixtures/files/invalid_file_type.svg", "image/svg")
-      )
+      document = build(:document, file: fixture_file_upload("spec/fixtures/files/invalid_file_type.svg", "image/svg"))
       expect(document).not_to be_valid
       expect(document.errors[:file]).to be_present
     end
@@ -72,10 +69,7 @@ RSpec.describe Document, type: :model do
     it "is invalid with file larger than 5MB" do
       allow_any_instance_of(ActiveStorage::Blob).to receive(:byte_size).and_return(6.megabytes)
 
-      document = Document.new(
-        type: :statuts,
-        file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
-      )
+      document = build(:document, file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf"))
       expect(document).not_to be_valid
       expect(document.errors[:file]).to be_present
     end
@@ -87,10 +81,7 @@ RSpec.describe Document, type: :model do
     # end
 
     it "destroys dependent document_attachments when deleted" do
-      document = Document.create!(
-        type: :statuts,
-        file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
-      )
+      document = create(:document, file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf"))
       osbl = create(:osbl)
       osbl.documents << document
 
@@ -100,10 +91,7 @@ RSpec.describe Document, type: :model do
 
   describe "validations" do
     subject(:document) do
-      Document.new(
-        type: :statuts,
-        file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
-      )
+      build(:document, file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf"))
     end
 
     it "is valid with valid attributes" do
@@ -111,13 +99,13 @@ RSpec.describe Document, type: :model do
     end
 
     it "is valid with year for rapport_activite" do
-      document.type = :rapport_activite
+      document.type = "Rapport d'activité"
       document.year = 2024
       expect(document).to be_valid
     end
 
     it "is valid with year for rapport_financier" do
-      document.type = :rapport_financier
+      document.type = "Rapport financier"
       document.year = 2024
       expect(document).to be_valid
     end

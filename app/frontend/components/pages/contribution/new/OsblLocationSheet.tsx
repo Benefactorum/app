@@ -26,9 +26,8 @@ import {
 } from '@/components/ui/collapsible'
 import MyAsyncSelect from '@/components/shared/MyAsyncSelect'
 import deepCleanData from '@/lib/deepCleanData'
-import { LocationTypeList } from '@/lib/constants'
 import { Label } from '@/components/ui/label'
-
+import { usePage } from '@inertiajs/react'
 interface Props {
   location: Partial<Location>
   index: number
@@ -42,6 +41,7 @@ export default function OsblLocationSheet ({
   onUpdate,
   hasSiegeSocial
 }: Props): ReactElement {
+  const locationTypes = usePage().props.location_types as string[]
   const formRef = useRef<HTMLFormElement>(null)
   const [sheetLocation, setSheetLocation] = useState<Partial<Location>>(location)
   const [isOpen, setIsOpen] = useState(() => {
@@ -110,20 +110,20 @@ export default function OsblLocationSheet ({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {LocationTypeList
+                {locationTypes
                   .filter(type =>
-                    type.value !== 'siege_social' || !hasSiegeSocial || location.type === 'siege_social'
+                    type !== 'Siège social' || !hasSiegeSocial || location.type === 'Siège social'
                   )
                   .map((type) => (
-                    <SelectItem key={type.value} value={type.value}>
-                      {type.label}
+                    <SelectItem key={type} value={type}>
+                      {type}
                     </SelectItem>
                   ))}
               </SelectContent>
             </Select>
           </div>
 
-          {['antenne_locale', 'lieu_d_activite', 'autre'].includes(sheetLocation.type ?? '') && (
+          {['Antenne locale', 'Lieu d\'activité', 'Autre'].includes(sheetLocation.type ?? '') && (
             <MyInput
               labelText='Nom du lieu *'
               id={`location-name-${index}`}
@@ -153,7 +153,7 @@ export default function OsblLocationSheet ({
             </CollapsibleTrigger>
             <CollapsibleContent className='CollapsibleContent'>
               <div className='flex flex-col gap-8 mt-8'>
-                {sheetLocation.type === 'siege_social' && (
+                {sheetLocation.type === 'Siège social' && (
                   <MyInput
                     labelText='Nom du lieu'
                     id={`location-name-${index}`}

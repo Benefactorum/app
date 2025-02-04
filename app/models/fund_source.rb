@@ -4,10 +4,10 @@ class FundSource < ApplicationRecord
   belongs_to :annual_finance
 
   enum :type, {
-    dons: 0,
-    aides_publiques: 1,
-    revenus_d_activites: 2,
-    autre: 3
+    "Dons" => 0,
+    "Aides publiques" => 1,
+    "Revenus d'activités" => 2,
+    "Autre" => 3
     # dons_des_particuliers: 4,
     # mécénat: 5,
     # fonds_dédiés: 6,

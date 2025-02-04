@@ -4,10 +4,10 @@ class FundAllocation < ApplicationRecord
   belongs_to :annual_finance
 
   enum :type, {
-    missions_sociales: 0,
-    frais_de_fonctionnement: 1,
-    frais_de_recherche_de_fonds: 2,
-    autre: 3
+    "Missions sociales" => 0,
+    "Frais de fonctionnement" => 1,
+    "Frais de recherche de fonds" => 2,
+    "Autre" => 3
     # dons_des_particuliers: 4,
     # mécénat: 5,
     # fonds_dédiés: 6,
