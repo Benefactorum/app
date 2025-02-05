@@ -25,12 +25,19 @@ module Users
     end
 
     def create
-      @osbl = Osbl.new(osbl_params)
+      osbl = Osbl.new(osbl_params)
 
-      if @osbl.save
+      if osbl.valid?
+        osbl_data = OsblDataTransformer.new(osbl_params).transform
+        @user.contributions.create!(
+          contributable: OsblCreation.new(osbl_data: osbl_data)
+          #   # body: params[:contribution][:body]
+          #   # files: params[:contribution][:files]
+        )
+
         redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
       else
-        redirect_to my_new_contribution_path, inertia: {errors: @osbl.errors}
+        redirect_to my_new_contribution_path, inertia: {errors: osbl.errors}
       end
     end
 

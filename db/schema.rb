@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_04_105521) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -90,8 +90,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_105521) do
     t.string "github_resource_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
+    t.text "body"
     t.index ["contributable_type", "contributable_id"], name: "index_contributions_on_contributable"
     t.index ["user_id"], name: "index_contributions_on_user_id"
+    t.check_constraint "NOT (contributable_type IN ('Feedback', 'FeatureRequest', 'BugReport', 'CorrectionRequest', 'Other')) OR body IS NOT NULL", name: "body_required_for_specific_types"
   end
 
   create_table "document_attachments", force: :cascade do |t|
@@ -177,6 +180,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_105521) do
     t.index ["osbl_id"], name: "index_locations_on_osbl_id"
     t.index ["osbl_id"], name: "index_locations_on_osbl_id_siege_social", unique: true, where: "type = 0"
     t.check_constraint "type NOT IN (1, 2, 3) OR (type IN (1, 2, 3) AND name IS NOT NULL)", name: "name_required_for_specific_types"
+  end
+
+  create_table "osbl_creations", force: :cascade do |t|
+    t.text "osbl_data", null: false
   end
 
   create_table "osbls", force: :cascade do |t|
