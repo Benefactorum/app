@@ -48,7 +48,15 @@ export interface Location {
   website?: string
 }
 
-export interface FormData {
+export interface OsblCreationData {
+  contribution: {
+    body?: string
+    files?: File[]
+    osbl: OsblData
+  }
+}
+
+export interface OsblData {
   name: string
   website?: string
   logo?: File
@@ -68,9 +76,9 @@ export interface FormData {
 }
 
 export interface FormProps {
-  data: FormData
-  setData: (key: keyof FormData | string, value: FormData[keyof FormData] | any) => void
-  errors: Partial<Record<keyof FormData | string, string>>
-  clearErrors: (...fields: Array<keyof FormData | any>) => void
+  data: OsblData
+  setData: (key: keyof OsblData | string, value: OsblData[keyof OsblData] | any) => void
+  errors: Partial<Record<keyof OsblData | string, string>>
+  clearErrors: (...fields: Array<keyof OsblData | string>) => void
   setError: (field: string, error: any) => void
 }

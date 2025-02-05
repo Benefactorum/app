@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 import { forwardRef, useImperativeHandle } from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import SignUpForm from '@/components/forms/SignUpForm'
+import SignUpForm from '@/components/pages/auth/signUp/SignUpForm'
 import useFormHandler from '@/hooks/useFormHandler'
 
 vi.mock('@inertiajs/react', async () => {

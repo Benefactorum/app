@@ -25,17 +25,19 @@ module Users
     end
 
     def create
+      osbl_params = contribution_params.delete(:osbl)
+      contribution = @user.contributions.build(contribution_params)
       osbl = Osbl.new(osbl_params)
 
       if osbl.valid?
         osbl_data = OsblDataTransformer.new(osbl_params).transform
-        @user.contributions.create!(
-          contributable: OsblCreation.new(osbl_data: osbl_data)
-          #   # body: params[:contribution][:body]
-          #   # files: params[:contribution][:files]
-        )
+        contribution.contributable = OsblCreation.new(osbl_data: osbl_data)
 
-        redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
+        if contribution.save
+          redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
+        else
+          redirect_to my_new_contribution_path, inertia: {errors: @contribution.errors}
+        end
       else
         redirect_to my_new_contribution_path, inertia: {errors: osbl.errors}
       end
@@ -47,62 +49,68 @@ module Users
       @user = User.find(params[:user_id])
     end
 
-    def osbl_params
-      params.permit(
-        :name,
-        :website,
-        :logo,
-        :description,
-        {osbls_causes_attributes: [:cause_id]},
-        :tax_reduction,
-        {osbls_keywords_attributes: [:keyword_id]},
-        :geographical_scale,
-        {osbls_intervention_areas_attributes: [:intervention_area_id]},
-        :osbl_type,
-        :public_utility,
-        :creation_year,
-        {osbls_labels_attributes: [:label_id]},
-        {annual_finances_attributes: [
-          :year,
-          :certified,
-          :budget,
-          :treasury,
-          :employees_count,
-          {fund_sources_attributes: [
-            :type,
-            :percent,
-            :amount
-          ]},
-          {fund_allocations_attributes: [
-            :type,
-            :percent,
-            :amount
-          ]}
-        ]},
-        {document_attachments_attributes: [
-          {document_attributes: [
-            :type,
-            :file,
+    def contribution_params
+      @contribution_params ||= params.expect(
+        contribution: [
+          :body,
+          files: [],
+          osbl: [
             :name,
-            :year,
-            :description
-          ]}
-        ]},
-        {locations_attributes: [
-          :type,
-          :name,
-          :description,
-          :website,
-          {address_attributes: [
-            :street_number,
-            :street_name,
-            :additional_info,
-            :postal_code,
-            :city,
-            :latitude,
-            :longitude
-          ]}
-        ]}
+            :website,
+            :logo,
+            :description,
+            :tax_reduction,
+            :geographical_scale,
+            :osbl_type,
+            :public_utility,
+            :creation_year,
+            osbls_causes_attributes: [[:cause_id]],
+            osbls_keywords_attributes: [[:keyword_id]],
+            osbls_intervention_areas_attributes: [[:intervention_area_id]],
+            osbls_labels_attributes: [[:label_id]],
+            annual_finances_attributes: [[
+              :year,
+              :certified,
+              :budget,
+              :treasury,
+              :employees_count,
+              fund_sources_attributes: [[
+                :type,
+                :percent,
+                :amount
+              ]],
+              fund_allocations_attributes: [[
+                :type,
+                :percent,
+                :amount
+              ]]
+            ]],
+            document_attachments_attributes: [[
+              document_attributes: [
+                :type,
+                :file,
+                :name,
+                :year,
+                :description
+              ]
+            ]],
+            locations_attributes: [[
+              :type,
+              :name,
+              :description,
+              :website,
+              address_attributes: [
+                :street_number,
+                :street_name,
+                :additional_info,
+                :postal_code,
+                :city,
+                :latitude,
+                :longitude
+              ]
+            ]]
+          ]
+        ]
       )
     end
 
