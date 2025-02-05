@@ -2,11 +2,14 @@ class AnnualFinance < ApplicationRecord
   belongs_to :osbl
   has_many :fund_sources, dependent: :destroy
   has_many :fund_allocations, dependent: :destroy
-  validates :year, numericality: {less_than_or_equal_to: Time.current.year}
-  # validates :employees_count, numericality: { greater_than: 0 }, allow_nil: true
 
   accepts_nested_attributes_for :fund_sources
   accepts_nested_attributes_for :fund_allocations
+
+  validates :year, numericality: {less_than_or_equal_to: Time.current.year}
+  # validates :employees_count, numericality: { greater_than: 0 }, allow_nil: true
+  # validates :budget, numericality: { greater_than: 0 }, allow_nil: true
+  # validates :year, numericality: { equal_or_greater_than: 1000 }, allow_nil: true
 
   validate :at_least_one_information
   validate :fund_sources_total_percentage_is_100
@@ -18,7 +21,7 @@ class AnnualFinance < ApplicationRecord
     return if fund_sources.any?
     return if fund_allocations.any?
 
-    attributes_to_check = attributes.except("id", "year", "osbl_id", "created_at", "updated_at")
+    attributes_to_check = attributes.except("id", "year", "osbl_id", "created_at", "updated_at", "certified")
     if attributes_to_check.values.all?(&:blank?)
       errors.add(:base, "Au moins une information est requise en plus de l'année.")
     end

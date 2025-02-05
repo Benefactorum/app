@@ -21,6 +21,8 @@ class Osbl < ApplicationRecord
   has_many :document_attachments, as: :attachable, dependent: :destroy # join table
   has_many :documents, through: :document_attachments
 
+  has_many :locations, dependent: :destroy
+
   TAX_REDUCTION_VALUES = {
     "intérêt_général" => 0.66,
     "aide_aux_personnes_en_difficulté" => 0.75
@@ -46,7 +48,7 @@ class Osbl < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :website, uniqueness: true, allow_nil: true
-  validates :description, length: {maximum: 300}, allow_nil: true
+  validates :description, length: {maximum: 300}, allow_nil: true # TODO: enforce this at db level once we're sure it's enough
   validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true
   # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
   validates_attachment(
@@ -54,6 +56,7 @@ class Osbl < ApplicationRecord
     max_size: 1.megabytes,
     content_types: %w[image/png image/svg image/webp]
   )
+  validates :osbls_causes, presence: {message: "Au moins une cause est requise."}
 
   accepts_nested_attributes_for :osbls_causes # , allow_destroy: true
   accepts_nested_attributes_for :osbls_labels # , allow_destroy: true
@@ -61,4 +64,5 @@ class Osbl < ApplicationRecord
   accepts_nested_attributes_for :osbls_intervention_areas # , allow_destroy: true
   accepts_nested_attributes_for :annual_finances
   accepts_nested_attributes_for :document_attachments
+  accepts_nested_attributes_for :locations
 end

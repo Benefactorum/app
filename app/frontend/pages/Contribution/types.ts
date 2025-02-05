@@ -6,29 +6,46 @@ export interface ContributionType {
   contributable_type: string
 }
 
-export type ContributionFormType = Omit<ContributionType, 'id'>
-
-export interface OsblType {
-  id: number
-  name: string
-}
-
-export type OsblFormType = Omit<OsblType, 'id'>
-
 export interface FundRecord {
-  type?: string
-  percent?: number
+  type: string
+  percent: number
   amount?: number
 }
 
 export interface AnnualFinance {
-  year?: number
+  year: number
   budget?: number
   treasury?: number
   employees_count?: number
   fund_sources_attributes?: FundRecord[]
   fund_allocations_attributes?: FundRecord[]
   certified?: boolean
+}
+
+export interface Document {
+  type: string
+  file: File
+  name?: string
+  year?: number
+  description?: string
+}
+
+export interface Address {
+  street_number?: string
+  street_name: string
+  additional_info?: string
+  postal_code: string
+  city: string
+  latitude: number
+  longitude: number
+}
+
+export interface Location {
+  type: string
+  address_attributes: Address
+  name?: string
+  description?: string
+  website?: string
 }
 
 export interface FormData {
@@ -46,20 +63,14 @@ export interface FormData {
   public_utility?: boolean
   creation_year?: number
   contact_email?: string
-  document_attachments_attributes?: Array<{ document_attributes: DocumentRecord }>
-}
-
-export interface DocumentRecord {
-  type?: string
-  file?: File
-  name?: string
-  year?: number
-  description?: string
+  document_attachments_attributes?: Array<{ document_attributes: Document }>
+  locations_attributes?: Location[]
 }
 
 export interface FormProps {
   data: FormData
   setData: (key: keyof FormData | string, value: FormData[keyof FormData] | any) => void
-  errors: Record<keyof FormData | string, string>
+  errors: Partial<Record<keyof FormData | string, string>>
   clearErrors: (...fields: Array<keyof FormData | any>) => void
+  setError: (field: string, error: any) => void
 }

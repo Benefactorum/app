@@ -20,7 +20,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { z } from 'zod'
 import MyFileInput from '@/components/shared/MyFileInput'
 
-const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/webp']
+const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/webp', 'image/jpeg']
 const MAX_PROFILE_PICTURE_SIZE = 1 * 1024 * 1024 // 1MB
 
 const profilePicSchema = z.object({
@@ -147,10 +147,8 @@ export default function UserAvatarEdit ({
               id='profile_picture'
               required
               accept='image/png, image/webp, image/jpg'
-              onChange={(e) => {
-                const files = e.target.files
-                if (files == null) return
-                setData('profile_picture', files[0])
+              onChange={(file) => {
+                setData('profile_picture', file ?? '')
                 clearErrors('profile_picture')
               }}
               error={errors.profile_picture}

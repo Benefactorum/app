@@ -1,29 +1,31 @@
-import { createElement } from 'react'
-import type { ResolvedComponent } from '@inertiajs/react'
+import { createElement, ReactElement } from 'react'
+import type { PageResolver } from '@inertiajs/core'
 import Layout from '@/Layout'
 
-export const getTitle = (title: string | null): string =>
-  title ? `${title} | Benefactorum` : 'Benefactorum'
+interface ResolvedComponent {
+  default: {
+    layout: (pageContent: ReactElement & { props: { flash?: any } }) => ReactElement
+  }
+}
 
-export const resolvePage = (name: string): ResolvedComponent => {
+export const getTitle = (title: string | null): string =>
+  title !== null ? `${title} | Benefactorum` : 'Benefactorum'
+
+export const resolvePage: PageResolver = (name) => {
   const pages = import.meta.glob<ResolvedComponent>(
     '../pages/**/!(*.test).tsx',
     { eager: true }
   )
-  const page = pages[`../pages/${name}.tsx`] as {
-    default: { layout?: (page: JSX.Element) => JSX.Element }
+  const page = pages[`../pages/${name}.tsx`]
+
+  if (page === undefined) {
+    throw new Error(`Page ${name}.tsx not found`)
   }
-  if (!page) {
-    console.error(`Missing Inertia page component: '${name}.tsx'`)
-  }
-  page.default.layout = (page) =>
-    createElement(
-      Layout,
-      {
-        showSidebar: name.startsWith('Contribution/'),
-        flash: page.props.flash
-      },
-      page
-    )
+
+  page.default.layout = (pageContent) =>
+    createElement(Layout, {
+      showSidebar: name.startsWith('Contribution/'),
+      flash: pageContent.props?.flash
+    }, pageContent)
   return page
 }

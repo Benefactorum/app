@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_04_105521) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -40,6 +40,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street_number"
+    t.string "street_name", null: false
+    t.string "additional_info"
+    t.string "postal_code", null: false
+    t.string "city", null: false
+    t.string "country", default: "France", null: false
+    t.decimal "latitude", precision: 10, scale: 6, null: false
+    t.decimal "longitude", precision: 10, scale: 6, null: false
+    t.string "addressable_type", null: false
+    t.integer "addressable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", unique: true
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Location'"
+    t.check_constraint "latitude >= -90 AND latitude <= 90", name: "check_latitude_range"
+    t.check_constraint "longitude >= -180 AND longitude <= 180", name: "check_longitude_range"
   end
 
   create_table "annual_finances", force: :cascade do |t|
@@ -127,6 +146,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_intervention_areas_on_name", unique: true
+    t.check_constraint "length(name) >= 3 AND length(name) <= 100", name: "intervention_areas_name_length_check"
   end
 
   create_table "keywords", force: :cascade do |t|
@@ -134,6 +154,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_keywords_on_name", unique: true
+    t.check_constraint "length(name) >= 3 AND length(name) <= 100", name: "keywords_name_length_check"
   end
 
   create_table "labels", force: :cascade do |t|
@@ -143,6 +164,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_labels_on_name", unique: true
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.integer "type", null: false
+    t.string "name"
+    t.text "description"
+    t.string "website"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "osbl_id", null: false
+    t.index ["osbl_id"], name: "index_locations_on_osbl_id"
+    t.index ["osbl_id"], name: "index_locations_on_osbl_id_siege_social", unique: true, where: "type = 0"
+    t.check_constraint "type NOT IN (1, 2, 3) OR (type IN (1, 2, 3) AND name IS NOT NULL)", name: "name_required_for_specific_types"
   end
 
   create_table "osbls", force: :cascade do |t|
@@ -155,11 +189,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
     t.integer "geographical_scale"
     t.integer "osbl_type"
     t.integer "creation_year"
-    t.string "contact_email"
     t.boolean "public_utility", default: false, null: false
     t.index ["name"], name: "index_osbls_on_name", unique: true
     t.index ["website"], name: "index_osbls_on_website", unique: true
-    t.check_constraint "contact_email IS NULL OR (contact_email IS NOT NULL AND contact_email LIKE '%_@_%._%')", name: "contact_email_format_check"
     t.check_constraint "creation_year >= 1000", name: "creation_year_as_4_digits"
   end
 
@@ -227,11 +259,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "annual_finances", "osbls"
+  add_foreign_key "annual_finances", "osbls", on_delete: :cascade
   add_foreign_key "contributions", "users"
-  add_foreign_key "document_attachments", "documents"
-  add_foreign_key "fund_allocations", "annual_finances"
-  add_foreign_key "fund_sources", "annual_finances"
+  add_foreign_key "document_attachments", "documents", on_delete: :cascade
+  add_foreign_key "fund_allocations", "annual_finances", on_delete: :cascade
+  add_foreign_key "fund_sources", "annual_finances", on_delete: :cascade
+  add_foreign_key "locations", "osbls", on_delete: :cascade
   add_foreign_key "osbls_causes", "causes", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade
   add_foreign_key "osbls_intervention_areas", "intervention_areas", on_delete: :cascade
@@ -240,7 +273,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_25_061231) do
   add_foreign_key "osbls_keywords", "osbls", on_delete: :cascade
   add_foreign_key "osbls_labels", "labels", on_delete: :cascade
   add_foreign_key "osbls_labels", "osbls", on_delete: :cascade
-  add_foreign_key "otps", "users"
-  add_foreign_key "sessions", "users"
+  add_foreign_key "otps", "users", on_delete: :cascade
+  add_foreign_key "sessions", "users", on_delete: :cascade
   add_foreign_key "users", "accounts"
 end

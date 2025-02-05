@@ -9,14 +9,14 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 const flashTypes = ['message', 'success', 'info', 'warning', 'error'] as const
 
 interface LayoutProps {
-  children: ReactElement
-  showSidebar?: boolean
+  showSidebar: boolean
   flash: { [key in typeof flashTypes[number]]?: string }
+  children?: ReactElement
 }
 
 export default function Layout ({
   children,
-  showSidebar = false,
+  showSidebar,
   flash = {}
 }: LayoutProps): ReactElement {
   useEffect(() => {

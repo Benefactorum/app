@@ -1,7 +1,22 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import SignInForm from '@/components/forms/SignInForm'
+import SignInForm from '@/components/pages/auth/signIn/SignInForm'
 import useFormHandler from '@/hooks/useFormHandler'
+
+// Mock sessionStorage
+const mockSessionStorage = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
+  removeItem: vi.fn(),
+  key: vi.fn(),
+  length: 0
+}
+
+// Mock window object before tests
+Object.defineProperty(window, 'sessionStorage', {
+  value: mockSessionStorage
+})
 
 vi.mock('@inertiajs/react', async () => {
   const actual = await vi.importActual('@inertiajs/react')

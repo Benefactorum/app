@@ -1,6 +1,7 @@
 import { FilePlus2, Library, NotebookPen } from 'lucide-react'
-import { Link, usePage } from '@inertiajs/react'
+import { usePage } from '@inertiajs/react'
 import { ReactElement } from 'react'
+import MyLink from '@/components/shared/MyLink'
 
 import {
   Sidebar,
@@ -9,7 +10,8 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
+  useSidebar
 } from '@/components/ui/sidebar'
 
 const items = [
@@ -32,6 +34,13 @@ const items = [
 
 export default function AppSidebar (): ReactElement {
   const { url } = usePage()
+  const { setOpenMobile, isMobile } = useSidebar()
+
+  const handleClick = (): void => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
 
   return (
     <Sidebar>
@@ -42,17 +51,18 @@ export default function AppSidebar (): ReactElement {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link
+                    <MyLink
                       href={item.url}
                       className={
                         url === item.url
                           ? ' bg-secondary'
                           : ' hover:bg-secondary/50'
                       }
+                      onClick={handleClick}
                     >
                       <item.icon />
                       <span className='font-semibold'>{item.title}</span>
-                    </Link>
+                    </MyLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
