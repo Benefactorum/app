@@ -1,12 +1,18 @@
 class Contribution < ApplicationRecord
   belongs_to :user
+
   delegated_type :contributable, types: %w[
     OsblCreation
     OsblUpdate
-    Discussion
+    Feedback
+    FeatureRequest
     BugReport
     CorrectionRequest
-  ]
+    Other
+  ], dependent: :destroy
 
-  has_many :documents # , dependent: :destroy ## what would happen if a document was also used for an Osbl
+  has_many_attached :files
+
+  # db_constraints enforcing :
+  # validates :body, presence: true, if: -> { %w[Feedback FeatureRequest BugReport CorrectionRequest Other].include?(contributable_type) }
 end

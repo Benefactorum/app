@@ -60,7 +60,11 @@ keywords = [
   "promotion de l'économie circulaire",
   "soutien aux artistes locaux",
   "préservation des langues et cultures autochtones",
-  "sensibilisation à la cybersécurité pour les jeunes"
+  "sensibilisation à la cybersécurité pour les jeunes",
+  "altruisme",
+  "donateurs",
+  "plateform de dons",
+  "web"
 ]
 
 keywords.each do |keyword|
@@ -546,4 +550,96 @@ labels.each do |label|
     l.description = label[:description]
     l.website = label[:website]
   end
+end
+
+benefactorum_params = {
+  "name" => "Benefactorum",
+  "website" => "https://benefactorum.org/",
+  # "logo" =>
+  # {
+  #   "tempfile" => "#<File:0x00007836ee3e6f50>",
+  #   "content_type" => "image/png",
+  #   "original_filename" => "Benefactorum-Logo.png",
+  #   "headers" => "Content-Disposition: form-data; name=\"logo\"; filename=\"Benefactorum-Logo.png\"\r\nContent-Type: image/png\r\n"
+  # },
+  "description" =>
+  "Benefactorum est la première plateforme de dons\r\ncollaborative et à but non-lucratif,\r\nqui vous permet de découvrir et de soutenir facilement\r\ntoutes les causes qui vous tiennent à coeur !",
+  "osbls_causes_attributes" => {
+    "0" => {
+      "cause_id" => "13"
+    }
+  },
+  "tax_reduction" => "intérêt_général",
+  "osbls_keywords_attributes" => {
+    "0" => {
+      "keyword_id" => "36" # altruisme
+    },
+    "1" => {
+      "keyword_id" => "37" # donateurs
+    },
+    "2" => {
+      "keyword_id" => "38" # plateforme de dons
+    },
+    "3" => {
+      "keyword_id" => "39" # web
+    }
+  },
+  "geographical_scale" => "national",
+  "osbl_type" => "association",
+  "creation_year" => "2023",
+  # "document_attachments_attributes" =>
+  # {
+  #   "0" =>
+  #   {
+  #     "document_attributes" =>
+  #     {
+  #       "type" => "Statuts",
+  #        "file" =>
+  #        {
+  #          "tempfile" => "#<File:0x00007836eea1e8f0>",
+  #          "content_type" => "application/pdf",
+  #          "original_filename" => "Statuts Benefactorum.pdf",
+  #          "headers" => "Content-Disposition: form-data; name=\"document_attachments_attributes[0][document_attributes][file]\"; filename=\"Statuts Benefactorum.pdf\"\r\nContent-Type: application/pdf\r\n"
+  #        },
+  #       "name" => "Statuts de l'association",
+  #       "year" => "2023"
+  #     }
+  #   },
+  #   "1" =>
+  #   {
+  #     "document_attributes" =>
+  #     {
+  #       "type" => "Statuts",
+  #        "file" =>
+  #        {
+  #          "tempfile" => "#<File:0x00007836eea10c28>",
+  #          "content_type" => "application/pdf",
+  #          "original_filename" => "Statuts - Fonds Benefactorum.pdf",
+  #          "headers" =>
+  #          "Content-Disposition: form-data; name=\"document_attachments_attributes[1][document_attributes][file]\"; filename=\"Statuts - Fonds Benefactorum.pdf\"\r\nContent-Type: application/pdf\r\n"
+  #        },
+  #       "name" => "Statuts du fonds de dotation",
+  #       "year" => "2023"
+  #     }
+  #   }
+  # },
+  "locations_attributes" =>
+  {
+    "0" =>
+    {
+      "type" => "Siège social",
+      "address_attributes" => {
+        "street_number" => "12",
+        "street_name" => "Rue du moulin",
+        "postal_code" => "44260",
+        "city" => "La Chapelle-Launay",
+        "latitude" => "47.371354",
+        "longitude" => "-1.969269"
+      }
+    }
+  }
+}
+
+Osbl.find_or_create_by!(name: benefactorum_params["name"]) do |osbl|
+  osbl.assign_attributes(benefactorum_params)
 end
