@@ -19,7 +19,7 @@ vi.mock('@inertiajs/react', async () => {
   }
 })
 
-vi.mock('@/components/forms/SignUpForm', () => ({
+vi.mock('@/components/pages/auth/signUp/SignUpForm', () => ({
   __esModule: true,
   default: vi.fn(() => <div data-testid='sign-up-form' />)
 }))
