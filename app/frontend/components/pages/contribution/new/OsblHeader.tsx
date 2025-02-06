@@ -39,7 +39,7 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit
 
         <MyFileInput
           id='logo'
-          accept='image/png, image/svg, image/webp'
+          accept='image/png, image/svg+xml, image/webp'
           labelText={
             <p className='flex items-center gap-2'>
               Logo

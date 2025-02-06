@@ -54,7 +54,7 @@ class Osbl < ApplicationRecord
   validates_attachment(
     name: :logo,
     max_size: 1.megabytes,
-    content_types: %w[image/png image/svg image/webp]
+    content_types: %w[image/png image/svg+xml image/webp]
   )
   validates :osbls_causes, presence: {message: "Au moins une cause est requise."}
 

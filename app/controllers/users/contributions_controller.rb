@@ -33,11 +33,8 @@ module Users
         osbl_data = OsblDataTransformer.new(osbl_params).transform
         contribution.contributable = OsblCreation.new(osbl_data: osbl_data)
 
-        if contribution.save
-          redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
-        else
-          redirect_to my_new_contribution_path, inertia: {errors: @contribution.errors}
-        end
+        contribution.save!
+        redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
       else
         redirect_to my_new_contribution_path, inertia: {errors: osbl.errors}
       end
