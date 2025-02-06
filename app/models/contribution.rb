@@ -20,6 +20,18 @@ class Contribution < ApplicationRecord
     max_size: 5.megabytes
   )
 
+  validate :files_count_within_limit
+
   # db_constraints enforcing :
   # validates :body, presence: true, if: -> { %w[Feedback FeatureRequest BugReport CorrectionRequest Other].include?(contributable_type) }
+
+  private
+
+  def files_count_within_limit
+    return unless files.attached?
+
+    if files.count > 5
+      errors.add(:files, "5 fichiers maximum.")
+    end
+  end
 end

@@ -66,5 +66,34 @@ RSpec.describe Contribution, type: :model do
 
       expect(contribution).to be_valid
     end
+
+    it "is invalid when more than 5 files are attached" do
+      contribution = build(:contribution)
+
+      6.times do |i|
+        contribution.files.attach(
+          io: StringIO.new,
+          filename: "file_#{i}.txt",
+          content_type: "text/plain"
+        )
+      end
+
+      expect(contribution).not_to be_valid
+      expect(contribution.errors[:files]).to be_present
+    end
+
+    it "is valid when exactly 5 files are attached" do
+      contribution = build(:contribution)
+
+      5.times do |i|
+        contribution.files.attach(
+          io: StringIO.new,
+          filename: "file_#{i}.txt",
+          content_type: "text/plain"
+        )
+      end
+
+      expect(contribution).to be_valid
+    end
   end
 end
