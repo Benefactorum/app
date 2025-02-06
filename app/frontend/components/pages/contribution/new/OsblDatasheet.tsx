@@ -95,10 +95,6 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
               <Label
                 htmlFor='interet-general'
                 className='flex items-center justify-between w-16 cursor-pointer'
-                onClick={() => {
-                  setData('tax_reduction', 'intérêt_général')
-                  clearErrors('tax_reduction')
-                }}
               >
                 66 %
                 <HelpTooltip>
@@ -112,10 +108,6 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
               <Label
                 htmlFor='aide-difficulte'
                 className='flex items-center justify-between w-16 cursor-pointer'
-                onClick={() => {
-                  setData('tax_reduction', 'aide_aux_personnes_en_difficulté')
-                  clearErrors('tax_reduction')
-                }}
               >
                 75 %
                 <HelpTooltip>
@@ -207,7 +199,6 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             options={labels}
             onValueChange={(value) => {
               setData('osbls_labels_attributes', value.map(label => ({ label_id: label })))
-              clearErrors('osbls_labels_attributes')
             }}
             placeholder=''
             variant='default'

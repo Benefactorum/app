@@ -1,8 +1,5 @@
 import { Head, useForm } from '@inertiajs/react'
 import { ReactElement, useState, useRef, useEffect } from 'react'
-// import { Alert, AlertDescription } from '@/components/ui/alert'
-// @ts-expect-error
-// import GoodIdea from '@/assets/icons/good-idea.svg?react'
 import { Button } from '@/components/ui/button'
 import { Save } from 'lucide-react'
 import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
@@ -15,11 +12,13 @@ import { OsblCreationData, FormProps } from '@/pages/Contribution/types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
 import { toast } from 'sonner'
+import ContributionDialog from '@/components/pages/contribution/new/ContributionDialog'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
+const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024 // 5MB
 
-const validation = z.object({
+const osblValidation = z.object({
   contribution: z.object({
     osbl: z.object({
       website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
@@ -34,6 +33,21 @@ const validation = z.object({
       osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
       tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'Veuillez sélectionner un pourcentage.' })
     })
+  })
+})
+
+const contributionValidation = z.object({
+  contribution: z.object({
+    files: z.array(z.instanceof(File))
+      .refine(
+        (files) => files.length <= 5,
+        '5 fichiers maximum.'
+      )
+      .refine(
+        (files) => files.every(file => file.size <= MAX_DOCUMENT_SIZE),
+        'La taille d\'un fichier ne peut excéder 5 MB.'
+      )
+      .optional()
   })
 })
 
@@ -73,6 +87,8 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
   // inertia types don't handle nested data properly.
   const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm({
     contribution: {
+      body: '',
+      files: [],
       osbl: {
         name: '',
         osbls_causes_attributes: [],
@@ -87,6 +103,9 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
   // Add state for button visibility
   const [showBottomButton, setShowBottomButton] = useState(false)
   const topButtonRef = useRef<HTMLButtonElement>(null)
+
+  // New: State to control dialog open/close
+  const [openDialog, setOpenDialog] = useState(false)
 
   // Add intersection observer
   useEffect(() => {
@@ -104,21 +123,24 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
     return () => observer.disconnect()
   }, [])
 
-  function submit (e: React.FormEvent<HTMLFormElement>): void {
-    e.preventDefault()
+  // Add a helper function to update contribution fields (body and files)
+  function setContributionField (field: keyof OsblCreationData['contribution'], value: OsblCreationData['contribution'][keyof OsblCreationData['contribution']]): void {
+    setData('contribution', {
+      ...data.contribution,
+      [field]: value
+    })
+  }
 
-    transform((data) => (deepCleanData(data)))
-    const result = validation.safeParse(data) as { success: boolean, error: z.ZodError }
-    if (!result.success) {
+  // New: Handle dialog confirmation submission.
+  function handleConfirmSubmit (): void {
+    const result = contributionValidation.safeParse(data)
+    if (result.success === false) {
       const issues = result.error.issues
-      issues.forEach(issue => {
-        setError(issue.path.join('.') as 'contribution', issue.message)
-      })
-
-      toast.error('Veuillez corriger les erreurs avant de continuer.')
+      setError('contribution.files' as 'contribution', issues[0].message)
       return
     }
 
+    transform((data) => deepCleanData(data))
     post(`/users/${currentUser.id}/contributions`)
   }
 
@@ -128,26 +150,41 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
     }
   }
 
+  // Add new function to validate and open dialog before submit
+  function validateAndOpenDialog (e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault()
+    const result = osblValidation.safeParse(data)
+    if (result.success === false) {
+      const issues = result.error.issues
+      issues.forEach(issue => {
+        setError(issue.path.join('.') as 'contribution', issue.message)
+      })
+      toast.error('Veuillez corriger les erreurs avant de continuer.')
+      return
+    }
+    setOpenDialog(true)
+  }
+
   return (
     <>
       <Head title='Ajouter une association' />
 
-      <form onKeyDown={avoidUnintentionalSubmission} onSubmit={submit} className='2xl:container mx-auto flex flex-col px-2 sm:px-8 md:px-16 pt-8 pb-16 gap-8'>
+      <form
+        onKeyDown={avoidUnintentionalSubmission}
+        onSubmit={(e) => validateAndOpenDialog(e)}
+        className='2xl:container mx-auto flex flex-col px-2 sm:px-8 md:px-16 pt-8 pb-16 gap-8'
+      >
         <div className='flex gap-8 sm:gap-16 items-center flex-wrap justify-center md:justify-start'>
           <h1 className='font-semibold text-2xl sm:text-3xl'>Ajouter une association</h1>
-          <Button ref={topButtonRef} type='submit' disabled={processing} className='text-lg'>
+          <Button
+            ref={topButtonRef}
+            type='submit'
+            className='text-lg'
+          >
             <Save className='mr-2' />
             Enregistrer
           </Button>
         </div>
-        {/* <Alert>
-          <GoodIdea className='min-w-8 min-h-8' />
-          <AlertDescription>
-            Pour que votre contribution soit validée, le modérateur doit pouvoir
-            vérifier les informations fournies. Facilitez son travail en
-            indiquant clairement vos sources !
-          </AlertDescription>
-        </Alert> */}
 
         <div className='flex flex-col pt-4 gap-8'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
@@ -161,12 +198,27 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
           </div>
         </div>
         {showBottomButton && (
-          <Button type='submit' disabled={processing} className='text-lg ml-auto mt-4 sm:mt-8'>
+          <Button
+            type='submit'
+            className='text-lg ml-auto mt-4 sm:mt-8'
+          >
             <Save className='mr-2' />
             Enregistrer
           </Button>
         )}
       </form>
+
+      <ContributionDialog
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        comment={data.contribution.body}
+        files={data.contribution.files}
+        setContributionField={setContributionField}
+        onConfirm={handleConfirmSubmit}
+        error={errors['contribution.files' as 'contribution']}
+        clearError={() => clearErrors('contribution.files' as 'contribution')}
+        processing={processing}
+      />
     </>
   )
 }
