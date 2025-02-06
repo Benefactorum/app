@@ -15,10 +15,9 @@ import { OsblCreationData, FormProps } from '@/pages/Contribution/types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
 import { toast } from 'sonner'
-import { FormDataConvertible } from '@inertiajs/core'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
-const ALLOWED_LOGO_TYPES = ['image/svg', 'image/png', 'image/webp']
+const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
 
 const validation = z.object({
   contribution: z.object({
@@ -37,14 +36,6 @@ const validation = z.object({
     })
   })
 })
-
-type StrictForm<T> = {
-  [K in keyof T]: T[K] extends Record<string, any>
-    ? StrictForm<T[K]>
-    : T[K] extends FormDataConvertible
-      ? T[K]
-      : never
-}
 
 function createOsblProxy (
   data: OsblCreationData,
@@ -80,7 +71,7 @@ function createOsblProxy (
 
 export default function New ({ currentUser }: { currentUser: CurrentUserType }): ReactElement {
   // inertia types don't handle nested data properly.
-  const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<StrictForm<OsblCreationData>>({
+  const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm({
     contribution: {
       osbl: {
         name: '',

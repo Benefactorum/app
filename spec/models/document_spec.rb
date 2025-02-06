@@ -61,7 +61,7 @@ RSpec.describe Document, type: :model do
     end
 
     it "is invalid with non-PDF file" do
-      document = build(:document, file: fixture_file_upload("spec/fixtures/files/invalid_file_type.svg", "image/svg"))
+      document = build(:document, file: fixture_file_upload("spec/fixtures/files/invalid_file_type.svg", "image/svg+xml"))
       expect(document).not_to be_valid
       expect(document.errors[:file]).to be_present
     end

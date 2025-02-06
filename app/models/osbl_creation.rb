@@ -1,5 +1,5 @@
 class OsblCreation < ApplicationRecord
-  has_one :contribution, as: :contributable
+  has_one :contribution, as: :contributable, touch: true
 
   STATUS = {
     "brouillon" => 0,

@@ -55,6 +55,21 @@ RSpec.describe Osbl, type: :model do
       expect(osbl).not_to be_valid
       expect(osbl.errors[:osbls_causes]).to be_present
     end
+
+    describe "associated documents" do
+      it "osbl is invalid with an invalid document" do
+        osbl = build(:osbl, document_attachments_attributes: [{
+          document_attributes: {
+            type: "Autre",
+            name: "Test document"
+            # file is missing, making document invalid
+          }
+        }])
+
+        expect(osbl).not_to be_valid
+        expect(osbl.errors[:"document_attachments.document.file"]).to be_present
+      end
+    end
   end
 
   # Association tests
