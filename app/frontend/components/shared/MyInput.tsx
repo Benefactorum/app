@@ -1,27 +1,16 @@
-import { ReactElement, ReactNode } from 'react'
+import { InputHTMLAttributes, ReactElement } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import InputError from '@/components/shared/InputError'
 import { X } from 'lucide-react'
 
-interface BaseMyInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  id: string
   error?: string
-  ref?: React.Ref<HTMLInputElement>
   showResetButton?: boolean
   onReset?: () => void
+  labelText?: string | ReactElement
 }
-
-interface WithLabel extends BaseMyInputProps {
-  labelText: string | ReactNode
-  placeholder?: string
-}
-
-interface WithoutLabel extends BaseMyInputProps {
-  labelText?: never
-  placeholder: string
-}
-
-type MyInputProps = WithLabel | WithoutLabel
 
 export default function MyInput ({
   id,
@@ -29,7 +18,6 @@ export default function MyInput ({
   error,
   placeholder,
   className,
-  ref,
   showResetButton = false,
   onReset,
   ...props
@@ -46,11 +34,8 @@ export default function MyInput ({
 
       <div className='relative'>
         <Input
-          id={id}
-          placeholder={placeholder}
           className={`bg-white focus-visible:ring-0 focus-visible:border-primary focus:border-primary focus:outline-none placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errorClass} ${className ?? ''} ${showResetButton ? 'pr-10' : ''}`}
           {...props}
-          ref={ref}
         />
         {showResetButton && (onReset !== undefined) && (
           <button

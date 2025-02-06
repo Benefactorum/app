@@ -69,7 +69,6 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit
               maxLength={300}
               onChange={(e) => {
                 setData('description', e.target.value)
-                clearErrors('description')
               }}
               className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40'
             />

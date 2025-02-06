@@ -1,67 +1,73 @@
-import { ReactElement, useRef, useState } from 'react'
+import { ReactElement, InputHTMLAttributes, useState } from 'react'
 import MyInput from '@/components/shared/MyInput'
 
-interface MyFileInputProps {
+// Omit the default onChange and onReset to override with custom types
+interface MyFileInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onReset'> {
   id: string
   labelText?: string | ReactElement
-  accept?: string
+  multiple?: boolean
   required?: boolean
   error?: string
-  onChange: (file: File | undefined) => void
-  file?: File
+  onChange: (file: File | File[] | undefined) => void // your custom onChange handler
+  file?: File | File[]
 }
 
 export default function MyFileInput ({
-  id,
-  labelText,
-  accept,
+  multiple = false,
   required = false,
-  error,
   onChange,
-  file
+  file,
+  ...props
 }: MyFileInputProps): ReactElement {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [inputKey, setInputKey] = useState<number>(0)
   const [hasFile, setHasFile] = useState(false)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const fileAttached = (e.target.files != null) && e.target.files.length > 0
     setHasFile(!!fileAttached)
-    onChange(e.target.files?.[0] ?? undefined)
+
+    if (multiple && e.target.files != null) {
+      onChange(Array.from(e.target.files))
+    } else {
+      onChange(e.target.files?.[0])
+    }
   }
 
   const handleReset = (): void => {
-    if (inputRef.current != null) {
-      inputRef.current.value = ''
-      setHasFile(false)
-    }
+    setInputKey(prev => prev + 1)
+    setHasFile(false)
     onChange(undefined)
+  }
+
+  function getFileName (file: File | File[]): string {
+    if (Array.isArray(file)) {
+      return file.map(f => f.name).join(', ')
+    }
+    return file.name
   }
 
   return (
     <div className='flex flex-col'>
-      {file !== undefined && !hasFile
+      {file !== undefined && Array.isArray(file) && file.length > 0 && !hasFile
         ? (
           <MyInput
-            labelText={labelText}
-            value={file.name}
+            value={getFileName(file)}
             readOnly
             showResetButton
             onReset={handleReset}
-            error={error}
+            {...props}
           />
           )
         : (
           <MyInput
-            labelText={labelText}
-            ref={inputRef}
-            id={id}
+            key={inputKey}
             type='file'
             required={required && file === undefined}
-            accept={accept}
+            multiple={multiple}
             onChange={handleFileChange}
-            error={error}
             showResetButton={hasFile}
             onReset={handleReset}
+            {...props}
           />
           )}
     </div>
