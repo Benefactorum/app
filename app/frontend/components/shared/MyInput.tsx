@@ -34,6 +34,8 @@ export default function MyInput ({
 
       <div className='relative'>
         <Input
+          id={id}
+          placeholder={placeholder}
           className={`bg-white focus-visible:ring-0 focus-visible:border-primary focus:border-primary focus:outline-none placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 ${errorClass} ${className ?? ''} ${showResetButton ? 'pr-10' : ''}`}
           {...props}
         />

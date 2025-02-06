@@ -38,4 +38,33 @@ RSpec.describe Contribution, type: :model do
       end
     end
   end
+
+  describe "file attachments" do
+    it "is invalid when file size exceeds 5MB" do
+      contribution = build(:contribution)
+      allow_any_instance_of(ActiveStorage::Blob).to receive(:byte_size).and_return(6.megabytes)
+
+      contribution.files.attach(
+        io: StringIO.new,
+        filename: "large_file.txt",
+        content_type: "text/plain"
+      )
+
+      expect(contribution).not_to be_valid
+      expect(contribution.errors[:files]).to be_present
+    end
+
+    it "is valid when file size is under 5MB" do
+      contribution = build(:contribution)
+      allow_any_instance_of(ActiveStorage::Blob).to receive(:byte_size).and_return(1.megabyte)
+
+      contribution.files.attach(
+        io: StringIO.new,
+        filename: "small_file.txt",
+        content_type: "text/plain"
+      )
+
+      expect(contribution).to be_valid
+    end
+  end
 end
