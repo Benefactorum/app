@@ -1,5 +1,6 @@
 import { ReactElement, useRef, useState } from 'react'
 import { Location } from '@/pages/Contribution/types'
+import UnsavedChangesAlert from '@/components/shared/UnsavedChangesAlert'
 import { Button } from '@/components/ui/button'
 import MyInput from '@/components/shared/MyInput'
 import {
@@ -28,6 +29,7 @@ import MyAsyncSelect from '@/components/shared/MyAsyncSelect'
 import deepCleanData from '@/lib/deepCleanData'
 import { Label } from '@/components/ui/label'
 import { usePage } from '@inertiajs/react'
+
 interface Props {
   location: Partial<Location>
   index: number
@@ -99,6 +101,8 @@ export default function OsblLocationSheet ({
             Renseignez les informations du lieu.
           </SheetDescription>
         </SheetHeader>
+
+        <UnsavedChangesAlert originalData={location} currentData={sheetLocation} />
 
         <div className='flex flex-col gap-8 mt-8'>
           <div className='flex flex-col gap-4'>

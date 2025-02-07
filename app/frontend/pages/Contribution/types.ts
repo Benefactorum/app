@@ -48,18 +48,20 @@ export interface OsblCreationData {
   }
 }
 
+export type ContributionData = OsblCreationData['contribution']
+
 export interface OsblData {
   name: string
   website?: string
   logo?: File
   description?: string
   osbls_causes_attributes: Array<{ cause_id: string }>
-  tax_reduction: string
+  tax_reduction: 'intérêt_général' | 'aide_aux_personnes_en_difficulté'
   osbls_keywords_attributes?: Array<{ keyword_id: string }>
-  geographical_scale?: string
+  geographical_scale?: 'local' | 'regional' | 'national' | 'international'
   osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string }>
   annual_finances_attributes?: AnnualFinance[]
-  osbl_type?: string
+  osbl_type?: 'association' | 'fonds_de_dotation' | 'fondation'
   public_utility?: boolean
   creation_year?: number
   contact_email?: string

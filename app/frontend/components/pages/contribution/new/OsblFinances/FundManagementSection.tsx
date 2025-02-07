@@ -78,7 +78,7 @@ export default function FundManagementSection ({
       )}
 
       {items.map((item, index) => (
-        <Fragment key={`${baseErrorPath}-${index}`}>
+        <Fragment key={`${baseErrorPath}-${index}-${item.type}`}>
           <div
             className='flex flex-wrap items-center gap-x-4 sm:flex-nowrap sm:items-center sm:space-x-4'
           >
@@ -131,7 +131,7 @@ export default function FundManagementSection ({
             <Button
               onClick={(e) => handleRemove(e, index)}
               variant='ghost'
-              className='text-red-500 hover:text-red-700 p-0 h-auto mt-4'
+              className='text-red-600 hover:text-red-700 p-0 h-auto mt-4'
             >
               <TrashIcon className='w-4 h-4' />
             </Button>

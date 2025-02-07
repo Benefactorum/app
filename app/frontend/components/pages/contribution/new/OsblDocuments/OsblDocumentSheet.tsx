@@ -1,5 +1,6 @@
 import { ReactElement, useRef, useState } from 'react'
 import { Document, FormProps } from '@/pages/Contribution/types'
+import UnsavedChangesAlert from '@/components/shared/UnsavedChangesAlert'
 import { Button } from '@/components/ui/button'
 import MyInput from '@/components/shared/MyInput'
 import {
@@ -30,6 +31,8 @@ import { Label } from '@/components/ui/label'
 import deepCleanData from '@/lib/deepCleanData'
 import { z } from 'zod'
 import { usePage } from '@inertiajs/react'
+import getAllowedFormats from '@/lib/getAllowedFormats'
+
 interface Props extends Omit<FormProps, 'data' | 'setData'> {
   document: Partial<Document>
   index: number
@@ -41,12 +44,8 @@ const ALLOWED_DOCUMENT_TYPES = ['application/pdf']
 
 const documentValidation = z.object({
   file: z.instanceof(File)
-    .refine((file) => {
-      return file.size <= MAX_DOCUMENT_SIZE
-    }, 'La taille du fichier doit être inférieure à 5 MB.')
-    .refine((file) => {
-      return ALLOWED_DOCUMENT_TYPES.includes(file.type)
-    }, 'Le type de fichier est invalide. Format accepté : PDF.')
+    .refine((file) => file.size <= MAX_DOCUMENT_SIZE, 'La taille du fichier doit être inférieure à 5 MB.')
+    .refine((file) => ALLOWED_DOCUMENT_TYPES.includes(file.type), `Le type de fichier est invalide. Format accepté : ${getAllowedFormats(ALLOWED_DOCUMENT_TYPES)}.`)
 })
 
 export default function OsblDocumentSheet ({
@@ -102,6 +101,8 @@ export default function OsblDocumentSheet ({
             Renseignez les informations du document.
           </SheetDescription>
         </SheetHeader>
+
+        <UnsavedChangesAlert originalData={document} currentData={sheetDocument} />
 
         <div className='flex flex-col gap-8 mt-8'>
           <div className='flex flex-col gap-4'>

@@ -66,7 +66,7 @@ export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data'
                   <Button
                     onClick={(e) => handleLocationRemove(e, index)}
                     variant='outline'
-                    className='bg-white text-red-500 border-none'
+                    className='bg-white text-red-600 border-none'
                   >
                     <TrashIcon className='w-4 h-4' />
                   </Button>

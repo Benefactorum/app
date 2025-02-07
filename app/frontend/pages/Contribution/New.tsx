@@ -8,11 +8,13 @@ import OsblFinance from '@/components/pages/contribution/new/OsblFinances'
 import OsblDocuments from '@/components/pages/contribution/new/OsblDocuments'
 import OsblLocations from '@/components/pages/contribution/new/OsblLocations'
 import { CurrentUserType } from '@/types/types'
-import { OsblCreationData, FormProps } from '@/pages/Contribution/types'
+import { OsblCreationData, FormProps, OsblData, ContributionData } from '@/pages/Contribution/types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
 import { toast } from 'sonner'
 import ContributionDialog from '@/components/pages/contribution/new/ContributionDialog'
+import getAllowedFormats from '@/lib/getAllowedFormats'
+import { validate } from '@/lib/validate'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
@@ -23,12 +25,8 @@ const osblValidation = z.object({
     osbl: z.object({
       website: z.string().url({ message: 'Veuillez entrer une URL valide.' }).optional(),
       logo: z.instanceof(File)
-        .refine((file) => {
-          return file.size <= MAX_LOGO_SIZE
-        }, 'La taille du fichier doit être inférieure à 1 MB.')
-        .refine((file) => {
-          return ALLOWED_LOGO_TYPES.includes(file.type)
-        }, 'Le type de fichier est invalide. Format accepté : SVG, PNG, WEBP.')
+        .refine((file) => file.size <= MAX_LOGO_SIZE, 'La taille du fichier doit être inférieure à 1 MB.')
+        .refine((file) => ALLOWED_LOGO_TYPES.includes(file.type), `Le type de fichier est invalide. Format accepté : ${getAllowedFormats(ALLOWED_LOGO_TYPES)}.`)
         .optional(),
       osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
       tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'Veuillez sélectionner un pourcentage.' })
@@ -39,30 +37,24 @@ const osblValidation = z.object({
 const contributionValidation = z.object({
   contribution: z.object({
     files: z.array(z.instanceof(File))
-      .refine(
-        (files) => files.length <= 5,
-        '5 fichiers maximum.'
-      )
-      .refine(
-        (files) => files.every(file => file.size <= MAX_DOCUMENT_SIZE),
-        'La taille d\'un fichier ne peut excéder 5 MB.'
-      )
+      .refine((files) => files.length <= 5, '5 fichiers maximum.')
+      .refine((files) => files.every(file => file.size <= MAX_DOCUMENT_SIZE), 'La taille d\'un fichier ne peut excéder 5 MB.')
       .optional()
   })
 })
 
 function createOsblProxy (
-  data: OsblCreationData,
+  data: Partial<OsblCreationData>,
   setData: (key: string, value: any) => void,
   errors: Record<string, string>,
   clearErrors: (field: 'contribution') => void,
   setError: (field: 'contribution', message: string) => void
 ): FormProps {
   return {
-    data: data.contribution.osbl,
+    data: data.contribution?.osbl as OsblData,
     setData: (key, value) => {
       const updatedOsbl = {
-        ...data.contribution.osbl,
+        ...data.contribution?.osbl,
         [key]: value
       }
 
@@ -98,7 +90,7 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
   })
 
   // Create a proxy for the form props
-  const formProps = createOsblProxy(data, setData, errors, clearErrors, setError)
+  const formProps = createOsblProxy(data as Partial<OsblCreationData>, setData, errors, clearErrors, setError)
 
   // Add state for button visibility
   const [showBottomButton, setShowBottomButton] = useState(false)
@@ -131,15 +123,28 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
     })
   }
 
-  // New: Handle dialog confirmation submission.
-  function handleConfirmSubmit (): void {
-    const result = contributionValidation.safeParse(data)
-    if (result.success === false) {
-      const issues = result.error.issues
-      setError('contribution.files' as 'contribution', issues[0].message)
-      return
+  function validateOsbl (): boolean {
+    if (!validate(osblValidation, data as unknown as OsblCreationData, setError)) {
+      toast.error('Veuillez corriger les erreurs avant de continuer.')
+      return false
     }
+    return true
+  }
 
+  function validateContribution (): boolean {
+    return validate(contributionValidation, data, setError)
+  }
+
+  // Updated submit functions using the helpers
+
+  function validateAndOpenDialog (e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault()
+    if (!validateOsbl()) return
+    setOpenDialog(true)
+  }
+
+  function handleConfirmSubmit (): void {
+    if (!validateContribution()) return
     transform((data) => deepCleanData(data))
     post(`/users/${currentUser.id}/contributions`)
   }
@@ -150,28 +155,13 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
     }
   }
 
-  // Add new function to validate and open dialog before submit
-  function validateAndOpenDialog (e: React.FormEvent<HTMLFormElement>): void {
-    e.preventDefault()
-    const result = osblValidation.safeParse(data)
-    if (result.success === false) {
-      const issues = result.error.issues
-      issues.forEach(issue => {
-        setError(issue.path.join('.') as 'contribution', issue.message)
-      })
-      toast.error('Veuillez corriger les erreurs avant de continuer.')
-      return
-    }
-    setOpenDialog(true)
-  }
-
   return (
     <>
       <Head title='Ajouter une association' />
 
       <form
         onKeyDown={avoidUnintentionalSubmission}
-        onSubmit={(e) => validateAndOpenDialog(e)}
+        onSubmit={validateAndOpenDialog}
         className='2xl:container mx-auto flex flex-col px-2 sm:px-8 md:px-16 pt-8 pb-16 gap-8'
       >
         <div className='flex gap-8 sm:gap-16 items-center flex-wrap justify-center md:justify-start'>
@@ -211,8 +201,7 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
       <ContributionDialog
         open={openDialog}
         onOpenChange={setOpenDialog}
-        comment={data.contribution.body}
-        files={data.contribution.files}
+        contribution={data.contribution as unknown as ContributionData}
         setContributionField={setContributionField}
         onConfirm={handleConfirmSubmit}
         error={errors['contribution.files' as 'contribution']}

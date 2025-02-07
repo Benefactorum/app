@@ -572,16 +572,16 @@ benefactorum_params = {
   "tax_reduction" => "intérêt_général",
   "osbls_keywords_attributes" => {
     "0" => {
-      "keyword_id" => "36" # altruisme
+      "keyword_id" => "33" # altruisme
     },
     "1" => {
-      "keyword_id" => "37" # donateurs
+      "keyword_id" => "34" # donateurs
     },
     "2" => {
-      "keyword_id" => "38" # plateforme de dons
+      "keyword_id" => "35" # plateforme de dons
     },
     "3" => {
-      "keyword_id" => "39" # web
+      "keyword_id" => "36" # web
     }
   },
   "geographical_scale" => "national",

@@ -1,6 +1,7 @@
 import { useState, useEffect, ReactElement } from 'react'
 import { useForm, router } from '@inertiajs/react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { validate } from '@/lib/validate'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +20,7 @@ import { cn } from '@/lib/utils'
 import { Pencil, Trash2 } from 'lucide-react'
 import { z } from 'zod'
 import MyFileInput from '@/components/shared/MyFileInput'
+import getAllowedFormats from '@/lib/getAllowedFormats'
 
 const ALLOWED_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/webp', 'image/jpeg']
 const MAX_PROFILE_PICTURE_SIZE = 1 * 1024 * 1024 // 1MB
@@ -26,12 +28,8 @@ const MAX_PROFILE_PICTURE_SIZE = 1 * 1024 * 1024 // 1MB
 const profilePicSchema = z.object({
   profile_picture: z
     .instanceof(File)
-    .refine((file) => {
-      return file.size <= MAX_PROFILE_PICTURE_SIZE
-    }, 'La taille du fichier doit être inférieure à 1 MB.')
-    .refine((file) => {
-      return ALLOWED_CONTENT_TYPES.includes(file.type)
-    }, 'Le type de fichier est invalide. Formats acceptés : PNG, JPG, JPEG, WEBP.')
+    .refine((file) => file.size <= MAX_PROFILE_PICTURE_SIZE, 'La taille du fichier doit être inférieure à 1 MB.')
+    .refine((file) => ALLOWED_CONTENT_TYPES.includes(file.type), `Le type de fichier est invalide. Format accepté : ${getAllowedFormats(ALLOWED_CONTENT_TYPES)}.`)
 })
 
 interface UserAvatarProps {
@@ -61,12 +59,7 @@ export default function UserAvatarEdit ({
   function submit (e: React.FormEvent): void {
     e.preventDefault()
 
-    const result = profilePicSchema.safeParse(data)
-    if (!result.success) {
-      const issues = result.error.issues
-      issues.forEach(issue => {
-        setError('profile_picture', issue.message)
-      })
+    if (!validate(profilePicSchema, data, setError)) {
       return
     }
 

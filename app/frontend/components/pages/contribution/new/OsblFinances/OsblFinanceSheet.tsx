@@ -1,5 +1,6 @@
 import React, { ReactElement, useRef, useState } from 'react'
 import { AnnualFinance, FormProps } from '@/pages/Contribution/types'
+import UnsavedChangesAlert from '@/components/shared/UnsavedChangesAlert'
 import MyNumberInput from '@/components/shared/MyNumberInput'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import FundManagementSection from '@/components/pages/contribution/new/OsblFinances/FundManagementSection'
@@ -130,6 +131,8 @@ export default function OsblFinanceSheet ({
             Renseignez les informations financières pour cette année.
           </SheetDescription>
         </SheetHeader>
+
+        <UnsavedChangesAlert originalData={finance} currentData={sheetFinance} />
 
         <div className='flex flex-col gap-8 mt-8'>
           <MyNumberInput
