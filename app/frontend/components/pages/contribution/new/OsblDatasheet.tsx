@@ -50,6 +50,25 @@ const OsblTypeList = [
   { value: 'fondation', label: 'Fondation' }
 ]
 
+const TaxReductionList = [
+  {
+    value: 'intérêt_général',
+    label: '66 %',
+    tooltip: {
+      title: 'Les associations d\'intérêt général, ou reconnues d\'utilité publique (ARUP).',
+      description: 'Elles ouvrent le droit à une réduction d\'impôt de 66 %.'
+    }
+  },
+  {
+    value: 'aide_aux_personnes_en_difficulté',
+    label: '75 %',
+    tooltip: {
+      title: 'Les organismes d\'aide aux personnes en difficulté.',
+      description: 'Elles ouvrent le droit à une réduction d\'impôt de 75 %, jusqu\'à 1 000 € de dons. Le régime standard de réduction à 66 % s\'applique ensuite.'
+    }
+  }
+]
+
 export default function OsblDatasheet ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
   const causes = usePage().props.causes as Record<string, number>
   const labels = usePage().props.labels as Array<{ value: string, label: string }>
@@ -91,33 +110,21 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
               clearErrors('tax_reduction')
             }}
           >
-            <div className='flex items-center justify-between'>
-              <Label
-                htmlFor='interet-general'
-                className='flex items-center justify-between w-16 cursor-pointer'
-              >
-                66 %
-                <HelpTooltip>
-                  <h2 className='font-semibold mb-4'>Les associations d'intérêt général, ou reconnues d'utilité publique (ARUP).</h2>
-                  <p>Elles ouvrent le droit à une réduction d'impôt de 66 %.</p>
-                </HelpTooltip>
-              </Label>
-              <RadioGroupItem value='intérêt_général' id='interet-general' />
-            </div>
-            <div className='flex items-center justify-between'>
-              <Label
-                htmlFor='aide-difficulte'
-                className='flex items-center justify-between w-16 cursor-pointer'
-              >
-                75 %
-                <HelpTooltip>
-                  <h2 className='font-semibold mb-4'>Les organismes d'aide aux personnes en difficulté.</h2>
-                  <p>Elles ouvrent le droit à une réduction d'impôt de 75 %, jusqu'à 1 000 € de dons.</p>
-                  <p>Le régime standard de réduction à 66 % s'applique ensuite.</p>
-                </HelpTooltip>
-              </Label>
-              <RadioGroupItem value='aide_aux_personnes_en_difficulté' id='aide-difficulte' />
-            </div>
+            {TaxReductionList.map((item) => (
+              <div className='flex items-center justify-between' key={item.value}>
+                <Label
+                  htmlFor={item.value}
+                  className='flex items-center justify-between w-16 cursor-pointer'
+                >
+                  {item.label}
+                  <HelpTooltip>
+                    <h2 className='font-semibold mb-4'>{item.tooltip.title}</h2>
+                    <p>{item.tooltip.description}</p>
+                  </HelpTooltip>
+                </Label>
+                <RadioGroupItem value={item.value} id={item.value} />
+              </div>
+            ))}
           </RadioGroup>
           {Boolean(errors.tax_reduction) && <InputError>{errors.tax_reduction}</InputError>}
         </div>

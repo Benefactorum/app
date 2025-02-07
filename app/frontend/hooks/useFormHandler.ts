@@ -1,8 +1,9 @@
 import { useForm } from '@inertiajs/react'
 import { ZodType } from 'zod'
 import { FormEvent } from 'react'
+import { validate } from '@/lib/validate'
 
-interface UseFormHandlerProps<T extends object> {
+interface UseFormHandlerProps<T extends Record<string, any>> {
   initialData: T
   postUrl: string
   validation?: ZodType<Partial<T>>
@@ -17,7 +18,7 @@ interface FormHandler<T> {
   errors: Partial<Record<keyof T, string>>
 }
 
-export default function useFormHandler<T extends object> ({ initialData, postUrl, validation, onSuccess }: UseFormHandlerProps<T>): FormHandler<T> {
+export default function useFormHandler<T extends Record<string, any>> ({ initialData, postUrl, validation, onSuccess }: UseFormHandlerProps<T>): FormHandler<T> {
   const { data, setData, post, processing, errors, clearErrors, setError } = useForm<T>(initialData)
 
   function updateField (field: keyof T, value: T[keyof T]): void {
@@ -28,15 +29,8 @@ export default function useFormHandler<T extends object> ({ initialData, postUrl
   function submit (e: FormEvent<HTMLFormElement>): void {
     e.preventDefault()
 
-    if (validation !== undefined) {
-      const result = validation.safeParse(data)
-      if (!result.success) {
-        const issues = result.error.issues
-        issues.forEach(issue => {
-          setError(issue.path.join('.') as keyof T, issue.message)
-        })
-        return
-      }
+    if (validation !== undefined && !validate(validation, data, setError)) {
+      return
     }
     post(postUrl, { onSuccess })
   }

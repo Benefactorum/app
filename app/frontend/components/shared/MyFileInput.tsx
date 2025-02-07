@@ -20,11 +20,11 @@ export default function MyFileInput ({
   ...props
 }: MyFileInputProps): ReactElement {
   const [inputKey, setInputKey] = useState<number>(0)
-  const [hasFile, setHasFile] = useState(false)
+  const [inputHasFile, setinputHasFile] = useState(false)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const fileAttached = (e.target.files != null) && e.target.files.length > 0
-    setHasFile(!!fileAttached)
+    setinputHasFile(!!fileAttached)
 
     if (multiple && e.target.files != null) {
       onChange(Array.from(e.target.files))
@@ -35,8 +35,18 @@ export default function MyFileInput ({
 
   const handleReset = (): void => {
     setInputKey(prev => prev + 1)
-    setHasFile(false)
+    setinputHasFile(false)
     onChange(undefined)
+  }
+
+  function fileIsPresent (file: File | File[] | undefined): file is File | File[] {
+    if (file instanceof File) {
+      return true
+    }
+    if (Array.isArray(file) && file.length > 0) {
+      return true
+    }
+    return false
   }
 
   function getFileName (file: File | File[]): string {
@@ -48,7 +58,7 @@ export default function MyFileInput ({
 
   return (
     <div className='flex flex-col'>
-      {file !== undefined && Array.isArray(file) && file.length > 0 && !hasFile
+      {fileIsPresent(file) && !inputHasFile
         ? (
           <MyInput
             value={getFileName(file)}
@@ -65,7 +75,7 @@ export default function MyFileInput ({
             required={required && file === undefined}
             multiple={multiple}
             onChange={handleFileChange}
-            showResetButton={hasFile}
+            showResetButton={inputHasFile}
             onReset={handleReset}
             {...props}
           />

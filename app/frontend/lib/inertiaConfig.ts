@@ -8,8 +8,9 @@ interface ResolvedComponent {
   }
 }
 
-export const getTitle = (title: string | null): string =>
-  title !== null ? `${title} | Benefactorum` : 'Benefactorum'
+export const getTitle = (title: string): string => {
+  return title.length > 0 ? `${title} | Benefactorum` : 'Benefactorum'
+}
 
 export const resolvePage: PageResolver = (name) => {
   const pages = import.meta.glob<ResolvedComponent>(

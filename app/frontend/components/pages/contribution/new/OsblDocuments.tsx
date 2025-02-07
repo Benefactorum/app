@@ -73,7 +73,7 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors, set
                   <Button
                     onClick={(e) => handleDocumentRemove(e, index)}
                     variant='outline'
-                    className='bg-white text-red-500 border-none'
+                    className='bg-white text-red-600 border-none'
                   >
                     <TrashIcon className='w-4 h-4' />
                   </Button>
