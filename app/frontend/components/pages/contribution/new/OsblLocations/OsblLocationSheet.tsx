@@ -102,7 +102,7 @@ export default function OsblLocationSheet ({
           </SheetDescription>
         </SheetHeader>
 
-        <UnsavedChangesAlert originalData={location} currentData={sheetLocation} />
+        <UnsavedChangesAlert<Partial<Location>> originalData={location} currentData={sheetLocation} />
 
         <div className='flex flex-col gap-8 mt-8'>
           <div className='flex flex-col gap-4'>

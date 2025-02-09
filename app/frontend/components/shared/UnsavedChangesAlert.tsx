@@ -1,13 +1,13 @@
-import React from 'react'
+import { ReactElement } from 'react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { CircleAlert } from 'lucide-react'
 
-interface UnsavedChangesAlertProps {
-  originalData: Object
-  currentData: Object
+interface UnsavedChangesAlertProps<T extends object> {
+  originalData: T
+  currentData: T
 }
 
-const UnsavedChangesAlert: React.FC<UnsavedChangesAlertProps> = ({ originalData, currentData }) => {
+function UnsavedChangesAlert<T extends object> ({ originalData, currentData }: UnsavedChangesAlertProps<T>): ReactElement | null {
   // Check if there is unsaved change
   const hasChanges: boolean =
     Object.keys(originalData).length > 0 &&

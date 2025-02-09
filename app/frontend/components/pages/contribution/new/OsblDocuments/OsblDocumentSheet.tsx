@@ -102,7 +102,7 @@ export default function OsblDocumentSheet ({
           </SheetDescription>
         </SheetHeader>
 
-        <UnsavedChangesAlert originalData={document} currentData={sheetDocument} />
+        <UnsavedChangesAlert<Partial<Document>> originalData={document} currentData={sheetDocument} />
 
         <div className='flex flex-col gap-8 mt-8'>
           <div className='flex flex-col gap-4'>
