@@ -1,2 +1,0 @@
-class CorrectionRequest < ApplicationRecord
-end

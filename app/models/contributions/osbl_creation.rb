@@ -1,6 +1,4 @@
-class OsblCreation < ApplicationRecord
-  has_one :contribution, as: :contributable, touch: true
-
+class Contributions::OsblCreation < ApplicationRecord
   STATUS = {
     "brouillon" => 0,
     "en cours de validation" => 1,

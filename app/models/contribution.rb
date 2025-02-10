@@ -4,13 +4,13 @@ class Contribution < ApplicationRecord
   belongs_to :user
 
   delegated_type :contributable, types: %w[
-    OsblCreation
-    OsblUpdate
-    Feedback
-    FeatureRequest
-    BugReport
-    CorrectionRequest
-    Other
+    Contributions::OsblCreation
+    Contributions::OsblUpdate
+    Contributions::Feedback
+    Contributions::FeatureRequest
+    Contributions::BugReport
+    Contributions::CorrectionRequest
+    Contributions::Other
   ], dependent: :destroy
 
   has_many_attached :files
@@ -27,25 +27,6 @@ class Contribution < ApplicationRecord
 
   def serialize
     ContributionSerializer.new(self).as_json
-  end
-
-  def type_label
-    case contributable_type
-    when "OsblCreation"
-      "Ajouter #{contributable.osbl_data["name"]}"
-    when "OsblUpdate"
-      "Modifier #{contributable.osbl_data["name"]}"
-    when "Feedback"
-      "Retour d'expérience"
-    when "FeatureRequest"
-      "Suggestion"
-    when "BugReport"
-      "Rapport de bogue"
-    when "CorrectionRequest"
-      "Correctif"
-    when "Other"
-      "Autre"
-    end
   end
 
   private

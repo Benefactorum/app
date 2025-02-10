@@ -1,2 +1,0 @@
-class BugReport < ApplicationRecord
-end

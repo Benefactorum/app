@@ -1,2 +1,0 @@
-class FeatureRequest < ApplicationRecord
-end
