@@ -4,6 +4,10 @@ FactoryBot.define do
     status { "brouillon" }
     contributable { build(:osbl_creation) }
 
+    trait :with_body do
+      body { "Body" }
+    end
+
     trait :osbl_creation do
       contributable { build(:osbl_creation) }
     end
@@ -14,27 +18,32 @@ FactoryBot.define do
 
     trait :feedback do
       contributable { build(:feedback) }
+      with_body
     end
 
     trait :feature_request do
       contributable { build(:feature_request) }
+      with_body
     end
 
     trait :bug_report do
       contributable { build(:bug_report) }
+      with_body
     end
 
     trait :correction_request do
       contributable { build(:correction_request) }
+      with_body
     end
 
     trait :other do
       contributable { build(:other) }
+      with_body
     end
   end
   # contributables factories
 
-  factory :osbl_creation, class: Contributions::OsblCreation do
+  factory :osbl_creation, class: Contribution::OsblCreation do
     osbl_data do
       {
         name: "OSBL Created",
@@ -44,7 +53,7 @@ FactoryBot.define do
     end
   end
 
-  factory :osbl_update, class: Contributions::OsblUpdate do
+  factory :osbl_update, class: Contribution::OsblUpdate do
     osbl_data do
       {
         name: "OSBL Updated",
@@ -54,18 +63,9 @@ FactoryBot.define do
     end
   end
 
-  factory :feedback, class: Contributions::Feedback do
-  end
-
-  factory :feature_request, class: Contributions::FeatureRequest do
-  end
-
-  factory :bug_report, class: Contributions::BugReport do
-  end
-
-  factory :correction_request, class: Contributions::CorrectionRequest do
-  end
-
-  factory :other, class: Contributions::Other do
-  end
+  factory :feedback, class: Contribution::Feedback
+  factory :feature_request, class: Contribution::FeatureRequest
+  factory :bug_report, class: Contribution::BugReport
+  factory :correction_request, class: Contribution::CorrectionRequest
+  factory :other, class: Contribution::Other
 end

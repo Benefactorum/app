@@ -14,16 +14,16 @@ RSpec.describe Contribution, type: :model do
   end
 
   describe "db_constraints" do
-    xcontext "when contributable_type requires body" do
+    context "when contributable_type requires body" do
       %i[feedback feature_request bug_report correction_request other].each do |type|
         it "enforces body presence for #{type}" do
-          contribution = build(:contribution, contributable: build(type, body: nil))
-          expect { contribution.save }.to raise_error(ActiveRecord::StatementInvalid)
+          contribution = build(:contribution, body: nil, contributable: build(type))
+          expect { contribution.save! }.to raise_error(ActiveRecord::StatementInvalid)
         end
 
         it "allows saving #{type} with body present" do
-          contribution = build(:contribution, contributable: build(type, body: "Some content"))
-          expect { contribution.save }.not_to raise_error
+          contribution = build(:contribution, type)
+          expect { contribution.save! }.not_to raise_error
         end
       end
     end

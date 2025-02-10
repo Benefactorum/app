@@ -28,7 +28,7 @@ module Users
 
       if osbl.valid?
         osbl_data = OsblDataTransformer.new(osbl_params).transform
-        contribution.contributable = Contributions::OsblCreation.new(osbl_data: osbl_data)
+        contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
 
         contribution.save!
         redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."

@@ -17,7 +17,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "OsblCreation",
-          contributable: double("Contributions::OsblCreation", osbl_data: {"name" => "Benefactorum"})
+          contributable: double("Contribution::OsblCreation", osbl_data: {"name" => "Benefactorum"})
         ))
       end
 
@@ -30,7 +30,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "OsblUpdate",
-          contributable: double("Contributions::OsblUpdate", osbl_data: {"name" => "Benefactorum"})
+          contributable: double("Contribution::OsblUpdate", osbl_data: {"name" => "Benefactorum"})
         ))
       end
 
@@ -43,7 +43,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "Feedback",
-          contributable: double("Contributions::Feedback")
+          contributable: double("Contribution::Feedback")
         ))
       end
 
@@ -56,7 +56,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "FeatureRequest",
-          contributable: double("Contributions::FeatureRequest")
+          contributable: double("Contribution::FeatureRequest")
         ))
       end
 
@@ -69,7 +69,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "BugReport",
-          contributable: double("Contributions::BugReport")
+          contributable: double("Contribution::BugReport")
         ))
       end
 
@@ -82,7 +82,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "CorrectionRequest",
-          contributable: double("Contributions::CorrectionRequest")
+          contributable: double("Contribution::CorrectionRequest")
         ))
       end
 
@@ -95,7 +95,7 @@ RSpec.describe ContributionSerializer do
       let(:contribution) do
         double("Contribution", attributes.merge(
           contributable_type: "Other",
-          contributable: double("Contributions::Other")
+          contributable: double("Contribution::Other")
         ))
       end
 

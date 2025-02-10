@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_10_140127) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -56,12 +56,32 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", unique: true
-    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Location'"
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Osbl::Location'"
     t.check_constraint "latitude >= -90 AND latitude <= 90", name: "check_latitude_range"
     t.check_constraint "longitude >= -180 AND longitude <= 180", name: "check_longitude_range"
   end
 
-  create_table "bug_reports", force: :cascade do |t|
+  create_table "contribution_bug_reports", force: :cascade do |t|
+  end
+
+  create_table "contribution_correction_requests", force: :cascade do |t|
+  end
+
+  create_table "contribution_feature_requests", force: :cascade do |t|
+  end
+
+  create_table "contribution_feedbacks", force: :cascade do |t|
+  end
+
+  create_table "contribution_osbl_creations", force: :cascade do |t|
+    t.text "osbl_data", null: false
+  end
+
+  create_table "contribution_osbl_updates", force: :cascade do |t|
+    t.text "osbl_data", null: false
+  end
+
+  create_table "contribution_others", force: :cascade do |t|
   end
 
   create_table "contributions", force: :cascade do |t|
@@ -75,10 +95,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
     t.text "body"
     t.index ["contributable_type", "contributable_id"], name: "index_contributions_on_contributable"
     t.index ["user_id"], name: "index_contributions_on_user_id"
-    t.check_constraint "NOT (contributable_type IN ('Feedback', 'FeatureRequest', 'BugReport', 'CorrectionRequest', 'Other')) OR body IS NOT NULL", name: "body_required_for_specific_types"
-  end
-
-  create_table "correction_requests", force: :cascade do |t|
+    t.check_constraint "NOT (contributable_type IN ('Contribution::Feedback', 'Contribution::FeatureRequest', 'Contribution::BugReport', 'Contribution::CorrectionRequest', 'Contribution::Other')) OR (body IS NOT NULL AND body <> '')", name: "body_required_for_specific_types"
   end
 
   create_table "document_attachments", force: :cascade do |t|
@@ -102,12 +119,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 
-  create_table "feature_requests", force: :cascade do |t|
-  end
-
-  create_table "feedbacks", force: :cascade do |t|
-  end
-
   create_table "osbl_annual_finances", force: :cascade do |t|
     t.integer "year", null: false
     t.decimal "treasury", precision: 15, scale: 2
@@ -128,10 +139,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_osbl_causes_on_name", unique: true
-  end
-
-  create_table "osbl_creations", force: :cascade do |t|
-    t.text "osbl_data", null: false
   end
 
   create_table "osbl_fund_allocations", force: :cascade do |t|
@@ -198,10 +205,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
     t.check_constraint "type NOT IN (1, 2, 3) OR (type IN (1, 2, 3) AND name IS NOT NULL)", name: "name_required_for_specific_types"
   end
 
-  create_table "osbl_updates", force: :cascade do |t|
-    t.text "osbl_data", null: false
-  end
-
   create_table "osbls", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -244,9 +247,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
     t.integer "label_id", null: false
     t.index ["label_id", "osbl_id"], name: "index_osbls_labels_on_label_id_and_osbl_id", unique: true
     t.index ["osbl_id", "label_id"], name: "index_osbls_labels_on_osbl_id_and_label_id", unique: true
-  end
-
-  create_table "others", force: :cascade do |t|
   end
 
   create_table "user_otps", force: :cascade do |t|
