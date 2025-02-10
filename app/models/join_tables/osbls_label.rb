@@ -1,6 +1,4 @@
-class Osbl::JoinTables::OsblsLabel < ApplicationRecord
-  self.table_name = "osbls_labels"
-
+class JoinTables::OsblsLabel < ApplicationRecord
   belongs_to :osbl
   belongs_to :label, class_name: "Osbl::Label"
 

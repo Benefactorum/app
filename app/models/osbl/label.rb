@@ -1,9 +1,7 @@
 class Osbl::Label < ApplicationRecord
-  self.table_name = "labels"
-
   include AttachableValidation
 
-  has_many :osbls_labels, dependent: :destroy, class_name: "Osbl::JoinTables::OsblsLabel"
+  has_many :osbls_labels, dependent: :destroy, class_name: "JoinTables::OsblsLabel"
   has_many :osbls, through: :osbls_labels
 
   has_one_attached :logo

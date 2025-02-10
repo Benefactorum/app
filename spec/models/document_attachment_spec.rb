@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe DocumentAttachment, type: :model do
+RSpec.describe JoinTables::DocumentAttachment, type: :model do
   describe "callbacks" do
     describe "after_destroy" do
       let(:document) { create(:document) }

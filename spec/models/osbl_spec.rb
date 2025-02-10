@@ -76,7 +76,7 @@ RSpec.describe Osbl, type: :model do
   describe "associations" do
     it "destroys dependent associations" do
       osbl = create(:osbl)
-      expect { osbl.destroy }.to change { Osbl::JoinTables::OsblsCause.count }.by(-1)
+      expect { osbl.destroy }.to change { JoinTables::OsblsCause.count }.by(-1)
     end
   end
 

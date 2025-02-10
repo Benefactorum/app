@@ -85,7 +85,7 @@ RSpec.describe Document, type: :model do
       osbl = create(:osbl)
       osbl.documents << document
 
-      expect { document.destroy }.to change { DocumentAttachment.count }.by(-1)
+      expect { document.destroy }.to change { JoinTables::DocumentAttachment.count }.by(-1)
     end
   end
 

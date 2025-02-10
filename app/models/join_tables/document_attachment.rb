@@ -1,4 +1,4 @@
-class DocumentAttachment < ApplicationRecord
+class JoinTables::DocumentAttachment < ApplicationRecord
   belongs_to :document
   belongs_to :attachable, polymorphic: true
 

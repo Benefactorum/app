@@ -1,5 +1,4 @@
-class Osbl::JoinTables::OsblsKeyword < ApplicationRecord
-  self.table_name = "osbls_keywords"
+class JoinTables::OsblsKeyword < ApplicationRecord
   belongs_to :osbl
   belongs_to :keyword, class_name: "Osbl::Keyword"
 

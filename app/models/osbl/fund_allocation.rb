@@ -1,6 +1,4 @@
 class Osbl::FundAllocation < ApplicationRecord
-  self.table_name = "fund_allocations"
-
   self.inheritance_column = nil
 
   belongs_to :annual_finance
