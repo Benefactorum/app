@@ -1,4 +1,4 @@
-class ProfilePicture
+class Users::ProfilePicture
   include ActiveModel::Model
   include ActiveModel::Attributes
 

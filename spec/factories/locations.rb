@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :location do
+  factory :location, class: "Osbl::Location" do
     association :osbl
     type { "Siège social" }
 

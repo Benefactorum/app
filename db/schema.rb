@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_10_100037) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_100037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", unique: true
+    # Should I change it to Osbl::Location ?
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Location'"
     t.check_constraint "latitude >= -90 AND latitude <= 90", name: "check_latitude_range"
     t.check_constraint "longitude >= -180 AND longitude <= 180", name: "check_longitude_range"
@@ -120,6 +121,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_100037) do
     t.text "description"
     t.integer "year"
     t.check_constraint "type NOT IN (1, 2) OR (type IN (1, 2) AND year IS NOT NULL)", name: "year_required_for_specific_types"
+    t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND name IS NOT NULL)", name: "name_required_for_specific_types"
     t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end

@@ -4,7 +4,7 @@ class InterventionAreasController < ApplicationController
 
     # Use sanitize_sql_like for LIKE-specific escaping and wrap query in wildcards after sanitizing
     sanitized_query = "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%"
-    intervention_areas = InterventionArea
+    intervention_areas = Osbl::InterventionArea
       .where("name LIKE ?", sanitized_query)
       .limit(3)
       .pluck(:id, :name)
@@ -14,7 +14,7 @@ class InterventionAreasController < ApplicationController
   end
 
   def create
-    intervention_area = InterventionArea.create!(name: params[:name])
+    intervention_area = Osbl::InterventionArea.create!(name: params[:name])
     render json: intervention_area.slice(:id, :name), status: :created
   end
 end

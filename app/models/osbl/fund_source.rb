@@ -1,12 +1,13 @@
-class FundAllocation < ApplicationRecord
+class Osbl::FundSource < ApplicationRecord
+  self.table_name = "fund_sources"
   self.inheritance_column = nil
 
   belongs_to :annual_finance
 
   enum :type, {
-    "Missions sociales" => 0,
-    "Frais de fonctionnement" => 1,
-    "Frais de recherche de fonds" => 2,
+    "Dons" => 0,
+    "Aides publiques" => 1,
+    "Revenus d'activités" => 2,
     "Autre" => 3
     # dons_des_particuliers: 4,
     # mécénat: 5,
@@ -14,8 +15,8 @@ class FundAllocation < ApplicationRecord
     # activité_commerciale: 7
   }.freeze
 
-  # validates :type, :percent, presence: true
+  # validates :type, presence: true
   # validates :percent, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  # validates :amount, numericality: { greater_than: 0 }, allow_nil: true
+  # validates :value, numericality: { greater_than: 0 }, allow_nil: true
   # validates :annual_finance_id, uniqueness: { scope: :type }
 end

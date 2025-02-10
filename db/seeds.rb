@@ -25,7 +25,7 @@ causes = [
 ]
 
 causes.each do |cause|
-  Cause.find_or_create_by!(name: cause)
+  Osbl::Cause.find_or_create_by!(name: cause)
 end
 
 keywords = [
@@ -63,12 +63,12 @@ keywords = [
   "sensibilisation à la cybersécurité pour les jeunes",
   "altruisme",
   "donateurs",
-  "plateform de dons",
+  "plateforme de dons",
   "web"
 ]
 
 keywords.each do |keyword|
-  Keyword.find_or_create_by!(name: keyword)
+  Osbl::Keyword.find_or_create_by!(name: keyword)
 end
 
 countries = [
@@ -270,7 +270,7 @@ countries = [
 ]
 
 countries.each do |country|
-  InterventionArea.find_or_create_by!(name: country)
+  Osbl::InterventionArea.find_or_create_by!(name: country)
 end
 
 french_regions = [
@@ -295,7 +295,7 @@ french_regions = [
 ]
 
 french_regions.each do |region|
-  InterventionArea.find_or_create_by!(name: region)
+  Osbl::InterventionArea.find_or_create_by!(name: region)
 end
 
 french_departements = [
@@ -403,7 +403,7 @@ french_departements = [
 ]
 
 french_departements.each do |departement|
-  InterventionArea.find_or_create_by!(name: departement)
+  Osbl::InterventionArea.find_or_create_by!(name: departement)
 end
 
 biggest_french_cities = [
@@ -502,7 +502,7 @@ biggest_french_cities = [
 ]
 
 biggest_french_cities.each do |city|
-  InterventionArea.find_or_create_by!(name: city)
+  Osbl::InterventionArea.find_or_create_by!(name: city)
 end
 
 continental_scales = [
@@ -516,7 +516,7 @@ continental_scales = [
 ]
 
 continental_scales.each do |scale|
-  InterventionArea.find_or_create_by!(name: scale)
+  Osbl::InterventionArea.find_or_create_by!(name: scale)
 end
 
 labels = [
@@ -546,7 +546,7 @@ labels = [
 ]
 
 labels.each do |label|
-  Label.find_or_create_by!(name: label[:name]) do |l|
+  Osbl::Label.find_or_create_by!(name: label[:name]) do |l|
     l.description = label[:description]
     l.website = label[:website]
   end
@@ -566,22 +566,22 @@ benefactorum_params = {
   "Benefactorum est la première plateforme de dons\r\ncollaborative et à but non-lucratif,\r\nqui vous permet de découvrir et de soutenir facilement\r\ntoutes les causes qui vous tiennent à coeur !",
   "osbls_causes_attributes" => {
     "0" => {
-      "cause_id" => "13"
+      "cause_id" => Osbl::Cause.find_by!(name: "autre").id
     }
   },
   "tax_reduction" => "intérêt_général",
   "osbls_keywords_attributes" => {
     "0" => {
-      "keyword_id" => "33" # altruisme
+      "keyword_id" => Osbl::Keyword.find_by!(name: "Altruisme").id
     },
     "1" => {
-      "keyword_id" => "34" # donateurs
+      "keyword_id" => Osbl::Keyword.find_by!(name: "Donateurs").id
     },
     "2" => {
-      "keyword_id" => "35" # plateforme de dons
+      "keyword_id" => Osbl::Keyword.find_by!(name: "Plateforme de dons").id
     },
     "3" => {
-      "keyword_id" => "36" # web
+      "keyword_id" => Osbl::Keyword.find_by!(name: "Web").id
     }
   },
   "geographical_scale" => "national",

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Location, type: :model do
+RSpec.describe Osbl::Location, type: :model do
   describe "factory" do
     it "is valid" do
       expect(create(:location)).to be_valid
@@ -10,13 +10,13 @@ RSpec.describe Location, type: :model do
   describe "database constraints" do
     it "raises error when type is null" do
       expect {
-        Location.create!(type: nil, osbl: create(:osbl), address_attributes: attributes_for(:address))
+        Osbl::Location.create!(type: nil, osbl: create(:osbl), address_attributes: attributes_for(:address))
       }.to raise_error(ActiveRecord::NotNullViolation)
     end
 
     it "raises error when name is null for antenne_locale type" do
       expect {
-        Location.create!(
+        Osbl::Location.create!(
           type: "Antenne locale",
           name: nil,
           osbl: create(:osbl),
@@ -27,7 +27,7 @@ RSpec.describe Location, type: :model do
 
     it "raises error when name is null for lieu_d_activite type" do
       expect {
-        Location.create!(
+        Osbl::Location.create!(
           type: "Lieu d'activité",
           name: nil,
           osbl: create(:osbl),
@@ -38,7 +38,7 @@ RSpec.describe Location, type: :model do
 
     it "raises error when name is null for autre type" do
       expect {
-        Location.create!(
+        Osbl::Location.create!(
           type: "Autre",
           name: nil,
           osbl: create(:osbl),

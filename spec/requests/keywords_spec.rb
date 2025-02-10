@@ -51,8 +51,8 @@ RSpec.describe "Keywords", type: :request, inertia: true do
       before { sign_in_as(user) }
 
       it "creates a new keyword" do
-        expect { subject }.to change(Keyword, :count).by(1)
-        expect(Keyword.last.name).to eq("Test")
+        expect { subject }.to change(Osbl::Keyword, :count).by(1)
+        expect(Osbl::Keyword.last.name).to eq("Test")
       end
 
       # context "when keyword already exists" do

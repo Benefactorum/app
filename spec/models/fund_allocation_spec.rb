@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe FundAllocation, type: :model do
+RSpec.describe Osbl::FundAllocation, type: :model do
   let(:annual_finance) { create(:annual_finance) }
 
   describe "factory" do
