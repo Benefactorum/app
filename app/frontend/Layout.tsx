@@ -28,21 +28,21 @@ export default function Layout ({
   }, [flash])
 
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col min-h-screen overflow-x-hidden'>
       <Header />
       <Toaster theme='light' position='top-right' richColors closeButton />
       {showSidebar
         ? (
           <SidebarProvider>
             <AppSidebar />
-            <main className='flex flex-col flex-grow'>
+            <main className='flex flex-col flex-grow overflow-x-hidden'>
               <SidebarTrigger />
               {children}
             </main>
           </SidebarProvider>
           )
         : (
-          <main className='flex flex-col flex-grow'>{children}</main>
+          <main className='flex flex-col flex-grow overflow-x-hidden'>{children}</main>
           )}
       <Footer />
     </div>
