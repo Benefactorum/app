@@ -3,7 +3,7 @@ class ContributionSerializer
     @contribution = contribution
   end
 
-  def as_json(*)
+  def as_json
     {
       id: @contribution.id,
       created_at: @contribution.created_at,
@@ -18,22 +18,22 @@ class ContributionSerializer
   def compute_type_label
     contributable = @contribution.contributable
     case @contribution.contributable_type
-    when "OsblCreation"
+    when "Contribution::OsblCreation"
       "Ajouter #{contributable.osbl_data["name"]}"
-    when "OsblUpdate"
+    when "Contribution::OsblUpdate"
       "Modifier #{contributable.osbl_data["name"]}"
-    when "Feedback"
+    when "Contribution::Feedback"
       "Retour d'expérience"
-    when "FeatureRequest"
+    when "Contribution::FeatureRequest"
       "Suggestion"
-    when "BugReport"
+    when "Contribution::BugReport"
       "Rapport de bogue"
-    when "CorrectionRequest"
+    when "Contribution::CorrectionRequest"
       "Correctif"
-    when "Other"
+    when "Contribution::Other"
       "Autre"
     else
-      ""
+      raise "Unknown contributable type: #{@contribution.contributable_type}"
     end
   end
 end

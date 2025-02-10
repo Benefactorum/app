@@ -3,6 +3,10 @@ class Contribution < ApplicationRecord
 
   belongs_to :user
 
+  enum :status, {
+    brouillon: 0
+  }
+
   delegated_type :contributable, types: %w[
     Contribution::OsblCreation
     Contribution::OsblUpdate

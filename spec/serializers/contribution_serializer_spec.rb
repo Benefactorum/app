@@ -2,49 +2,43 @@ require "rails_helper"
 
 RSpec.describe ContributionSerializer do
   describe "#as_json" do
-    let(:attributes) do
-      {
-        id: 1,
-        created_at: Time.current,
-        status: "pending",
-        github_resource_url: "http://example.com"
-      }
-    end
-
     subject { described_class.new(contribution).as_json }
 
     context "when contributable_type is OsblCreation" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "OsblCreation",
-          contributable: double("Contribution::OsblCreation", osbl_data: {"name" => "Benefactorum"})
-        ))
+        build(:contribution, :osbl_creation,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it 'returns type_label with "Ajouter"' do
-        expect(subject[:type_label]).to eq("Ajouter Benefactorum")
+        expect(subject[:type_label]).to eq("Ajouter OSBL Created")
       end
     end
 
     context "when contributable_type is OsblUpdate" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "OsblUpdate",
-          contributable: double("Contribution::OsblUpdate", osbl_data: {"name" => "Benefactorum"})
-        ))
+        build(:contribution, :osbl_update,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it 'returns type_label with "Modifier"' do
-        expect(subject[:type_label]).to eq("Modifier Benefactorum")
+        expect(subject[:type_label]).to eq("Modifier OSBL Updated")
       end
     end
 
     context "when contributable_type is Feedback" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "Feedback",
-          contributable: double("Contribution::Feedback")
-        ))
+        build(:contribution, :feedback,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it "returns type_label for Feedback" do
@@ -54,10 +48,11 @@ RSpec.describe ContributionSerializer do
 
     context "when contributable_type is FeatureRequest" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "FeatureRequest",
-          contributable: double("Contribution::FeatureRequest")
-        ))
+        build(:contribution, :feature_request,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it "returns type_label for FeatureRequest" do
@@ -67,10 +62,11 @@ RSpec.describe ContributionSerializer do
 
     context "when contributable_type is BugReport" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "BugReport",
-          contributable: double("Contribution::BugReport")
-        ))
+        build(:contribution, :bug_report,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it "returns type_label for BugReport" do
@@ -80,10 +76,11 @@ RSpec.describe ContributionSerializer do
 
     context "when contributable_type is CorrectionRequest" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "CorrectionRequest",
-          contributable: double("Contribution::CorrectionRequest")
-        ))
+        build(:contribution, :correction_request,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it "returns type_label for CorrectionRequest" do
@@ -93,10 +90,11 @@ RSpec.describe ContributionSerializer do
 
     context "when contributable_type is Other" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "Other",
-          contributable: double("Contribution::Other")
-        ))
+        build(:contribution, :other,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
       end
 
       it "returns type_label for Other" do
@@ -106,10 +104,15 @@ RSpec.describe ContributionSerializer do
 
     context "when contributable_type is unknown" do
       let(:contribution) do
-        double("Contribution", attributes.merge(
-          contributable_type: "UnknownType",
-          contributable: double("UnknownType")
-        ))
+        build(:contribution,
+          id: 1,
+          created_at: Time.current,
+          status: "pending",
+          github_resource_url: "http://example.com")
+      end
+
+      before do
+        allow(contribution).to receive(:contributable_type).and_return("UnknownType")
       end
 
       it "returns an empty type_label" do
