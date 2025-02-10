@@ -1,0 +1,2 @@
+class CorrectionRequest < ApplicationRecord
+end

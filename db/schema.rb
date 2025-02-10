@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_10_100037) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -76,6 +76,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 
+  create_table "bug_reports", force: :cascade do |t|
+  end
+
   create_table "causes", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -97,6 +100,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
     t.check_constraint "NOT (contributable_type IN ('Feedback', 'FeatureRequest', 'BugReport', 'CorrectionRequest', 'Other')) OR body IS NOT NULL", name: "body_required_for_specific_types"
   end
 
+  create_table "correction_requests", force: :cascade do |t|
+  end
+
   create_table "document_attachments", force: :cascade do |t|
     t.integer "document_id", null: false
     t.string "attachable_type", null: false
@@ -116,6 +122,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
     t.check_constraint "type NOT IN (1, 2) OR (type IN (1, 2) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
+  end
+
+  create_table "feature_requests", force: :cascade do |t|
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
   end
 
   create_table "fund_allocations", force: :cascade do |t|
@@ -186,6 +198,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
     t.text "osbl_data", null: false
   end
 
+  create_table "osbl_updates", force: :cascade do |t|
+    t.text "osbl_data", null: false
+  end
+
   create_table "osbls", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -228,6 +244,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_05_100704) do
     t.integer "label_id", null: false
     t.index ["label_id", "osbl_id"], name: "index_osbls_labels_on_label_id_and_osbl_id", unique: true
     t.index ["osbl_id", "label_id"], name: "index_osbls_labels_on_osbl_id_and_label_id", unique: true
+  end
+
+  create_table "others", force: :cascade do |t|
   end
 
   create_table "otps", force: :cascade do |t|

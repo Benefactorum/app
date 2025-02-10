@@ -5,11 +5,8 @@ module Users
     before_action :only_for_current_user
 
     def index
-      @contributions = Contribution.all
       render inertia: "Contribution/Index", props: {
-        contributions: @contributions.map do |contribution|
-          serialize_contribution(contribution)
-        end
+        contributions: @user.contributions.map(&:serialize)
       }
     end
 
@@ -109,12 +106,6 @@ module Users
           ]
         ]
       )
-    end
-
-    def serialize_contribution(contribution)
-      contribution.as_json(only: [
-        :id, :user_id, :status, :contributable_id
-      ])
     end
   end
 end
