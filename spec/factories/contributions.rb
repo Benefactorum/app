@@ -34,7 +34,7 @@ FactoryBot.define do
   end
   # contributables factories
 
-  factory :osbl_creation, class: "OsblCreation" do
+  factory :osbl_creation, class: Contributions::OsblCreation do
     osbl_data do
       {
         name: "OSBL Created",
@@ -44,7 +44,7 @@ FactoryBot.define do
     end
   end
 
-  factory :osbl_update, class: "OsblUpdate" do
+  factory :osbl_update, class: Contributions::OsblUpdate do
     osbl_data do
       {
         name: "OSBL Updated",
@@ -54,18 +54,18 @@ FactoryBot.define do
     end
   end
 
-  factory :feedback, class: "Feedback" do
+  factory :feedback, class: Contributions::Feedback do
   end
 
-  factory :feature_request, class: "FeatureRequest" do
+  factory :feature_request, class: Contributions::FeatureRequest do
   end
 
-  factory :bug_report, class: "BugReport" do
+  factory :bug_report, class: Contributions::BugReport do
   end
 
-  factory :correction_request, class: "CorrectionRequest" do
+  factory :correction_request, class: Contributions::CorrectionRequest do
   end
 
-  factory :other, class: "Other" do
+  factory :other, class: Contributions::Other do
   end
 end
