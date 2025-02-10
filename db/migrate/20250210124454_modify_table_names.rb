@@ -10,6 +10,13 @@ class ModifyTableNames < ActiveRecord::Migration[8.0]
     rename_table :fund_allocations, :osbl_fund_allocations if table_exists?(:fund_allocations)
     rename_table :otps, :user_otps if table_exists?(:otps)
     rename_table :sessions, :user_sessions if table_exists?(:sessions)
+    rename_table :osbl_creations, :contribution_osbl_creations if table_exists?(:osbl_creations)
+    rename_table :osbl_updates, :contribution_osbl_updates if table_exists?(:osbl_updates)
+    rename_table :feedbacks, :contribution_feedbacks if table_exists?(:feedbacks)
+    rename_table :feature_requests, :contribution_feature_requests if table_exists?(:feature_requests)
+    rename_table :bug_reports, :contribution_bug_reports if table_exists?(:bug_reports)
+    rename_table :correction_requests, :contribution_correction_requests if table_exists?(:correction_requests)
+    rename_table :others, :contribution_others if table_exists?(:others)
   end
 
   def down
@@ -23,5 +30,12 @@ class ModifyTableNames < ActiveRecord::Migration[8.0]
     rename_table :osbl_fund_allocations, :fund_allocations if table_exists?(:osbl_fund_allocations)
     rename_table :user_otps, :otps if table_exists?(:user_otps)
     rename_table :user_sessions, :sessions if table_exists?(:user_sessions)
+    rename_table :contribution_osbl_creations, :osbl_creations if table_exists?(:contribution_osbl_creations)
+    rename_table :contribution_osbl_updates, :osbl_updates if table_exists?(:contribution_osbl_updates)
+    rename_table :contribution_feedbacks, :feedbacks if table_exists?(:contribution_feedback)
+    rename_table :contribution_feature_requests, :feature_requests if table_exists?(:contribution_feature_requests)
+    rename_table :contribution_bug_reports, :bug_reports if table_exists?(:contribution_bug_reports)
+    rename_table :contribution_correction_requests, :correction_requests if table_exists?(:contribution_correction_requests)
+    rename_table :contribution_others, :others if table_exists?(:contribution_others)
   end
 end

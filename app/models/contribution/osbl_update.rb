@@ -1,4 +1,4 @@
-class Contributions::OsblUpdate < ApplicationRecord
+class Contribution::OsblUpdate < ApplicationRecord
   serialize :osbl_data, coder: JSON
 
   # db_constraints enforcing :

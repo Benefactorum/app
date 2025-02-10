@@ -1,4 +1,4 @@
-class Contributions::OsblCreation < ApplicationRecord
+class Contribution::OsblCreation < ApplicationRecord
   STATUS = {
     "brouillon" => 0,
     "en cours de validation" => 1,

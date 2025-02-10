@@ -4,13 +4,13 @@ class Contribution < ApplicationRecord
   belongs_to :user
 
   delegated_type :contributable, types: %w[
-    Contributions::OsblCreation
-    Contributions::OsblUpdate
-    Contributions::Feedback
-    Contributions::FeatureRequest
-    Contributions::BugReport
-    Contributions::CorrectionRequest
-    Contributions::Other
+    Contribution::OsblCreation
+    Contribution::OsblUpdate
+    Contribution::Feedback
+    Contribution::FeatureRequest
+    Contribution::BugReport
+    Contribution::CorrectionRequest
+    Contribution::Other
   ], dependent: :destroy
 
   has_many_attached :files
