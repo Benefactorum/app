@@ -4,7 +4,7 @@ module Users
     before_action :only_for_current_user
 
     def update
-      profile_picture = ProfilePicture.new(profile_picture: params[:profile_picture])
+      profile_picture = User::ProfilePicture.new(profile_picture: params[:profile_picture])
       profile_picture.attach_to(@user)
 
       redirect_to my_profile_path, inertia: {errors: profile_picture.errors}

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Users::Otp, type: :request, inertia: true do
+RSpec.describe User::Otp, type: :request, inertia: true do
   describe "POST /otp" do
     subject { post otp_path, params: params }
     let(:params) { {} }

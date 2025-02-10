@@ -1,6 +1,4 @@
 class Osbl::Location < ApplicationRecord
-  self.table_name = "locations"
-
   self.inheritance_column = nil
 
   belongs_to :osbl

@@ -1,4 +1,4 @@
-class Users::Otp < ApplicationRecord
+class User::Otp < ApplicationRecord
   EXPIRATION_TIME = 10.minutes
 
   belongs_to :user

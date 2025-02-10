@@ -1,5 +1,4 @@
-class Osbl::JoinTables::OsblsCause < ApplicationRecord
-  self.table_name = "osbls_causes"
+class JoinTables::OsblsCause < ApplicationRecord
   belongs_to :osbl
   belongs_to :cause, class_name: "Osbl::Cause"
 

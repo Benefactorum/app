@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_10_124454) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -56,35 +56,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", unique: true
-    # Should I change it to Osbl::Location ?
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", where: "addressable_type = 'Location'"
     t.check_constraint "latitude >= -90 AND latitude <= 90", name: "check_latitude_range"
     t.check_constraint "longitude >= -180 AND longitude <= 180", name: "check_longitude_range"
   end
 
-  create_table "annual_finances", force: :cascade do |t|
-    t.integer "year", null: false
-    t.decimal "treasury", precision: 15, scale: 2
-    t.decimal "budget", precision: 15, scale: 2
-    t.boolean "certified"
-    t.integer "employees_count"
-    t.integer "osbl_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["osbl_id"], name: "index_annual_finances_on_osbl_id"
-    t.check_constraint "budget >= 0", name: "budget_positive"
-    t.check_constraint "employees_count >= 0", name: "employees_count_positive"
-    t.check_constraint "year >= 1000", name: "year_as_4_digits"
-  end
-
   create_table "bug_reports", force: :cascade do |t|
-  end
-
-  create_table "causes", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_causes_on_name", unique: true
   end
 
   create_table "contributions", force: :cascade do |t|
@@ -122,7 +99,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
     t.integer "year"
     t.check_constraint "type NOT IN (1, 2) OR (type IN (1, 2) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND name IS NOT NULL)", name: "name_required_for_specific_types"
-    t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 
@@ -132,58 +108,84 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
   create_table "feedbacks", force: :cascade do |t|
   end
 
-  create_table "fund_allocations", force: :cascade do |t|
-    t.integer "type", null: false
-    t.decimal "percent", precision: 5, scale: 2, null: false
-    t.decimal "amount", precision: 15, scale: 2
-    t.integer "annual_finance_id", null: false
+  create_table "osbl_annual_finances", force: :cascade do |t|
+    t.integer "year", null: false
+    t.decimal "treasury", precision: 15, scale: 2
+    t.decimal "budget", precision: 15, scale: 2
+    t.boolean "certified"
+    t.integer "employees_count"
+    t.integer "osbl_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["annual_finance_id", "type"], name: "index_fund_allocations_on_annual_finance_id_and_type", unique: true
-    t.index ["annual_finance_id"], name: "index_fund_allocations_on_annual_finance_id"
-    t.check_constraint "amount > 0", name: "amount_positive"
-    t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
+    t.index ["osbl_id"], name: "index_osbl_annual_finances_on_osbl_id"
+    t.check_constraint "budget >= 0", name: "budget_positive"
+    t.check_constraint "employees_count >= 0", name: "employees_count_positive"
+    t.check_constraint "year >= 1000", name: "year_as_4_digits"
   end
 
-  create_table "fund_sources", force: :cascade do |t|
-    t.integer "type", null: false
-    t.decimal "percent", precision: 5, scale: 2, null: false
-    t.decimal "amount", precision: 15, scale: 2
-    t.integer "annual_finance_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["annual_finance_id", "type"], name: "index_fund_sources_on_annual_finance_id_and_type", unique: true
-    t.index ["annual_finance_id"], name: "index_fund_sources_on_annual_finance_id"
-    t.check_constraint "amount > 0", name: "amount_positive"
-    t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
-  end
-
-  create_table "intervention_areas", force: :cascade do |t|
+  create_table "osbl_causes", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_intervention_areas_on_name", unique: true
+    t.index ["name"], name: "index_osbl_causes_on_name", unique: true
+  end
+
+  create_table "osbl_creations", force: :cascade do |t|
+    t.text "osbl_data", null: false
+  end
+
+  create_table "osbl_fund_allocations", force: :cascade do |t|
+    t.integer "type", null: false
+    t.decimal "percent", precision: 5, scale: 2, null: false
+    t.decimal "amount", precision: 15, scale: 2
+    t.integer "annual_finance_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["annual_finance_id", "type"], name: "index_osbl_fund_allocations_on_annual_finance_id_and_type", unique: true
+    t.index ["annual_finance_id"], name: "index_osbl_fund_allocations_on_annual_finance_id"
+    t.check_constraint "amount > 0", name: "amount_positive"
+    t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
+  end
+
+  create_table "osbl_fund_sources", force: :cascade do |t|
+    t.integer "type", null: false
+    t.decimal "percent", precision: 5, scale: 2, null: false
+    t.decimal "amount", precision: 15, scale: 2
+    t.integer "annual_finance_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["annual_finance_id", "type"], name: "index_osbl_fund_sources_on_annual_finance_id_and_type", unique: true
+    t.index ["annual_finance_id"], name: "index_osbl_fund_sources_on_annual_finance_id"
+    t.check_constraint "amount > 0", name: "amount_positive"
+    t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
+  end
+
+  create_table "osbl_intervention_areas", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_osbl_intervention_areas_on_name", unique: true
     t.check_constraint "length(name) >= 3 AND length(name) <= 100", name: "intervention_areas_name_length_check"
   end
 
-  create_table "keywords", force: :cascade do |t|
+  create_table "osbl_keywords", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_keywords_on_name", unique: true
+    t.index ["name"], name: "index_osbl_keywords_on_name", unique: true
     t.check_constraint "length(name) >= 3 AND length(name) <= 100", name: "keywords_name_length_check"
   end
 
-  create_table "labels", force: :cascade do |t|
+  create_table "osbl_labels", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_labels_on_name", unique: true
+    t.index ["name"], name: "index_osbl_labels_on_name", unique: true
   end
 
-  create_table "locations", force: :cascade do |t|
+  create_table "osbl_locations", force: :cascade do |t|
     t.integer "type", null: false
     t.string "name"
     t.text "description"
@@ -191,13 +193,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "osbl_id", null: false
-    t.index ["osbl_id"], name: "index_locations_on_osbl_id"
     t.index ["osbl_id"], name: "index_locations_on_osbl_id_siege_social", unique: true, where: "type = 0"
+    t.index ["osbl_id"], name: "index_osbl_locations_on_osbl_id"
     t.check_constraint "type NOT IN (1, 2, 3) OR (type IN (1, 2, 3) AND name IS NOT NULL)", name: "name_required_for_specific_types"
-  end
-
-  create_table "osbl_creations", force: :cascade do |t|
-    t.text "osbl_data", null: false
   end
 
   create_table "osbl_updates", force: :cascade do |t|
@@ -251,23 +249,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
   create_table "others", force: :cascade do |t|
   end
 
-  create_table "otps", force: :cascade do |t|
+  create_table "user_otps", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "secret", null: false
     t.integer "counter", default: 0
     t.boolean "used", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_otps_on_user_id"
+    t.index ["user_id"], name: "index_user_otps_on_user_id"
   end
 
-  create_table "sessions", force: :cascade do |t|
+  create_table "user_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "user_agent"
     t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_sessions_on_user_id"
+    t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -287,21 +285,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_112341) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "annual_finances", "osbls", on_delete: :cascade
   add_foreign_key "contributions", "users"
   add_foreign_key "document_attachments", "documents", on_delete: :cascade
-  add_foreign_key "fund_allocations", "annual_finances", on_delete: :cascade
-  add_foreign_key "fund_sources", "annual_finances", on_delete: :cascade
-  add_foreign_key "locations", "osbls", on_delete: :cascade
-  add_foreign_key "osbls_causes", "causes", on_delete: :cascade
+  add_foreign_key "osbl_annual_finances", "osbls", on_delete: :cascade
+  add_foreign_key "osbl_fund_allocations", "osbl_annual_finances", column: "annual_finance_id", on_delete: :cascade
+  add_foreign_key "osbl_fund_sources", "osbl_annual_finances", column: "annual_finance_id", on_delete: :cascade
+  add_foreign_key "osbl_locations", "osbls", on_delete: :cascade
+  add_foreign_key "osbls_causes", "osbl_causes", column: "cause_id", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade
-  add_foreign_key "osbls_intervention_areas", "intervention_areas", on_delete: :cascade
+  add_foreign_key "osbls_intervention_areas", "osbl_intervention_areas", column: "intervention_area_id", on_delete: :cascade
   add_foreign_key "osbls_intervention_areas", "osbls", on_delete: :cascade
-  add_foreign_key "osbls_keywords", "keywords", on_delete: :cascade
+  add_foreign_key "osbls_keywords", "osbl_keywords", column: "keyword_id", on_delete: :cascade
   add_foreign_key "osbls_keywords", "osbls", on_delete: :cascade
-  add_foreign_key "osbls_labels", "labels", on_delete: :cascade
+  add_foreign_key "osbls_labels", "osbl_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "osbls_labels", "osbls", on_delete: :cascade
-  add_foreign_key "otps", "users", on_delete: :cascade
-  add_foreign_key "sessions", "users", on_delete: :cascade
+  add_foreign_key "user_otps", "users", on_delete: :cascade
+  add_foreign_key "user_sessions", "users", on_delete: :cascade
   add_foreign_key "users", "accounts"
 end

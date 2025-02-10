@@ -5,7 +5,7 @@ class Document < ApplicationRecord
 
   has_one_attached :file
 
-  has_many :document_attachments, dependent: :destroy # join table
+  has_many :document_attachments, dependent: :destroy, class_name: "JoinTables::DocumentAttachment"
   # has_many :attachables, through: :document_attachments, source_type: "Osbl"
 
   enum :type, {

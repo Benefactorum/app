@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include AttachableValidation
 
-  has_one :otp, dependent: :destroy, class_name: "Users::Otp"
+  has_one :otp, dependent: :destroy, class_name: "User::Otp"
   has_one_attached :profile_picture
   has_many :contributions, dependent: :nullify
 
@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
   belongs_to :account
 
-  has_many :sessions, dependent: :destroy, class_name: "Users::Session"
+  has_many :sessions, dependent: :destroy, class_name: "User::Session"
 
   validates :email, presence: true
   validates :email, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}, if: -> { email.present? }

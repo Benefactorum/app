@@ -63,7 +63,7 @@ RSpec.describe "Connection", type: :request, inertia: true do
       context "when OTP is expired" do
         let(:otp) { create(:otp) }
 
-        before { travel Users::Otp::EXPIRATION_TIME + 1.second }
+        before { travel User::Otp::EXPIRATION_TIME + 1.second }
         it "redirects to /se-connecter and sends OTP email" do
           assert_enqueued_emails 1 do
             subject
