@@ -39,6 +39,59 @@ RSpec.describe Contribution, type: :model do
     end
   end
 
+  describe "#type_label" do
+    context "when contributable type is OsblCreation" do
+      it "returns the correct label with name" do
+        contribution = build(:contribution, :osbl_creation)
+        contribution.contributable.osbl_data = {"name" => "Awesome Osbl"}
+        expect(contribution.type_label).to eq("Ajouter Awesome Osbl")
+      end
+    end
+
+    context "when contributable type is OsblUpdate" do
+      it "returns the correct label with name" do
+        contribution = build(:contribution, :osbl_update)
+        contribution.contributable.osbl_data = {"name" => "Updated Osbl"}
+        expect(contribution.type_label).to eq("Modifier Updated Osbl")
+      end
+    end
+
+    context "when contributable type is Feedback" do
+      it "returns Feedback" do
+        contribution = build(:contribution, :feedback)
+        expect(contribution.type_label).to eq("Retour d'expérience")
+      end
+    end
+
+    context "when contributable type is FeatureRequest" do
+      it "returns Suggestion" do
+        contribution = build(:contribution, :feature_request)
+        expect(contribution.type_label).to eq("Suggestion")
+      end
+    end
+
+    context "when contributable type is BugReport" do
+      it "returns Rapport de bogue" do
+        contribution = build(:contribution, :bug_report)
+        expect(contribution.type_label).to eq("Rapport de bogue")
+      end
+    end
+
+    context "when contributable type is CorrectionRequest" do
+      it "returns Correctif" do
+        contribution = build(:contribution, :correction_request)
+        expect(contribution.type_label).to eq("Correctif")
+      end
+    end
+
+    context "when contributable type is Other" do
+      it "returns Autre" do
+        contribution = build(:contribution, :other)
+        expect(contribution.type_label).to eq("Autre")
+      end
+    end
+  end
+
   describe "file attachments" do
     it "is invalid when file size exceeds 5MB" do
       contribution = build(:contribution)

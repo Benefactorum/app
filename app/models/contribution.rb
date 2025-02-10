@@ -25,6 +25,29 @@ class Contribution < ApplicationRecord
   # db_constraints enforcing :
   # validates :body, presence: true, if: -> { %w[Feedback FeatureRequest BugReport CorrectionRequest Other].include?(contributable_type) }
 
+  def serialize
+    ContributionSerializer.new(self).as_json
+  end
+
+  def type_label
+    case contributable_type
+    when "OsblCreation"
+      "Ajouter #{contributable.osbl_data["name"]}"
+    when "OsblUpdate"
+      "Modifier #{contributable.osbl_data["name"]}"
+    when "Feedback"
+      "Retour d'expérience"
+    when "FeatureRequest"
+      "Suggestion"
+    when "BugReport"
+      "Rapport de bogue"
+    when "CorrectionRequest"
+      "Correctif"
+    when "Other"
+      "Autre"
+    end
+  end
+
   private
 
   def files_count_within_limit
