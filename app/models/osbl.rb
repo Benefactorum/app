@@ -3,25 +3,25 @@ class Osbl < ApplicationRecord
 
   has_one_attached :logo
 
-  has_many :osbls_causes, dependent: :destroy # join table
-  has_many :causes, through: :osbls_causes
+  has_many :osbls_causes, dependent: :destroy, class_name: "Osbl::JoinTables::OsblsCause"
+  has_many :causes, through: :osbls_causes, class_name: "Osbl::Cause"
 
-  has_many :osbls_labels, dependent: :destroy # join table
-  has_many :labels, through: :osbls_labels
+  has_many :osbls_labels, dependent: :destroy, class_name: "Osbl::JoinTables::OsblsLabel"
+  has_many :labels, through: :osbls_labels, class_name: "Osbl::Label"
 
-  has_many :osbls_keywords, dependent: :destroy # join table
-  has_many :keywords, through: :osbls_keywords
+  has_many :osbls_keywords, dependent: :destroy, class_name: "Osbl::JoinTables::OsblsKeyword"
+  has_many :keywords, through: :osbls_keywords, class_name: "Osbl::Keyword"
 
-  has_many :osbls_intervention_areas, dependent: :destroy # join table
-  has_many :intervention_areas, through: :osbls_intervention_areas
+  has_many :osbls_intervention_areas, dependent: :destroy, class_name: "Osbl::JoinTables::OsblsInterventionArea"
+  has_many :intervention_areas, through: :osbls_intervention_areas, class_name: "Osbl::InterventionArea"
 
-  has_many :annual_finances, dependent: :destroy
-  has_one :latest_finance, -> { order(year: :desc) }, class_name: "AnnualFinance"
+  has_many :annual_finances, dependent: :destroy, class_name: "Osbl::AnnualFinance"
+  has_one :latest_finance, -> { order(year: :desc) }, class_name: "Osbl::AnnualFinance"
 
   has_many :document_attachments, as: :attachable, dependent: :destroy # join table
-  has_many :documents, through: :document_attachments
+  has_many :documents, through: :document_attachments, class_name: "Document"
 
-  has_many :locations, dependent: :destroy
+  has_many :locations, dependent: :destroy, class_name: "Osbl::Location"
 
   TAX_REDUCTION_VALUES = {
     "intérêt_général" => 0.66,

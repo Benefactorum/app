@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "ProfilePictures", type: :request, inertia: true do
+RSpec.describe Users::ProfilePicture, type: :request, inertia: true do
   let(:user) { create(:user) }
 
   describe "PATCH /update" do

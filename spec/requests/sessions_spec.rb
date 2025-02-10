@@ -58,7 +58,7 @@ RSpec.describe "Sessions", type: :request, inertia: true do
         let!(:user) { create(:user, :with_otp) }
         let(:params) { {email: user.email, code: user.otp.code} }
 
-        before { travel Otp::EXPIRATION_TIME + 1.second }
+        before { travel Users::Otp::EXPIRATION_TIME + 1.second }
 
         it "redirects back with errors" do
           subject

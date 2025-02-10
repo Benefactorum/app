@@ -51,8 +51,8 @@ RSpec.describe "InterventionAreas", type: :request, inertia: true do
       before { sign_in_as(user) }
 
       it "creates a new keyword" do
-        expect { subject }.to change(InterventionArea, :count).by(1)
-        expect(InterventionArea.last.name).to eq("Test")
+        expect { subject }.to change(Osbl::InterventionArea, :count).by(1)
+        expect(Osbl::InterventionArea.last.name).to eq("Test")
       end
 
       # context "when keyword already exists" do

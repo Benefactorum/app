@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AnnualFinance, type: :model do
+RSpec.describe Osbl::AnnualFinance, type: :model do
   describe "factory" do
     it "has a valid factory" do
       expect(build(:annual_finance)).to be_valid

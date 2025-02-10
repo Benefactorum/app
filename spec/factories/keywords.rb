@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :keyword do
+  factory :keyword, class: "Osbl::Keyword" do
     sequence(:name) { |n| "test#{n}" }
   end
 end

@@ -1,4 +1,4 @@
-class Session < ApplicationRecord
+class Users::Session < ApplicationRecord
   belongs_to :user
 
   before_create do

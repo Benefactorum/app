@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe FundSource, type: :model do
+RSpec.describe Osbl::FundSource, type: :model do
   let(:annual_finance) { create(:annual_finance) }
 
   describe "database constraints" do

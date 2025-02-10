@@ -1,4 +1,6 @@
-class AnnualFinance < ApplicationRecord
+class Osbl::AnnualFinance < ApplicationRecord
+  self.table_name = "annual_finances"
+
   belongs_to :osbl
   has_many :fund_sources, dependent: :destroy
   has_many :fund_allocations, dependent: :destroy

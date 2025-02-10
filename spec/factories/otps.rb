@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :otp do
+  factory :otp, class: "Users::Otp" do
     association :user
     counter { 1 }
   end
