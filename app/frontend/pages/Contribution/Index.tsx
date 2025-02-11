@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge, type BadgeProps } from '@/components/ui/badge'
-import FormattedDate from '@/lib/formattedDate'
+import formattedDate from '@/lib/formattedDate'
 import { Pencil, Eye, Trash } from 'lucide-react'
 // @ts-expect-error
 import Github from '@/assets/icons/github.svg?react'
@@ -108,7 +108,7 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                   <TableBody>
                     {contributions.map((contribution, index) => (
                       <TableRow key={index}>
-                        <TableCell>{FormattedDate(contribution.created_at)}</TableCell>
+                        <TableCell>{formattedDate(contribution.created_at)}</TableCell>
                         <TableCell>{getTypeLabel(contribution)}</TableCell>
                         <TableCell>
                           <Badge {...getStatusBadgeVariant(contribution.status)}>

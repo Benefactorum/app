@@ -11,7 +11,7 @@ import Instagram from '@/assets/icons/instagram.svg?react'
 import Github from '@/assets/icons/github.svg?react'
 // @ts-expect-error
 import Linkedin from '@/assets/icons/linkedin.svg?react'
-import FormattedDate from '@/lib/formattedDate'
+import formattedDate from '@/lib/formattedDate'
 import { buttonVariants } from '@/components/ui/button'
 
 import type { CurrentUserType, ProfilePictureUrlType } from '@/types/types'
@@ -95,7 +95,7 @@ export default function Show ({
               </div>
             </div>
             <p>
-              Inscrit depuis le <FormattedDate isoDate={user.created_at} />.
+              Inscrit depuis le {formattedDate(user.created_at)}.
             </p>
             {user.id === currentUser.id && <p>Profil complété à 20 %.</p>}
             <p>0 points d'impact.</p>
