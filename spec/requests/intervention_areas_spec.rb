@@ -54,13 +54,6 @@ RSpec.describe "InterventionAreas", type: :request, inertia: true do
         expect { subject }.to change(Osbl::InterventionArea, :count).by(1)
         expect(Osbl::InterventionArea.last.name).to eq("Test")
       end
-
-      # context "when keyword already exists" do
-      #   before { create(:keyword, name: "test") }
-      #   it "returns an error" do
-      #     expect { subject }.to raise_error(ActiveRecord::RecordNotUnique)
-      #   end
-      # end
     end
   end
 end
