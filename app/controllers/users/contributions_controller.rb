@@ -38,7 +38,7 @@ module Users
     end
 
     def destroy
-      contribution = @user.contributions.find(params[:id])
+      contribution = @user.contributions.where(status: "brouillon").find(params[:id])
       contribution.destroy!
       redirect_to my_contributions_path, success: "Votre contribution a été supprimée."
     end

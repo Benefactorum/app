@@ -246,7 +246,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
   describe "DELETE /destroy" do
     let(:user) { create(:user) }
-    let!(:contribution) { create(:contribution, user: user) }
+    let!(:contribution) { create(:contribution, user: user, status: "brouillon") }
     subject { delete user_contribution_url(user, contribution) }
 
     it_behaves_like "require_authentication"
@@ -266,14 +266,24 @@ RSpec.describe "/contributions", type: :request, inertia: true do
         sign_in_as(user)
       end
 
-      it "destroys the contribution" do
-        expect { subject }.to change(Contribution, :count).by(-1)
+      context "when contribution is a draft" do
+        it "destroys the contribution" do
+          expect { subject }.to change(Contribution, :count).by(-1)
+        end
+
+        it "redirects to contributions list with success message" do
+          subject
+          expect(response).to redirect_to(my_contributions_url)
+          expect(flash[:success]).to be_present
+        end
       end
 
-      it "redirects to contributions list with success message" do
-        subject
-        expect(response).to redirect_to(my_contributions_url)
-        expect(flash[:success]).to be_present
+      context "when contribution is not a draft" do
+        let!(:contribution) { create(:contribution, user: user, status: "published") }
+
+        it "raises an ActiveRecord::RecordNotFound error" do
+          expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
   end
