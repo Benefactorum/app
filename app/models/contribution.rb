@@ -11,15 +11,22 @@ class Contribution < ApplicationRecord
     :rejetée => 4
   }
 
-  delegated_type :contributable, types: %w[
+  OSBL_CONTRIBUTABLE_TYPES = %w[
     Contribution::OsblCreation
     Contribution::OsblUpdate
+  ]
+
+  OTHER_CONTRIBUTABLE_TYPES = %w[
     Contribution::Feedback
     Contribution::FeatureRequest
     Contribution::BugReport
     Contribution::CorrectionRequest
     Contribution::Other
-  ], dependent: :destroy
+  ]
+
+  CONTRIBUTABLE_TYPES = OSBL_CONTRIBUTABLE_TYPES + OTHER_CONTRIBUTABLE_TYPES
+
+  delegated_type :contributable, types: CONTRIBUTABLE_TYPES, dependent: :destroy
 
   has_many_attached :files
 
@@ -53,16 +60,22 @@ class Contribution < ApplicationRecord
       scope :add_osbl_field, ->(field_name) do
         select(
           "contributions.*",
-          "COALESCE(json_extract(contribution_osbl_creations.osbl_data, '$.#{field_name}'),
-                   json_extract(contribution_osbl_updates.osbl_data, '$.#{field_name}')) as osbl_#{field_name}"
+          sanitize_sql_array([
+            "COALESCE(json_extract(contribution_osbl_creations.osbl_data, ?),
+                     json_extract(contribution_osbl_updates.osbl_data, ?)) as osbl_#{field_name}",
+            "$.#{field_name}",
+            "$.#{field_name}"
+          ])
         )
       end
 
       def self.filter_by_osbl_json_value(key, value)
         where(
-          "COALESCE(json_extract(contribution_osbl_creations.osbl_data, ?),
-                  json_extract(contribution_osbl_updates.osbl_data, ?)) = ?",
-          "$.#{key}", "$.#{key}", value
+          sanitize_sql_array([
+            "COALESCE(json_extract(contribution_osbl_creations.osbl_data, ?),
+                    json_extract(contribution_osbl_updates.osbl_data, ?)) = ?",
+            "$.#{key}", "$.#{key}", value
+          ])
         )
       end
     end
