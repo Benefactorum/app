@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button'
 import { Badge, type BadgeProps } from '@/components/ui/badge'
 import FormattedDate from '@/lib/formattedDate'
 import { Pencil, Eye, Trash } from 'lucide-react'
+// @ts-expect-error
+import Github from '@/assets/icons/github.svg?react'
+
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
   AlertDialog,
@@ -91,14 +94,16 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                           </Badge>
                         </TableCell>
                         <TableCell className='flex gap-2'>
-                          <a href={contribution.github_resource_url} target='_blank' rel='noopener noreferrer' title='Voir'>
-                            <Button variant='ghost' size='icon' className='bg-white'>
-                              <Eye />
-                            </Button>
-                          </a>
+                          {(contribution.type_label.startsWith('Ajouter') || contribution.type_label.startsWith('Modifier')) && (
+                            <Link href={`/mes-contributions/${contribution.id}`} title='Voir'>
+                              <Button variant='ghost' size='icon' className='bg-white'>
+                                <Eye />
+                              </Button>
+                            </Link>
+                          )}
                           <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
                             <Button variant='ghost' size='icon' className='bg-white'>
-                              <Pencil className='text-primary' />
+                              <Pencil />
                             </Button>
                           </Link>
                           {contribution.status === 'brouillon'
