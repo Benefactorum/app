@@ -50,7 +50,7 @@ RSpec.describe "InterventionAreas", type: :request, inertia: true do
       let(:params) { {name: "   teSt   "} }
       before { sign_in_as(user) }
 
-      it "creates a new keyword" do
+      it "creates a new intervention area" do
         expect { subject }.to change(Osbl::InterventionArea, :count).by(1)
         expect(Osbl::InterventionArea.last.name).to eq("Test")
       end
