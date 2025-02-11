@@ -4,7 +4,11 @@ class Contribution < ApplicationRecord
   belongs_to :user
 
   enum :status, {
-    brouillon: 0
+    :brouillon => 0,
+    :"en attente de revue" => 1,
+    :"en cours de revue" => 2,
+    :validée => 3,
+    :rejetée => 4
   }
 
   delegated_type :contributable, types: %w[
