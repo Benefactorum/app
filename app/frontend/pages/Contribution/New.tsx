@@ -146,7 +146,16 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
   function handleConfirmSubmit (): void {
     if (!validateContribution()) return
     transform((data) => deepCleanData(data))
-    post(`/users/${currentUser.id}/contributions`)
+    post(`/users/${currentUser.id}/contributions`, {
+      onError: (errors) => {
+        Object.entries(errors).forEach(([key, value]) => {
+          setError(`contribution.osbl.${key}` as 'contribution', value)
+        })
+        setOpenDialog(false)
+        toast.error('Veuillez corriger les erreurs avant de continuer.')
+      }
+    }
+    )
   }
 
   function avoidUnintentionalSubmission (e: React.KeyboardEvent<HTMLFormElement>): void {
