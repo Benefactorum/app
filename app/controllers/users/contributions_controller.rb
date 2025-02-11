@@ -6,14 +6,14 @@ module Users
 
     def index
       render inertia: "Contribution/Index", props: {
-        contributions: @user.contributions.with_osbl_data.as_json(
+        contributions: @user.contributions.with_osbl_names.as_json(
           only: %i[
             id
             contributable_type
             status
             created_at
             github_resource_url
-            osbl_data
+            osbl_name
           ]
         )
       }

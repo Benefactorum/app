@@ -22,7 +22,6 @@ import {
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { CurrentUserType } from '@/types/types'
-import { OsblData } from './types'
 
 interface Contribution {
   id: number
@@ -30,7 +29,7 @@ interface Contribution {
   status: string
   created_at: string
   github_resource_url: string
-  osbl_data: OsblData
+  osbl_name: string
 }
 
 interface Props {
@@ -61,9 +60,9 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
   function getTypeLabel (contribution: Contribution): string {
     switch (contribution.contributable_type) {
       case 'Contribution::OsblCreation':
-        return `Ajouter ${contribution.osbl_data.name}`
+        return `Ajouter ${contribution.osbl_name}`
       case 'Contribution::OsblUpdate':
-        return `Modifier ${contribution.osbl_data.name}`
+        return `Modifier ${contribution.osbl_name}`
       case 'Contribution::Feedback':
         return 'Retour d\'expérience'
       case 'Contribution::FeatureRequest':
