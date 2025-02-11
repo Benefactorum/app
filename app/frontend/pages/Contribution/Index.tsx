@@ -101,27 +101,37 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                               <Pencil className='text-primary' />
                             </Button>
                           </Link>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant='ghost' size='icon' className='bg-white' title='Supprimer'>
-                                <Trash className='text-destructive' />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Vous êtes sur le point de supprimer votre contribution.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => { handleDelete(contribution.id) }}>
-                                  Supprimer
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                          {contribution.status === 'brouillon'
+                            ? (
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant='ghost' size='icon' className='bg-white' title='Supprimer'>
+                                    <Trash />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Vous êtes sur le point de supprimer votre contribution.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => { handleDelete(contribution.id) }}>
+                                      Supprimer
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                              )
+                            : (
+                              <a href={contribution.github_resource_url} target='_blank' rel='noopener noreferrer' title='Aller sur GitHub'>
+                                <Button variant='ghost' size='icon' className='bg-white'>
+                                  <Github />
+                                </Button>
+                              </a>
+                              )}
                         </TableCell>
                       </TableRow>
                     ))}
