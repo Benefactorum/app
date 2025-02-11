@@ -37,45 +37,47 @@ interface Props {
   contributions: Contribution[]
 }
 
-function getStatusBadgeVariant (status: string): { variant: BadgeProps['variant'] } {
+function getStatusBadgeVariant (status: string): BadgeProps['variant'] {
   switch (status) {
+    case 'brouillon':
+      return 'ghost'
+    case 'en attente de revue':
+      return 'outline'
+    case 'en cours de revue':
+      return 'secondary'
     case 'validée':
-      return { variant: 'default' }
-    case 'non traitée':
-      return { variant: 'secondary' }
-    case 'ouvert':
-      return { variant: 'outline' }
+      return 'default'
     case 'rejetée':
-      return { variant: 'destructive' }
+      return 'destructive'
     default:
-      return { variant: 'ghost' }
+      return 'outline'
+  }
+}
+
+function getTypeLabel (contribution: Contribution): string {
+  switch (contribution.contributable_type) {
+    case 'Contribution::OsblCreation':
+      return `Ajouter ${contribution.osbl_name}`
+    case 'Contribution::OsblUpdate':
+      return `Modifier ${contribution.osbl_name}`
+    case 'Contribution::Feedback':
+      return 'Retour d\'expérience'
+    case 'Contribution::FeatureRequest':
+      return 'Suggestion'
+    case 'Contribution::BugReport':
+      return 'Rapport de bogue'
+    case 'Contribution::CorrectionRequest':
+      return 'Correctif'
+    case 'Contribution::Other':
+      return 'Autre'
+    default:
+      return contribution.contributable_type
   }
 }
 
 export default function Index ({ currentUser, contributions }: Props): ReactElement {
   function handleDelete (id: number): void {
     router.delete(`/users/${currentUser.id}/contributions/${id}`)
-  }
-
-  function getTypeLabel (contribution: Contribution): string {
-    switch (contribution.contributable_type) {
-      case 'Contribution::OsblCreation':
-        return `Ajouter ${contribution.osbl_name}`
-      case 'Contribution::OsblUpdate':
-        return `Modifier ${contribution.osbl_name}`
-      case 'Contribution::Feedback':
-        return 'Retour d\'expérience'
-      case 'Contribution::FeatureRequest':
-        return 'Suggestion'
-      case 'Contribution::BugReport':
-        return 'Rapport de bogue'
-      case 'Contribution::CorrectionRequest':
-        return 'Correctif'
-      case 'Contribution::Other':
-        return 'Autre'
-      default:
-        return contribution.contributable_type
-    }
   }
 
   return (
@@ -106,12 +108,12 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {contributions.map((contribution, index) => (
-                      <TableRow key={index}>
+                    {contributions.map((contribution) => (
+                      <TableRow key={contribution.id}>
                         <TableCell>{formattedDate(contribution.created_at)}</TableCell>
                         <TableCell>{getTypeLabel(contribution)}</TableCell>
                         <TableCell>
-                          <Badge {...getStatusBadgeVariant(contribution.status)}>
+                          <Badge variant={getStatusBadgeVariant(contribution.status)}>
                             {contribution.status}
                           </Badge>
                         </TableCell>
