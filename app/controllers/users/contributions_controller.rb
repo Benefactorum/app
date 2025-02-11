@@ -6,7 +6,16 @@ module Users
 
     def index
       render inertia: "Contribution/Index", props: {
-        contributions: @user.contributions.map(&:serialize)
+        contributions: @user.contributions.with_osbl_data.as_json(
+          only: %i[
+            id
+            contributable_type
+            status
+            created_at
+            github_resource_url
+            osbl_data
+          ]
+        )
       }
     end
 
@@ -38,7 +47,7 @@ module Users
     end
 
     def destroy
-      contribution = @user.contributions.where(status: "brouillon").find(params[:id])
+      contribution = @user.contributions.where(status: :brouillon).find(params[:id])
       contribution.destroy!
       redirect_to my_contributions_path, success: "Votre contribution a été supprimée."
     end

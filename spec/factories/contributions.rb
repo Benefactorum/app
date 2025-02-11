@@ -1,13 +1,14 @@
 FactoryBot.define do
   factory :contribution do
     association :user
-    status { "brouillon" }
+    status { :brouillon }
     contributable { build(:osbl_creation) }
 
     trait :with_body do
       body { "Body" }
     end
 
+    # Contributable types
     trait :osbl_creation do
       contributable { build(:osbl_creation) }
     end
@@ -41,8 +42,8 @@ FactoryBot.define do
       with_body
     end
   end
-  # contributables factories
 
+  # Contributables factories
   factory :osbl_creation, class: Contribution::OsblCreation do
     osbl_data do
       {
