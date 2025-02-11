@@ -14,7 +14,7 @@ class Contribution < ApplicationRecord
   OSBL_CONTRIBUTABLE_TYPES = %w[
     Contribution::OsblCreation
     Contribution::OsblUpdate
-  ]
+  ].freeze
 
   OTHER_CONTRIBUTABLE_TYPES = %w[
     Contribution::Feedback
@@ -22,9 +22,9 @@ class Contribution < ApplicationRecord
     Contribution::BugReport
     Contribution::CorrectionRequest
     Contribution::Other
-  ]
+  ].freeze
 
-  CONTRIBUTABLE_TYPES = OSBL_CONTRIBUTABLE_TYPES + OTHER_CONTRIBUTABLE_TYPES
+  CONTRIBUTABLE_TYPES = (OSBL_CONTRIBUTABLE_TYPES + OTHER_CONTRIBUTABLE_TYPES).freeze
 
   delegated_type :contributable, types: CONTRIBUTABLE_TYPES, dependent: :destroy
 
