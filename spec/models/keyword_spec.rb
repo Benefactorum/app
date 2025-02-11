@@ -43,7 +43,7 @@ RSpec.describe Osbl::Keyword, type: :model do
       osbl = create(:osbl)
       keyword.osbls << osbl
 
-      expect { keyword.destroy }.to change { Osbl::Keyword.count }.by(-1)
+      expect { keyword.destroy }.to change { JoinTables::OsblsKeyword.count }.by(-1)
     end
   end
 

@@ -49,7 +49,7 @@ FactoryBot.define do
       {
         name: "OSBL Created",
         tax_reduction: "intérêt_général",
-        osbls_causes_attributes: [{cause_id: 1}]
+        osbls_causes_attributes: [{cause_id: create(:cause).id}]
       }
     end
   end
@@ -59,7 +59,7 @@ FactoryBot.define do
       {
         name: "OSBL Updated",
         tax_reduction: "aide_aux_personnes_en_difficulté",
-        osbls_causes_attributes: [{cause_id: 1}]
+        osbls_causes_attributes: [{cause_id: create(:cause).id}]
       }
     end
   end

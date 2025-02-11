@@ -43,7 +43,7 @@ RSpec.describe Osbl::InterventionArea, type: :model do
       osbl = create(:osbl)
       intervention_area.osbls << osbl
 
-      expect { intervention_area.destroy }.to change { Osbl::InterventionArea.count }.by(-1)
+      expect { intervention_area.destroy }.to change { JoinTables::OsblsInterventionArea.count }.by(-1)
     end
   end
 
