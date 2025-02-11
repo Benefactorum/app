@@ -23,6 +23,32 @@ class Contribution < ApplicationRecord
 
   has_many_attached :files
 
+  concerning :WithOsblData do
+    included do
+      scope :with_osbl_data, -> { with_osbl_joins.add_osbl_data }
+
+      attribute :osbl_data, :json, default: nil
+
+      private
+
+      scope :with_osbl_joins, -> do
+        joins(
+          "LEFT JOIN contribution_osbl_creations ON contribution_osbl_creations.id = contributions.contributable_id
+           AND contributions.contributable_type = 'Contribution::OsblCreation'
+           LEFT JOIN contribution_osbl_updates ON contribution_osbl_updates.id = contributions.contributable_id
+           AND contributions.contributable_type = 'Contribution::OsblUpdate'"
+        )
+      end
+
+      scope :add_osbl_data, -> do
+        select(
+          "contributions.*",
+          "COALESCE(contribution_osbl_creations.osbl_data, contribution_osbl_updates.osbl_data) as osbl_data"
+        )
+      end
+    end
+  end
+
   validates_attachments(
     name: :files,
     max_size: 5.megabytes
@@ -32,10 +58,6 @@ class Contribution < ApplicationRecord
 
   # db_constraints enforcing :
   # validates :body, presence: true, if: -> { %w[Feedback FeatureRequest BugReport CorrectionRequest Other].include?(contributable_type) }
-
-  def serialize
-    ContributionSerializer.new(self).as_json
-  end
 
   private
 

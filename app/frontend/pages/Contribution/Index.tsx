@@ -22,13 +22,15 @@ import {
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import { CurrentUserType } from '@/types/types'
+import { OsblData } from './types'
 
 interface Contribution {
   id: number
-  created_at: string
+  contributable_type: string
   status: string
+  created_at: string
   github_resource_url: string
-  type_label: string
+  osbl_data: OsblData
 }
 
 interface Props {
@@ -54,6 +56,27 @@ function getStatusBadgeVariant (status: string): { variant: BadgeProps['variant'
 export default function Index ({ currentUser, contributions }: Props): ReactElement {
   function handleDelete (id: number): void {
     router.delete(`/users/${currentUser.id}/contributions/${id}`)
+  }
+
+  function getTypeLabel (contribution: Contribution): string {
+    switch (contribution.contributable_type) {
+      case 'Contribution::OsblCreation':
+        return `Ajouter ${contribution.osbl_data.name}`
+      case 'Contribution::OsblUpdate':
+        return `Modifier ${contribution.osbl_data.name}`
+      case 'Contribution::Feedback':
+        return 'Retour d\'expérience'
+      case 'Contribution::FeatureRequest':
+        return 'Suggestion'
+      case 'Contribution::BugReport':
+        return 'Rapport de bogue'
+      case 'Contribution::CorrectionRequest':
+        return 'Correctif'
+      case 'Contribution::Other':
+        return 'Autre'
+      default:
+        return contribution.contributable_type
+    }
   }
 
   return (
@@ -87,14 +110,14 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                     {contributions.map((contribution, index) => (
                       <TableRow key={index}>
                         <TableCell>{FormattedDate(contribution.created_at)}</TableCell>
-                        <TableCell>{contribution.type_label}</TableCell>
+                        <TableCell>{getTypeLabel(contribution)}</TableCell>
                         <TableCell>
                           <Badge {...getStatusBadgeVariant(contribution.status)}>
                             {contribution.status}
                           </Badge>
                         </TableCell>
                         <TableCell className='flex gap-2'>
-                          {(contribution.type_label.startsWith('Ajouter') || contribution.type_label.startsWith('Modifier')) && (
+                          {contribution.contributable_type.includes('Osbl') && (
                             <Link href={`/mes-contributions/${contribution.id}`} title='Voir'>
                               <Button variant='ghost' size='icon' className='bg-white'>
                                 <Eye />

@@ -3,6 +3,10 @@ require "rails_helper"
 RSpec.describe "/contributions", type: :request, inertia: true do
   describe "GET /index" do
     let(:user) { create(:user) }
+    let!(:osbl_creation) { create(:contribution, :osbl_creation, user: user) }
+    let!(:osbl_update) { create(:contribution, :osbl_update, user: user) }
+    let!(:feedback_contribution) { create(:contribution, :feedback, user: user) }
+
     subject { get user_contributions_url(user) }
 
     it_behaves_like "require_authentication"
@@ -25,6 +29,39 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       it "renders a successful response" do
         subject
         expect(response).to be_successful
+      end
+
+      it "returns contributions with correct OSBL data" do
+        subject
+        expect(inertia.component).to eq("Contribution/Index")
+
+        contributions = inertia.props[:contributions]
+        expect(contributions).to match_array([
+          include(
+            "id" => osbl_creation.id,
+            "contributable_type" => "Contribution::OsblCreation",
+            "status" => be_a(String),
+            "created_at" => be_a(String),
+            "github_resource_url" => nil,
+            "osbl_data" => be_a(Hash)
+          ),
+          include(
+            "id" => osbl_update.id,
+            "contributable_type" => "Contribution::OsblUpdate",
+            "status" => be_a(String),
+            "created_at" => be_a(String),
+            "github_resource_url" => nil,
+            "osbl_data" => be_a(Hash)
+          ),
+          include(
+            "id" => feedback_contribution.id,
+            "contributable_type" => "Contribution::Feedback",
+            "status" => be_a(String),
+            "created_at" => be_a(String),
+            "github_resource_url" => nil,
+            "osbl_data" => nil
+          )
+        ])
       end
     end
   end
@@ -170,7 +207,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
         expect {
           subject
         }.to change(Contribution, :count).by(1)
-          .and change(ActiveStorage::Blob, :count).by(4) # 1 file + 1 logo + 2 documents
+          .and change(ActiveStorage::Blob, :count).by(4)
 
         contribution = Contribution.last
         expect(contribution.body).to eq("Je suis le créateur de Benefactorum, vous trouverez toutes les informations sur le projet sur le site de Benefactorum et dans les documents associés.")
@@ -246,7 +283,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
   describe "DELETE /destroy" do
     let(:user) { create(:user) }
-    let!(:contribution) { create(:contribution, user: user, status: "brouillon") }
+    let!(:contribution) { create(:contribution, :osbl_creation, user: user, status: :brouillon) }
     subject { delete user_contribution_url(user, contribution) }
 
     it_behaves_like "require_authentication"
@@ -279,10 +316,11 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       end
 
       context "when contribution is not a draft" do
-        let!(:contribution) { create(:contribution, user: user, status: "published") }
+        let!(:contribution) { create(:contribution, :osbl_creation, user: user, status: :validée) }
 
-        it "raises an ActiveRecord::RecordNotFound error" do
-          expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        it "returns a 404 error" do
+          subject
+          expect(response.status).to eq(404)
         end
       end
     end
