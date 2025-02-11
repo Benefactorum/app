@@ -32,7 +32,7 @@ class ModifyTableNames < ActiveRecord::Migration[8.0]
     rename_table :user_sessions, :sessions if table_exists?(:user_sessions)
     rename_table :contribution_osbl_creations, :osbl_creations if table_exists?(:contribution_osbl_creations)
     rename_table :contribution_osbl_updates, :osbl_updates if table_exists?(:contribution_osbl_updates)
-    rename_table :contribution_feedbacks, :feedbacks if table_exists?(:contribution_feedback)
+    rename_table :contribution_feedbacks, :feedbacks if table_exists?(:contribution_feedbacks)
     rename_table :contribution_feature_requests, :feature_requests if table_exists?(:contribution_feature_requests)
     rename_table :contribution_bug_reports, :bug_reports if table_exists?(:contribution_bug_reports)
     rename_table :contribution_correction_requests, :correction_requests if table_exists?(:contribution_correction_requests)
