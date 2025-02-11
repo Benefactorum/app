@@ -54,13 +54,6 @@ RSpec.describe "Keywords", type: :request, inertia: true do
         expect { subject }.to change(Osbl::Keyword, :count).by(1)
         expect(Osbl::Keyword.last.name).to eq("Test")
       end
-
-      # context "when keyword already exists" do
-      #   before { create(:keyword, name: "test") }
-      #   it "returns an error" do
-      #     expect { subject }.to raise_error(ActiveRecord::RecordNotUnique)
-      #   end
-      # end
     end
   end
 end
