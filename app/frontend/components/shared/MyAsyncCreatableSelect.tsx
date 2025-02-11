@@ -2,9 +2,14 @@ import { ReactElement, useState, useCallback } from 'react'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
-import { SelectOption } from '@/types/types'
 import { MultiValue } from 'react-select'
 import { toast } from 'sonner'
+
+export interface SelectOption {
+  readonly label: string
+  readonly value: number
+}
+
 interface MyAsyncCreatableSelectProps {
   data: any
   setData: (key: string, value: any) => void
