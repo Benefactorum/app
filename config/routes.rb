@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get "mon-profil", to: "users#show", as: :my_profile
   resources :users, only: [:update] do
     resource :profile_picture, only: [:update, :destroy], module: :users
-    resources :contributions, only: [:index, :new, :create], module: :users
+    resources :contributions, only: [:index, :new, :create, :destroy], module: :users
   end
   get "mes-contributions", to: "users/contributions#index", as: :my_contributions
   get "mes-contributions/ajouter-une-association", to: "users/contributions#new", as: :my_new_contribution

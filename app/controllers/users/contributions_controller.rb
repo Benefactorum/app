@@ -1,7 +1,7 @@
 module Users
   class ContributionsController < ApplicationController
     before_action :get_user_or_current, only: %i[index new]
-    before_action :get_user, only: %i[create]
+    before_action :get_user, only: %i[create destroy]
     before_action :only_for_current_user
 
     def index
@@ -35,6 +35,12 @@ module Users
       else
         redirect_to my_new_contribution_path, inertia: {errors: osbl.errors}
       end
+    end
+
+    def destroy
+      contribution = @user.contributions.find(params[:id])
+      contribution.destroy!
+      redirect_to my_contributions_path, success: "Votre contribution a été supprimée."
     end
 
     private

@@ -243,4 +243,38 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       end
     end
   end
+
+  describe "DELETE /destroy" do
+    let(:user) { create(:user) }
+    let!(:contribution) { create(:contribution, user: user) }
+    subject { delete user_contribution_url(user, contribution) }
+
+    it_behaves_like "require_authentication"
+
+    context "signed as another user" do
+      let(:other_user) { create(:user) }
+
+      before do
+        sign_in_as(other_user)
+      end
+
+      it_behaves_like "only_for_current_user"
+    end
+
+    context "for current user" do
+      before do
+        sign_in_as(user)
+      end
+
+      it "destroys the contribution" do
+        expect { subject }.to change(Contribution, :count).by(-1)
+      end
+
+      it "redirects to contributions list with success message" do
+        subject
+        expect(response).to redirect_to(my_contributions_url)
+        expect(flash[:success]).to be_present
+      end
+    end
+  end
 end
