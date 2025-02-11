@@ -26,8 +26,7 @@ class Contribution < ApplicationRecord
   concerning :WithOsblData do
     included do
       scope :with_osbl_data, -> { with_osbl_joins.add_osbl_data }
-
-      attribute :osbl_data, :json, default: nil
+      scope :with_osbl_names, -> { with_osbl_joins.add_osbl_names }
 
       private
 
@@ -44,6 +43,26 @@ class Contribution < ApplicationRecord
         select(
           "contributions.*",
           "COALESCE(contribution_osbl_creations.osbl_data, contribution_osbl_updates.osbl_data) as osbl_data"
+        )
+      end
+
+      scope :add_osbl_names, -> do
+        add_osbl_field("name")
+      end
+
+      scope :add_osbl_field, ->(field_name) do
+        select(
+          "contributions.*",
+          "COALESCE(json_extract(contribution_osbl_creations.osbl_data, '$.#{field_name}'),
+                   json_extract(contribution_osbl_updates.osbl_data, '$.#{field_name}')) as osbl_#{field_name}"
+        )
+      end
+
+      def self.filter_by_osbl_json_value(key, value)
+        where(
+          "COALESCE(json_extract(contribution_osbl_creations.osbl_data, ?),
+                  json_extract(contribution_osbl_updates.osbl_data, ?)) = ?",
+          "$.#{key}", "$.#{key}", value
         )
       end
     end

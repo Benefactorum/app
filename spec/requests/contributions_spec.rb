@@ -36,31 +36,31 @@ RSpec.describe "/contributions", type: :request, inertia: true do
         expect(inertia.component).to eq("Contribution/Index")
 
         contributions = inertia.props[:contributions]
-        expect(contributions).to match_array([
-          include(
+        expect(contributions).to eq([
+          {
             "id" => osbl_creation.id,
             "contributable_type" => "Contribution::OsblCreation",
-            "status" => be_a(String),
-            "created_at" => be_a(String),
+            "status" => osbl_creation.status,
+            "created_at" => osbl_creation.created_at.as_json,
             "github_resource_url" => nil,
-            "osbl_data" => be_a(Hash)
-          ),
-          include(
+            "osbl_name" => osbl_creation.contributable.osbl_data["name"]
+          },
+          {
             "id" => osbl_update.id,
             "contributable_type" => "Contribution::OsblUpdate",
-            "status" => be_a(String),
-            "created_at" => be_a(String),
+            "status" => osbl_update.status,
+            "created_at" => osbl_update.created_at.as_json,
             "github_resource_url" => nil,
-            "osbl_data" => be_a(Hash)
-          ),
-          include(
+            "osbl_name" => osbl_update.contributable.osbl_data["name"]
+          },
+          {
             "id" => feedback_contribution.id,
             "contributable_type" => "Contribution::Feedback",
-            "status" => be_a(String),
-            "created_at" => be_a(String),
+            "status" => feedback_contribution.status,
+            "created_at" => feedback_contribution.created_at.as_json,
             "github_resource_url" => nil,
-            "osbl_data" => nil
-          )
+            "osbl_name" => nil
+          }
         ])
       end
     end

@@ -103,18 +103,19 @@ RSpec.describe Contribution, type: :model do
     let!(:osbl_update) { create(:contribution, :osbl_update, user: user) }
     let!(:other_contribution) { create(:contribution, :feedback, user: user) }
 
+    def count_select_queries(&block)
+      queries = []
+      callback = ->(_name, _start, _finish, _id, payload) do
+        sql = payload[:sql]
+        # Exclude schema queries
+        queries << sql if sql =~ /^\s*SELECT/i && !sql.include?("SCHEMA")
+      end
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record", &block)
+      queries.size
+    end
+
     describe ".with_osbl_data" do
       # Helper method to count SELECT queries
-      def count_select_queries(&block)
-        queries = []
-        callback = ->(_name, _start, _finish, _id, payload) do
-          sql = payload[:sql]
-          # Exclude schema queries
-          queries << sql if sql =~ /^\s*SELECT/i && !sql.include?("SCHEMA")
-        end
-        ActiveSupport::Notifications.subscribed(callback, "sql.active_record", &block)
-        queries.size
-      end
 
       it "loads osbl_data for all contributions in a single query" do
         # Clear any existing query cache
@@ -135,14 +136,14 @@ RSpec.describe Contribution, type: :model do
 
         # OSBL Creation
         creation = contributions.find { |c| c.contributable_type == "Contribution::OsblCreation" }
-        expect(creation.osbl_data).to include(
+        expect(JSON.parse(creation.osbl_data)).to include(
           "name" => "OSBL Created",
           "tax_reduction" => "intérêt_général"
         )
 
         # OSBL Update
         update = contributions.find { |c| c.contributable_type == "Contribution::OsblUpdate" }
-        expect(update.osbl_data).to include(
+        expect(JSON.parse(update.osbl_data)).to include(
           "name" => "OSBL Updated",
           "tax_reduction" => "aide_aux_personnes_en_difficulté"
         )
@@ -155,6 +156,56 @@ RSpec.describe Contribution, type: :model do
       it "allows filtering by osbl_data content" do
         filtered_contributions = described_class.with_osbl_data
           .where("json_extract(COALESCE(contribution_osbl_creations.osbl_data, contribution_osbl_updates.osbl_data), '$.name') LIKE ?", "%Created%")
+
+        expect(filtered_contributions).to include(osbl_creation)
+        expect(filtered_contributions).not_to include(osbl_update)
+        expect(filtered_contributions).not_to include(other_contribution)
+      end
+    end
+
+    describe ".with_osbl_names" do
+      it "loads osbl_names for all contributions in a single query" do
+        # Clear any existing query cache
+        ActiveRecord::Base.connection.clear_query_cache
+
+        query_count = count_select_queries { described_class.with_osbl_names.load }
+        expect(query_count).to eq(1)
+
+        contributions = described_class.with_osbl_names.load
+        additional_query_count = count_select_queries do
+          contributions.each { |contribution| contribution.osbl_name }
+        end
+        expect(additional_query_count).to eq(0)
+      end
+
+      it "includes the correct osbl_name for each contribution type" do
+        contributions = described_class.with_osbl_names.order(:id)
+
+        # OSBL Creation
+        creation = contributions.find { |c| c.contributable_type == "Contribution::OsblCreation" }
+        expect(creation.osbl_name).to eq("OSBL Created")
+
+        # OSBL Update
+        update = contributions.find { |c| c.contributable_type == "Contribution::OsblUpdate" }
+        expect(update.osbl_name).to eq("OSBL Updated")
+
+        # Other contribution types should have nil osbl_name
+        feedback = contributions.find { |c| c.contributable_type == "Contribution::Feedback" }
+        expect(feedback.osbl_name).to be_nil
+      end
+
+      it "allows filtering by osbl_name" do
+        filtered_contributions = described_class.with_osbl_names
+          .filter_by_osbl_json_value("name", "OSBL Created")
+
+        expect(filtered_contributions).to include(osbl_creation)
+        expect(filtered_contributions).not_to include(osbl_update)
+        expect(filtered_contributions).not_to include(other_contribution)
+      end
+
+      it "allows filtering by other json fields" do
+        filtered_contributions = described_class.with_osbl_names
+          .filter_by_osbl_json_value("tax_reduction", "intérêt_général")
 
         expect(filtered_contributions).to include(osbl_creation)
         expect(filtered_contributions).not_to include(osbl_update)
