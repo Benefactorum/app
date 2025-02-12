@@ -9,7 +9,7 @@ interface MyFileInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, '
   required?: boolean
   error?: string
   onChange: (file: File | File[] | undefined) => void // your custom onChange handler
-  file?: File | File[]
+  file?: File | File[] | string
 }
 
 export default function MyFileInput ({
@@ -39,26 +39,18 @@ export default function MyFileInput ({
     onChange(undefined)
   }
 
-  function fileIsPresent (file: File | File[] | undefined): file is File | File[] {
-    if (file instanceof File) {
-      return true
-    }
-    if (Array.isArray(file) && file.length > 0) {
-      return true
-    }
-    return false
-  }
-
-  function getFileName (file: File | File[]): string {
+  function getFileName (file: File | File[] | string): string {
     if (Array.isArray(file)) {
       return file.map(f => f.name).join(', ')
+    } else if (typeof file === 'string') {
+      return file
     }
     return file.name
   }
 
   return (
     <div className='flex flex-col'>
-      {fileIsPresent(file) && !inputHasFile
+      {file !== undefined && !inputHasFile
         ? (
           <MyInput
             value={getFileName(file)}

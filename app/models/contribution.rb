@@ -30,6 +30,8 @@ class Contribution < ApplicationRecord
 
   has_many_attached :files
 
+  scope :related_to_osbl, -> { where(contributable_type: OSBL_CONTRIBUTABLE_TYPES) }
+
   concerning :WithOsblData do
     included do
       scope :with_osbl_data, -> { with_osbl_joins.add_osbl_data }

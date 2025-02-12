@@ -55,6 +55,7 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit
             clearErrors('logo')
           }}
           error={errors.logo}
+          file={data.logo instanceof File ? data.logo : data.logo?.filename}
         />
 
         <div>

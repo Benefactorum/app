@@ -1,6 +1,7 @@
 class OsblDataTransformer
-  def initialize(params)
+  def initialize(params, mode)
     @params = params.to_h
+    @mode = mode
   end
 
   def transform
@@ -26,11 +27,19 @@ class OsblDataTransformer
   end
 
   def process_file(uploaded_file)
-    blob = ActiveStorage::Blob.create_and_upload!(
-      io: uploaded_file.tempfile,
-      filename: uploaded_file.original_filename,
-      content_type: uploaded_file.content_type
-    )
-    blob.signed_id
+    if @mode == :in
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: uploaded_file.tempfile,
+        filename: uploaded_file.original_filename,
+        content_type: uploaded_file.content_type
+      )
+      blob.signed_id
+    elsif @mode == :out
+      blob = ActiveStorage::Blob.find_signed(uploaded_file)
+      {
+        filename: blob.filename,
+        url: Rails.application.routes.url_helpers.rails_blob_url(blob, only_path: true)
+      }
+    end
   end
 end

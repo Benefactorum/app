@@ -83,7 +83,7 @@ export default function ContributionDialog ({
               labelText='Fichiers complémentaires :'
               multiple
               onChange={handleFileChange}
-              file={contribution.files}
+              file={contribution.files?.length > 0 ? contribution.files : undefined}
               error={error}
             />
           </div>

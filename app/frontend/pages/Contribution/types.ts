@@ -16,7 +16,7 @@ export interface AnnualFinance {
 
 export interface Document {
   type: string
-  file: File
+  file: File | { filename: string, url: string }
   name?: string
   year?: number
   description?: string
@@ -40,26 +40,27 @@ export interface Location {
   website?: string
 }
 
-export interface OsblCreationData {
+export interface Contribution {
   contribution: {
     body?: string
     files?: File[]
-    osbl: OsblData
+    osbl: NewOsbl
   }
 }
 
-export type ContributionData = OsblCreationData['contribution']
+export type ContributionData = Contribution['contribution']
 
-export interface OsblData {
+export interface NewOsbl {
   name: string
   website?: string
-  logo?: File
+  logo?: File | { filename: string, url: string }
   description?: string
-  osbls_causes_attributes: Array<{ cause_id: string }>
+  osbls_causes_attributes: Array<{ cause_id: string, name: string }>
   tax_reduction: 'intérêt_général' | 'aide_aux_personnes_en_difficulté'
-  osbls_keywords_attributes?: Array<{ keyword_id: string }>
+  osbls_keywords_attributes?: Array<{ keyword_id: string, name: string }>
   geographical_scale?: 'local' | 'regional' | 'national' | 'international'
-  osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string }>
+  osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string, name: string }>
+  osbls_labels_attributes?: Array<{ label_id: string, name: string }>
   annual_finances_attributes?: AnnualFinance[]
   osbl_type?: 'association' | 'fonds_de_dotation' | 'fondation'
   public_utility?: boolean
@@ -69,10 +70,70 @@ export interface OsblData {
   locations_attributes?: Location[]
 }
 
+export interface OsblUpdate {
+  name: string
+  website?: string
+  logo?: File | { filename: string, url: string }
+  description?: string
+  osbls_causes_attributes: {
+    [key: string]: {
+      cause_id: string
+      name: string
+    }
+  }
+  tax_reduction: 'intérêt_général' | 'aide_aux_personnes_en_difficulté'
+  osbls_keywords_attributes?: {
+    [key: string]: {
+      keyword_id: string
+      name: string
+    }
+  }
+  geographical_scale?: 'local' | 'regional' | 'national' | 'international'
+  osbls_intervention_areas_attributes?: {
+    [key: string]: {
+      intervention_area_id: string
+      name: string
+    }
+  }
+  osbls_labels_attributes?: {
+    [key: string]: {
+      label_id: string
+      name?: string
+    }
+  }
+  annual_finances_attributes?: {
+    [key: string]: {
+      year: string
+      budget?: string
+      treasury?: string
+      employees_count?: string
+      certified?: string
+      fund_sources_attributes?: {
+        [key: string]: FundRecord
+      }
+      fund_allocations_attributes?: {
+        [key: string]: FundRecord
+      }
+    }
+  }
+  osbl_type?: 'association' | 'fonds_de_dotation' | 'fondation'
+  public_utility?: string
+  creation_year?: number
+  contact_email?: string
+  document_attachments_attributes?: {
+    [key: string]: {
+      document_attributes: Document
+    }
+  }
+  locations_attributes?: {
+    [key: string]: Location
+  }
+}
+
 export interface FormProps {
-  data: OsblData
-  setData: (key: keyof OsblData | string, value: OsblData[keyof OsblData] | any) => void
-  errors: Partial<Record<keyof OsblData | string, string>>
-  clearErrors: (...fields: Array<keyof OsblData | string>) => void
+  data: NewOsbl
+  setData: (key: keyof NewOsbl | string, value: NewOsbl[keyof NewOsbl] | any) => void
+  errors: Partial<Record<keyof NewOsbl | string, string>>
+  clearErrors: (...fields: Array<keyof NewOsbl | string>) => void
   setError: (field: string, error: any) => void
 }

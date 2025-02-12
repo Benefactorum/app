@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { usePage } from '@inertiajs/react'
 import KeywordAsyncCreatableSelect from '@/components/pages/contribution/new/OsblDatasheet/KeywordAsyncCreatableSelect'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import InterventionAreaAsyncCreatableSelect from '@/components/pages/contribution/new/OsblDatasheet/InterventionAreaAsyncCreatableSelect'
@@ -22,19 +21,19 @@ import MyNumberInput from '@/components/shared/MyNumberInput'
 import MyCheckbox from '@/components/shared/MyCheckbox'
 
 const CausesList = [
-  { value: 'environnement', label: 'Environnement', icon: Trees },
-  { value: 'protection-de-l-enfance', label: 'Protection de l\'enfance', icon: Baby },
-  { value: 'sante', label: 'Santé', icon: Stethoscope },
-  { value: 'lutte-contre-la-précarité', label: 'Lutte contre la précarité', icon: Coins },
-  { value: 'education', label: 'Éducation', icon: BookMarked },
-  { value: 'protection-animale', label: 'Protection animale', icon: PawPrint },
-  { value: 'recherche', label: 'Recherche', icon: Microscope },
-  { value: 'arts-culture-patrimoine', label: 'Arts, Culture, Patrimoine', icon: Brush },
-  { value: 'aide-internationale', label: 'Aide internationale', icon: Globe },
-  { value: 'handicap', label: 'Handicap', icon: Accessibility },
-  { value: 'justice-sociale', label: 'Justice sociale', icon: Scale },
-  { value: 'religion', label: 'Religion', icon: Church },
-  { value: 'autre', label: 'Autre', icon: Shuffle }
+  { label: 'Environnement', icon: Trees, value: '1' },
+  { label: 'Protection de l\'enfance', icon: Baby, value: '2' },
+  { label: 'Santé', icon: Stethoscope, value: '3' },
+  { label: 'Lutte contre la précarité', icon: Coins, value: '4' },
+  { label: 'Éducation', icon: BookMarked, value: '5' },
+  { label: 'Protection animale', icon: PawPrint, value: '6' },
+  { label: 'Recherche', icon: Microscope, value: '7' },
+  { label: 'Arts, Culture, Patrimoine', icon: Brush, value: '8' },
+  { label: 'Aide internationale', icon: Globe, value: '9' },
+  { label: 'Handicap', icon: Accessibility, value: '10' },
+  { label: 'Justice sociale', icon: Scale, value: '11' },
+  { label: 'Religion', icon: Church, value: '12' },
+  { label: 'Autre', icon: Shuffle, value: '13' }
 ]
 
 const GeographicalScaleList = [
@@ -69,15 +68,12 @@ const TaxReductionList = [
   }
 ]
 
+const LabelList = [
+  { value: '1', label: 'Don en confiance' },
+  { value: '2', label: 'Label IDEAS' }
+]
+
 export default function OsblDatasheet ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
-  const causes = usePage().props.causes as Record<string, number>
-  const labels = usePage().props.labels as Array<{ value: string, label: string }>
-
-  const syncedCausesList = CausesList.map(cause => ({
-    ...cause,
-    value: String(causes[cause.value])
-  }))
-
   return (
     <div className='bg-white rounded-lg border p-4 sm:px-8 sm:py-8 gap-8 flex flex-col w-full'>
       <h2 className='text-2xl font-semibold'>Fiche technique</h2>
@@ -86,9 +82,10 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
         <div className='flex flex-col gap-4'>
           <Label>Causes * :</Label>
           <MultiSelect
-            options={syncedCausesList}
+            options={CausesList}
+            defaultValue={data.osbls_causes_attributes?.map(cause => cause.cause_id.toString())}
             onValueChange={(value) => {
-              setData('osbls_causes_attributes', value.map(cause => ({ cause_id: cause })))
+              setData('osbls_causes_attributes', value.map(id => ({ cause_id: id, name: CausesList.find(c => c.value === id)?.label })))
               clearErrors('osbls_causes_attributes')
             }}
             placeholder=''
@@ -139,7 +136,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
 
         <div className='flex flex-col gap-4'>
           <Label>Échelle :</Label>
-          <Select onValueChange={(value) => setData('geographical_scale', value)}>
+          <Select value={data.geographical_scale} onValueChange={(value) => setData('geographical_scale', value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -167,7 +164,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             </HelpTooltip>
             :
           </Label>
-          <Select onValueChange={(value) => setData('osbl_type', value)}>
+          <Select value={data.osbl_type} onValueChange={(value) => setData('osbl_type', value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -203,9 +200,10 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
         <div className='flex flex-col gap-4'>
           <Label>Labels :</Label>
           <MultiSelect
-            options={labels}
+            defaultValue={data.osbls_labels_attributes?.map(label => label.label_id.toString())}
+            options={LabelList}
             onValueChange={(value) => {
-              setData('osbls_labels_attributes', value.map(label => ({ label_id: label })))
+              setData('osbls_labels_attributes', value.map(id => ({ label_id: id, name: LabelList.find(l => l.value === id)?.label })))
             }}
             placeholder=''
             variant='default'
