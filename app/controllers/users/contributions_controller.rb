@@ -1,8 +1,8 @@
 module Users
   class ContributionsController < ApplicationController
-    before_action :get_user_or_current, only: %i[index new]
+    before_action :get_current_user, only: %i[index new edit]
     before_action :get_user, only: %i[create destroy]
-    before_action :only_for_current_user
+    before_action :only_for_current_user, only: %i[create destroy]
 
     def index
       render inertia: "Contribution/Index", props: {
@@ -36,7 +36,7 @@ module Users
       osbl = Osbl.new(osbl_params)
 
       if osbl.valid?
-        osbl_data = OsblDataTransformer.new(osbl_params).transform
+        osbl_data = OsblDataTransformer.new(osbl_params, :in).transform
         contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
 
         contribution.save!
@@ -44,6 +44,19 @@ module Users
       else
         redirect_to my_new_contribution_path, inertia: {errors: osbl.errors}
       end
+    end
+
+    def edit
+      contribution = @user.contributions.related_to_osbl.find(params[:id])
+      render inertia: "Contribution/Edit", props: {
+        causes: Osbl::Cause.pluck(:name, :id).to_h,
+        labels: Osbl::Label.pluck(:id, :name).map { |id, name| {value: id, label: name} },
+        location_types: Osbl::Location.types.keys,
+        document_types: Document.types.keys,
+        fund_source_types: Osbl::FundSource.types.keys,
+        fund_allocation_types: Osbl::FundAllocation.types.keys,
+        osbl: OsblDataTransformer.new(contribution.contributable.osbl_data, :out).transform
+      }
     end
 
     def destroy
