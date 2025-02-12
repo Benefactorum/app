@@ -150,7 +150,7 @@ export default function OsblDocumentSheet ({
 
           <div className='flex flex-col gap-2'>
             <MyFileInput
-              file={sheetDocument.file ?? undefined}
+              file={sheetDocument.file instanceof File ? sheetDocument.file : sheetDocument.file?.filename}
               labelText='Fichier *'
               id={`document-file-${index}`}
               onChange={(file) => {

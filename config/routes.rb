@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   end
   get "mes-contributions", to: "users/contributions#index", as: :my_contributions
   get "mes-contributions/ajouter-une-association", to: "users/contributions#new", as: :my_new_contribution
+  get "mes-contributions/:id/modifier", to: "users/contributions#edit", as: :edit_my_contribution
 
   resources :keywords, only: [:index, :create]
   resources :intervention_areas, only: [:index, :create]

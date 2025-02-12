@@ -21,8 +21,6 @@ module Users
 
     def new
       render inertia: "Contribution/New", props: {
-        causes: Osbl::Cause.pluck(:name, :id).to_h,
-        labels: Osbl::Label.pluck(:id, :name).map { |id, name| {value: id, label: name} },
         location_types: Osbl::Location.types.keys,
         document_types: Document.types.keys,
         fund_source_types: Osbl::FundSource.types.keys,
@@ -49,8 +47,6 @@ module Users
     def edit
       contribution = @user.contributions.related_to_osbl.find(params[:id])
       render inertia: "Contribution/Edit", props: {
-        causes: Osbl::Cause.pluck(:name, :id).to_h,
-        labels: Osbl::Label.pluck(:id, :name).map { |id, name| {value: id, label: name} },
         location_types: Osbl::Location.types.keys,
         document_types: Document.types.keys,
         fund_source_types: Osbl::FundSource.types.keys,
@@ -86,10 +82,10 @@ module Users
             :osbl_type,
             :public_utility,
             :creation_year,
-            osbls_causes_attributes: [[:cause_id]],
-            osbls_keywords_attributes: [[:keyword_id]],
-            osbls_intervention_areas_attributes: [[:intervention_area_id]],
-            osbls_labels_attributes: [[:label_id]],
+            osbls_causes_attributes: [[:cause_id, :name]],
+            osbls_keywords_attributes: [[:keyword_id, :name]],
+            osbls_intervention_areas_attributes: [[:intervention_area_id, :name]],
+            osbls_labels_attributes: [[:label_id, :name]],
             annual_finances_attributes: [[
               :year,
               :certified,
