@@ -56,7 +56,6 @@ export default function ContributionDialog ({
 
     // Check if files is an object with numeric keys and has filename/url properties
     if (typeof contribution.files === 'object' && !Array.isArray(contribution.files)) {
-      console.log('files is an object', contribution.files)
       return Object.values(contribution.files).map((file: any) => file.filename).join(', ')
     }
 

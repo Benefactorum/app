@@ -40,10 +40,12 @@ export interface Location {
   website?: string
 }
 
+export interface FilesAsObject { [key: string]: { filename: string, url: string } }
+
 export interface Contribution {
   contribution: {
     body?: string
-    files?: File[]
+    files?: File[] | FilesAsObject
     osbl: NewOsbl
   }
 }
