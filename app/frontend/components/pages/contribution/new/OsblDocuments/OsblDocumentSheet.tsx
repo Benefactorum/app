@@ -81,12 +81,14 @@ export default function OsblDocumentSheet ({
       return
     }
 
-    const result = documentValidation.safeParse({ file: sheetDocument.file })
-    if (!result.success) {
-      e.preventDefault()
-      const errorMessage = result.error.issues[0].message
-      setError(`document_attachments_attributes.${index}.document_attributes.file`, errorMessage)
-      return
+    if (sheetDocument.file instanceof File) {
+      const result = documentValidation.safeParse({ file: sheetDocument.file })
+      if (!result.success) {
+        e.preventDefault()
+        const errorMessage = result.error.issues[0].message
+        setError(`document_attachments_attributes.${index}.document_attributes.file`, errorMessage)
+        return
+      }
     }
 
     onUpdate(deepCleanData(sheetDocument))
@@ -150,7 +152,7 @@ export default function OsblDocumentSheet ({
 
           <div className='flex flex-col gap-2'>
             <MyFileInput
-              file={sheetDocument.file ?? undefined}
+              file={sheetDocument.file instanceof File ? sheetDocument.file : sheetDocument.file?.filename}
               labelText='Fichier *'
               id={`document-file-${index}`}
               onChange={(file) => {

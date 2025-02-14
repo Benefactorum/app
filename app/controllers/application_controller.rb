@@ -14,10 +14,14 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def get_current_user
+    require_authentication
+    @user = Current.user
+  end
+
   def get_user_or_current
     @user = get_user
   rescue ActiveRecord::RecordNotFound
-    @user = Current.user
-    require_authentication
+    get_current_user
   end
 end

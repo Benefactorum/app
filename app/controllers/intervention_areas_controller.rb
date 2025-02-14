@@ -7,8 +7,8 @@ class InterventionAreasController < ApplicationController
     intervention_areas = Osbl::InterventionArea
       .where("name LIKE ?", sanitized_query)
       .limit(3)
-      .pluck(:id, :name)
-      .map { |id, name| {id: id, name: name} }
+      .select(:id, :name)
+      .as_json
 
     render json: intervention_areas, status: :ok
   end

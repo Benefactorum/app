@@ -48,7 +48,7 @@ export default function OsblLocationSheet ({
   const [sheetLocation, setSheetLocation] = useState<Partial<Location>>(location)
   const [isOpen, setIsOpen] = useState(() => {
     const checks = [
-      sheetLocation.name !== undefined,
+      sheetLocation.name !== undefined && sheetLocation.type === 'Siège social',
       sheetLocation.address_attributes?.additional_info !== undefined,
       sheetLocation.website !== undefined,
       sheetLocation.description !== undefined

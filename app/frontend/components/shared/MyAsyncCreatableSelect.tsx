@@ -37,7 +37,17 @@ export default function MyAsyncCreatableSelect ({
   minInputLength = 3,
   placeholder
 }: MyAsyncCreatableSelectProps): ReactElement {
-  const [value, setValue] = useState<MultiValue<SelectOption>>([])
+  const [value, setValue] = useState<MultiValue<SelectOption>>(() => {
+    const initialData = data[attributeName] ?? []
+    return initialData.map((option: any) => {
+      const resourceIdKey = `${resource.slice(0, -1)}_id`
+      const transformedOption = {
+        ...option,
+        id: option[resourceIdKey]
+      }
+      return createOption(transformedOption)
+    })
+  })
   const [options, setOptions] = useState<SelectOption[]>([])
 
   const fetchOptions = async (inputValue: string): Promise<SelectOption[]> => {
@@ -90,10 +100,11 @@ export default function MyAsyncCreatableSelect ({
         const newOption = createOption(response.data)
         setValue((prev) => [...prev, newOption])
         setData(attributeName, [...(data[attributeName] ?? []), {
-          [`${resource.slice(0, -1)}_id`]: newOption.value
+          [`${resource.slice(0, -1)}_id`]: newOption.value,
+          name: newOption.label
         }])
       } catch (error) {
-        console.log(error)
+        console.error(error)
         toast.error(`Une erreur est survenue lors de la création de ${inputValue}`)
       }
     })()
@@ -107,17 +118,18 @@ export default function MyAsyncCreatableSelect ({
   return (
     <AsyncCreatableSelect
       isMulti
-      // cacheOptions
       value={value}
       loadOptions={promiseOptions}
       options={options}
       isValidNewOption={isValidNewOption}
       onCreateOption={handleCreate}
-      onChange={(value) => {
-        setValue(value)
-        setData(attributeName, value.map((option) => ({
-          [`${resource.slice(0, -1)}_id`]: option.value
-        })))
+      onChange={(newValue) => {
+        setValue(newValue)
+        const formattedData = newValue.map((option) => ({
+          [`${resource.slice(0, -1)}_id`]: option.value,
+          name: option.label
+        }))
+        setData(attributeName, formattedData)
       }}
       styles={{
         control: (base, state) => ({

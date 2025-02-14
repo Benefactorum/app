@@ -21,7 +21,7 @@ class Osbl::AnnualFinance < ApplicationRecord
     return if fund_sources.any?
     return if fund_allocations.any?
 
-    attributes_to_check = attributes.except("id", "year", "osbl_id", "created_at", "updated_at", "certified")
+    attributes_to_check = attributes.except("id", "year", "osbl_id", "created_at", "updated_at")
     if attributes_to_check.values.all?(&:blank?)
       errors.add(:base, "Au moins une information est requise en plus de l'année.")
     end

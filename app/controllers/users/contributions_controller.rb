@@ -1,8 +1,8 @@
 module Users
   class ContributionsController < ApplicationController
-    before_action :get_user_or_current, only: %i[index new]
-    before_action :get_user, only: %i[create destroy]
-    before_action :only_for_current_user
+    before_action :get_current_user, only: %i[index new edit]
+    before_action :get_user, only: %i[create update destroy]
+    before_action :only_for_current_user, only: %i[create update destroy]
 
     def index
       render inertia: "Contribution/Index", props: {
@@ -21,8 +21,6 @@ module Users
 
     def new
       render inertia: "Contribution/New", props: {
-        causes: Osbl::Cause.pluck(:name, :id).to_h,
-        labels: Osbl::Label.pluck(:id, :name).map { |id, name| {value: id, label: name} },
         location_types: Osbl::Location.types.keys,
         document_types: Document.types.keys,
         fund_source_types: Osbl::FundSource.types.keys,
@@ -46,6 +44,50 @@ module Users
       end
     end
 
+    def edit
+      contribution = @user.contributions.related_to_osbl.find(params[:id])
+      files = contribution.files.each_with_object({}).with_index do |(attachment, hash), index|
+        hash[index] = {
+          filename: attachment.filename.to_s,
+          url: Rails.application.routes.url_helpers.rails_blob_url(attachment, only_path: true)
+        }
+      end
+      render inertia: "Contribution/Edit", props: {
+        location_types: Osbl::Location.types.keys,
+        document_types: Document.types.keys,
+        fund_source_types: Osbl::FundSource.types.keys,
+        fund_allocation_types: Osbl::FundAllocation.types.keys,
+        contribution: {
+          id: contribution.id,
+          body: contribution.body,
+          files: files,
+          osbl: OsblDataTransformer.new(contribution.osbl_data).transform
+        }
+      }
+    end
+
+    def update
+      osbl_params = contribution_params.delete(:osbl)
+      contribution = @user.contributions.related_to_osbl.find(params[:id])
+      osbl_data = OsblDataTransformer.new(osbl_params).transform
+      osbl = Osbl.new(osbl_data)
+      debugger
+      if osbl.valid?
+        contribution.update!(
+          contribution_params.merge(
+            contributable_attributes: {
+              id: contribution.contributable.id,
+              osbl_data: osbl_data
+            }
+          )
+        )
+
+        redirect_to my_contributions_path, success: "Votre contribution a été modifiée."
+      else
+        redirect_to edit_my_contribution_path(contribution), inertia: {errors: osbl.errors}
+      end
+    end
+
     def destroy
       contribution = @user.contributions.where(status: :brouillon).find(params[:id])
       contribution.destroy!
@@ -62,21 +104,22 @@ module Users
       @contribution_params ||= params.expect(
         contribution: [
           :body,
-          files: [],
+          files: ["0", "1", "2", "3", "4"],
           osbl: [
             :name,
             :website,
             :logo,
+            {logo: [:filename, :url]},
             :description,
             :tax_reduction,
             :geographical_scale,
             :osbl_type,
             :public_utility,
             :creation_year,
-            osbls_causes_attributes: [[:cause_id]],
-            osbls_keywords_attributes: [[:keyword_id]],
-            osbls_intervention_areas_attributes: [[:intervention_area_id]],
-            osbls_labels_attributes: [[:label_id]],
+            osbls_causes_attributes: [[:cause_id, :name]],
+            osbls_keywords_attributes: [[:keyword_id, :name]],
+            osbls_intervention_areas_attributes: [[:intervention_area_id, :name]],
+            osbls_labels_attributes: [[:label_id, :name]],
             annual_finances_attributes: [[
               :year,
               :certified,
@@ -98,6 +141,7 @@ module Users
               document_attributes: [
                 :type,
                 :file,
+                {file: [:filename, :url]},
                 :name,
                 :year,
                 :description
@@ -120,7 +164,9 @@ module Users
             ]]
           ]
         ]
-      )
+      ).tap do |params|
+        params[:files] = params[:files]&.values
+      end
     end
   end
 end

@@ -49,6 +49,22 @@ export default function ContributionDialog ({
     clearError()
   }
 
+  const getFile = (): File[] | string | undefined => {
+    if (contribution.files === undefined) {
+      return undefined
+    }
+
+    // Check if files is an object not empty
+    if (typeof contribution.files === 'object' && !Array.isArray(contribution.files) && Object.keys(contribution.files).length > 0) {
+      return Object.values(contribution.files).map((file: any) => file.filename).join(', ')
+    }
+
+    // Handle regular File[] case
+    return Array.isArray(contribution.files) && contribution.files.length > 0
+      ? contribution.files
+      : undefined
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -72,7 +88,7 @@ export default function ContributionDialog ({
             <Textarea
               id='comment'
               placeholder='Fournissez vos sources, les liens webs qui vous ont servi de référence, ...'
-              value={contribution.body}
+              value={contribution.body ?? ''}
               onChange={handleCommentChange}
               className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40'
             />
@@ -83,7 +99,7 @@ export default function ContributionDialog ({
               labelText='Fichiers complémentaires :'
               multiple
               onChange={handleFileChange}
-              file={contribution.files}
+              file={getFile()}
               error={error}
             />
           </div>

@@ -30,6 +30,8 @@ class Contribution < ApplicationRecord
 
   has_many_attached :files
 
+  scope :related_to_osbl, -> { where(contributable_type: OSBL_CONTRIBUTABLE_TYPES) }
+
   concerning :WithOsblData do
     included do
       scope :with_osbl_data, -> { with_osbl_joins.add_osbl_data }
@@ -90,6 +92,18 @@ class Contribution < ApplicationRecord
 
   # db_constraints enforcing :
   # validates :body, presence: true, if: -> { %w[Feedback FeatureRequest BugReport CorrectionRequest Other].include?(contributable_type) }
+
+  accepts_nested_attributes_for :contributable
+
+  def osbl_data
+    @osbl_data ||= if OSBL_CONTRIBUTABLE_TYPES.include?(contributable_type)
+      if self[:osbl_data]
+        JSON.parse(self[:osbl_data])
+      else
+        contributable.osbl_data
+      end
+    end
+  end
 
   private
 
