@@ -113,7 +113,10 @@ export default function FundManagementSection ({
               max={100}
               step={0.01}
               value={item.percent ?? ''}
-              onChange={(e) => handleFundChange(index, 'percent', e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value === '' ? '' : Number(e.target.value)
+                handleFundChange(index, 'percent', value)
+              }}
               placeholder='% *'
               suffix='%'
               required

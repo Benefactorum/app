@@ -27,9 +27,8 @@ interface Props extends Omit<FormProps, 'setData'> {
 }
 
 const financeValidation = (data: AnnualFinance[], currentIndex: number): z.ZodType<any> => z.object({
-  year: z.string(),
   fund_sources_attributes: z.array(z.object({
-    percent: z.string()
+    percent: z.number()
   })).optional()
     .refine((sources): sources is typeof sources => {
       if (sources === undefined || sources.length === 0) return true
@@ -44,7 +43,7 @@ const financeValidation = (data: AnnualFinance[], currentIndex: number): z.ZodTy
       path: ['total_percent']
     }),
   fund_allocations_attributes: z.array(z.object({
-    percent: z.string()
+    percent: z.number()
   })).optional()
     .refine((allocations): allocations is typeof allocations => {
       if (allocations === undefined || allocations.length === 0) return true

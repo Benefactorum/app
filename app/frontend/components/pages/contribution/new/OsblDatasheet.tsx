@@ -164,7 +164,14 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             </HelpTooltip>
             :
           </Label>
-          <Select value={data.osbl_type} onValueChange={(value) => setData('osbl_type', value)}>
+          <Select
+            value={data.osbl_type} onValueChange={(value) => {
+              if (value !== 'association') {
+                data.public_utility = undefined
+              }
+              setData('osbl_type', value)
+            }}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

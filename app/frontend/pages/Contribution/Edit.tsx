@@ -71,7 +71,7 @@ export default function Edit ({ currentUser, contribution }: { currentUser: Curr
   const initialOsbl: NewOsbl = getOsblData(contribution.osbl)
   const { data, setData, put, processing, errors, clearErrors, setError, transform } = useForm<StrictForm<Contribution>>({
     contribution: {
-      body: contribution.body,
+      body: contribution.body !== null ? contribution.body : undefined,
       files: contribution.files,
       osbl: initialOsbl
     }
