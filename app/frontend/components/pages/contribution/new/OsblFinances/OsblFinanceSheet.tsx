@@ -27,11 +27,7 @@ interface Props extends Omit<FormProps, 'setData'> {
 }
 
 const financeValidation = (data: AnnualFinance[], currentIndex: number): z.ZodType<any> => z.object({
-  year: z.string().refine(
-    (year) =>
-      !data.some((f, i) => i !== currentIndex && f.year === Number(year)),
-    { message: 'Un bilan comptable est déjà enregistré pour cette année.', path: ['annual_finances_attributes', currentIndex, 'year'] }
-  ),
+  year: z.string(),
   fund_sources_attributes: z.array(z.object({
     percent: z.string()
   })).optional()
@@ -69,6 +65,11 @@ const financeValidation = (data: AnnualFinance[], currentIndex: number): z.ZodTy
       return !(Object.keys(financeCleaned).length === 1)
     },
     { message: 'Complétez les comptes pour cette année.', path: ['annual_finances_attributes', currentIndex, 'missing_information'] }
+  ).refine(
+    (finance) => {
+      return !data.some((f, i) => i !== currentIndex && Number(f.year) === Number(finance.year))
+    },
+    { message: 'Un bilan comptable est déjà enregistré pour cette année.', path: ['annual_finances_attributes', currentIndex, 'missing_information'] }
   )
 
 export default function OsblFinanceSheet ({
