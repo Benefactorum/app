@@ -46,6 +46,10 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  # Enable ActiveRecord logging in test environment
+  # config.active_record.verbose_query_logs = true
+  # ActiveRecord::Base.logger = Logger.new(STDOUT)
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 

@@ -49,6 +49,23 @@ export default function ContributionDialog ({
     clearError()
   }
 
+  const getFile = (): File[] | string | undefined => {
+    if (contribution.files === undefined) {
+      return undefined
+    }
+
+    // Check if files is an object with numeric keys and has filename/url properties
+    if (typeof contribution.files === 'object' && !Array.isArray(contribution.files)) {
+      console.log('files is an object', contribution.files)
+      return Object.values(contribution.files).map((file: any) => file.filename).join(', ')
+    }
+
+    // Handle regular File[] case
+    return Array.isArray(contribution.files) && contribution.files.length > 0
+      ? contribution.files
+      : undefined
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -83,7 +100,7 @@ export default function ContributionDialog ({
               labelText='Fichiers complémentaires :'
               multiple
               onChange={handleFileChange}
-              file={contribution.files?.length > 0 ? contribution.files : undefined}
+              file={getFile()}
               error={error}
             />
           </div>

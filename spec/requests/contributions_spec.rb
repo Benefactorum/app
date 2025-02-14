@@ -130,7 +130,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       {
         contribution: {
           body: "Je suis le créateur de Benefactorum, vous trouverez toutes les informations sur le projet sur le site de Benefactorum et dans les documents associés.",
-          files: [document_file],
+          files: {"0": document_file},
           osbl: {
             name: "Benefactorum",
             website: "https://benefactorum.org/",
@@ -213,7 +213,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
         expect(contribution.body).to eq("Je suis le créateur de Benefactorum, vous trouverez toutes les informations sur le projet sur le site de Benefactorum et dans les documents associés.")
         expect(contribution.files).to be_attached
 
-        osbl = Osbl.create!(contribution.contributable.osbl_data)
+        osbl = Osbl.create!(contribution.osbl_data)
         expect(osbl.name).to eq("Benefactorum")
         expect(osbl.website).to eq("https://benefactorum.org/")
         expect(osbl.logo).to be_attached

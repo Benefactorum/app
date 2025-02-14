@@ -136,14 +136,14 @@ RSpec.describe Contribution, type: :model do
 
         # OSBL Creation
         creation = contributions.find { |c| c.contributable_type == "Contribution::OsblCreation" }
-        expect(JSON.parse(creation.osbl_data)).to include(
+        expect(creation.osbl_data).to include(
           "name" => "OSBL Created",
           "tax_reduction" => "intérêt_général"
         )
 
         # OSBL Update
         update = contributions.find { |c| c.contributable_type == "Contribution::OsblUpdate" }
-        expect(JSON.parse(update.osbl_data)).to include(
+        expect(update.osbl_data).to include(
           "name" => "OSBL Updated",
           "tax_reduction" => "aide_aux_personnes_en_difficulté"
         )

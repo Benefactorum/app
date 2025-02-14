@@ -93,6 +93,16 @@ class Contribution < ApplicationRecord
   # db_constraints enforcing :
   # validates :body, presence: true, if: -> { %w[Feedback FeatureRequest BugReport CorrectionRequest Other].include?(contributable_type) }
 
+  def osbl_data
+    @osbl_data ||= if OSBL_CONTRIBUTABLE_TYPES.include?(contributable_type)
+      if self[:osbl_data]
+        JSON.parse(self[:osbl_data])
+      else
+        contributable.osbl_data
+      end
+    end
+  end
+
   private
 
   def files_count_within_limit
