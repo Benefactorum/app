@@ -41,7 +41,7 @@ describe('UserAvatarEdit', () => {
     // open alert dialog
     fireEvent.click(screen.getByLabelText('Supprimer la photo de profil'))
     // confirm delete
-    fireEvent.click(screen.getByText('Continuer'))
+    fireEvent.click(screen.getByText('Supprimer'))
 
     expect(router.delete).toHaveBeenCalledWith('/users/1/profile_picture', {
       onSuccess: expect.any(Function)

@@ -17,13 +17,10 @@ import getAllowedFormats from '@/lib/getAllowedFormats'
 import { validate } from '@/lib/validate'
 import { FormDataConvertible } from '@inertiajs/core'
 
-type StrictForm<T> = {
-  [K in keyof T]: T[K] extends Record<string, any>
-    ? StrictForm<T[K]>
-    : T[K] extends FormDataConvertible
-      ? T[K]
-      : never
-}
+type StrictForm<T> = T extends FormDataConvertible ? T :
+  T extends Array<infer U> ? Array<StrictForm<U>> :
+    T extends object ? { [K in keyof T]: StrictForm<T[K]> } :
+      T
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
@@ -56,8 +53,8 @@ function createOsblProxy (
   data: Contribution,
   setData: (key: string, value: any) => void,
   errors: Partial<Record<keyof Contribution, string>>,
-  clearErrors: (field: keyof Contribution) => void,
-  setError: (field: keyof Contribution, message: string) => void
+  clearErrors: (field: 'contribution') => void,
+  setError: (field: 'contribution', message: string) => void
 ): FormProps {
   return {
     data: data.contribution?.osbl,
@@ -88,8 +85,6 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
   // inertia types don't handle nested data properly.
   const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<StrictForm<Contribution>>({
     contribution: {
-      body: '',
-      files: [],
       osbl: {
         name: '',
         osbls_causes_attributes: [],
@@ -153,7 +148,13 @@ export default function New ({ currentUser }: { currentUser: CurrentUserType }):
   }
 
   function validateContribution (): boolean {
-    return validate(contributionValidation, data, setError)
+    const dataForValidation = {
+      contribution: {
+        ...data.contribution,
+        files: Array.isArray(data.contribution.files) ? data.contribution.files : []
+      }
+    }
+    return validate(contributionValidation, dataForValidation, setError)
   }
 
   // Updated submit functions using the helpers

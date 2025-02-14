@@ -8,7 +8,7 @@ import OsblFinance from '@/components/pages/contribution/new/OsblFinances'
 import OsblDocuments from '@/components/pages/contribution/new/OsblDocuments'
 import OsblLocations from '@/components/pages/contribution/new/OsblLocations'
 import { CurrentUserType } from '@/types/types'
-import { FormProps, NewOsbl, ContributionData, Contribution, OsblUpdate } from '@/pages/Contribution/types'
+import { FormProps, NewOsbl, ContributionData, Contribution, OsblUpdate, FilesAsObject } from '@/pages/Contribution/types'
 import z from 'zod'
 import deepCleanData from '@/lib/deepCleanData'
 import { toast } from 'sonner'
@@ -133,12 +133,7 @@ function createOsblProxy (
 export interface ContributionToEdit {
   id: number
   body?: string
-  files?: {
-    [key: string]: {
-      filename: string
-      url: string
-    }
-  }
+  files?: FilesAsObject
   osbl: OsblUpdate
 }
 
@@ -184,7 +179,7 @@ export default function Edit ({ currentUser, contribution }: { currentUser: Curr
   function validateOsbl (): boolean {
     // Create a validation copy that ensures logo is a File or undefined
     const dataForValidation = {
-      ...data,
+      // ...data,
       contribution: {
         ...data.contribution,
         osbl: {
@@ -203,8 +198,12 @@ export default function Edit ({ currentUser, contribution }: { currentUser: Curr
 
   function validateContribution (): boolean {
     const dataForValidation = {
-      ...data,
-      files: data.contribution.files?.filter((file): file is File => file instanceof File)
+      contribution: {
+        ...data.contribution,
+        files: data.contribution.files instanceof Array
+          ? data.contribution.files.filter((file): file is File => file instanceof File)
+          : [] // If files is an object or undefined, use empty array for validation
+      }
     }
     return validate(contributionValidation, dataForValidation, setError)
   }
