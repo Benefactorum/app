@@ -46,12 +46,23 @@ module Users
 
     def edit
       contribution = @user.contributions.related_to_osbl.find(params[:id])
+      files = contribution.files.each_with_object({}).with_index do |(attachment, hash), index|
+        hash[index] = {
+          filename: attachment.filename.to_s,
+          url: Rails.application.routes.url_helpers.rails_blob_url(attachment, only_path: true)
+        }
+      end
       render inertia: "Contribution/Edit", props: {
         location_types: Osbl::Location.types.keys,
         document_types: Document.types.keys,
         fund_source_types: Osbl::FundSource.types.keys,
         fund_allocation_types: Osbl::FundAllocation.types.keys,
-        osbl: OsblDataTransformer.new(contribution.contributable.osbl_data, :out).transform
+        contribution: {
+          id: contribution.id,
+          body: contribution.body,
+          files: files,
+          osbl: OsblDataTransformer.new(contribution.osbl_data, :out).transform
+        }
       }
     end
 
@@ -71,7 +82,7 @@ module Users
       @contribution_params ||= params.expect(
         contribution: [
           :body,
-          files: [],
+          files: ["0", "1", "2", "3", "4"],
           osbl: [
             :name,
             :website,
@@ -129,7 +140,9 @@ module Users
             ]]
           ]
         ]
-      )
+      ).tap do |params|
+        params[:files] = params[:files]&.values
+      end
     end
   end
 end

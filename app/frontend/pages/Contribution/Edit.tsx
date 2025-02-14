@@ -130,12 +130,24 @@ function createOsblProxy (
   }
 }
 
-export default function Edit ({ currentUser, osbl }: { currentUser: CurrentUserType, osbl: OsblUpdate }): ReactElement {
-  const initialOsbl: NewOsbl = getOsblData(osbl)
-  const { data, setData, post, processing, errors, clearErrors, setError, transform } = useForm<StrictForm<Contribution>>({
+export interface ContributionToEdit {
+  id: number
+  body?: string
+  files?: {
+    [key: string]: {
+      filename: string
+      url: string
+    }
+  }
+  osbl: OsblUpdate
+}
+
+export default function Edit ({ currentUser, contribution }: { currentUser: CurrentUserType, contribution: ContributionToEdit }): ReactElement {
+  const initialOsbl: NewOsbl = getOsblData(contribution.osbl)
+  const { data, setData, put, processing, errors, clearErrors, setError, transform } = useForm<StrictForm<Contribution>>({
     contribution: {
-      body: '',
-      files: [],
+      body: contribution.body,
+      files: contribution.files,
       osbl: initialOsbl
     }
   })
@@ -190,7 +202,11 @@ export default function Edit ({ currentUser, osbl }: { currentUser: CurrentUserT
   }
 
   function validateContribution (): boolean {
-    return validate(contributionValidation, data, setError)
+    const dataForValidation = {
+      ...data,
+      files: data.contribution.files?.filter((file): file is File => file instanceof File)
+    }
+    return validate(contributionValidation, dataForValidation, setError)
   }
 
   function validateAndOpenDialog (e: React.FormEvent<HTMLFormElement>): void {
@@ -202,7 +218,16 @@ export default function Edit ({ currentUser, osbl }: { currentUser: CurrentUserT
   function handleConfirmSubmit (): void {
     if (!validateContribution()) return
     transform((data) => deepCleanData(data))
-    post(`/users/${currentUser.id}/contributions`)
+    put(`/users/${currentUser.id}/contributions/${String(contribution.id)}/`, {
+      onError: (errors) => {
+        Object.entries(errors).forEach(([key, value]) => {
+          setError(`contribution.osbl.${key}` as 'contribution', value)
+        })
+        setOpenDialog(false)
+        toast.error('Veuillez corriger les erreurs avant de continuer.')
+      }
+    }
+    )
   }
 
   function avoidUnintentionalSubmission (e: React.KeyboardEvent<HTMLFormElement>): void {
