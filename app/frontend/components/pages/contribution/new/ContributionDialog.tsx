@@ -54,8 +54,8 @@ export default function ContributionDialog ({
       return undefined
     }
 
-    // Check if files is an object with numeric keys and has filename/url properties
-    if (typeof contribution.files === 'object' && !Array.isArray(contribution.files)) {
+    // Check if files is an object not empty
+    if (typeof contribution.files === 'object' && !Array.isArray(contribution.files) && Object.keys(contribution.files).length > 0) {
       return Object.values(contribution.files).map((file: any) => file.filename).join(', ')
     }
 
@@ -88,7 +88,7 @@ export default function ContributionDialog ({
             <Textarea
               id='comment'
               placeholder='Fournissez vos sources, les liens webs qui vous ont servi de référence, ...'
-              value={contribution.body}
+              value={contribution.body ?? ''}
               onChange={handleCommentChange}
               className='bg-white focus-visible:ring-0 focus-visible:border-primary placeholder:text-ellipsis placeholder:text-xs md:placeholder:text-sm focus-visible:ring-offset-0 w-auto flex-grow h-40'
             />
