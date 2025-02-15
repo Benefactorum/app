@@ -1,8 +1,8 @@
 module Users
   class ContributionsController < ApplicationController
     before_action :get_current_user, only: %i[index new edit]
-    before_action :get_user, only: %i[create destroy]
-    before_action :only_for_current_user, only: %i[create destroy]
+    before_action :get_user, only: %i[create update destroy]
+    before_action :only_for_current_user, only: %i[create update destroy]
 
     def index
       render inertia: "Contribution/Index", props: {
@@ -34,7 +34,7 @@ module Users
       osbl = Osbl.new(osbl_params)
 
       if osbl.valid?
-        osbl_data = OsblDataTransformer.new(osbl_params, :in).transform
+        osbl_data = OsblDataTransformer.new(osbl_params).transform
         contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
 
         contribution.save!
@@ -61,9 +61,39 @@ module Users
           id: contribution.id,
           body: contribution.body,
           files: files,
-          osbl: OsblDataTransformer.new(contribution.osbl_data, :out).transform
+          osbl: OsblDataTransformer.new(contribution.osbl_data).transform
         }
       }
+    end
+
+    def update
+      osbl_params = contribution_params.delete(:osbl)
+      contribution = @user.contributions.related_to_osbl.find(params[:id])
+      osbl_data = OsblDataTransformer.new(osbl_params).transform
+      osbl = Osbl.new(osbl_data)
+      if osbl.valid?
+        # should be dealt by transformer
+        contribution_update_params = contribution_params.tap do |params|
+          params[:files]&.each_with_index do |file, index|
+            next if file.is_a?(ActionDispatch::Http::UploadedFile)
+
+            blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
+            params[:files][index] = blob.signed_id
+          end
+        end
+        contribution.update!(
+          contribution_update_params.merge(
+            contributable_attributes: {
+              id: contribution.contributable.id,
+              osbl_data: osbl_data
+            }
+          )
+        )
+
+        redirect_to my_contributions_path, success: "Votre contribution a été modifiée."
+      else
+        redirect_to edit_my_contribution_path(contribution), inertia: {errors: osbl.errors}
+      end
     end
 
     def destroy
@@ -82,11 +112,12 @@ module Users
       @contribution_params ||= params.expect(
         contribution: [
           :body,
-          files: ["0", "1", "2", "3", "4"],
+          files: {},
           osbl: [
             :name,
             :website,
             :logo,
+            {logo: [:filename, :url]},
             :description,
             :tax_reduction,
             :geographical_scale,
@@ -118,6 +149,7 @@ module Users
               document_attributes: [
                 :type,
                 :file,
+                {file: [:filename, :url]},
                 :name,
                 :year,
                 :description
