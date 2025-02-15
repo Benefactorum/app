@@ -67,7 +67,7 @@ export default function ContributionDialog ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent onOpenAutoFocus={(event) => { event.preventDefault() }}>
         <DialogHeader>
           <DialogTitle className='text-xl'>Enregistrer votre contribution</DialogTitle>
           <DialogDescription className='sr-only'>
