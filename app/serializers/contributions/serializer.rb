@@ -1,7 +1,5 @@
 module Contributions
   class Serializer
-    require "file_processor"
-
     def initialize(contribution)
       @contribution = contribution
     end

@@ -96,12 +96,10 @@ class Contribution < ApplicationRecord
   accepts_nested_attributes_for :contributable
 
   def osbl_data
-    @osbl_data ||= if OSBL_CONTRIBUTABLE_TYPES.include?(contributable_type)
-      if self[:osbl_data]
-        JSON.parse(self[:osbl_data])
-      else
-        contributable.osbl_data
-      end
+    if self[:osbl_data]
+      JSON.parse(self[:osbl_data])
+    elsif OSBL_CONTRIBUTABLE_TYPES.include?(contributable_type)
+      contributable.osbl_data
     end
   end
 
