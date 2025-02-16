@@ -20,4 +20,18 @@ RSpec.describe "Contributions", type: :system do
       expect(page).to have_text("Ajouter une association")
     end
   end
+
+  describe "/mes-contributions/:id/modifier" do
+    let(:user) { create(:user, :with_otp) }
+    let!(:contribution) { create(:contribution, :osbl_creation, user: user) }
+
+    before do
+      connect_as(user)
+    end
+
+    it "displays edit page" do
+      visit edit_my_contribution_path(contribution)
+      expect(page).to have_text("Modifier une association")
+    end
+  end
 end

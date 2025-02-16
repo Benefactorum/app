@@ -48,13 +48,14 @@ module Users
         document_types: Document.types.keys,
         fund_source_types: Osbl::FundSource.types.keys,
         fund_allocation_types: Osbl::FundAllocation.types.keys,
-        contribution: ContributionDataTransformer.new(contribution).transform
+        contribution: Contributions::Serializer.new(contribution).call
       }
     end
 
     def update
+      contribution = @user.contributions.related_to_osbl.find(params[:id])
       status, result = Contributions::UpdateService.new(
-        contribution: @user.contributions.related_to_osbl.find(params[:id]),
+        contribution: contribution,
         params: contribution_params
       ).call
 
