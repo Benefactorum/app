@@ -152,7 +152,7 @@ export default function OsblFinanceSheet ({
             max={new Date().getFullYear()}
             placeholder={String(new Date().getFullYear() - 1)}
             value={sheetFinance.year ?? ''}
-            onChange={(e) => updateSheetFinance('year', e.target.value)}
+            onChange={(value) => updateSheetFinance('year', value)}
             required
             error={errors[`annual_finances_attributes.${index}.year`] ?? errors[`annual_finances_attributes.${index}.missing_information`]}
           />
@@ -176,7 +176,7 @@ export default function OsblFinanceSheet ({
             min={0}
             step={0.01}
             value={sheetFinance.budget ?? ''}
-            onChange={(e) => updateSheetFinance('budget', e.target.value)}
+            onChange={(value) => updateSheetFinance('budget', value)}
             suffix='€'
           />
 
@@ -185,7 +185,7 @@ export default function OsblFinanceSheet ({
             labelText='Trésorerie'
             step={0.01}
             value={sheetFinance.treasury ?? ''}
-            onChange={(e) => updateSheetFinance('treasury', e.target.value)}
+            onChange={(value) => updateSheetFinance('treasury', value)}
             suffix='€'
           />
 
@@ -216,7 +216,7 @@ export default function OsblFinanceSheet ({
             labelText="Nombre d'employé"
             min={0}
             value={sheetFinance.employees_count ?? ''}
-            onChange={(e) => updateSheetFinance('employees_count', e.target.value)}
+            onChange={(value) => updateSheetFinance('employees_count', value)}
           />
         </div>
 

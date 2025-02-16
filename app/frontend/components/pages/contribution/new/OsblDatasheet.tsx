@@ -85,7 +85,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             options={CausesList}
             defaultValue={data.osbls_causes_attributes?.map(cause => cause.cause_id.toString())}
             onValueChange={(value) => {
-              setData('osbls_causes_attributes', value.map(id => ({ cause_id: id, name: CausesList.find(c => c.value === id)?.label })))
+              setData('osbls_causes_attributes', value.map(id => ({ cause_id: Number(id), name: CausesList.find(c => c.value === id)?.label })))
               clearErrors('osbls_causes_attributes')
             }}
             placeholder=''
@@ -199,9 +199,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
           min={1000}
           max={new Date().getFullYear()}
           value={data.creation_year ?? ''}
-          onChange={(e) => {
-            setData('creation_year', e.target.value)
-          }}
+          onChange={(value) => { setData('creation_year', value) }}
         />
 
         <div className='flex flex-col gap-4'>

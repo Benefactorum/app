@@ -29,7 +29,7 @@ const osblValidation = z.object({
         .refine((file) => file.size <= MAX_LOGO_SIZE, 'La taille du fichier doit être inférieure à 1 MB.')
         .refine((file) => ALLOWED_LOGO_TYPES.includes(file.type), `Le type de fichier est invalide. Format accepté : ${getAllowedFormats(ALLOWED_LOGO_TYPES)}.`)
         .optional(),
-      osbls_causes_attributes: z.array(z.object({ cause_id: z.string() })).min(1, { message: 'Au moins une cause est requise.' }),
+      osbls_causes_attributes: z.array(z.object({ cause_id: z.number() })).min(1, { message: 'Au moins une cause est requise.' }),
       tax_reduction: z.enum(['intérêt_général', 'aide_aux_personnes_en_difficulté'], { message: 'Veuillez sélectionner un pourcentage.' })
     })
   })

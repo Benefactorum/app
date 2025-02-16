@@ -2,12 +2,13 @@ import { ReactElement, ReactNode } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import InputError from '@/components/shared/InputError'
+import { numberInput } from '@/lib/numberInput'
 
 interface BaseMyNumberInputProps {
   required?: boolean
   disabled?: boolean
   value?: string | number
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (value: number | undefined) => void
   autoFocus?: boolean
   error?: string
   id: string
@@ -54,6 +55,10 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
   const hideIncrementorClass = hideIncrementor ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''
   const suffixClass = suffix !== undefined ? 'pr-6' : ''
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    onChange(numberInput(e.target.value))
+  }
+
   return (
     <div className='flex flex-col'>
       {
@@ -69,7 +74,7 @@ export default function MyNumberInput (props: MyNumberInputProps): ReactElement 
           required={required}
           disabled={disabled}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder={placeholder}
           autoFocus={autoFocus}
           min={min}
