@@ -619,7 +619,7 @@ benefactorum_params = {
   },
   "geographical_scale" => "national",
   "osbl_type" => "association",
-  "creation_year" => "2023",
+  "creation_year" => 2023,
   "document_attachments_attributes" =>
     {
       "0" =>
@@ -635,7 +635,7 @@ benefactorum_params = {
           #    "headers" => "Content-Disposition: form-data; name=\"document_attachments_attributes[0][document_attributes][file]\"; filename=\"Statuts Benefactorum.pdf\"\r\nContent-Type: application/pdf\r\n"
           #  },
           "name" => "Statuts de l'association",
-          "year" => "2023"
+          "year" => 2023
         }
       },
       "1" =>
@@ -652,7 +652,7 @@ benefactorum_params = {
           #    "Content-Disposition: form-data; name=\"document_attachments_attributes[1][document_attributes][file]\"; filename=\"Statuts - Fonds Benefactorum.pdf\"\r\nContent-Type: application/pdf\r\n"
           #  },
           "name" => "Statuts du fonds de dotation",
-          "year" => "2023"
+          "year" => 2023
         }
       }
     },

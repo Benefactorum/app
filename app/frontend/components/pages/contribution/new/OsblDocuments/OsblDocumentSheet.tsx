@@ -134,7 +134,7 @@ export default function OsblDocumentSheet ({
               min={1000}
               max={new Date().getFullYear()}
               value={sheetDocument.year ?? ''}
-              onChange={(e) => updateSheetDocument('year', e.target.value)}
+              onChange={(value) => updateSheetDocument('year', value)}
               required
             />
           )}
@@ -192,7 +192,7 @@ export default function OsblDocumentSheet ({
                     min={1000}
                     max={new Date().getFullYear()}
                     value={sheetDocument.year ?? ''}
-                    onChange={(e) => updateSheetDocument('year', e.target.value)}
+                    onChange={(value) => updateSheetDocument('year', value)}
                   />
                 )}
 
