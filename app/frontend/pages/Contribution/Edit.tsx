@@ -32,7 +32,7 @@ function getOsblData (osbl: OsblUpdate): NewOsbl {
     osbls_labels_attributes: (osbl.osbls_labels_attributes !== undefined)
       ? Object.values(osbl.osbls_labels_attributes).map(label => ({
         label_id: label.label_id,
-        name: label.name ?? '' // Ensure name is always a string
+        name: label.name
       }))
       : undefined,
     annual_finances_attributes: (osbl.annual_finances_attributes !== undefined)

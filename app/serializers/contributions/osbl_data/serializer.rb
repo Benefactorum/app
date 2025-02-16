@@ -1,8 +1,6 @@
 module Contributions
   module OsblData
     class Serializer
-      require "file_processor"
-
       def initialize(params)
         @params = params.to_h
       end
