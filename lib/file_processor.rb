@@ -9,10 +9,10 @@ module FileProcessor
       )
       blob.signed_id
     when String # blob.signed_id
-      blob = ActiveStorage::Blob.find_signed(file)
+      blob = ActiveStorage::Blob.find_signed!(file)
       {
         filename: blob.filename,
-        url: Rails.application.routes.url_helpers.rails_blob_url(blob, only_path: true)
+        url: generate_url(blob)
       }
     when ActiveSupport::HashWithIndifferentAccess
       blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
@@ -20,10 +20,22 @@ module FileProcessor
     when ActiveStorage::Attachment
       {
         filename: file.filename.to_s,
-        url: Rails.application.routes.url_helpers.rails_blob_url(file, only_path: true)
+        url: generate_url(file)
       }
     else
       raise ArgumentError, "Unsupported file type: #{file.class.name}"
+    end
+  end
+
+  class << self
+    private
+
+    def generate_url(blob)
+      Rails.application.routes.url_helpers.rails_blob_url(
+        blob,
+        only_path: true
+        # host: Rails.application.config.action_mailer.default_url_options[:host]
+      )
     end
   end
 end

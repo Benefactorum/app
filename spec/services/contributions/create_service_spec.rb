@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Contributions::CreateService do
   let(:user) { create(:user) }
+  let(:cause) { create(:cause) }
   let(:valid_params) do
     {
       body: "New contribution",
@@ -9,7 +10,7 @@ RSpec.describe Contributions::CreateService do
       osbl: {
         name: "New OSBL",
         tax_reduction: "intérêt_général",
-        osbls_causes_attributes: [{cause_id: create(:cause).id}]
+        osbls_causes_attributes: [{cause_id: cause.id}]
       }
     }
   end
@@ -29,6 +30,12 @@ RSpec.describe Contributions::CreateService do
         contribution = Contribution.last
         expect(contribution.user).to eq(user)
         expect(contribution.body).to eq("New contribution")
+        expect(contribution.osbl_data).to include(
+          "name" => "New OSBL",
+          "tax_reduction" => "intérêt_général"
+        )
+        expect(contribution.osbl_data["osbls_causes_attributes"].first)
+          .to include("cause_id" => cause.id)
       end
     end
 

@@ -31,8 +31,7 @@ module Contributions
         params[:files]&.each_with_index do |file, index|
           next if file.is_a?(ActionDispatch::Http::UploadedFile)
 
-          blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
-          params[:files][index] = blob.signed_id
+          params[:files][index] = FileProcessor.process(file)
         end
       end
     end
