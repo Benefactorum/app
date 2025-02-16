@@ -139,8 +139,7 @@ export default function Form ({
     const dataForValidation = {
       contribution: {
         ...data.contribution,
-        // files: Array.isArray(data.contribution.files) ? data.contribution.files : []
-        files: data.contribution.files instanceof Array
+        files: Array.isArray(data.contribution.files)
           ? data.contribution.files.filter((file): file is File => file instanceof File)
           : [] // If files is an object or undefined, use empty array for validation
       }

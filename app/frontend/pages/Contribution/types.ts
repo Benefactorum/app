@@ -57,7 +57,7 @@ export interface NewOsbl {
   website?: string
   logo?: File | { filename: string, url: string }
   description?: string
-  osbls_causes_attributes: Array<{ cause_id: string, name: string }>
+  osbls_causes_attributes: Array<{ cause_id: number, name: string }>
   tax_reduction: 'intérêt_général' | 'aide_aux_personnes_en_difficulté'
   osbls_keywords_attributes?: Array<{ keyword_id: string, name: string }>
   geographical_scale?: 'local' | 'regional' | 'national' | 'international'
