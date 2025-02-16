@@ -23,13 +23,14 @@ export default function MyFileInput ({
   const [inputHasFile, setinputHasFile] = useState(false)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const fileAttached = (e.target.files != null) && e.target.files.length > 0
+    const files = e.target.files
+    const fileAttached = files != null && files.length > 0
     setinputHasFile(!!fileAttached)
 
-    if (multiple && e.target.files != null) {
-      onChange(Array.from(e.target.files))
+    if (multiple && files != null) {
+      onChange(Array.from(files))
     } else {
-      onChange(e.target.files?.[0])
+      onChange(files?.[0])
     }
   }
 
