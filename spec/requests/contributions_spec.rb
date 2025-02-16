@@ -325,4 +325,104 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       end
     end
   end
+
+  describe "GET /edit" do
+    let(:user) { create(:user) }
+    let!(:contribution) { create(:contribution, :osbl_creation, user: user) }
+
+    subject { get edit_my_contribution_url(contribution) }
+
+    it_behaves_like "require_authentication"
+
+    context "for current user" do
+      before do
+        sign_in_as(user)
+      end
+
+      it "renders a successful response" do
+        subject
+        expect(response).to be_successful
+        expect(inertia.component).to eq("Contribution/Edit")
+      end
+    end
+  end
+
+  describe "PATCH /update" do
+    let(:user) { create(:user) }
+    let!(:contribution) { create(:contribution, :osbl_creation, user: user) }
+    let(:params) { {} }
+
+    subject { patch user_contribution_url(user, contribution), params: params }
+
+    it_behaves_like "require_authentication"
+    it_behaves_like "only_for_current_user"
+
+    context "for current user" do
+      before do
+        sign_in_as(user)
+        create(:cause, id: 13)
+      end
+
+      let(:valid_attributes) do
+        {
+          contribution: {
+            osbl: {
+              name: "Updated OSBL Name",
+              description: "Updated description",
+              osbls_causes_attributes: [{cause_id: 13}],
+              tax_reduction: "intérêt_général",
+              geographical_scale: "national",
+              osbl_type: "association"
+            }
+          }
+        }
+      end
+
+      let(:invalid_attributes) do
+        {
+          contribution: {
+            osbl: {
+              name: nil,
+              description: "Updated description"
+            }
+          }
+        }
+      end
+
+      context "with valid parameters" do
+        let(:params) { valid_attributes }
+
+        it "updates the contribution" do
+          subject
+          contribution.reload
+          expect(contribution.osbl_data["name"]).to eq("Updated OSBL Name")
+          expect(contribution.osbl_data["description"]).to eq("Updated description")
+        end
+
+        it "redirects to contributions list with success message" do
+          subject
+          expect(response).to redirect_to(my_contributions_url)
+          expect(flash[:success]).to be_present
+        end
+      end
+
+      context "with invalid parameters" do
+        let(:params) { invalid_attributes }
+
+        it "does not update the contribution" do
+          original_name = contribution.osbl_data["name"]
+          subject
+          contribution.reload
+          expect(contribution.osbl_data["name"]).to eq(original_name)
+        end
+
+        it "redirects back to edit with errors" do
+          subject
+          expect(response).to redirect_to(edit_my_contribution_path(contribution))
+          follow_redirect!
+          expect(inertia.props[:errors]).to be_present
+        end
+      end
+    end
+  end
 end

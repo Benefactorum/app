@@ -7,7 +7,7 @@ module Contributions
 
     def call
       osbl_params = @params.delete(:osbl)
-      osbl_data = OsblDataTransformer.new(osbl_params).transform
+      osbl_data = OsblData::Serializer.new(osbl_params).call
       osbl = Osbl.new(osbl_data)
 
       return [:error, osbl.errors] unless osbl.valid?

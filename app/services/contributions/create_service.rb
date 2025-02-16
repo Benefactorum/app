@@ -12,7 +12,7 @@ module Contributions
 
       return [:error, osbl.errors] unless osbl.valid?
 
-      osbl_data = OsblDataTransformer.new(osbl_params).transform
+      osbl_data = OsblData::Serializer.new(osbl_params).call
       contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
 
       contribution.save!
