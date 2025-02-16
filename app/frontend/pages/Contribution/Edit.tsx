@@ -38,9 +38,9 @@ function getOsblData (osbl: OsblUpdate): NewOsbl {
     annual_finances_attributes: (osbl.annual_finances_attributes !== undefined)
       ? Object.values(osbl.annual_finances_attributes).map(finance => ({
         year: Number(finance.year),
-        budget: finance.budget !== '' && finance.budget !== undefined ? Number(finance.budget) : undefined,
-        treasury: finance.treasury !== '' && finance.treasury !== undefined ? Number(finance.treasury) : undefined,
-        employees_count: finance.employees_count !== '' && finance.employees_count !== undefined ? Number(finance.employees_count) : undefined,
+        budget: finance.budget !== undefined ? Number(finance.budget) : undefined,
+        treasury: finance.treasury !== undefined ? Number(finance.treasury) : undefined,
+        employees_count: finance.employees_count !== undefined ? Number(finance.employees_count) : undefined,
         certified: Boolean(finance.certified),
         fund_sources_attributes: (finance.fund_sources_attributes !== undefined)
           ? Object.values(finance.fund_sources_attributes).map(source => ({

@@ -59,10 +59,10 @@ export interface NewOsbl {
   description?: string
   osbls_causes_attributes: Array<{ cause_id: number, name: string }>
   tax_reduction: 'intérêt_général' | 'aide_aux_personnes_en_difficulté'
-  osbls_keywords_attributes?: Array<{ keyword_id: string, name: string }>
+  osbls_keywords_attributes?: Array<{ keyword_id: number, name: string }>
   geographical_scale?: 'local' | 'regional' | 'national' | 'international'
-  osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string, name: string }>
-  osbls_labels_attributes?: Array<{ label_id: string, name: string }>
+  osbls_intervention_areas_attributes?: Array<{ intervention_area_id: number, name: string }>
+  osbls_labels_attributes?: Array<{ label_id: number, name: string }>
   annual_finances_attributes?: AnnualFinance[]
   osbl_type?: 'association' | 'fonds_de_dotation' | 'fondation'
   public_utility?: boolean
@@ -79,36 +79,36 @@ export interface OsblUpdate {
   description?: string
   osbls_causes_attributes: {
     [key: string]: {
-      cause_id: string
+      cause_id: number
       name: string
     }
   }
   tax_reduction: 'intérêt_général' | 'aide_aux_personnes_en_difficulté'
   osbls_keywords_attributes?: {
     [key: string]: {
-      keyword_id: string
+      keyword_id: number
       name: string
     }
   }
   geographical_scale?: 'local' | 'regional' | 'national' | 'international'
   osbls_intervention_areas_attributes?: {
     [key: string]: {
-      intervention_area_id: string
+      intervention_area_id: number
       name: string
     }
   }
   osbls_labels_attributes?: {
     [key: string]: {
-      label_id: string
+      label_id: number
       name?: string
     }
   }
   annual_finances_attributes?: {
     [key: string]: {
-      year: string
-      budget?: string
-      treasury?: string
-      employees_count?: string
+      year: number
+      budget?: number
+      treasury?: number
+      employees_count?: number
       certified?: string
       fund_sources_attributes?: {
         [key: string]: FundRecord
