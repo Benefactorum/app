@@ -100,7 +100,7 @@ export interface OsblUpdate {
   osbls_labels_attributes?: {
     [key: string]: {
       label_id: number
-      name?: string
+      name: string
     }
   }
   annual_finances_attributes?: {
