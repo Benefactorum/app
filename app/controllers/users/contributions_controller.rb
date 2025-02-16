@@ -29,18 +29,15 @@ module Users
     end
 
     def create
-      osbl_params = contribution_params.delete(:osbl)
-      contribution = @user.contributions.build(contribution_params)
-      osbl = Osbl.new(osbl_params)
+      status, result = Contributions::CreateService.new(
+        user: @user,
+        params: contribution_params
+      ).call
 
-      if osbl.valid?
-        osbl_data = OsblDataTransformer.new(osbl_params).transform
-        contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
-
-        contribution.save!
-        redirect_to my_contributions_path, success: "Votre contribution a été enregistrée."
+      if status == :ok
+        redirect_to my_contributions_path, success: result
       else
-        redirect_to my_new_contribution_path, inertia: {errors: osbl.errors}
+        redirect_to my_new_contribution_path, inertia: {errors: result}
       end
     end
 
@@ -56,32 +53,15 @@ module Users
     end
 
     def update
-      osbl_params = contribution_params.delete(:osbl)
-      contribution = @user.contributions.related_to_osbl.find(params[:id])
-      osbl_data = OsblDataTransformer.new(osbl_params).transform
-      osbl = Osbl.new(osbl_data)
-      if osbl.valid?
-        # should be dealt by transformer
-        contribution_update_params = contribution_params.tap do |params|
-          params[:files]&.each_with_index do |file, index|
-            next if file.is_a?(ActionDispatch::Http::UploadedFile)
+      status, result = Contributions::UpdateService.new(
+        contribution: @user.contributions.related_to_osbl.find(params[:id]),
+        params: contribution_params
+      ).call
 
-            blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
-            params[:files][index] = blob.signed_id
-          end
-        end
-        contribution.update!(
-          contribution_update_params.merge(
-            contributable_attributes: {
-              id: contribution.contributable.id,
-              osbl_data: osbl_data
-            }
-          )
-        )
-
-        redirect_to my_contributions_path, success: "Votre contribution a été modifiée."
+      if status == :ok
+        redirect_to my_contributions_path, success: result
       else
-        redirect_to edit_my_contribution_path(contribution), inertia: {errors: osbl.errors}
+        redirect_to edit_my_contribution_path(contribution), inertia: {errors: result}
       end
     end
 

@@ -1,0 +1,40 @@
+module Contributions
+  class UpdateService
+    def initialize(contribution:, params:)
+      @contribution = contribution
+      @params = params
+    end
+
+    def call
+      osbl_params = @params.delete(:osbl)
+      osbl_data = OsblDataTransformer.new(osbl_params).transform
+      osbl = Osbl.new(osbl_data)
+
+      return [:error, osbl.errors] unless osbl.valid?
+
+      @contribution.update!(
+        processed_params.merge(
+          contributable_attributes: {
+            id: @contribution.contributable.id,
+            osbl_data: osbl_data
+          }
+        )
+      )
+
+      [:ok, "Votre contribution a été modifiée."]
+    end
+
+    private
+
+    def processed_params
+      @params.tap do |params|
+        params[:files]&.each_with_index do |file, index|
+          next if file.is_a?(ActionDispatch::Http::UploadedFile)
+
+          blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
+          params[:files][index] = blob.signed_id
+        end
+      end
+    end
+  end
+end
