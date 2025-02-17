@@ -1,6 +1,6 @@
 module Users
   class ContributionsController < ApplicationController
-    before_action :get_current_user, only: %i[index new edit]
+    before_action :get_current_user, only: %i[index show new edit]
     before_action :get_user, only: %i[create update destroy]
     before_action :only_for_current_user, only: %i[create update destroy]
 
@@ -16,6 +16,13 @@ module Users
             osbl_name
           ]
         )
+      }
+    end
+
+    def show
+      contribution = @user.contributions.related_to_osbl.find(params[:id])
+      render inertia: "Contribution/Show", props: {
+        osbl: Contributions::OsblData::Serializer.new(contribution.osbl_data).call
       }
     end
 
