@@ -9,9 +9,9 @@ RSpec.describe Document, type: :model do
 
   describe "database constraints" do
     it "raises error when type is null" do
-      expect {
-        Document.create!(type: nil, file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf"))
-      }.to raise_error(ActiveRecord::NotNullViolation)
+      document = build(:document, type: nil, file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf"))
+      expect(document).not_to be_valid
+      expect { document.save!(validate: false) }.to raise_error(ActiveRecord::NotNullViolation)
     end
 
     it "raises error when year is null for rapport_activite type" do
@@ -35,13 +35,9 @@ RSpec.describe Document, type: :model do
     end
 
     it "raises error when year is less than 1000" do
-      expect {
-        Document.create!(
-          type: "Rapport d'activité",
-          year: 999,
-          file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf")
-        )
-      }.to raise_error(ActiveRecord::StatementInvalid, /year_as_4_digits/)
+      document = build(:document, type: "Rapport d'activité", year: 999, file: fixture_file_upload("spec/fixtures/files/sample.pdf", "application/pdf"))
+      expect(document).not_to be_valid
+      expect { document.save!(validate: false) }.to raise_error(ActiveRecord::StatementInvalid, /year_as_4_digits/)
     end
   end
 

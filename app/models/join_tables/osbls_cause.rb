@@ -4,5 +4,5 @@ class JoinTables::OsblsCause < ApplicationRecord
 
   attribute :name, :string
 
-  # validates :osbl_id, uniqueness: { scope: :cause_id }
+  validates :osbl_id, uniqueness: {scope: :cause_id}
 end

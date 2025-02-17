@@ -50,7 +50,7 @@ class Osbl < ApplicationRecord
   validates :website, uniqueness: true, allow_nil: true
   validates :description, length: {maximum: 300}, allow_nil: true # TODO: enforce this at db level once we're sure it's enough
   validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true
-  # validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true
+
   validates_attachment(
     name: :logo,
     max_size: 1.megabytes,

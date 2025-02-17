@@ -4,5 +4,5 @@ class JoinTables::OsblsInterventionArea < ApplicationRecord
 
   attribute :name, :string
 
-  # validates :osbl_id, uniqueness: { scope: :intervention_area_id }
+  validates :osbl_id, uniqueness: {scope: :intervention_area_id}
 end

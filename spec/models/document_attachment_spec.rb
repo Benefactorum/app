@@ -35,9 +35,10 @@ RSpec.describe JoinTables::DocumentAttachment, type: :model do
       let!(:existing_attachment) { create(:document_attachment, document: document, attachable: osbl) }
 
       it "prevents attaching the same document twice to the same record" do
-        expect {
-          create(:document_attachment, document: document, attachable: osbl)
-        }.to raise_error(ActiveRecord::RecordNotUnique)
+        document_attachment = build(:document_attachment, document: document, attachable: osbl)
+
+        expect(document_attachment).not_to be_valid
+        expect { document_attachment.save!(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
       end
 
       it "allows attaching the same document to different records" do

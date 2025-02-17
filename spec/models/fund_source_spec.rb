@@ -7,19 +7,22 @@ RSpec.describe Osbl::FundSource, type: :model do
     describe "percent constraints" do
       it "enforces percent > 0" do
         fund_source = build(:fund_source, annual_finance: annual_finance, percent: 0)
-        expect { fund_source.save }.to raise_error(ActiveRecord::StatementInvalid, /percent_within_range/)
+        expect(fund_source).not_to be_valid
+        expect { fund_source.save!(validate: false) }.to raise_error(ActiveRecord::StatementInvalid, /percent_within_range/)
       end
 
       it "enforces percent <= 100" do
         fund_source = build(:fund_source, annual_finance: annual_finance, percent: 101)
-        expect { fund_source.save }.to raise_error(ActiveRecord::StatementInvalid, /percent_within_range/)
+        expect(fund_source).not_to be_valid
+        expect { fund_source.save!(validate: false) }.to raise_error(ActiveRecord::StatementInvalid, /percent_within_range/)
       end
     end
 
     describe "amount constraints" do
       it "enforces amount > 0" do
         fund_source = build(:fund_source, annual_finance: annual_finance, amount: 0)
-        expect { fund_source.save }.to raise_error(ActiveRecord::StatementInvalid, /amount_positive/)
+        expect(fund_source).not_to be_valid
+        expect { fund_source.save!(validate: false) }.to raise_error(ActiveRecord::StatementInvalid, /amount_positive/)
       end
     end
 
@@ -28,7 +31,8 @@ RSpec.describe Osbl::FundSource, type: :model do
         create(:fund_source, annual_finance: annual_finance, type: "Dons")
         duplicate = build(:fund_source, annual_finance: annual_finance, type: "Dons")
 
-        expect { duplicate.save }.to raise_error(ActiveRecord::RecordNotUnique)
+        expect(duplicate).not_to be_valid
+        expect { duplicate.save!(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
   end

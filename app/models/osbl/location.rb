@@ -12,9 +12,9 @@ class Osbl::Location < ApplicationRecord
   }.freeze
 
   validates :address, presence: true
-  # validates :type, presence: true
-  # validates :name, presence: true, if: -> { type.in?(%i[antenne_locale lieu_d_activite autre]) }
-  # validates :osbl, uniqueness: {scope: :type, if: -> { type == "siege_social" }}
+  validates :type, presence: true
+  validates :name, presence: true, if: -> { type.in?(%i[antenne_locale lieu_d_activite autre]) }
+  validates :osbl, uniqueness: {scope: :type, if: -> { type == "siege_social" }}
 
   accepts_nested_attributes_for :address
 end

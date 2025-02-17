@@ -4,5 +4,5 @@ class JoinTables::OsblsKeyword < ApplicationRecord
 
   attribute :name, :string
 
-  # validates :osbl_id, uniqueness: { scope: :keyword_id }
+  validates :osbl_id, uniqueness: {scope: :keyword_id}
 end

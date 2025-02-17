@@ -9,9 +9,9 @@ RSpec.describe Osbl::Location, type: :model do
 
   describe "database constraints" do
     it "raises error when type is null" do
-      expect {
-        Osbl::Location.create!(type: nil, osbl: create(:osbl), address_attributes: attributes_for(:address))
-      }.to raise_error(ActiveRecord::NotNullViolation)
+      location = build(:location, type: nil)
+      expect(location).not_to be_valid
+      expect { location.save!(validate: false) }.to raise_error(ActiveRecord::NotNullViolation)
     end
 
     it "raises error when name is null for antenne_locale type" do

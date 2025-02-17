@@ -14,8 +14,8 @@ class Osbl::FundSource < ApplicationRecord
     # activité_commerciale: 7
   }.freeze
 
-  # validates :type, presence: true
-  # validates :percent, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  # validates :value, numericality: { greater_than: 0 }, allow_nil: true
-  # validates :annual_finance_id, uniqueness: { scope: :type }
+  validates :type, presence: true
+  validates :percent, presence: true, numericality: {greater_than: 0, less_than_or_equal_to: 100}
+  validates :amount, numericality: {greater_than: 0}, allow_nil: true
+  validates :annual_finance_id, uniqueness: {scope: :type}
 end
