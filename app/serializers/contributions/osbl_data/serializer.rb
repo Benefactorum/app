@@ -2,7 +2,7 @@ module Contributions
   module OsblData
     class Serializer
       def initialize(params)
-        @params = params.to_h
+        @params = params
       end
 
       def call
@@ -29,7 +29,7 @@ module Contributions
           attachments.each do |attachment|
             attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
           end
-        when Hash, ActiveSupport::HashWithIndifferentAccess
+        when ActiveSupport::HashWithIndifferentAccess, ActionController::Parameters
           attachments.each do |_, attachment|
             attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
           end

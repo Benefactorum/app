@@ -425,4 +425,38 @@ RSpec.describe "/contributions", type: :request, inertia: true do
       end
     end
   end
+
+  describe "GET /show" do
+    let(:user) { create(:user) }
+    let!(:contribution) { create(:contribution, :osbl_creation, user: user) }
+
+    subject { get my_contribution_url(contribution) }
+
+    it_behaves_like "require_authentication"
+
+    context "for current user" do
+      before do
+        sign_in_as(user)
+      end
+
+      it "returns the contribution with OSBL data" do
+        subject
+        expect(inertia.props[:osbl]).to be_present
+        # The exact structure will depend on your OsblData::Serializer
+      end
+    end
+
+    context "when accessing another user's contribution" do
+      let(:other_user) { create(:user) }
+
+      before do
+        sign_in_as(other_user)
+      end
+
+      it "returns 404" do
+        subject
+        expect(response.status).to eq(404)
+      end
+    end
+  end
 end
