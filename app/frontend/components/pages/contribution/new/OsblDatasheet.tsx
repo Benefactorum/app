@@ -83,9 +83,9 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
           <Label>Causes * :</Label>
           <MultiSelect
             options={CausesList}
-            defaultValue={data.osbls_causes_attributes?.map(cause => cause.cause_id.toString())}
+            defaultValue={data.osbls_causes_attributes?.map(cause => cause.cause_id)}
             onValueChange={(value) => {
-              setData('osbls_causes_attributes', value.map(id => ({ cause_id: Number(id), name: CausesList.find(c => c.value === id)?.label })))
+              setData('osbls_causes_attributes', value.map(id => ({ cause_id: id, name: CausesList.find(c => c.value === id)?.label })))
               clearErrors('osbls_causes_attributes')
             }}
             placeholder=''
@@ -205,7 +205,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
         <div className='flex flex-col gap-4'>
           <Label>Labels :</Label>
           <MultiSelect
-            defaultValue={data.osbls_labels_attributes?.map(label => label.label_id.toString())}
+            defaultValue={data.osbls_labels_attributes?.map(label => label.label_id)}
             options={LabelList}
             onValueChange={(value) => {
               setData('osbls_labels_attributes', value.map(id => ({ label_id: id, name: LabelList.find(l => l.value === id)?.label })))

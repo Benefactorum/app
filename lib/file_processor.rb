@@ -14,7 +14,7 @@ module FileProcessor
         filename: blob.filename,
         url: generate_url(blob)
       }
-    when ActiveSupport::HashWithIndifferentAccess
+    when ActionController::Parameters, ActiveSupport::HashWithIndifferentAccess
       blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
       blob.signed_id
     when ActiveStorage::Attachment
