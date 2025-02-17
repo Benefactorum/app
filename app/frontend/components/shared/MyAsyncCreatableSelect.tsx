@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 
 export interface SelectOption {
   readonly label: string
-  readonly value: number
+  readonly value: string
 }
 
 interface MyAsyncCreatableSelectProps {
@@ -26,7 +26,7 @@ interface BackendData {
 
 const createOption = (data: BackendData): SelectOption => ({
   label: data.name,
-  value: data.id
+  value: data.id.toString()
 })
 
 export default function MyAsyncCreatableSelect ({
