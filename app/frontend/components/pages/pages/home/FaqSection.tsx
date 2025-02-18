@@ -1,8 +1,8 @@
-import { Link } from '@inertiajs/react'
 import { buttonVariants } from '@/components/ui/button'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import Faq from '@/assets/images/pages/home/faq.webp'
 import { ReactElement } from 'react'
+import MyLink from '@/components/shared/MyLink'
 
 const imageDescription =
   "Illustration d'un livre ouvert avec un cœur au centre et une loupe à côté, symbolisant le guide du donateur"
@@ -34,22 +34,22 @@ export default function JoinUs (): ReactElement {
             </h3>
             <ul className='pl-4 sm:pl-8 list-disc flex flex-col space-y-4'>
               <li className='underline hover:text-primary'>
-                <Link className='opacity-50 cursor-not-allowed' href='/'>
+                <MyLink className='opacity-50 cursor-not-allowed' href='/'>
                   C’est quoi une association d’intérêt général ?
-                </Link>
+                </MyLink>
               </li>
               <li className='underline hover:text-primary'>
-                <Link className='opacity-50 cursor-not-allowed' disabled href='/'>Pourquoi donner ?</Link>
+                <MyLink className='opacity-50 cursor-not-allowed' disabled href='/'>Pourquoi donner ?</MyLink>
               </li>
               <li className='underline hover:text-primary'>
-                <Link className='opacity-50 cursor-not-allowed' disabled href='/'>Qu'est-ce-qu'une réduction d’impôt ?</Link>
+                <MyLink className='opacity-50 cursor-not-allowed' disabled href='/'>Qu'est-ce-qu'une réduction d’impôt ?</MyLink>
               </li>
               <li className='underline hover:text-primary'>
-                <Link className='opacity-50 cursor-not-allowed' disabled href='/'>À qui donner ?</Link>
+                <MyLink className='opacity-50 cursor-not-allowed' disabled href='/'>À qui donner ?</MyLink>
               </li>
             </ul>
             <div className='ml-auto'>
-              <Link
+              <MyLink
                 href=''
                 className={`${buttonVariants({
                   mode: 'disabled',
@@ -57,7 +57,7 @@ export default function JoinUs (): ReactElement {
                 })}`}
               >
                 En savoir plus
-              </Link>
+              </MyLink>
             </div>
           </div>
         </div>

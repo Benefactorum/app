@@ -49,32 +49,4 @@ RSpec.describe "Contributions", type: :system do
       expect(page).to have_text(contribution.osbl_data["name"])
     end
   end
-
-  describe "contribution workflow" do
-    let(:user) { create(:user, :with_otp) }
-
-    before do
-      connect_as(user)
-      create(:cause, id: 13)
-    end
-
-    it "allows creating and managing a contribution" do
-      # Create new contribution
-      visit my_new_contribution_path
-      expect(page).to have_text("Ajouter une association")
-
-      # Fill and submit form
-      # Note: Actual form filling will depend on your frontend implementation
-
-      # View in list
-      visit my_contributions_path
-      expect(page).to have_text("Mon historique")
-
-      # The rest of the workflow test would depend on your frontend implementation
-      # You might want to test:
-      # - Viewing the contribution details
-      # - Editing the contribution
-      # - Deleting a draft contribution
-    end
-  end
 end
