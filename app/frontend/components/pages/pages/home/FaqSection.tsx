@@ -34,25 +34,25 @@ export default function JoinUs (): ReactElement {
             </h3>
             <ul className='pl-4 sm:pl-8 list-disc flex flex-col space-y-4'>
               <li className='underline hover:text-primary'>
-                <Link href='/'>
+                <Link className='opacity-50 cursor-not-allowed' href='/'>
                   C’est quoi une association d’intérêt général ?
                 </Link>
               </li>
               <li className='underline hover:text-primary'>
-                <Link href='/'>Pourquoi donner ?</Link>
+                <Link className='opacity-50 cursor-not-allowed' disabled href='/'>Pourquoi donner ?</Link>
               </li>
               <li className='underline hover:text-primary'>
-                <Link href='/'>Qu'est-ce-qu'une réduction d’impôt ?</Link>
+                <Link className='opacity-50 cursor-not-allowed' disabled href='/'>Qu'est-ce-qu'une réduction d’impôt ?</Link>
               </li>
               <li className='underline hover:text-primary'>
-                <Link href='/'>À qui donner ?</Link>
+                <Link className='opacity-50 cursor-not-allowed' disabled href='/'>À qui donner ?</Link>
               </li>
             </ul>
             <div className='ml-auto'>
               <Link
                 href=''
                 className={`${buttonVariants({
-                  variant: '',
+                  mode: 'disabled',
                   size: 'lg'
                 })}`}
               >

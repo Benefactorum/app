@@ -16,7 +16,7 @@ export default function HeroSection (): ReactElement {
     e.preventDefault()
     const form = e.target as HTMLFormElement
     const inputValue = (form.elements[0] as HTMLInputElement).value
-    alert(inputValue)
+    alert('Bientôt disponible ;)')
     // router.get("", inputValue.value);
   }
 

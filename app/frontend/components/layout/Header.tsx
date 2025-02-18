@@ -110,14 +110,15 @@ export default function Header (): ReactElement {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <MyLink
-                  href='/trouver-une-association'
+                  href='/'
                   className={
-                    'flex gap-2 items-center py-2 px-4 rounded-md' +
-                    (url === '/trouver-une-association'
-                      ? ' bg-secondary'
-                      : ' hover:bg-secondary/50')
+                    'flex gap-2 items-center py-2 px-4 rounded-md opacity-50 cursor-not-allowed'
+                    // (url === '/trouver-une-association'
+                    //   ? ' bg-secondary'
+                    //   : ' hover:bg-secondary/50')
                   }
                   onClick={handleLinkClick}
+                  disabled
                 >
                   <Search className='w-4 h-4 text-foreground' />
                   Trouver une association
@@ -221,7 +222,7 @@ export default function Header (): ReactElement {
               <MyLink href='/connexion' onClick={handleLinkClick}>
                 <Button>
                   <LogIn />
-                  Se connecter
+                  Espace contributeur
                 </Button>
               </MyLink>
             )}
@@ -316,7 +317,7 @@ export default function Header (): ReactElement {
                   <MyLink href='/connexion' onClick={handleLinkClick}>
                     <Button>
                       <LogIn />
-                      Se connecter
+                      Espace contributeur
                     </Button>
                   </MyLink>
                 </div>
