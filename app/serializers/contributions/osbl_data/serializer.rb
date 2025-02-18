@@ -29,7 +29,7 @@ module Contributions
           attachments.each do |attachment|
             attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
           end
-        when ActiveSupport::HashWithIndifferentAccess, ActionController::Parameters
+        when Hash, ActionController::Parameters
           attachments.each do |_, attachment|
             attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
           end

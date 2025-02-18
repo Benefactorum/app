@@ -33,8 +33,8 @@ module FileProcessor
     def generate_url(blob)
       Rails.application.routes.url_helpers.rails_blob_url(
         blob,
-        only_path: true
-        # host: Rails.application.config.action_mailer.default_url_options[:host]
+        host: Rails.application.config.action_mailer.default_url_options[:host],
+        port: Rails.application.config.action_mailer.default_url_options[:port]
       )
     end
   end
