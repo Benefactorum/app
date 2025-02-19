@@ -32,10 +32,10 @@ RSpec.describe Contributions::UpdateService do
 
       it "updates the contribution" do
         service = described_class.new(contribution: contribution, params: valid_params)
-        status, message = service.call
+        status, resource = service.call
 
         expect(status).to eq(:ok)
-        expect(message).to eq("Votre contribution a été modifiée.")
+        expect(resource).to eq(contribution)
         expect(contribution.reload.body).to eq("Updated body")
         expect(contribution.files.first.filename).to eq(file.original_filename)
       end
@@ -65,10 +65,10 @@ RSpec.describe Contributions::UpdateService do
 
       it "updates the contribution" do
         service = described_class.new(contribution: contribution, params: valid_params)
-        status, message = service.call
+        status, resource = service.call
 
         expect(status).to eq(:ok)
-        expect(message).to eq("Votre contribution a été modifiée.")
+        expect(resource).to eq(contribution)
         expect(contribution.reload.body).to eq("Updated body")
         expect(contribution.files.first.filename).to eq(file.original_filename)
       end

@@ -262,7 +262,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
       it "redirects to the contributions list" do
         subject
-        expect(response).to redirect_to(my_contributions_url)
+        expect(response).to redirect_to(my_contribution_url(Contribution.last))
       end
     end
 
@@ -401,7 +401,7 @@ RSpec.describe "/contributions", type: :request, inertia: true do
 
         it "redirects to contributions list with success message" do
           subject
-          expect(response).to redirect_to(my_contributions_url)
+          expect(response).to redirect_to(my_contribution_url(contribution))
           expect(flash[:success]).to be_present
         end
       end
