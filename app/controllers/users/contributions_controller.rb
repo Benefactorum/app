@@ -22,7 +22,7 @@ module Users
     def show
       contribution = @user.contributions.related_to_osbl.find(params[:id])
       render inertia: "Osbl/Show", props: {
-        osbl: Contributions::OsblData::Serializer.new(contribution.osbl_data).call
+        osbl: Contributions::OsblData::Serializer.new(contribution.osbl_data, :display).call
       }
     end
 
@@ -42,7 +42,7 @@ module Users
       ).call
 
       if status == :ok
-        redirect_to my_contributions_path, success: result
+        redirect_to my_contribution_path(result.id), success: "Votre contribution a été enregistrée."
       else
         redirect_to my_new_contribution_path, inertia: {errors: result}
       end
@@ -67,7 +67,7 @@ module Users
       ).call
 
       if status == :ok
-        redirect_to my_contributions_path, success: result
+        redirect_to my_contribution_path(result.id), success: "Votre contribution a été modifiée."
       else
         redirect_to edit_my_contribution_path(contribution), inertia: {errors: result}
       end

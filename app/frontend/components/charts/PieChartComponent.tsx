@@ -47,14 +47,15 @@ interface PieChartComponentProps {
 export default function PieChartComponent ({ data, title }: PieChartComponentProps): React.ReactElement {
   const chartData = preparePieData(data)
 
-  // Create config object for the chart
-  const chartConfig = chartData.reduce((acc, item) => ({
-    ...acc,
-    [item.name]: {
-      label: item.name,
-      color: item.fill
-    }
-  }), {}) satisfies ChartConfig
+  const chartConfig = Object.fromEntries(
+    chartData.map(item => [
+      item.name,
+      {
+        label: item.name,
+        color: item.fill
+      }
+    ])
+  ) satisfies ChartConfig
 
   console.log('chartData', chartData)
   console.log('chartConfig', chartConfig)
@@ -96,21 +97,21 @@ export default function PieChartComponent ({ data, title }: PieChartComponentPro
                 <ChartTooltipContent
                   formatter={(value, name, item) => {
                     return (
-                        <div>
-                          <p className='font-semibold mb-1'>{name}</p>
-                          <div className='flex justify-between gap-8'>
-                            <p>Pourcentage :</p>
-                            <p>{value} %</p>
-                          </div>
-                          <div className='flex justify-between gap-8'>
-                            <p>Montant :</p>
-                            <p>
-                              {item.payload.amount !== undefined
-                                ? formatAmount(item.payload.amount)
-                                : <span className='text-muted-foreground'>-</span>}
-                            </p>
-                          </div>
+                      <div>
+                        <p className='font-semibold mb-1'>{name}</p>
+                        <div className='flex justify-between gap-8'>
+                          <p>Pourcentage :</p>
+                          <p>{value} %</p>
                         </div>
+                        <div className='flex justify-between gap-8'>
+                          <p>Montant :</p>
+                          <p>
+                            {item.payload.amount !== undefined
+                              ? formatAmount(item.payload.amount)
+                              : <span className='text-muted-foreground'>-</span>}
+                          </p>
+                        </div>
+                      </div>
                     )
                   }}
                 />

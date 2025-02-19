@@ -16,7 +16,7 @@ module Contributions
       contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
 
       contribution.save!
-      [:ok, "Votre contribution a été enregistrée."]
+      [:ok, contribution]
     end
   end
 end

@@ -213,7 +213,7 @@ export default function OsblFinanceSheet ({
 
           <MyNumberInput
             id={`employees_count-${index}`}
-            labelText="Nombre d'employé"
+            labelText="Nombre d'employés"
             min={0}
             value={sheetFinance.employees_count ?? ''}
             onChange={(value) => updateSheetFinance('employees_count', value)}

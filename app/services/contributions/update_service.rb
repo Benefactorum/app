@@ -21,7 +21,7 @@ module Contributions
         )
       )
 
-      [:ok, "Votre contribution a été modifiée."]
+      [:ok, @contribution]
     end
 
     private
