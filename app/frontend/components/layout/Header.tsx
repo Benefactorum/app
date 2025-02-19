@@ -112,7 +112,7 @@ export default function Header (): ReactElement {
                 <MyLink
                   href='/'
                   className={
-                    'flex gap-2 items-center py-2 px-4 rounded-md opacity-50 cursor-not-allowed'
+                    'flex gap-2 items-center py-2 px-4 rounded-md'
                     // (url === '/trouver-une-association'
                     //   ? ' bg-secondary'
                     //   : ' hover:bg-secondary/50')

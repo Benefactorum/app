@@ -1,9 +1,8 @@
 import HeartAssoLogo from '@/assets/images/pages/aboutUs/heart-asso.svg'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Link } from '@inertiajs/react'
 import { buttonVariants } from '@/components/ui/button'
 import { ReactElement } from 'react'
-
+import MyLink from '@/components/shared/MyLink'
 const imageDescription =
   "Icône d'un cœur stylisé, symbolisant l'engagement associatif, la solidarité et le soutien communautaire."
 
@@ -51,17 +50,16 @@ export default function NonProfit (): ReactElement {
             commissaire aux comptes.
           </p>
           <div className='flex justify-end'>
-            <Link
+            <MyLink
               disabled
-              href='/nous-rejoindre'
+              href='/'
               className={`${buttonVariants({
-                variant: '',
                 size: 'lg',
                 mode: 'disabled'
               })}`}
             >
               En savoir plus
-            </Link>
+            </MyLink>
           </div>
         </div>
       </div>

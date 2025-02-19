@@ -1,9 +1,9 @@
 import Donor from '@/assets/images/pages/joinUs/donor.webp'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Link } from '@inertiajs/react'
 import { buttonVariants } from '@/components/ui/button'
 import { HandHeart } from 'lucide-react'
 import { ReactElement } from 'react'
+import MyLink from '@/components/shared/MyLink'
 
 const imageDescription =
   "Icône d'une main déposant une pièce dans une boîte de don ornée d'un cœur, symbolisant la générosité, le soutien aux causes sociales et l'engagement dans les actions caritatives."
@@ -51,7 +51,7 @@ export default function OurMission (): ReactElement {
             de fonctionnement et de pérenniser son action.
           </p>
           <div className='flex justify-end'>
-            <Link
+            <MyLink
               disabled
               href=''
               className={`${buttonVariants({
@@ -62,7 +62,7 @@ export default function OurMission (): ReactElement {
             >
               <HandHeart />
               Faire un don
-            </Link>
+            </MyLink>
           </div>
         </div>
       </div>

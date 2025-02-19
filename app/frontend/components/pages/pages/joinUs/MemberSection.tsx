@@ -1,9 +1,9 @@
 import Member from '@/assets/images/pages/joinUs/adherent.webp'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Link } from '@inertiajs/react'
 import { buttonVariants } from '@/components/ui/button'
 import { Vote } from 'lucide-react'
 import { ReactElement } from 'react'
+import MyLink from '@/components/shared/MyLink'
 
 const imageDescription =
   "Icône représentant une main insérant un bulletin de vote dans une urne, entourée de figures humaines levant la main, symbolisant la participation démocratique, le vote et l'engagement citoyen."
@@ -38,7 +38,7 @@ export default function Together (): ReactElement {
           démocratie au sein de Benefactorum.
         </p>
         <div className='flex flex-wrap justify-end md:justify-start items-center gap-y-4 gap-x-8'>
-          <Link
+          <MyLink
             disabled
             href=''
             className={`${buttonVariants({
@@ -48,7 +48,7 @@ export default function Together (): ReactElement {
           >
             <Vote />
             Adhérer
-          </Link>
+          </MyLink>
           <a
             href='Statuts-Benefactorum.pdf'
             target='_blank'
