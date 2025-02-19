@@ -523,13 +523,14 @@ labels = [
   {
     name: "Don en confiance",
     description: <<~DESC,
-      Don en Confiance, créé en 1989, est un organisme à but non lucratif qui labellise et contrôle les associations et
+      Don en confiance, créé en 1989, est un organisme à but non lucratif qui labellise et contrôle les associations et
       fondations faisant appel à la générosité du public. Son label garantit le respect de principes déontologiques tels
       que la transparence financière, l'efficacité de l'action, la probité et le respect des donateurs. Les organisations
       labellisées s'engagent à publier annuellement "L'Essentiel", un document synthétique informant les donateurs sur
       l'utilisation des fonds collectés.
     DESC
-    website: "https://www.donenconfiance.org"
+    website: "https://www.donenconfiance.org",
+    logo_path: "app/frontend/assets/labels/don-en-confiance.png"
   },
   {
     name: "Label IDEAS",
@@ -541,14 +542,20 @@ labels = [
       label est valable 3 ans. Il constitue un gage de confiance pour les partenaires et financeurs, renforçant la
       crédibilité des organisations labellisées.
     DESC
-    website: "https://ideas.asso.fr/"
+    website: "https://ideas.asso.fr/",
+    logo_path: "app/frontend/assets/labels/label-IDEAS.png"
   }
 ]
 
 labels.each do |label|
-  Osbl::Label.find_or_create_by!(name: label[:name]) do |l|
+  osbl_label = Osbl::Label.find_or_create_by!(name: label[:name]) do |l|
     l.description = label[:description]
     l.website = label[:website]
+
+    l.logo.attach(
+      io: File.open(Rails.root.join(label[:logo_path])),
+      filename: File.basename(label[:logo_path])
+    )
   end
 end
 

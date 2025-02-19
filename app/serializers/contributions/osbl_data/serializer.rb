@@ -8,6 +8,7 @@ module Contributions
       def call
         transform_logo!
         transform_documents!
+        transform_labels!
         @params
       end
 
@@ -35,6 +36,15 @@ module Contributions
           end
         else
           raise "Unknown class: #{attachments.class.name}"
+        end
+      end
+
+      def transform_labels!
+        return if @params["osbls_labels_attributes"].blank?
+
+        @params["osbls_labels_attributes"].each do |label_attrs|
+          label = Osbl::Label.find(label_attrs["label_id"])
+          label_attrs["logo_url"] = FileProcessor.generate_url(label.logo.blob)
         end
       end
     end

@@ -5,16 +5,17 @@ import InputError from '@/components/shared/InputError'
 
 interface MyCheckboxProps {
   id?: string
-  children: ReactNode
+  children?: ReactNode
   required?: boolean
   disabled?: boolean
   checked: boolean
-  onCheckedChange: (checked: boolean) => void
+  onCheckedChange?: (checked: boolean) => void
   error?: string
+  className?: string
 }
 
 export default function MyCheckbox (props: MyCheckboxProps): ReactElement {
-  const { id, children, required, disabled, checked, onCheckedChange, error } =
+  const { id, children, required, disabled, checked, onCheckedChange, error, className } =
     props
   const errorClass = (error !== null && error !== undefined && error !== '') ? 'border-red-600' : ''
 
@@ -27,11 +28,13 @@ export default function MyCheckbox (props: MyCheckboxProps): ReactElement {
           disabled={disabled}
           checked={checked}
           onCheckedChange={onCheckedChange}
-          className={errorClass}
+          className={`${errorClass} ${className ?? ''}`}
         />
-        <Label htmlFor={id}>
-          {children}
-        </Label>
+        {children !== undefined && (
+          <Label htmlFor={id}>
+            {children}
+          </Label>
+        )}
       </div>
       {Boolean(error) && <InputError>{error}</InputError>}
     </div>
