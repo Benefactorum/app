@@ -5,4 +5,6 @@ class JoinTables::OsblsLabel < ApplicationRecord
   attribute :name, :string
 
   validates :osbl_id, uniqueness: {scope: :label_id}
+
+  attribute :logo_url, :string
 end

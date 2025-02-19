@@ -27,15 +27,11 @@ module FileProcessor
     end
   end
 
-  class << self
-    private
-
-    def generate_url(blob)
-      Rails.application.routes.url_helpers.rails_blob_url(
-        blob,
-        host: Rails.application.config.action_mailer.default_url_options[:host],
-        port: Rails.application.config.action_mailer.default_url_options[:port]
-      )
-    end
+  def self.generate_url(blob)
+    Rails.application.routes.url_helpers.rails_blob_url(
+      blob,
+      host: Rails.application.config.action_mailer.default_url_options[:host],
+      port: Rails.application.config.action_mailer.default_url_options[:port]
+    )
   end
 end

@@ -63,7 +63,7 @@ export interface NewOsbl {
   osbls_keywords_attributes?: Array<{ keyword_id: string, name: string }>
   geographical_scale?: 'local' | 'regional' | 'national' | 'international'
   osbls_intervention_areas_attributes?: Array<{ intervention_area_id: string, name: string }>
-  osbls_labels_attributes?: Array<{ label_id: string, name: string }>
+  osbls_labels_attributes?: Array<{ label_id: string, name: string, logo_url: string }>
   annual_finances_attributes?: AnnualFinance[]
   osbl_type?: 'association' | 'fonds_de_dotation' | 'fondation'
   public_utility?: boolean

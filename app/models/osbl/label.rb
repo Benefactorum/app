@@ -8,7 +8,7 @@ class Osbl::Label < ApplicationRecord
 
   validates_attachment(
     name: :logo,
-    max_size: 1.megabytes,
+    max_size: 5.megabytes,
     content_types: %w[image/svg+xml image/png image/webp]
   )
 end

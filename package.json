@@ -49,7 +49,6 @@
     "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "@types/recharts": "^1.8.29",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
@@ -80,5 +79,8 @@
       "app/frontend/components/ui",
       "vite-env.d.ts"
     ]
+  },
+  "overrides": {
+    "react-is": "^19.0.0"
   }
 }
