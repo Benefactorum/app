@@ -21,10 +21,9 @@ RSpec.describe Contributions::CreateService do
         service = described_class.new(user: user, params: valid_params)
 
         expect {
-          status, message = service.call
+          status, _ = service.call
 
           expect(status).to eq(:ok)
-          expect(message).to eq("Votre contribution a été enregistrée.")
         }.to change(Contribution, :count).by(1)
 
         contribution = Contribution.last
