@@ -548,12 +548,12 @@ labels = [
 ]
 
 labels.each do |label|
-  osbl_label = Osbl::Label.find_or_create_by!(name: label[:name]) do |l|
+  Osbl::Label.find_or_create_by!(name: label[:name]) do |l|
     l.description = label[:description]
     l.website = label[:website]
 
     l.logo.attach(
-      io: File.open(Rails.root.join(label[:logo_path])),
+      io: Rails.root.join(label[:logo_path]).open,
       filename: File.basename(label[:logo_path])
     )
   end
