@@ -11,14 +11,14 @@ import PieChartComponent from '@/components/pages/osbl/show/GestionTab/PieChartC
 import MyCheckbox from '@/components/shared/MyCheckbox'
 import { Separator } from '@/components/ui/separator'
 import { formatAmount } from '@/lib/formatters'
-import { Infinity } from 'lucide-react'
+import { Infinity as InfinityIcon } from 'lucide-react'
 interface Props {
   osbl: NewOsbl
 }
 
 function getTreasuryMargin (treasury: number | undefined, budget: number | undefined): string | React.ReactElement {
   if (treasury !== undefined && budget === undefined) {
-    return <Infinity />
+    return <InfinityIcon />
   }
   if (treasury === undefined || budget === undefined) {
     return <span className='text-muted-foreground'>-</span>
