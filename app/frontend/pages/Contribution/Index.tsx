@@ -43,7 +43,7 @@ function getStatusBadgeVariant (status: string): BadgeProps['variant'] {
       return 'ghost'
     case 'en attente de revue':
       return 'outline'
-    case 'en cours de revue':
+    case 'demande de modification':
       return 'secondary'
     case 'validée':
       return 'default'
