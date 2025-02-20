@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import GestionTab from '@/components/pages/osbl/show/GestionTab'
 import DataSheetTab from '@/components/pages/osbl/show/DataSheetTab'
+import LocationTab from '@/components/pages/osbl/show/LocationTab'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -183,8 +184,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
             <TabsContent value='implantation'>
               <Card>
                 <CardContent className='pt-6'>
-
-                  {renderMissingInformation()}
+                  <LocationTab osbl={processedOsbl} />
                 </CardContent>
               </Card>
             </TabsContent>

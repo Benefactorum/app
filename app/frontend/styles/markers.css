@@ -1,0 +1,69 @@
+.marker-base {
+  position: relative;
+}
+
+.marker-pin {
+  width: 30px;
+  height: 41px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -41px 0 0 -15px;
+  transition: all 0.2s ease;
+}
+
+.marker-pin::before {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 41px;
+  left: 0;
+  top: 0;
+  background: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 41'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c0 8.284 15 26 15 26s15-17.716 15-26c0-8.284-6.716-15-15-15z' fill='currentColor'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 41'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c0 8.284 15 26 15 26s15-17.716 15-26c0-8.284-6.716-15-15-15z' fill='currentColor'/%3E%3C/svg%3E");
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.marker-pin::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.9;
+}
+
+/* Color variants */
+.marker-siege {
+  color: hsl(var(--destructive));
+}
+
+.marker-antenne {
+  color: hsl(var(--secondary));
+}
+
+.marker-lieu {
+  color: hsl(var(--muted-foreground));
+}
+
+.marker-default {
+  color: hsl(var(--primary));
+}
+
+.marker-active .marker-pin {
+  transform: scale(1.2);
+  z-index: 999;
+}
+
+.marker-active .marker-pin::before {
+  filter: brightness(1.1);
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+}
