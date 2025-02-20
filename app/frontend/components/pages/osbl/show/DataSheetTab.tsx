@@ -14,8 +14,8 @@ interface DetailItemProps {
 function DetailItem ({ label, value }: DetailItemProps): React.ReactElement {
   return (
     <div className='space-y-1'>
-      <dt className='text-sm font-medium text-muted-foreground'>{label}</dt>
-      <dd className='text-sm font-semibold'>{value}</dd>
+      <dt className='text-sm text-muted-foreground'>{label}</dt>
+      <dd className='font-semibold'>{value}</dd>
     </div>
   )
 }
@@ -91,11 +91,11 @@ export default function DataSheetTab ({ osbl }: Props): React.ReactElement {
         />
 
         <DetailItem
-          label='Cause(s)'
-          value={osbl.osbls_causes_attributes.map(cause => cause.name).join(', ')}
+          label={osbl.osbls_causes_attributes?.length > 1 ? 'Causes' : 'Cause'}
+          value={osbl.osbls_causes_attributes?.map(cause => cause.name).join(', ') ?? '-'}
         />
         <DetailItem
-          label='Mot(s)-clé(s)'
+          label={(osbl.osbls_keywords_attributes ?? []).length > 1 ? 'Mots-clés' : 'Mot-clé'}
           value={osbl.osbls_keywords_attributes?.map(keyword => keyword.name).join(', ') ?? '-'}
         />
 
@@ -104,7 +104,7 @@ export default function DataSheetTab ({ osbl }: Props): React.ReactElement {
           value={getGeographicalScale(osbl)}
         />
         <DetailItem
-          label="Zones d'action particulières"
+          label={(osbl.osbls_intervention_areas_attributes ?? []).length > 1 ? 'Zones d\'action particulières' : 'Zone d\'action particulière'}
           value={osbl.osbls_intervention_areas_attributes?.map(area => area.name).join(', ') ?? '-'}
         />
 

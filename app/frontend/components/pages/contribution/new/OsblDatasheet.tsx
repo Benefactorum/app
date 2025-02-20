@@ -4,7 +4,6 @@ import {
   MultiSelect
 } from '@/components/ui/multi-select'
 import { FormProps } from '@/pages/Contribution/types'
-// import { Baby, Stethoscope, Coins, BookMarked, PawPrint, Trees, Church, Microscope, Globe, Accessibility, Scale, Shuffle, Brush } from 'lucide-react'
 import InputError from '@/components/shared/InputError'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
@@ -134,7 +133,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             </SelectContent>
           </Select>
 
-          {data.osbl_type !== undefined && data.osbl_type !== 'fonds_de_dotation' && (
+          {(data.osbl_type === 'association' || data.osbl_type === 'fondation') && (
             <MyCheckbox
               id='public_utility'
               checked={data.public_utility ?? false}

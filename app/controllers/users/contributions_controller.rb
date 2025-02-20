@@ -22,6 +22,7 @@ module Users
     def show
       contribution = @user.contributions.related_to_osbl.find(params[:id])
       render inertia: "Osbl/Show", props: {
+        contribution: contribution.as_json(only: %i[id status]),
         osbl: Contributions::OsblData::Serializer.new(contribution.osbl_data, :display).call
       }
     end
