@@ -10,13 +10,11 @@ import { cn } from '@/lib/utils'
 
 interface HelpTooltipProps {
   children: ReactNode
-  size?: 'small' | 'large'
   className?: string
 }
 
 export default function HelpTooltip ({
   children,
-  size = 'large',
   className
 }: HelpTooltipProps): ReactElement {
   return (
@@ -29,10 +27,7 @@ export default function HelpTooltip ({
           <CircleHelp className={cn('inline-block w-4 h-4 text-primary', className)} />
         </TooltipTrigger>
         <TooltipContent
-          className={cn(
-            'flex flex-col gap-2 border-secondary',
-            size === 'small' ? 'p-2' : 'p-4'
-          )}
+          className={cn('flex flex-col gap-2 p-2 sm:p-4 max-w-[320px]')}
         >
           {children}
         </TooltipContent>

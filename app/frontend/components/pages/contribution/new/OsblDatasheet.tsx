@@ -4,7 +4,7 @@ import {
   MultiSelect
 } from '@/components/ui/multi-select'
 import { FormProps } from '@/pages/Contribution/types'
-import { Baby, Stethoscope, Coins, BookMarked, PawPrint, Trees, Church, Microscope, Globe, Accessibility, Scale, Shuffle, Brush } from 'lucide-react'
+// import { Baby, Stethoscope, Coins, BookMarked, PawPrint, Trees, Church, Microscope, Globe, Accessibility, Scale, Shuffle, Brush } from 'lucide-react'
 import InputError from '@/components/shared/InputError'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
@@ -19,59 +19,7 @@ import HelpTooltip from '@/components/shared/HelpTooltip'
 import InterventionAreaAsyncCreatableSelect from '@/components/pages/contribution/new/OsblDatasheet/InterventionAreaAsyncCreatableSelect'
 import MyNumberInput from '@/components/shared/MyNumberInput'
 import MyCheckbox from '@/components/shared/MyCheckbox'
-
-const CausesList = [
-  { label: 'Environnement', icon: Trees, value: '1' },
-  { label: 'Protection de l\'enfance', icon: Baby, value: '2' },
-  { label: 'Santé', icon: Stethoscope, value: '3' },
-  { label: 'Lutte contre la précarité', icon: Coins, value: '4' },
-  { label: 'Éducation', icon: BookMarked, value: '5' },
-  { label: 'Protection animale', icon: PawPrint, value: '6' },
-  { label: 'Recherche', icon: Microscope, value: '7' },
-  { label: 'Arts, Culture, Patrimoine', icon: Brush, value: '8' },
-  { label: 'Aide internationale', icon: Globe, value: '9' },
-  { label: 'Handicap', icon: Accessibility, value: '10' },
-  { label: 'Justice sociale', icon: Scale, value: '11' },
-  { label: 'Religion', icon: Church, value: '12' },
-  { label: 'Autre', icon: Shuffle, value: '13' }
-]
-
-const GeographicalScaleList = [
-  { value: 'local', label: 'Locale' },
-  { value: 'regional', label: 'Régionale' },
-  { value: 'national', label: 'Nationale' },
-  { value: 'international', label: 'Internationale' }
-]
-
-const OsblTypeList = [
-  { value: 'association', label: 'Association' },
-  { value: 'fonds_de_dotation', label: 'Fonds de dotation' },
-  { value: 'fondation', label: 'Fondation' }
-]
-
-const TaxReductionList = [
-  {
-    value: 'intérêt_général',
-    label: '66 %',
-    tooltip: {
-      title: 'Les associations d\'intérêt général, ou reconnues d\'utilité publique (ARUP).',
-      description: 'Elles ouvrent le droit à une réduction d\'impôt de 66 %.'
-    }
-  },
-  {
-    value: 'aide_aux_personnes_en_difficulté',
-    label: '75 %',
-    tooltip: {
-      title: 'Les organismes d\'aide aux personnes en difficulté.',
-      description: 'Elles ouvrent le droit à une réduction d\'impôt de 75 %, jusqu\'à 1 000 € de dons. Le régime standard de réduction à 66 % s\'applique ensuite.'
-    }
-  }
-]
-
-const LabelList = [
-  { value: '1', label: 'Don en confiance' },
-  { value: '2', label: 'Label IDEAS' }
-]
+import { CausesList, GeographicalScaleList, OsblTypeList, TaxReductionList, LabelList } from '@/lib/constants'
 
 export default function OsblDatasheet ({ data, setData, errors, clearErrors }: Omit<FormProps, 'setError'>): ReactElement {
   return (
@@ -115,8 +63,8 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
                 >
                   {item.label}
                   <HelpTooltip>
-                    <h2 className='font-semibold mb-4'>{item.tooltip.title}</h2>
-                    <p>{item.tooltip.description}</p>
+                    <h2 className='font-semibold'>{item.tooltip.title}</h2>
+                    {item.tooltip.description}
                   </HelpTooltip>
                 </Label>
                 <RadioGroupItem value={item.value} id={item.value} />
@@ -159,8 +107,12 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
         <div className='flex flex-col gap-4'>
           <Label className='flex items-center gap-2'>
             Type d'OSBL
-            <HelpTooltip size='small'>
-              <p>Organisation Sans But Lucratif.</p>
+            <HelpTooltip>
+              <p><span className='font-semibold'>O</span>rganisation{' '}
+                <span className='font-semibold'>S</span>ans{' '}
+                <span className='font-semibold'>B</span>ut{' '}
+                <span className='font-semibold'>L</span>ucratif.
+              </p>
             </HelpTooltip>
             :
           </Label>
@@ -182,7 +134,7 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             </SelectContent>
           </Select>
 
-          {data.osbl_type !== 'fonds_de_dotation' && (
+          {data.osbl_type !== undefined && data.osbl_type !== 'fonds_de_dotation' && (
             <MyCheckbox
               id='public_utility'
               checked={data.public_utility ?? false}

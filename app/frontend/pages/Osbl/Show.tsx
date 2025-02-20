@@ -7,11 +7,20 @@ import { ExternalLink, Ban } from 'lucide-react'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
-import Gestion from '@/components/pages/osbl/show/Gestion'
+import GestionTab from '@/components/pages/osbl/show/GestionTab'
+import DataSheetTab from '@/components/pages/osbl/show/DataSheetTab'
 import { cn } from '@/lib/utils'
 
 interface Props {
   osbl: OsblUpdate
+}
+
+function renderMissingInformation (): ReactElement {
+  return (
+    <div className='w-full flex justify-center items-center py-12'>
+      <p className='text-lg text-muted-foreground'>Informations manquantes.</p>
+    </div>
+  )
 }
 
 export default function Show ({ osbl }: Props): ReactElement {
@@ -116,7 +125,7 @@ export default function Show ({ osbl }: Props): ReactElement {
             <TabsContent value='gestion'>
               <Card>
                 <CardContent className='pt-6'>
-                  <Gestion osbl={processedOsbl} />
+                  <GestionTab osbl={processedOsbl} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -124,7 +133,7 @@ export default function Show ({ osbl }: Props): ReactElement {
             <TabsContent value='fiche'>
               <Card>
                 <CardContent className='pt-6'>
-                  <p>Contenu de la fiche technique</p>
+                  <DataSheetTab osbl={processedOsbl} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -132,7 +141,8 @@ export default function Show ({ osbl }: Props): ReactElement {
             <TabsContent value='implantation'>
               <Card>
                 <CardContent className='pt-6'>
-                  <p>Contenu de l'implantation</p>
+
+                  {renderMissingInformation()}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -140,7 +150,7 @@ export default function Show ({ osbl }: Props): ReactElement {
             <TabsContent value='documents'>
               <Card>
                 <CardContent className='pt-6'>
-                  <p>Contenu des documents</p>
+                  {renderMissingInformation()}
                 </CardContent>
               </Card>
             </TabsContent>

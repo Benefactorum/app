@@ -1,12 +1,13 @@
 import { ReactElement } from 'react'
 import { FormProps, Location } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
-import { PlusIcon, TrashIcon, PencilIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblLocationSheet from '@/components/pages/contribution/new/OsblLocations/OsblLocationSheet'
+import SheetTriggerItem from '@/components/pages/contribution/new/common/SheetTriggerItem'
 
 export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const locations = data.locations_attributes ?? []
@@ -55,23 +56,10 @@ export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data'
         <div className='flex flex-col gap-4'>
           {locations.map((loc, index) => (
             <Sheet key={`location-${index}`}>
-              <div className='flex items-center justify-between p-4 border rounded-lg bg-white'>
-                <p>{getLocationDisplayName(loc)}</p>
-                <div className='flex gap-2'>
-                  <SheetTrigger asChild>
-                    <Button variant='outline' className='bg-white text-primary border-none'>
-                      <PencilIcon />
-                    </Button>
-                  </SheetTrigger>
-                  <Button
-                    onClick={(e) => handleLocationRemove(e, index)}
-                    variant='outline'
-                    className='bg-white text-red-600 border-none'
-                  >
-                    <TrashIcon className='w-4 h-4' />
-                  </Button>
-                </div>
-              </div>
+              <SheetTriggerItem
+                displayName={getLocationDisplayName(loc)}
+                onRemove={(e) => handleLocationRemove(e, index)}
+              />
 
               <OsblLocationSheet
                 location={loc}
