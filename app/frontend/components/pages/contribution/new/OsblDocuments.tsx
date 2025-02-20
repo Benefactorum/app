@@ -1,12 +1,13 @@
 import { ReactElement } from 'react'
 import { FormProps, Document } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
-import { PlusIcon, TrashIcon, PencilIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblDocumentSheet from '@/components/pages/contribution/new/OsblDocuments/OsblDocumentSheet'
+import SheetTriggerItem from '@/components/pages/contribution/new/common/SheetTriggerItem'
 
 export default function OsblDocuments ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const documents = data.document_attachments_attributes ?? []
@@ -62,23 +63,10 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors, set
         <div className='flex flex-col gap-4'>
           {documents.map((doc, index) => (
             <Sheet key={`document-${index}`}>
-              <div className='flex items-center justify-between p-4 border rounded-lg bg-white'>
-                <p>{getDocumentDisplayName(doc.document_attributes)}</p>
-                <div className='flex gap-2 '>
-                  <SheetTrigger asChild>
-                    <Button variant='outline' className='bg-white text-primary border-none'>
-                      <PencilIcon />
-                    </Button>
-                  </SheetTrigger>
-                  <Button
-                    onClick={(e) => handleDocumentRemove(e, index)}
-                    variant='outline'
-                    className='bg-white text-red-600 border-none'
-                  >
-                    <TrashIcon className='w-4 h-4' />
-                  </Button>
-                </div>
-              </div>
+              <SheetTriggerItem
+                displayName={getDocumentDisplayName(doc.document_attributes)}
+                onRemove={(e) => handleDocumentRemove(e, index)}
+              />
 
               <OsblDocumentSheet
                 document={doc.document_attributes}

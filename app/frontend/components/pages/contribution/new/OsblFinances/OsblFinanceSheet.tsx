@@ -141,9 +141,12 @@ export default function OsblFinanceSheet ({
             labelText={
               <>
                 Année *
-                <HelpTooltip size='small' className='mx-2'>
-                  <p>Année du bilan comptable.</p>
-                  <p>Si à cheval sur deux ans, entrez la dernière année.</p>
+                <HelpTooltip className='mx-2'>
+                  <p>
+                    Année du bilan comptable.
+                    <br />
+                    Si à cheval sur deux ans, entrez la dernière année.
+                  </p>
                 </HelpTooltip>
                 :
               </>
@@ -165,7 +168,7 @@ export default function OsblFinanceSheet ({
             <div className='flex items-center'>
               Comptes certifiés
               <HelpTooltip className='ml-2'>
-                Un commissaire aux comptes a validé la comptabilité de l'OSBL.
+                Un commissaire aux comptes a validé la comptabilité de l'organisme.
               </HelpTooltip>
             </div>
           </MyCheckbox>

@@ -14,10 +14,7 @@ import ChildrenImage from '@/assets/images/pages/home/hero_section/home-hero-rig
 export default function HeroSection (): ReactElement {
   function handleSubmit (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault()
-    const form = e.target as HTMLFormElement
-    const inputValue = (form.elements[0] as HTMLInputElement).value
     alert('Bientôt disponible ;)')
-    // router.get("", inputValue.value);
   }
 
   return (

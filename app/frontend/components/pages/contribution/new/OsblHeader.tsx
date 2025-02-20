@@ -43,9 +43,12 @@ export default function OsblHeader ({ data, setData, errors, clearErrors }: Omit
           labelText={
             <p className='flex items-center gap-2'>
               Logo
-              <HelpTooltip size='small'>
-                <p>Le format SVG est à privilégier.</p>
-                <p>Préférez des images avec des fonds transparents.</p>
+              <HelpTooltip>
+                <p>
+                  Le format SVG est à privilégier.
+                  <br />
+                  Préférez des images avec des <span className='font-semibold'>fonds transparents</span>.
+                </p>
               </HelpTooltip>
               :
             </p>

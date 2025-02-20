@@ -28,17 +28,17 @@ function getTreasuryMargin (treasury: number | undefined, budget: number | undef
   return <span className='whitespace-nowrap'>{formatter.format(treasury / (budget / 12))} mois</span>
 }
 
-export default function Gestion ({ osbl }: Props): React.ReactElement {
-  const sortedFinances = osbl.annual_finances_attributes?.sort((a, b) => a.year - b.year) ?? []
+export default function GestionTab ({ osbl }: Props): React.ReactElement {
+  const sortedFinances = osbl.annual_finances_attributes?.sort((a, b) => a.year - b.year) ?? [{
+    year: undefined,
+    budget: undefined,
+    treasury: undefined,
+    certified: undefined,
+    employees_count: undefined,
+    fund_allocations_attributes: undefined,
+    fund_sources_attributes: undefined
+  }]
   const startIndex = sortedFinances.length - 1
-
-  if (sortedFinances.length === 0) {
-    return (
-      <div className='w-full flex justify-center items-center py-12'>
-        <p className='text-lg text-muted-foreground'>Informations manquantes.</p>
-      </div>
-    )
-  }
 
   return (
     <div className='w-full'>
@@ -46,7 +46,6 @@ export default function Gestion ({ osbl }: Props): React.ReactElement {
         opts={{
           loop: false,
           slidesToScroll: 'auto',
-          // watchDrag: false,
           startIndex
         }}
       >
@@ -90,8 +89,7 @@ export default function Gestion ({ osbl }: Props): React.ReactElement {
                             <span className='whitespace-nowrap'>
                               trésorerie
                               <HelpTooltip className='mb-1 mx-2'>
-                                <p>La marge de trésorerie indique combien de temps une association peut fonctionner sans nouveaux apports de fonds.</p>
-                                <p>C'est un indicateur clé de la solidité financière de l'association.</p>
+                                <p>La marge de trésorerie indique <span className='font-semibold'>combien de temps une association peut fonctionner</span> sans nouveaux apports de fonds.</p>
                                 <p>Une bonne marge se situe généralement <span className='font-semibold'>entre 3 et 6 mois</span>, permettant de faire face aux imprévus.</p>
                               </HelpTooltip>
                               :
@@ -126,7 +124,10 @@ export default function Gestion ({ osbl }: Props): React.ReactElement {
                           <span className='whitespace-nowrap'>
                             d'utilité publique
                             <HelpTooltip className='mb-1 mx-2'>
-                              <p>Les organismes reconnus d'utilité publique (ARUP & FRUP) sont <span className='font-semibold'>sous le contrôle direct de l'État</span>, garantissant une gestion transparente et une utilisation appropriée des fonds.</p>
+                              <p>Les organismes reconnus d'utilité publique (ARUP & FRUP) sont <span className='font-semibold'>sous le contrôle direct de l'État</span>,
+                                <br />
+                                garantissant une gestion transparente et une utilisation appropriée des fonds.
+                              </p>
                             </HelpTooltip>
                             :
                           </span>
@@ -146,7 +147,7 @@ export default function Gestion ({ osbl }: Props): React.ReactElement {
                           Label(s)
                           <HelpTooltip className='mb-1 mx-2'>
                             <p>Les processus d'obtention et de renouvellement des labels impliquent des <span className='font-semibold'>audits rigoureux</span> et un examen approfondi des pratiques internes de l'association.</p>
-                            <p>Ils sont gages de transparence et de bonne gestion.</p>
+                            <p>Ils sont gages de <span className='font-semibold'>transparence</span> et de <span className='font-semibold'>bonne gestion</span>.</p>
                           </HelpTooltip>
                           :
                         </p>

@@ -68,7 +68,7 @@ export default function PieChartComponent ({ data, title }: PieChartComponentPro
       <CardContent className='flex flex-col items-center'>
         <ChartContainer
           config={chartConfig}
-          className='h-full w-[300px] aspect-square'
+          className='h-full w-[260px] sm:w-[300px] aspect-square'
         >
           <PieChart>
             <Pie

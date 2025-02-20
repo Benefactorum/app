@@ -1,12 +1,13 @@
 import React, { ReactElement, useState } from 'react'
 import { FormProps, AnnualFinance } from '@/pages/Contribution/types'
 import { Button } from '@/components/ui/button'
-import { PencilIcon, PlusIcon, TrashIcon, ArrowUpDown } from 'lucide-react'
+import { PlusIcon, ArrowUpDown } from 'lucide-react'
 import {
   Sheet,
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblFinanceSheet from '@/components/pages/contribution/new/OsblFinances/OsblFinanceSheet'
+import SheetTriggerItem from '@/components/pages/contribution/new/common/SheetTriggerItem'
 
 export default function OsblFinances ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const [sortAscending, setSortAscending] = useState(false)
@@ -75,40 +76,24 @@ export default function OsblFinances ({ data, setData, errors, clearErrors, setE
 
       {finances.length > 0 && (
         <div className='flex flex-col gap-4'>
-          {finances
-            .map((finance, index) => {
-              return (
-                <Sheet key={`finance-${finance.year}`}>
-                  <div className='flex items-center justify-between p-4 border rounded-lg bg-white'>
-                    <p>{finance.year}</p>
-                    <div className='flex gap-2'>
-                      <SheetTrigger asChild>
-                        <Button variant='outline' className='bg-white text-primary border-none'>
-                          <PencilIcon />
-                        </Button>
-                      </SheetTrigger>
-                      <Button
-                        onClick={(e) => handleFinanceRemove(e, index)}
-                        variant='outline'
-                        className='bg-white text-red-600 border-none'
-                      >
-                        <TrashIcon className='w-4 h-4' />
-                      </Button>
-                    </div>
-                  </div>
+          {finances.map((finance, index) => (
+            <Sheet key={`finance-${finance.year}`}>
+              <SheetTriggerItem
+                displayName={finance.year.toString()}
+                onRemove={(e) => handleFinanceRemove(e, index)}
+              />
 
-                  <OsblFinanceSheet
-                    data={data}
-                    finance={finance}
-                    index={index}
-                    onUpdate={(finance) => addFinance(finance, index)}
-                    errors={errors}
-                    clearErrors={clearErrors}
-                    setError={setError}
-                  />
-                </Sheet>
-              )
-            })}
+              <OsblFinanceSheet
+                data={data}
+                finance={finance}
+                index={index}
+                onUpdate={(finance) => addFinance(finance, index)}
+                errors={errors}
+                clearErrors={clearErrors}
+                setError={setError}
+              />
+            </Sheet>
+          ))}
         </div>
       )}
     </div>
