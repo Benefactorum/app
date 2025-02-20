@@ -7,7 +7,7 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblFinanceSheet from '@/components/pages/contribution/new/OsblFinances/OsblFinanceSheet'
-import SheetTriggerItem from '@/components/pages/contribution/new/common/SheetTriggerItem'
+import SheetTriggerItem from '@/components/pages/contribution/new/shared/SheetTriggerItem'
 
 export default function OsblFinances ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const [sortAscending, setSortAscending] = useState(false)
@@ -57,7 +57,7 @@ export default function OsblFinances ({ data, setData, errors, clearErrors, setE
         <Sheet>
           <SheetTrigger asChild>
             <Button variant='outline'>
-              <PlusIcon className='w-4 h-4' />
+              <PlusIcon />
               <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
             </Button>
           </SheetTrigger>

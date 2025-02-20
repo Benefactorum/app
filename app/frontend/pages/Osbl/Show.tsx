@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react'
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import type { FileAsObject, OsblUpdate, NewOsbl } from '@/pages/Contribution/types'
 import { getOsblData } from '@/lib/osblData'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { ExternalLink, Ban } from 'lucide-react'
+import { ExternalLink, Ban, Pencil, UserCheck } from 'lucide-react'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
@@ -12,6 +12,7 @@ import DataSheetTab from '@/components/pages/osbl/show/DataSheetTab'
 import { cn } from '@/lib/utils'
 
 interface Props {
+  contribution?: { id: number, status: string }
   osbl: OsblUpdate
 }
 
@@ -23,7 +24,24 @@ function renderMissingInformation (): ReactElement {
   )
 }
 
-export default function Show ({ osbl }: Props): ReactElement {
+function getStatusLabel (status: string): string {
+  switch (status) {
+    case 'brouillon':
+      return ' cette contribution n\'est pas encore finalisée.'
+    case 'en attente de revue':
+      return ' cette contribution est en attente d\'être validée par un modérateur.'
+    case 'demande de modification':
+      return ' cette contribution nécessite des modifications.'
+    case 'validée':
+      return ' cette contribution a été validée.'
+    case 'rejetée':
+      return ' cette contribution a été rejetée.'
+    default:
+      return ' cette contribution n\'est pas dans un état valide.'
+  }
+}
+
+export default function Show ({ osbl, contribution }: Props): ReactElement {
   const processedOsbl: NewOsbl = getOsblData(osbl)
 
   return (
@@ -32,6 +50,30 @@ export default function Show ({ osbl }: Props): ReactElement {
         <title>{processedOsbl.name}</title>
         <meta name='description' content={processedOsbl.description} />
       </Head>
+      {contribution !== undefined && (
+        <div className='w-full bg-foreground py-4'>
+          <div className='2xl:container mx-auto px-2 sm:px-8 lg:px-16 flex items-center gap-4 flex-wrap'>
+            <p className='text-background'>
+              <span className='font-semibold'>{contribution.status.toUpperCase()} :</span>
+              {getStatusLabel(contribution.status)}
+            </p>
+            <div className='flex gap-2'>
+              <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
+                <Button variant='outline'>
+                  <Pencil />
+                  Modifier
+                </Button>
+              </Link>
+              <Link href={`/mes-contributions/${contribution.id}/soumettre`} title='Soumettre pour revue'>
+                <Button>
+                  <UserCheck />
+                  Soumettre pour revue
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
       <div className='flex flex-col sm:flex-row py-8 w-full 2xl:container mx-auto px-2 sm:px-8 lg:px-16 gap-8 lg:gap-16'>
         <div className='flex flex-grow flex-col justify-center gap-8 lg:gap-16'>
           <h1 className='text-3xl sm:text-4xl lg:text-5xl whitespace-pre-line'>

@@ -7,7 +7,7 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblDocumentSheet from '@/components/pages/contribution/new/OsblDocuments/OsblDocumentSheet'
-import SheetTriggerItem from '@/components/pages/contribution/new/common/SheetTriggerItem'
+import SheetTriggerItem from '@/components/pages/contribution/new/shared/SheetTriggerItem'
 
 export default function OsblDocuments ({ data, setData, errors, clearErrors, setError }: FormProps): ReactElement {
   const documents = data.document_attachments_attributes ?? []
@@ -43,7 +43,7 @@ export default function OsblDocuments ({ data, setData, errors, clearErrors, set
         <Sheet>
           <SheetTrigger asChild>
             <Button variant='outline'>
-              <PlusIcon className='w-4 h-4' />
+              <PlusIcon />
               <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
             </Button>
           </SheetTrigger>

@@ -6,7 +6,7 @@ class Contribution < ApplicationRecord
   enum :status, {
     :brouillon => 0,
     :"en attente de revue" => 1,
-    :"en cours de revue" => 2,
+    :"demande de modification" => 2,
     :validée => 3,
     :rejetée => 4
   }

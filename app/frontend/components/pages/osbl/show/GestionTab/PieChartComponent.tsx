@@ -57,13 +57,10 @@ export default function PieChartComponent ({ data, title }: PieChartComponentPro
     ])
   ) satisfies ChartConfig
 
-  console.log('chartData', chartData)
-  console.log('chartConfig', chartConfig)
-
   return (
     <Card className='flex flex-col border-none shadow-none'>
       <CardHeader className='items-center pb-0'>
-        <CardTitle className='text-center text-lg font-semibold'>{title}</CardTitle>
+        <CardTitle className='text-center text-lg font-normal'>{title}</CardTitle>
       </CardHeader>
       <CardContent className='flex flex-col items-center'>
         <ChartContainer

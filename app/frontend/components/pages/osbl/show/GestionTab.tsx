@@ -7,16 +7,19 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel'
 import type { NewOsbl } from '@/pages/Contribution/types'
-import PieChartComponent from '@/components/charts/PieChartComponent'
+import PieChartComponent from '@/components/pages/osbl/show/GestionTab/PieChartComponent'
 import MyCheckbox from '@/components/shared/MyCheckbox'
 import { Separator } from '@/components/ui/separator'
 import { formatAmount } from '@/lib/formatters'
-
+import { Infinity } from 'lucide-react'
 interface Props {
   osbl: NewOsbl
 }
 
 function getTreasuryMargin (treasury: number | undefined, budget: number | undefined): string | React.ReactElement {
+  if (treasury !== undefined && budget === undefined) {
+    return <Infinity />
+  }
   if (treasury === undefined || budget === undefined) {
     return <span className='text-muted-foreground'>-</span>
   }
@@ -60,22 +63,22 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
                   <div>
                     <PieChartComponent
                       data={finance.fund_sources_attributes}
-                      title="D'où proviennent 100€ de ressources ?"
+                      title='Sources de financement'
                     />
                   </div>
 
                   <div>
                     <PieChartComponent
                       data={finance.fund_allocations_attributes}
-                      title='À quoi ont servi 100€ de ressources ?'
+                      title='Allocation des fonds'
                     />
                   </div>
 
                   <div className='lg:border-l-2 border-muted lg:pl-8 flex-grow flex items-center justify-center md:col-span-2 lg:col-span-1'>
                     <div className='grid gap-4 w-full max-w-md'>
                       <div className='flex justify-between gap-4'>
-                        <p className='font-medium flex-shrink-0'>Budget annuel :</p>
-                        <span className='text-right'>
+                        <p className='text-sm flex-shrink-0'>Budget annuel :</p>
+                        <span className='text-right font-semibold'>
                           {finance.budget !== undefined
                             ? formatAmount(finance.budget)
                             : <span className='text-muted-foreground'>-</span>}
@@ -84,25 +87,31 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
 
                       <div className='flex items-center justify-between gap-4'>
                         <div className='flex flex-col'>
-                          <p className='font-medium'>
+                          <p className='text-sm'>
                             <span className='whitespace-nowrap'>Marge de</span>{' '}
                             <span className='whitespace-nowrap'>
                               trésorerie
                               <HelpTooltip className='mb-1 mx-2'>
                                 <p>La marge de trésorerie indique <span className='font-semibold'>combien de temps une association peut fonctionner</span> sans nouveaux apports de fonds.</p>
                                 <p>Une bonne marge se situe généralement <span className='font-semibold'>entre 3 et 6 mois</span>, permettant de faire face aux imprévus.</p>
+                                {finance.treasury !== undefined && (
+                                  <>
+                                    <Separator />
+                                    <p>Trésorerie : <span className='font-semibold'>{formatAmount(finance.treasury)}</span></p>
+                                  </>
+                                )}
                               </HelpTooltip>
                               :
                             </span>
                           </p>
                         </div>
-                        <span className='text-right'>
+                        <span className='text-right font-semibold'>
                           {getTreasuryMargin(finance.treasury, finance.budget)}
                         </span>
                       </div>
 
                       <div className='flex items-center justify-between gap-4'>
-                        <p className='font-medium flex-shrink-0'>
+                        <p className='text-sm flex-shrink-0'>
                           Comptes certifiés
                           <HelpTooltip className='mb-1 mx-2'>
                             <p>Pour une association, des comptes certifiés signifient que ses finances ont été <span className='font-semibold'>vérifiées par un expert indépendant</span>, comme un commissaire aux comptes.</p>
@@ -119,7 +128,7 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
                       </div>
 
                       <div className='flex items-center justify-between gap-4'>
-                        <p className='font-medium'>
+                        <p className='text-sm'>
                           <span className='whitespace-nowrap'>Reconnue</span>{' '}
                           <span className='whitespace-nowrap'>
                             d'utilité publique
@@ -143,7 +152,7 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
                       <Separator />
 
                       <div className='flex justify-between gap-4'>
-                        <p className='font-medium flex-shrink-0'>
+                        <p className='text-sm flex-shrink-0'>
                           Label(s)
                           <HelpTooltip className='mb-1 mx-2'>
                             <p>Les processus d'obtention et de renouvellement des labels impliquent des <span className='font-semibold'>audits rigoureux</span> et un examen approfondi des pratiques internes de l'association.</p>
@@ -171,8 +180,8 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
                       <Separator />
 
                       <div className='flex items-center justify-between gap-4'>
-                        <p className='font-medium'>Nombre d'employés : </p>
-                        <span className='text-right'>{finance.employees_count ?? <span className='text-muted-foreground'>-</span>}</span>
+                        <p className='text-sm'>Nombre d'employés : </p>
+                        <span className='text-right font-semibold'>{finance.employees_count ?? <span className='text-muted-foreground'>-</span>}</span>
                       </div>
                     </div>
                   </div>

@@ -7,7 +7,7 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import OsblLocationSheet from '@/components/pages/contribution/new/OsblLocations/OsblLocationSheet'
-import SheetTriggerItem from '@/components/pages/contribution/new/common/SheetTriggerItem'
+import SheetTriggerItem from '@/components/pages/contribution/new/shared/SheetTriggerItem'
 
 export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data' | 'setData'>): ReactElement {
   const locations = data.locations_attributes ?? []
@@ -38,7 +38,7 @@ export default function OsblLocations ({ data, setData }: Pick<FormProps, 'data'
         <Sheet>
           <SheetTrigger asChild>
             <Button variant='outline'>
-              <PlusIcon className='w-4 h-4' />
+              <PlusIcon />
               <span className='ml-2 hidden sm:block lg:hidden xl:block'>Ajouter</span>
             </Button>
           </SheetTrigger>
