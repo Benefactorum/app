@@ -14,7 +14,11 @@ export default function SheetTriggerItem ({ displayName, onRemove }: SheetTrigge
       <p>{displayName}</p>
       <div className='flex gap-2'>
         <SheetTrigger asChild>
-          <Button variant='outline' className='bg-white text-primary border-none'>
+          <Button 
+            variant='outline' 
+            className='bg-white text-primary border-none'
+            aria-label={`Edit ${displayName}`}
+          >
             <PencilIcon />
           </Button>
         </SheetTrigger>
@@ -22,6 +26,7 @@ export default function SheetTriggerItem ({ displayName, onRemove }: SheetTrigge
           onClick={onRemove}
           variant='outline'
           className='bg-white text-red-600 border-none'
+          aria-label={`Delete ${displayName}`}
         >
           <TrashIcon className='w-4 h-4' />
         </Button>
