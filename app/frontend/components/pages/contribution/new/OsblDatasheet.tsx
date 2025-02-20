@@ -182,13 +182,14 @@ export default function OsblDatasheet ({ data, setData, errors, clearErrors }: O
             </SelectContent>
           </Select>
 
-          {data.osbl_type === 'association' && (
+          {data.osbl_type !== 'fonds_de_dotation' && (
             <MyCheckbox
               id='public_utility'
               checked={data.public_utility ?? false}
               onCheckedChange={checked => setData('public_utility', checked)}
             >
-              Reconnue d'utilité publique (ARUP)
+              Reconnue d'utilité publique
+              {data.osbl_type === 'association' ? ' (ARUP)' : ' (FRUP)'}
             </MyCheckbox>
           )}
         </div>

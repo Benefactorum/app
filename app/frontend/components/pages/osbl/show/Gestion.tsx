@@ -126,7 +126,7 @@ export default function Gestion ({ osbl }: Props): React.ReactElement {
                           <span className='whitespace-nowrap'>
                             d'utilité publique
                             <HelpTooltip className='mb-1 mx-2'>
-                              <p>Les associations reconnues d'utilité publique (ARUP) sont <span className='font-semibold'>sous le contrôle direct de l'État</span>, garantissant une gestion transparente et une utilisation appropriée des fonds.</p>
+                              <p>Les organismes reconnus d'utilité publique (ARUP & FRUP) sont <span className='font-semibold'>sous le contrôle direct de l'État</span>, garantissant une gestion transparente et une utilisation appropriée des fonds.</p>
                             </HelpTooltip>
                             :
                           </span>
