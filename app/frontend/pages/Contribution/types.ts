@@ -148,6 +148,7 @@ export interface OsblUpdate {
         street_name: string
         additional_info?: string
         postal_code: string
+        city: string
         latitude: string
         longitude: string
       }
