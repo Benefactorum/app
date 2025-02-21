@@ -63,7 +63,10 @@ export function LocationsList ({
                     onMouseEnter={() => onLocationHover(index)}
                     onMouseLeave={() => onLocationHover(null)}
                   >
-                    <LocationItemContent location={location} />
+                    <LocationItemContent
+                      location={location}
+                      isSelected={selectedIndex === index}
+                    />
                   </div>
                 ))}
               </div>
