@@ -52,7 +52,7 @@ export function getOsblData (osbl: OsblUpdate): NewOsbl {
         ...location,
         address_attributes: {
           ...location.address_attributes,
-          city: location.address_attributes.city ?? '',
+          city: location.address_attributes.city,
           latitude: numberInput(location.address_attributes.latitude) as number,
           longitude: numberInput(location.address_attributes.longitude) as number
         }

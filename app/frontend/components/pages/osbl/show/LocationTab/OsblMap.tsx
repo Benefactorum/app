@@ -67,8 +67,8 @@ export function OsblMap ({
           <Marker
             key={index}
             position={{
-              lat: Number(location.address_attributes.latitude),
-              lng: Number(location.address_attributes.longitude)
+              lat: location.address_attributes.latitude,
+              lng: location.address_attributes.longitude
             }}
             icon={getMarkerIcon(
               location.type,

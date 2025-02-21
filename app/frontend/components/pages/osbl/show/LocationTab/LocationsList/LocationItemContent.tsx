@@ -50,7 +50,7 @@ export function LocationItemContent ({ location }: LocationItemContentProps): Re
             <a
               href={location.website}
               target='_blank'
-              rel='noreferrer'
+              rel='noopener noreferrer'
               className='text-sm text-primary hover:underline mt-2 block'
             >
               Site web
