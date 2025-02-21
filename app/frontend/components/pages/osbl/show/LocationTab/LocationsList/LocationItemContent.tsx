@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Location } from '@/pages/Contribution/types'
 import { capitalize } from '@/lib/utils'
-import { ZoomInIcon } from 'lucide-react'
+import { ZoomInIcon, ZoomOutIcon } from 'lucide-react'
 
 function getLocationBadgeVariant (type: string): 'default' | 'secondary' | 'destructive' | 'outline' {
   switch (type) {
@@ -18,9 +18,10 @@ function getLocationBadgeVariant (type: string): 'default' | 'secondary' | 'dest
 
 interface LocationItemContentProps {
   location: Location
+  isSelected?: boolean
 }
 
-export function LocationItemContent ({ location }: LocationItemContentProps): React.ReactElement {
+export function LocationItemContent ({ location, isSelected = false }: LocationItemContentProps): React.ReactElement {
   const address = location.address_attributes
   return (
     <>
@@ -57,8 +58,10 @@ export function LocationItemContent ({ location }: LocationItemContentProps): Re
             </a>
         )}
       </div>
-      <div className='absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'>
-        <ZoomInIcon className='h-4 w-4 text-muted-foreground' />
+      <div className='absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'>
+        {isSelected
+          ? <ZoomOutIcon className='text-muted-foreground' />
+          : <ZoomInIcon className='text-muted-foreground' />}
       </div>
     </>
   )
