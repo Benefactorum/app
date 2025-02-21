@@ -11,6 +11,7 @@ import GestionTab from '@/components/pages/osbl/show/GestionTab'
 import DataSheetTab from '@/components/pages/osbl/show/DataSheetTab'
 import LocationTab from '@/components/pages/osbl/show/LocationTab'
 import { cn } from '@/lib/utils'
+import { useEffect, useRef } from 'react'
 
 interface Props {
   contribution?: { id: number, status: string }
@@ -44,6 +45,20 @@ function getStatusLabel (status: string): string {
 
 export default function Show ({ osbl, contribution }: Props): ReactElement {
   const processedOsbl: NewOsbl = getOsblData(osbl)
+  const bannerRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (bannerRef.current instanceof HTMLElement) {
+      document.documentElement.style.setProperty('--contribution-banner-height', `${bannerRef.current.offsetHeight}px`)
+    } else {
+      document.documentElement.style.setProperty('--contribution-banner-height', '0px')
+    }
+
+    if (headerRef.current instanceof HTMLElement) {
+      document.documentElement.style.setProperty('--header-height', `${headerRef.current.offsetHeight}px`)
+    }
+  }, [])
 
   return (
     <>
@@ -52,7 +67,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
         <meta name='description' content={processedOsbl.description} />
       </Head>
       {contribution !== undefined && (
-        <div className='w-full bg-foreground py-4'>
+        <div ref={bannerRef} className='w-full bg-foreground py-4'>
           <div className='2xl:container mx-auto px-2 sm:px-8 lg:px-16 flex items-center gap-4 flex-wrap'>
             <p className='text-background'>
               <span className='font-semibold'>{contribution.status.toUpperCase()} :</span>
@@ -75,7 +90,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
           </div>
         </div>
       )}
-      <div className='flex flex-col sm:flex-row py-8 w-full 2xl:container mx-auto px-2 sm:px-8 lg:px-16 gap-8 lg:gap-16'>
+      <div ref={headerRef} className='flex flex-col sm:flex-row py-8 w-full 2xl:container mx-auto px-2 sm:px-8 lg:px-16 gap-8 lg:gap-16'>
         <div className='flex flex-grow flex-col justify-center gap-8 lg:gap-16'>
           <h1 className='text-3xl sm:text-4xl lg:text-5xl whitespace-pre-line'>
             {processedOsbl.name}
@@ -143,7 +158,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
               )}
         </div>
       </div>
-      <div className='w-full bg-white'>
+      <div className='w-full bg-white min-h-[calc(100vh-var(--header-height,0px)-var(--contribution-banner-height,0px))]'>
         <div className='flex flex-col py-16 2xl:container mx-auto px-2 sm:px-8 lg:px-16 gap-8 bg-white w-full'>
           <p className='text-center italic'>
             Benefactorum est un site participatif, dont le contenu est alimenté et modéré par des utilisateurs bénévoles.
