@@ -248,12 +248,12 @@ body {
   color: hsl(var(--secondary));
 }
 
-.marker-lieu {
-  color: hsl(var(--muted-foreground));
-}
-
 .marker-default {
   color: hsl(var(--primary));
+}
+
+.marker-lieu {
+  color: hsl(var(--muted-foreground));
 }
 
 .marker-active .marker-pin {
