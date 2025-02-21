@@ -58,3 +58,11 @@ export const LabelList = [
   { value: '1', label: 'Don en confiance' },
   { value: '2', label: 'Label IDEAS' }
 ]
+
+export const DOCUMENT_TYPES = [
+  'Statuts',
+  'Rapport d\'activité',
+  'Rapport financier',
+  'Procès verbal',
+  'Autre'
+] as const

@@ -2,9 +2,9 @@ import { NewOsbl, Location } from '@/pages/Contribution/types'
 import 'leaflet/dist/leaflet.css'
 import { Map } from 'leaflet'
 import { useState, useRef } from 'react'
-import { LocationsList } from './LocationTab/LocationsList'
-import { OsblMap } from './LocationTab/OsblMap'
-import { useLocationInteractions } from './LocationTab/useLocationInteractions'
+import { LocationsList } from './LocationsTab/LocationsList'
+import { OsblMap } from './LocationsTab/OsblMap'
+import { useLocationInteractions } from './LocationsTab/useLocationInteractions'
 
 interface Props {
   osbl: NewOsbl
@@ -22,7 +22,7 @@ function sortLocations (locations: Location[]): Location[] {
   })
 }
 
-export default function LocationTab ({ osbl }: Props): React.ReactElement {
+export default function LocationsTab ({ osbl }: Props): React.ReactElement {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [map, setMap] = useState<Map | null>(null)
