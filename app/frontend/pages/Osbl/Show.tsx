@@ -109,7 +109,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
             </Button>
             {processedOsbl.website !== undefined
               ? (
-                <a className={cn(buttonVariants({ variant: 'default' }), 'flex items-center gap-2')} href={processedOsbl.website} target='_blank' rel='noreferrer'>
+                <a className={cn(buttonVariants({ variant: 'default' }), 'flex items-center gap-2')} href={processedOsbl.website} target='_blank' rel='noopener noreferrer'>
                   <ExternalLink />
                   Visiter {processedOsbl.website?.replace('https://', '').replace('http://', '').replace('www.', '').replace(/\/$/, '')}
                 </a>
