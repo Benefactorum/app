@@ -42,6 +42,7 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
     fund_sources_attributes: undefined
   }]
   const startIndex = sortedFinances.length - 1
+  const showNavigation = sortedFinances.length > 1
 
   return (
     <div className='w-full'>
@@ -49,7 +50,8 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
         opts={{
           loop: false,
           slidesToScroll: 'auto',
-          startIndex
+          startIndex,
+          watchDrag: showNavigation
         }}
       >
         <CarouselContent>
@@ -190,24 +192,28 @@ export default function GestionTab ({ osbl }: Props): React.ReactElement {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious
-          size='lg'
-          variant='secondary'
-          className='top-4 -mr-2 left-auto right-1/2 -translate-x-[86px] lg:hidden'
-        />
-        <CarouselNext
-          size='lg'
-          variant='secondary'
-          className='top-4 -ml-2 left-1/2 translate-x-[86px] lg:hidden'
-        />
-        <CarouselPrevious
-          variant='secondary'
-          className='-ml-6 hidden lg:flex'
-        />
-        <CarouselNext
-          variant='secondary'
-          className='-mr-6 hidden lg:flex'
-        />
+        {showNavigation && (
+          <>
+            <CarouselPrevious
+              size='lg'
+              variant='secondary'
+              className='top-4 -mr-2 left-auto right-1/2 -translate-x-[86px] lg:hidden'
+            />
+            <CarouselNext
+              size='lg'
+              variant='secondary'
+              className='top-4 -ml-2 left-1/2 translate-x-[86px] lg:hidden'
+            />
+            <CarouselPrevious
+              variant='secondary'
+              className='-ml-6 hidden lg:flex'
+            />
+            <CarouselNext
+              variant='secondary'
+              className='-mr-6 hidden lg:flex'
+            />
+          </>
+        )}
       </Carousel>
     </div>
   )

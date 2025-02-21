@@ -9,21 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import GestionTab from '@/components/pages/osbl/show/GestionTab'
 import DataSheetTab from '@/components/pages/osbl/show/DataSheetTab'
-import LocationTab from '@/components/pages/osbl/show/LocationTab'
+import LocationsTab from '@/components/pages/osbl/show/LocationsTab'
+import DocumentsTab from '@/components/pages/osbl/show/DocumentsTab'
 import { cn } from '@/lib/utils'
 import { useEffect, useRef } from 'react'
 
 interface Props {
   contribution?: { id: number, status: string }
   osbl: OsblUpdate
-}
-
-function renderMissingInformation (): ReactElement {
-  return (
-    <div className='w-full flex justify-center items-center py-12'>
-      <p className='text-lg text-muted-foreground'>Informations manquantes.</p>
-    </div>
-  )
 }
 
 function getStatusLabel (status: string): string {
@@ -199,15 +192,15 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
             <TabsContent value='implantation'>
               <Card>
                 <CardContent className='p-0 sm:p-6 pt-6'>
-                  <LocationTab osbl={processedOsbl} />
+                  <LocationsTab osbl={processedOsbl} />
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value='documents'>
               <Card>
-                <CardContent className='pt-6'>
-                  {renderMissingInformation()}
+                <CardContent className='p-0 sm:p-6 pt-6'>
+                  <DocumentsTab osbl={processedOsbl} />
                 </CardContent>
               </Card>
             </TabsContent>
