@@ -58,7 +58,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
               <span className='font-semibold'>{contribution.status.toUpperCase()} :</span>
               {getStatusLabel(contribution.status)}
             </p>
-            <div className='flex gap-2'>
+            <div className='flex gap-2 flex-wrap'>
               <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
                 <Button variant='outline'>
                   <Pencil />
@@ -175,7 +175,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
 
             <TabsContent value='fiche'>
               <Card>
-                <CardContent className='pt-6'>
+                <CardContent className='p-2 sm:p-6 pt-6'>
                   <DataSheetTab osbl={processedOsbl} />
                 </CardContent>
               </Card>
@@ -183,7 +183,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
 
             <TabsContent value='implantation'>
               <Card>
-                <CardContent className='pt-6'>
+                <CardContent className='p-0 sm:p-6 pt-6'>
                   <LocationTab osbl={processedOsbl} />
                 </CardContent>
               </Card>

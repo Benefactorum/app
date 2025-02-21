@@ -51,8 +51,8 @@ function getGeographicalScale (osbl: NewOsbl): string {
 
 export default function DataSheetTab ({ osbl }: Props): React.ReactElement {
   return (
-    <div className='container mx-auto p-6'>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+    <div className='container mx-auto p-2 sm:p-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6'>
         <DetailItem
           label={
             <span>
