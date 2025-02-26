@@ -43,12 +43,7 @@ module Contributions
         # Find documents that are in old_osbl_data but not in new osbl_data
         old_document_files.each do |file_signed_id|
           unless new_document_files.include?(file_signed_id)
-            begin
-              ActiveStorage::Blob.find_signed(file_signed_id)&.purge_later
-            rescue ActiveSupport::MessageVerifier::InvalidSignature
-              # Skip if the signed ID is invalid
-              Rails.logger.warn("Invalid signed ID found in osbl_data: #{file_signed_id}")
-            end
+            ActiveStorage::Blob.find_signed(file_signed_id)&.purge_later
           end
         end
       end
@@ -62,15 +57,11 @@ module Contributions
       case osbl_data["document_attachments_attributes"]
       when Array
         osbl_data["document_attachments_attributes"].each do |attachment|
-          if attachment["document_attributes"] && attachment["document_attributes"]["file"].present?
-            document_files << attachment["document_attributes"]["file"] if attachment["document_attributes"]["file"].is_a?(String)
-          end
+          document_files << attachment["document_attributes"]["file"]
         end
       when Hash
         osbl_data["document_attachments_attributes"].each do |_, attachment|
-          if attachment["document_attributes"] && attachment["document_attributes"]["file"].present?
-            document_files << attachment["document_attributes"]["file"] if attachment["document_attributes"]["file"].is_a?(String)
-          end
+          document_files << attachment["document_attributes"]["file"]
         end
       end
 
