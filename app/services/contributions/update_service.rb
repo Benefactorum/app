@@ -55,7 +55,7 @@ module Contributions
     end
 
     def extract_document_files(osbl_data)
-      return [] unless osbl_data["document_attachments_attributes"].present?
+      return [] if osbl_data["document_attachments_attributes"].blank?
 
       document_files = []
 
