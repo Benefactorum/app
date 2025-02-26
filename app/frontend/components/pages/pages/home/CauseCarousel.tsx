@@ -1,4 +1,3 @@
-import { Link } from '@inertiajs/react'
 import { ReactElement } from 'react'
 import {
   Carousel,
@@ -28,6 +27,7 @@ import Disability from '@/assets/images/pages/home/causes/disability.webp'
 import SocialJustice from '@/assets/images/pages/home/causes/social-justice.webp'
 import Beliefs from '@/assets/images/pages/home/causes/beliefs.webp'
 import Others from '@/assets/images/pages/home/causes/others.webp'
+import MyLink from '@/components/shared/MyLink'
 
 const causes = [
   {
@@ -152,12 +152,13 @@ export default function CharityCarousel (): ReactElement {
                     <p>{cause.description}</p>
                   </CardContent>
                   <CardFooter className='my-4 ml-auto'>
-                    <Link
-                      href='/associations'
+                    <MyLink
+                      href='/'
+                      disabled
                       className='text-primary text-right hover:underline'
                     >
                       Voir les associations
-                    </Link>
+                    </MyLink>
                   </CardFooter>
                 </Card>
               </div>
