@@ -9,8 +9,9 @@ RSpec.describe Contributions::UpdateService do
           "body" => "Updated body",
           "files" => [
             {
-              "filename" => "sample.pdf",
-              "url" => "https://example.com/sample.pdf"
+              "filename" => blob.filename.to_s,
+              "url" => FileProcessor.generate_url(blob),
+              "key" => blob.key
             }
           ],
           "osbl" => {
@@ -22,7 +23,7 @@ RSpec.describe Contributions::UpdateService do
       end
 
       let(:file) { fixture_file_upload("sample.pdf", "application/pdf") }
-      let!(:blob) {
+      let(:blob) {
         ActiveStorage::Blob.create_and_upload!(
           io: file.tempfile,
           filename: file.original_filename,
@@ -136,7 +137,8 @@ RSpec.describe Contributions::UpdateService do
             # Keep the second file
             {
               "filename" => second_file_blob.filename.to_s,
-              "url" => FileProcessor.generate_url(second_file_blob)
+              "url" => FileProcessor.generate_url(second_file_blob),
+              "key" => second_file_blob.key
             },
             # Add a new file
             third_file
@@ -477,7 +479,8 @@ RSpec.describe Contributions::UpdateService do
                 "document_attributes" => {
                   "file" => {
                     "filename" => "first_document.pdf",
-                    "url" => FileProcessor.generate_url(first_document_blob)
+                    "url" => FileProcessor.generate_url(first_document_blob),
+                    "key" => first_document_blob.key
                   },
                   "name" => "First Document",
                   "type" => "Autre",
