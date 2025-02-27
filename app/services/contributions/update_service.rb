@@ -50,22 +50,9 @@ module Contributions
     end
 
     def extract_document_files(osbl_data)
-      return [] if osbl_data["document_attachments_attributes"].blank?
-
-      document_files = []
-
-      case osbl_data["document_attachments_attributes"]
-      when Array
-        osbl_data["document_attachments_attributes"].each do |attachment|
-          document_files << attachment["document_attributes"]["file"]
-        end
-      when Hash
-        osbl_data["document_attachments_attributes"].each do |_, attachment|
-          document_files << attachment["document_attributes"]["file"]
-        end
+      osbl_data.fetch("document_attachments_attributes", []).map do |attachment|
+        attachment["document_attributes"]["file"]
       end
-
-      document_files
     end
 
     def processed_params

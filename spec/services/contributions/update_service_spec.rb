@@ -372,8 +372,7 @@ RSpec.describe Contributions::UpdateService do
           "osbl" => {
             "name" => "Updated OSBL",
             "tax_reduction" => "intérêt_général",
-            "osbls_causes_attributes" => [{"cause_id" => cause.id}],
-            "document_attachments_attributes" => [] # Empty array to remove all documents
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}]
           }
         }
       end
@@ -401,7 +400,7 @@ RSpec.describe Contributions::UpdateService do
         expect(@update_status).to eq(:ok)
 
         # Verify the document is no longer in the osbl_data
-        expect(@updated_contribution.osbl_data["document_attachments_attributes"]).to be_empty
+        expect(@updated_contribution.osbl_data["document_attachments_attributes"]).to be_nil
 
         # Verify the document blob has been purged
         perform_enqueued_jobs

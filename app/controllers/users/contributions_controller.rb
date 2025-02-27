@@ -152,6 +152,9 @@ module Users
         ]
       ).tap do |params|
         params[:files] = params[:files]&.values
+        if params.dig(:osbl, :document_attachments_attributes).present?
+          params[:osbl][:document_attachments_attributes] = params[:osbl][:document_attachments_attributes].values
+        end
       end
     end
   end

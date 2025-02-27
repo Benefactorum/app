@@ -22,21 +22,8 @@ module Contributions
       end
 
       def transform_documents!
-        return if @params["document_attachments_attributes"].blank?
-
-        attachments = @params["document_attachments_attributes"]
-
-        case attachments
-        when Array
-          attachments.each do |attachment|
-            attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
-          end
-        when Hash, ActionController::Parameters
-          attachments.each do |_, attachment|
-            attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
-          end
-        else
-          raise "Unknown class: #{attachments.class.name}"
+        @params.fetch("document_attachments_attributes", []).each do |attachment|
+          attachment["document_attributes"]["file"] = FileProcessor.process(attachment["document_attributes"]["file"])
         end
       end
 
