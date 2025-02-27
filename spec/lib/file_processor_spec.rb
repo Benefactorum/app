@@ -34,8 +34,9 @@ RSpec.describe FileProcessor do
         result = described_class.process(signed_id)
 
         expect(result).to be_a(Hash)
-        expect(result[:filename]).to be_present
-        expect(result[:url]).to be_present
+        expect(result["filename"]).to be_present
+        expect(result["url"]).to be_present
+        expect(result["key"]).to be_present
       end
     end
 
@@ -54,7 +55,7 @@ RSpec.describe FileProcessor do
         )
 
         result = described_class.process(
-          {"filename" => blob.filename.to_s}
+          {"filename" => blob.filename.to_s, "key" => blob.key}
         )
 
         expect(result).to be_a(String)

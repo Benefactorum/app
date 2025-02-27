@@ -95,7 +95,7 @@ module Users
             :name,
             :website,
             :logo,
-            {logo: [:filename, :url]},
+            {logo: [:filename, :url, :key]},
             :description,
             :tax_reduction,
             :geographical_scale,
@@ -127,7 +127,7 @@ module Users
               document_attributes: [
                 :type,
                 :file,
-                {file: [:filename, :url]},
+                {file: [:filename, :url, :key]},
                 :name,
                 :year,
                 :description
@@ -152,8 +152,9 @@ module Users
         ]
       ).tap do |params|
         params[:files] = params[:files]&.values
-        if params.dig(:osbl, :document_attachments_attributes).present?
-          params[:osbl][:document_attachments_attributes] = params[:osbl][:document_attachments_attributes].values
+        document_attachments = params.dig(:osbl, :document_attachments_attributes)
+        if document_attachments.present? && !document_attachments.is_a?(Array)
+          params[:osbl][:document_attachments_attributes] = document_attachments.values
         end
       end
     end

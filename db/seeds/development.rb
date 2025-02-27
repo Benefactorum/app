@@ -67,8 +67,7 @@ benefactorum_params = {
   "osbl_type" => "association",
   "creation_year" => 2023,
   "document_attachments_attributes" =>
-    {
-      "0" =>
+    [
       {
         "document_attributes" =>
         {
@@ -84,7 +83,6 @@ benefactorum_params = {
           "year" => 2023
         }
       },
-      "1" =>
       {
         "document_attributes" =>
         {
@@ -101,7 +99,7 @@ benefactorum_params = {
           "year" => 2023
         }
       }
-    },
+    ],
   "locations_attributes" =>
     {
       "0" =>
