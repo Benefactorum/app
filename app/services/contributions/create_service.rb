@@ -6,7 +6,7 @@ module Contributions
     end
 
     def call
-      osbl_params = @params.delete(:osbl)
+      osbl_params = @params.delete("osbl")
       contribution = @user.contributions.build(@params)
       osbl = Osbl.new(osbl_params)
 

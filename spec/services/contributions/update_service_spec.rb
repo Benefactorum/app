@@ -6,17 +6,17 @@ RSpec.describe Contributions::UpdateService do
     context "with valid params and already uploaded file" do
       let(:valid_params) do
         {
-          body: "Updated body",
-          files: [
-            ActiveSupport::HashWithIndifferentAccess.new(
-              filename: "sample.pdf",
-              url: "https://example.com/sample.pdf"
-            )
+          "body" => "Updated body",
+          "files" => [
+            {
+              "filename" => "sample.pdf",
+              "url" => "https://example.com/sample.pdf"
+            }
           ],
-          osbl: {
-            name: "Updated OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: create(:cause).id}]
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => create(:cause).id}]
           }
         }
       end
@@ -43,15 +43,15 @@ RSpec.describe Contributions::UpdateService do
 
     context "with valid params and new file" do
       let(:valid_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Updated body",
-          files: [file],
-          osbl: {
-            name: "Updated OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: create(:cause).id}]
+        {
+          "body" => "Updated body",
+          "files" => [file],
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => create(:cause).id}]
           }
-        )
+        }
       end
 
       let(:file) do
@@ -106,15 +106,15 @@ RSpec.describe Contributions::UpdateService do
       end
 
       let(:initial_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Initial body",
-          files: [first_file, second_file],
-          osbl: {
-            name: "Initial OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: create(:cause).id}]
+        {
+          "body" => "Initial body",
+          "files" => [first_file, second_file],
+          "osbl" => {
+            "name" => "Initial OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => create(:cause).id}]
           }
-        )
+        }
       end
 
       it "purges files that are no longer present in the updated params" do
@@ -130,27 +130,23 @@ RSpec.describe Contributions::UpdateService do
         expect(second_file_blob).to be_present
 
         # Update the update_params to use the correct file reference
-        update_params = ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Updated body",
-          files: [
+        update_params = {
+          "body" => "Updated body",
+          "files" => [
             # Keep the second file
             {
-              filename: second_file_blob.filename.to_s,
-              url: Rails.application.routes.url_helpers.rails_blob_url(
-                second_file_blob,
-                host: Rails.application.config.action_mailer.default_url_options[:host],
-                port: Rails.application.config.action_mailer.default_url_options[:port]
-              )
+              "filename" => second_file_blob.filename.to_s,
+              "url" => FileProcessor.generate_url(second_file_blob)
             },
             # Add a new file
             third_file
           ],
-          osbl: {
-            name: "Updated OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: create(:cause).id}]
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => create(:cause).id}]
           }
-        )
+        }
 
         # Create the service
         update_service = Contributions::UpdateService.new(contribution: contribution, params: update_params)
@@ -163,7 +159,6 @@ RSpec.describe Contributions::UpdateService do
 
         # Verify only the second file remains
         expect(updated_contribution.reload.files.count).to eq(2)
-        # expect(@updated_contribution.files.first.blob.signed_id).to eq(second_file_signed_id)
 
         # Verify the first file blob has been purged
         perform_enqueued_jobs
@@ -174,12 +169,12 @@ RSpec.describe Contributions::UpdateService do
 
     context "with invalid osbl data" do
       let(:invalid_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          osbl: {
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: create(:cause).id}]
+        {
+          "osbl" => {
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => create(:cause).id}]
           }
-        )
+        }
       end
 
       it "returns error status with validation errors" do
@@ -214,27 +209,27 @@ RSpec.describe Contributions::UpdateService do
       end
 
       let(:initial_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Initial body",
-          osbl: {
-            name: "Initial OSBL",
-            logo: initial_logo,
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}]
+        {
+          "body" => "Initial body",
+          "osbl" => {
+            "name" => "Initial OSBL",
+            "logo" => initial_logo,
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}]
           }
-        )
+        }
       end
 
       let(:update_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Updated body",
-          osbl: {
-            name: "Updated OSBL",
-            logo: new_logo,
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}]
+        {
+          "body" => "Updated body",
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "logo" => new_logo,
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}]
           }
-        )
+        }
       end
 
       it "replaces the old logo with the new one and purges the old logo" do
@@ -283,27 +278,27 @@ RSpec.describe Contributions::UpdateService do
       end
 
       let(:initial_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Initial body",
-          osbl: {
-            name: "Initial OSBL",
-            logo: initial_logo,
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}]
+        {
+          "body" => "Initial body",
+          "osbl" => {
+            "name" => "Initial OSBL",
+            "logo" => initial_logo,
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}]
           }
-        )
+        }
       end
 
       let(:update_params_without_logo) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Updated body",
-          osbl: {
-            name: "Updated OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}]
+        {
+          "body" => "Updated body",
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}]
             # No logo field
           }
-        )
+        }
       end
 
       it "removes the logo from osbl_data and purges the old logo" do
@@ -351,36 +346,36 @@ RSpec.describe Contributions::UpdateService do
       end
 
       let(:initial_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Initial body",
-          osbl: {
-            name: "Initial OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}],
-            document_attachments_attributes: [
+        {
+          "body" => "Initial body",
+          "osbl" => {
+            "name" => "Initial OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}],
+            "document_attachments_attributes" => [
               {
-                document_attributes: {
-                  file: document_file,
-                  name: "Document 1",
-                  type: "Autre",
-                  year: Time.current.year
+                "document_attributes" => {
+                  "file" => document_file,
+                  "name" => "Document 1",
+                  "type" => "Autre",
+                  "year" => Time.current.year
                 }
               }
             ]
           }
-        )
+        }
       end
 
       let(:update_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Updated body",
-          osbl: {
-            name: "Updated OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}],
-            document_attachments_attributes: [] # Empty array to remove all documents
+        {
+          "body" => "Updated body",
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}],
+            "document_attachments_attributes" => [] # Empty array to remove all documents
           }
-        )
+        }
       end
 
       it "purges documents that are no longer present in the updated osbl_data" do
@@ -439,24 +434,24 @@ RSpec.describe Contributions::UpdateService do
       end
 
       let(:initial_params) do
-        ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Initial body",
-          osbl: {
-            name: "Initial OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}],
-            document_attachments_attributes: [
+        {
+          "body" => "Initial body",
+          "osbl" => {
+            "name" => "Initial OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}],
+            "document_attachments_attributes" => [
               {
-                document_attributes: {
-                  file: first_document_file,
-                  name: "First Document",
-                  type: "Autre",
-                  year: Time.current.year
+                "document_attributes" => {
+                  "file" => first_document_file,
+                  "name" => "First Document",
+                  "type" => "Autre",
+                  "year" => Time.current.year
                 }
               }
             ]
           }
-        )
+        }
       end
 
       it "keeps the existing document and adds the new one without purging" do
@@ -471,41 +466,37 @@ RSpec.describe Contributions::UpdateService do
         expect(first_document_blob).to be_present
 
         # Create update params with both the existing document (by reference) and a new document
-        update_params = ActiveSupport::HashWithIndifferentAccess.new(
-          body: "Updated body",
-          osbl: {
-            name: "Updated OSBL",
-            tax_reduction: "intérêt_général",
-            osbls_causes_attributes: [{cause_id: cause.id}],
-            document_attachments_attributes: [
+        update_params = {
+          "body" => "Updated body",
+          "osbl" => {
+            "name" => "Updated OSBL",
+            "tax_reduction" => "intérêt_général",
+            "osbls_causes_attributes" => [{"cause_id" => cause.id}],
+            "document_attachments_attributes" => [
               # Include the existing document by reference
               {
-                document_attributes: {
-                  file: {
-                    filename: "first_document.pdf",
-                    url: Rails.application.routes.url_helpers.rails_blob_url(
-                      first_document_blob,
-                      host: Rails.application.config.action_mailer.default_url_options[:host],
-                      port: Rails.application.config.action_mailer.default_url_options[:port]
-                    )
+                "document_attributes" => {
+                  "file" => {
+                    "filename" => "first_document.pdf",
+                    "url" => FileProcessor.generate_url(first_document_blob)
                   },
-                  name: "First Document",
-                  type: "Autre",
-                  year: Time.current.year
+                  "name" => "First Document",
+                  "type" => "Autre",
+                  "year" => Time.current.year
                 }
               },
               # Add a new document
               {
-                document_attributes: {
-                  file: second_document_file,
-                  name: "Second Document",
-                  type: "Autre",
-                  year: Time.current.year
+                "document_attributes" => {
+                  "file" => second_document_file,
+                  "name" => "Second Document",
+                  "type" => "Autre",
+                  "year" => Time.current.year
                 }
               }
             ]
           }
-        )
+        }
 
         # Create the service and capture the result before testing job enqueueing
         update_service = Contributions::UpdateService.new(contribution: contribution, params: update_params)

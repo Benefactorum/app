@@ -14,13 +14,13 @@ module FileProcessor
         filename: blob.filename,
         url: generate_url(blob)
       }
-    when ActionController::Parameters, ActiveSupport::HashWithIndifferentAccess
-      blob = ActiveStorage::Blob.find_by!(filename: file[:filename])
+    when ActionController::Parameters, Hash
+      blob = ActiveStorage::Blob.find_by!(filename: file["filename"])
       blob.signed_id
     when ActiveStorage::Attachment
       {
-        filename: file.filename.to_s,
-        url: generate_url(file)
+        "filename" => file.filename.to_s,
+        "url" => generate_url(file)
       }
     else
       raise ArgumentError, "Unsupported file type: #{file.class.name}"

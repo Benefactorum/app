@@ -54,7 +54,7 @@ RSpec.describe FileProcessor do
         )
 
         result = described_class.process(
-          ActiveSupport::HashWithIndifferentAccess.new(filename: blob.filename.to_s)
+          {"filename" => blob.filename.to_s}
         )
 
         expect(result).to be_a(String)
@@ -81,8 +81,8 @@ RSpec.describe FileProcessor do
         result = described_class.process(contribution.files.first)
 
         expect(result).to be_a(Hash)
-        expect(result[:filename]).to be_present
-        expect(result[:url]).to be_present
+        expect(result["filename"]).to be_present
+        expect(result["url"]).to be_present
       end
     end
 
