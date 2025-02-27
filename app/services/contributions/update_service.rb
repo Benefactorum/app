@@ -6,7 +6,7 @@ module Contributions
     end
 
     def call
-      osbl_params = @params.delete(:osbl)
+      osbl_params = @params.delete("osbl")
       osbl_data = OsblData::Serializer.new(osbl_params).call
       osbl = Osbl.new(osbl_data)
 
@@ -17,8 +17,8 @@ module Contributions
       @contribution.update!(
         processed_params.merge(
           contributable_attributes: {
-            id: @contribution.contributable.id,
-            osbl_data: osbl_data
+            "id" => @contribution.contributable.id,
+            "osbl_data" => osbl_data
           }
         )
       )
@@ -43,7 +43,7 @@ module Contributions
         # Find documents that are in old_osbl_data but not in new osbl_data
         old_document_files.each do |file_signed_id|
           unless new_document_files.include?(file_signed_id)
-            ActiveStorage::Blob.find_signed(file_signed_id)&.purge_later
+            ActiveStorage::Blob.find_signed(file_signed_id).purge_later
           end
         end
       end
@@ -70,10 +70,10 @@ module Contributions
 
     def processed_params
       @params.tap do |params|
-        params[:files]&.each_with_index do |file, index|
+        params["files"]&.each_with_index do |file, index|
           next if file.is_a?(ActionDispatch::Http::UploadedFile)
 
-          params[:files][index] = FileProcessor.process(file)
+          params["files"][index] = FileProcessor.process(file)
         end
       end
     end

@@ -5,12 +5,12 @@ RSpec.describe Contributions::CreateService do
   let(:cause) { create(:cause) }
   let(:valid_params) do
     {
-      body: "New contribution",
-      files: [],
-      osbl: {
-        name: "New OSBL",
-        tax_reduction: "intérêt_général",
-        osbls_causes_attributes: [{cause_id: cause.id}]
+      "body" => "New contribution",
+      "files" => [],
+      "osbl" => {
+        "name" => "New OSBL",
+        "tax_reduction" => "intérêt_général",
+        "osbls_causes_attributes" => [{cause_id: cause.id}]
       }
     }
   end
@@ -40,7 +40,7 @@ RSpec.describe Contributions::CreateService do
 
     context "with invalid osbl data" do
       let(:invalid_params) do
-        valid_params.merge(osbl: {name: ""})
+        valid_params.merge("osbl" => {"name" => ""})
       end
 
       it "returns error status with validation errors" do

@@ -7,8 +7,6 @@ class Contribution::OsblCreation < ApplicationRecord
     "rejeté" => 4
   }.freeze
 
-  serialize :osbl_data, coder: JSON
-
   # db_constraints enforcing :
   # validates :osbl_data, presence: true
 end

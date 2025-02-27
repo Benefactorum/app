@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_10_140127) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_26_181406) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -74,11 +74,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_140127) do
   end
 
   create_table "contribution_osbl_creations", force: :cascade do |t|
-    t.text "osbl_data", null: false
+    t.json "osbl_data", null: false
   end
 
   create_table "contribution_osbl_updates", force: :cascade do |t|
-    t.text "osbl_data", null: false
+    t.json "osbl_data", null: false
   end
 
   create_table "contribution_others", force: :cascade do |t|
