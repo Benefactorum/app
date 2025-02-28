@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.firecrawl.dev/v1/extract/9c74fe32-0a4e-4a78-a72e-ab2ee02804b1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api.firecrawl.dev
+      Authorization:
+      - Bearer <FIRECRAWL_SECRET_KEY>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - Express
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '1034'
+      Etag:
+      - W/"40a-p9GFqKDB14TcwpM3TTMvH7I1agk"
+      Date:
+      - Fri, 28 Feb 2025 00:55:34 GMT
+      Via:
+      - 1.1 google
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJzdWNjZXNzIjp0cnVlLCJkYXRhIjp7ImxvZ28iOiJodHRwczovL3Vucy5nZW9tYXRpY2suY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDIzLzA4L2xvZ29VTlNfSEQucG5nIiwibmFtZSI6IlVuaXZlcnMtU2VsIiwid2Vic2l0ZSI6Imh0dHBzOi8vdW5pdmVyc3NlbC5vcmcvIiwib3NibF90eXBlIjoiYXNzb2NpYXRpb24iLCJkZXNjcmlwdGlvbiI6IkZhdm9yaXNlciBs4oCZw6ljaGFuZ2UgZGUgc2F2b2lyLWZhaXJlIGVudHJlIHByb2R1Y3RldXLCt2ljZXMgcG91ciBkw6l2ZWxvcHBlciBkZXMgdGVjaG5pcXVlcyBhZ3JpY29sZXMgZHVyYWJsZXMuIiwiY3JlYXRpb25feWVhciI6MTk4OSwidGF4X3JlZHVjdGlvbiI6ImludMOpcsOqdF9nw6luw6lyYWwiLCJwdWJsaWNfdXRpbGl0eSI6dHJ1ZSwiZ2VvZ3JhcGhpY2FsX3NjYWxlIjoiaW50ZXJuYXRpb25hbCIsImxvY2F0aW9uc19hdHRyaWJ1dGVzIjpbeyJ0eXBlIjoiU2nDqGdlIHNvY2lhbCIsImFkZHJlc3NfYXR0cmlidXRlcyI6eyJjaXR5IjoiIiwicG9zdGFsX2NvZGUiOiIiLCJzdHJlZXRfbmFtZSI6IiIsInN0cmVldF9udW1iZXIiOiIiLCJhZGRpdGlvbmFsX2luZm8iOiIifX1dLCJvc2Jsc19jYXVzZXNfYXR0cmlidXRlcyI6W3sibmFtZSI6IsOJZHVjYXRpb24ifSx7Im5hbWUiOiJMdXR0ZSBjb250cmUgbGEgcHLDqWNhcml0w6kifSx7Im5hbWUiOiJFbnZpcm9ubmVtZW50In1dLCJvc2Jsc19rZXl3b3Jkc19hdHRyaWJ1dGVzIjpbeyJuYW1lIjoic2FsaWN1bHR1cmUifSx7Im5hbWUiOiJyaXppY3VsdHVyZSJ9LHsibmFtZSI6InNvbGlkYXJpdMOpIGludGVybmF0aW9uYWxlIn1dLCJhbm51YWxfZmluYW5jZXNfYXR0cmlidXRlcyI6W10sImRvY3VtZW50X2F0dGFjaG1lbnRzX2F0dHJpYnV0ZXMiOltdLCJvc2Jsc19pbnRlcnZlbnRpb25fYXJlYXNfYXR0cmlidXRlcyI6W3sibmFtZSI6Ikd1aW7DqWUtQmlzc2F1In0seyJuYW1lIjoiU8OpbsOpZ2FsIn1dfSwic3RhdHVzIjoiY29tcGxldGVkIiwiZXhwaXJlc0F0IjoiMjAyNS0wMi0yOFQwNjo0OTo0Mi4wMDBaIn0=
+  recorded_at: Fri, 28 Feb 2025 00:55:34 GMT
+recorded_with: VCR 6.3.1
