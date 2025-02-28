@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_28_113513) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_28_122447) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -165,6 +165,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_113513) do
     t.index ["annual_finance_id"], name: "index_osbl_fund_sources_on_annual_finance_id"
     t.check_constraint "amount > 0", name: "amount_positive"
     t.check_constraint "percent > 0 AND percent <= 100", name: "percent_within_range"
+  end
+
+  create_table "osbl_imports", force: :cascade do |t|
+    t.string "osbl_uri", null: false
+    t.json "extracted_data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "osbl_intervention_areas", force: :cascade do |t|

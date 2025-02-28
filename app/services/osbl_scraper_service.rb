@@ -47,15 +47,16 @@ class OsblScraperService
       2. **Conform to the additional informations provided below:** Ensure your output follows requirements.
       3. **Do not fabricate defaults:** Do not include blank values.
       4. **Do not add duplicates:** Remove any duplicates or irrelevant data before outputting.
+      5. **use French:** All output must be in French.
 
       **Additional informations:**
 
-      - **description:** A concise summary (max 300 characters) of the organization's mission and actions.
+      - **description:** A concise summary (max 300 characters) of the organization's mission and actions, in French.
       - **logo:** A URL to a high-quality logo image (SVG, PNG, or WEBP) with a transparent background, suitable for 200x200px display.
       - **tax_reduction:** One of: #{Osbl.tax_reductions.keys.join(", ")}. Indicates if donations yield a 66% (intérêt général) or 75% (aide aux personnes en difficulté) tax deduction.
       - **geographical_scale:** One of: #{Osbl.geographical_scales.keys.join(", ")}. Defines the operational scope of the organization.
       - **osbl_type:** One of: #{Osbl.osbl_types.keys.join(", ")}.
-      - **public_utility:** True if the organization is ARUP or FRUP (reconnue d'utilité publique); note that "reconnue d’intérêt général" is not considered.
+      - **public_utility:** True if the organization is ARUP or FRUP (reconnue d'utilité publique); note that "reconnue d’intérêt général" is not considered as a public utility.
       - **osbls_causes_attributes:** Up to 3 causes maximum. Each cause name must be in: #{Osbl::Cause::LIST}. Fewer is better than irrelevant extras.
       - **osbls_keywords_attributes:** Up to 5 precise keywords capturing the organization's specifics. Avoid generic terms like "Sensibilisation" or "Solidarité".
       - **osbls_intervention_areas_attributes:** Specific geographical areas (countries, regions, continents) where the organization operates. Exclude vague terms like "worldwide" or "international" and avoid listing 'France' for national OSBLs.

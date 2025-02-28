@@ -13,9 +13,9 @@ http_interactions:
         source backing it up.\n2. **Conform to the additional informations provided
         below:** Ensure your output follows requirements.\n3. **Do not fabricate defaults:**
         Do not include blank values.\n4. **Do not add duplicates:** Remove any duplicates
-        or irrelevant data before outputting.\n\n**Additional informations:**\n\n-
+        or irrelevant data before outputting.\n5. **use French:** All output must be in French.\n\n**Additional informations:**\n\n-
         **description:** A concise summary (max 300 characters) of the organization''s
-        mission and actions.\n- **logo:** A URL to a high-quality logo image (SVG,
+        mission and actions, in French.\n- **logo:** A URL to a high-quality logo image (SVG,
         PNG, or WEBP) with a transparent background, suitable for 200x200px display.\n-
         **tax_reduction:** One of: intérêt_général, aide_aux_personnes_en_difficulté.
         Indicates if donations yield a 66% (intérêt général) or 75% (aide aux personnes
@@ -23,7 +23,7 @@ http_interactions:
         national, international. Defines the operational scope of the organization.\n-
         **osbl_type:** One of: association, fonds_de_dotation, fondation.\n- **public_utility:**
         True if the organization is ARUP or FRUP (reconnue d''utilité publique); note
-        that \"reconnue d’intérêt général\" is not considered.\n- **osbls_causes_attributes:**
+        that \"reconnue d’intérêt général\" is not considered as a public utility.\n- **osbls_causes_attributes:**
         Up to 3 causes maximum. Each cause name must be in: [\"Environnement\", \"Protection
         de l''enfance\", \"Santé\", \"Lutte contre la précarité\", \"Éducation\",
         \"Protection animale\", \"Recherche\", \"Arts, Culture, Patrimoine\", \"Aide

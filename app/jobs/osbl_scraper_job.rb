@@ -8,7 +8,7 @@ class OsblScraperJob < ApplicationJob
 
     case response["status"]
     when "completed"
-      process_completed_data(response["data"])
+      process_extracted_data(osbl_uri, response["data"])
     when "pending"
       # Schedule the job to run again after a delay
       if interval > 1.minute
@@ -29,8 +29,8 @@ class OsblScraperJob < ApplicationJob
     Firecrawl.new(SECRET_KEY).get_extract_status(job_id)
   end
 
-  def process_completed_data(data)
-    # TODO: Implement processing of completed data
-    # The processing logic should be moved to a separate service
+  def process_extracted_data(osbl_uri, extracted_data)
+    osbl_import = OsblImport.create!(osbl_uri:, extracted_data:)
+    OsblCreationFromImportJob.perform_later(osbl_import.id)
   end
 end
