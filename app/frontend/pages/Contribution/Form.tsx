@@ -1,7 +1,7 @@
 import { ReactElement, useState, useRef, useEffect } from 'react'
 import { Head } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
-import { Save } from 'lucide-react'
+import { Save, Bot } from 'lucide-react'
 import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
 import OsblDataSheet from '@/components/pages/contribution/new/OsblDatasheet'
 import OsblFinance from '@/components/pages/contribution/new/OsblFinances'
@@ -14,6 +14,8 @@ import ContributionDialog from '@/components/pages/contribution/new/Contribution
 import getAllowedFormats from '@/lib/getAllowedFormats'
 import { validate } from '@/lib/validate'
 import deepCleanData from '@/lib/deepCleanData'
+import HelpTooltip from '@/components/shared/HelpTooltip'
+import axios from 'axios'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
@@ -41,6 +43,14 @@ const contributionValidation = z.object({
       .refine((files) => files.length <= 5, '5 fichiers maximum.')
       .refine((files) => files.every(file => file.size <= MAX_DOCUMENT_SIZE), 'La taille d\'un fichier ne peut excéder 5 MB.')
       .optional()
+  })
+})
+
+const ScraperValidation = z.object({
+  contribution: z.object({
+    osbl: z.object({
+      website: z.string({ message: 'Champs requis' }).url({ message: 'Veuillez entrer une URL valide.' })
+    })
   })
 })
 
@@ -165,6 +175,35 @@ export default function Form ({
     }
   }
 
+  function launchAutoScraper (): void {
+    if (!validate(ScraperValidation, data as { contribution: { osbl: { website: string } } }, setError)) return
+
+    void (async () => {
+      try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        const response = await axios.post(
+          '/osbl_imports',
+          { osbl_uri: data.contribution.osbl.website },
+          {
+            headers: {
+              'X-CSRF-Token': csrfToken
+            }
+          }
+        )
+
+        if (response.status !== 201) {
+          throw new Error('Network response was not 201')
+        } else {
+          toast.success('Extraction lancée avec succès. Veuillez patienter quelques secondes.')
+        // should start polling
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
+      }
+    })()
+  }
+
   return (
     <>
       <Head title={title} />
@@ -176,14 +215,31 @@ export default function Form ({
       >
         <div className='flex gap-8 sm:gap-16 items-center flex-wrap justify-center md:justify-start'>
           <h1 className='font-semibold text-2xl sm:text-3xl'>{title}</h1>
-          <Button
-            ref={topButtonRef}
-            type='submit'
-            className='text-lg'
-          >
-            <Save className='mr-2' />
-            Enregistrer
-          </Button>
+          <div className='flex gap-8'>
+            <Button
+              ref={topButtonRef}
+              type='submit'
+              className='text-lg'
+            >
+              <Save className='mr-2' />
+              Enregistrer
+            </Button>
+
+            <Button
+              variant='outline'
+              className='items-center'
+              onClick={(e) => {
+                e.preventDefault()
+                launchAutoScraper()
+              }}
+            >
+              <Bot className='mr-2' />
+              Saisie automatique
+              <HelpTooltip>
+                Automatise la collecte des informations de l'association depuis son site web.
+              </HelpTooltip>
+            </Button>
+          </div>
         </div>
 
         <div className='flex flex-col pt-4 gap-8'>

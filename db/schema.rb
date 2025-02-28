@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_26_181406) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_28_113513) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -278,6 +278,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_26_181406) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.datetime "terms_and_privacy_accepted_at", null: false
+    t.boolean "admin", default: false, null: false
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.check_constraint "email LIKE '%_@_%._%'", name: "email_format_check"
