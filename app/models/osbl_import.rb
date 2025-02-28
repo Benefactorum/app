@@ -1,0 +1,2 @@
+class OsblImport < ApplicationRecord
+end
