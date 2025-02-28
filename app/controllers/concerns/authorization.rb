@@ -19,4 +19,8 @@ module Authorization
   def only_for_current_user
     redirect_to root_path, error: "Erreur d'autorisation" unless @user == Current.user
   end
+
+  def require_admin
+    head :forbidden unless Current.user.admin?
+  end
 end

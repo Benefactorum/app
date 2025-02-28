@@ -121,6 +121,7 @@ user = User.find_or_create_by!(email: "test@test.com") do |u|
   u.first_name = "Alain"
   u.last_name = "Connu"
   u.terms_and_privacy_accepted_at = Time.current
+  u.admin = true
 end
 user.create_otp!
 

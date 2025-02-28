@@ -2,7 +2,7 @@ class OsblScraperService
   SECRET_KEY = Rails.application.credentials.dig(:firecrawl, :secret_key)
 
   def initialize(osbl_uri)
-    @osbl_uri = osbl_uri
+    @osbl_uri = normalize(osbl_uri)
     @firecrawl = Firecrawl.new(SECRET_KEY)
   end
 
@@ -10,9 +10,17 @@ class OsblScraperService
     job_id = start_extract_async_job
 
     OsblScraperJob.set(wait: 5.seconds).perform_later(job_id, osbl_uri: @osbl_uri)
+
+    job_id
   end
 
   private
+
+  def normalize(uri)
+    # Remove trailing slash from URI if present
+    # e.g. "https://example.com/" -> "https://example.com"
+    uri.gsub(/\/$/, "")
+  end
 
   def start_extract_async_job
     response = @firecrawl.extract(
@@ -33,35 +41,32 @@ class OsblScraperService
 
   def get_prompt
     <<~PROMPT
-      You are tasked with extracting only verified, meaningful data from an OSBL website (a French non-profit organization). Follow these rules strictly and output JSON that exactly matches the provided schema. Do not fabricate defaults or include empty values.
+      You are tasked with extracting only verified, meaningful data from an OSBL website (a French non-profit organization). Follow these rules strictly and output JSON that exactly matches the provided schema. Do not fabricate defaults or include blank values.
 
       1. **Use only credible sources:** Only include a field if you have a reliable source backing it up.
-      2. **Conform to the schema:** Ensure your output follows the structured fields below.
+      2. **Conform to the additional informations provided below:** Ensure your output follows requirements.
+      3. **Do not fabricate defaults:** Do not include blank values.
+      4. **Do not add duplicates:** Remove any duplicates or irrelevant data before outputting.
 
-      **Extract the following fields:**
+      **Additional informations:**
 
       - **description:** A concise summary (max 300 characters) of the organization's mission and actions.
       - **logo:** A URL to a high-quality logo image (SVG, PNG, or WEBP) with a transparent background, suitable for 200x200px display.
       - **tax_reduction:** One of: #{Osbl.tax_reductions.keys.join(", ")}. Indicates if donations yield a 66% (intérêt général) or 75% (aide aux personnes en difficulté) tax deduction.
       - **geographical_scale:** One of: #{Osbl.geographical_scales.keys.join(", ")}. Defines the operational scope of the organization.
       - **osbl_type:** One of: #{Osbl.osbl_types.keys.join(", ")}.
-      - **public_utility:** A boolean value. True if the organization is ARUP or FRUP (reconnue d'utilité publique); note that "reconnue d’intérêt général" is not considered.
-      - **osbls_causes_attributes:** Up to 3 causes. Each cause name must be in: #{Osbl::Cause::LIST}. Fewer is better than irrelevant extras.
+      - **public_utility:** True if the organization is ARUP or FRUP (reconnue d'utilité publique); note that "reconnue d’intérêt général" is not considered.
+      - **osbls_causes_attributes:** Up to 3 causes maximum. Each cause name must be in: #{Osbl::Cause::LIST}. Fewer is better than irrelevant extras.
       - **osbls_keywords_attributes:** Up to 5 precise keywords capturing the organization's specifics. Avoid generic terms like "Sensibilisation" or "Solidarité".
       - **osbls_intervention_areas_attributes:** Specific geographical areas (countries, regions, continents) where the organization operates. Exclude vague terms like "worldwide" or "international" and avoid listing 'France' for national OSBLs.
-      - **osbls_labels_attributes:** Include only if there is a valid, official label logo (e.g., "Don en Confiance", "label IDEAS"). Ensure it’s a true label, not just a keyword.
-      - **annual_finances_attributes:** Only include financial data from the last 5 years, and only when supported by an actual financial or activity report. For each entry:
+      - **osbls_labels_attributes:** Include only if there is a valid, official label logo (e.g., "Don en Confiance", "label IDEAS").
+      - **annual_finances_attributes:** Only include financial data from the last 5 years. For each entry:
         - **year:** The fiscal year.
-        - **fund_sources_attributes:** Each entry must have a type (one of: #{Osbl::FundSource.types.keys.join(", ")}), a percent value, and optionally an amount.
-        - **fund_allocations_attributes:** Each entry must have a type (one of: #{Osbl::FundAllocation.types.keys.join(", ")}), a percent value, and optionally an amount.
-      - **document_attachments_attributes:** Include documents from the past 5 years (except status documents). For each:
-        - **type:** One of: #{Document.types.except("Autre").keys.join(", ")}.
-        - **file:** A URL to a PDF. Only include if you have reviewed the document.
-      - **locations_attributes:** Only include if the address is complete (must have street name, postal code, and city). Ensure only one location is marked as "Siège social" and that the type is one of: #{Osbl::Location.types.keys.join(", ")}.
+        - **fund_sources_attributes:** Each entry must have a type (one of: #{Osbl::FundSource.types.keys.join(", ")}).
+        - **fund_allocations_attributes:** Each entry must have a type (one of: #{Osbl::FundAllocation.types.keys.join(", ")}).
+      - **document_attachments_attributes:** Each document must be one of type: #{Document.types.except("Autre").keys.join(", ")}.
+      - **locations_attributes:** Only include if the address have at least a city. Ensure only one location is marked as "Siège social" and that the type is one of: #{Osbl::Location.types.keys.join(", ")}.
 
-      **Final check:** Remove any duplicates or irrelevant data before outputting.
-
-      Output the data as a structured JSON object.
     PROMPT
   end
 
