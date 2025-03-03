@@ -10,21 +10,67 @@ RSpec.describe "/osbl_imports", type: :request, inertia: true do
 
     context "when user is authenticated and admin" do
       let(:admin_user) { create(:user, admin: true) }
+      let(:osbl_import) { build(:osbl_import, id: 123) }
 
       before do
         sign_in_as(admin_user)
-        allow_any_instance_of(OsblScraperService).to receive(:call).and_return(123)
+        allow(OsblImports::CreateService).to receive(:new)
+          .with(osbl_uri: valid_params[:osbl_uri])
+          .and_return(instance_double(OsblImports::CreateService, call: osbl_import))
       end
 
       it "returns a successful response" do
         subject
         expect(response).to have_http_status(:created)
+        json_response = JSON.parse(response.body)
+        expect(json_response).to include("id" => osbl_import.id)
+      end
+    end
+  end
+
+  describe "GET /show" do
+    let(:osbl_import) { create(:osbl_import) }
+    subject { get osbl_import_url(osbl_import) }
+
+    it_behaves_like "require_authentication"
+    it_behaves_like "require_admin"
+
+    context "when user is authenticated and admin" do
+      let(:admin_user) { create(:user, admin: true) }
+
+      before do
+        sign_in_as(admin_user)
       end
 
-      it "returns the osbl_import_id" do
+      it "returns a successful response" do
         subject
+        expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
-        expect(json_response).to include("osbl_import_id" => 123)
+        expect(json_response).to include(
+          "id" => osbl_import.id,
+          "status" => osbl_import.status,
+          "contribution_id" => nil
+        )
+      end
+
+      context "when osbl_import has a contribution" do
+        let(:contribution) { create(:contribution) }
+        let(:osbl_import) { create(:osbl_import, contribution: contribution) }
+
+        it "includes the contribution_id" do
+          subject
+          json_response = JSON.parse(response.body)
+          expect(json_response).to include("contribution_id" => contribution.id)
+        end
+      end
+
+      context "when osbl_import does not exist" do
+        subject { get osbl_import_url(0) }
+
+        it "returns not found" do
+          subject
+          expect(response).to have_http_status(:not_found)
+        end
       end
     end
   end

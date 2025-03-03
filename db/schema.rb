@@ -169,9 +169,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_122447) do
 
   create_table "osbl_imports", force: :cascade do |t|
     t.string "osbl_uri", null: false
-    t.json "extracted_data", null: false
+    t.string "firecrawl_job_id", null: false
+    t.json "extracted_data"
+    t.integer "user_id", null: false
+    t.integer "contribution_id"
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["contribution_id"], name: "index_osbl_imports_on_contribution_id"
+    t.index ["user_id"], name: "index_osbl_imports_on_user_id"
   end
 
   create_table "osbl_intervention_areas", force: :cascade do |t|
@@ -298,6 +304,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_122447) do
   add_foreign_key "osbl_annual_finances", "osbls", on_delete: :cascade
   add_foreign_key "osbl_fund_allocations", "osbl_annual_finances", column: "annual_finance_id", on_delete: :cascade
   add_foreign_key "osbl_fund_sources", "osbl_annual_finances", column: "annual_finance_id", on_delete: :cascade
+  add_foreign_key "osbl_imports", "contributions"
+  add_foreign_key "osbl_imports", "users"
   add_foreign_key "osbl_locations", "osbls", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbl_causes", column: "cause_id", on_delete: :cascade
   add_foreign_key "osbls_causes", "osbls", on_delete: :cascade

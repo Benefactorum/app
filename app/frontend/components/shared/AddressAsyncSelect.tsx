@@ -25,7 +25,7 @@ interface Option {
   readonly value: Address
 }
 
-interface MyAsyncCreatableSelectProps {
+interface AddressAsyncSelectProps {
   setData: (key: string, value: any) => void
   attributeName: string
   minInputLength?: number
@@ -46,14 +46,14 @@ const createOption = (feature: AddressFeature): Option => ({
   }
 })
 
-export default function MyAsyncCreatableSelect ({
+export default function AddressAsyncSelect ({
   setData,
   attributeName,
   minInputLength = 3,
   placeholder,
   required = false,
   value
-}: MyAsyncCreatableSelectProps): ReactElement {
+}: AddressAsyncSelectProps): ReactElement {
   const fetchOptions = async (inputValue: string): Promise<Option[]> => {
     if (inputValue.trim().length < minInputLength) return []
 

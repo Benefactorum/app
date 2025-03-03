@@ -1,17 +1,22 @@
-class OsblScraperService
+class OsblImports::CreateService
   SECRET_KEY = Rails.application.credentials.dig(:firecrawl, :secret_key)
 
-  def initialize(osbl_uri)
+  def initialize(osbl_uri:)
     @osbl_uri = normalize(osbl_uri)
-    @firecrawl = Firecrawl.new(SECRET_KEY)
   end
 
   def call
-    job_id = start_extract_async_job
+    raise "Invalid OSBL URI" unless osbl_uri_valid?
 
-    OsblScraperJob.set(wait: 5.seconds).perform_later(job_id, osbl_uri: @osbl_uri)
+    osbl_import = OsblImport.create!(
+      osbl_uri: @osbl_uri,
+      user: Current.user,
+      firecrawl_job_id: start_extract_async_job
+    )
 
-    job_id
+    OsblImportJob.set(wait: 5.seconds).perform_later(osbl_import_id: osbl_import.id)
+
+    osbl_import.id
   end
 
   private
@@ -22,8 +27,12 @@ class OsblScraperService
     uri.gsub(/\/$/, "")
   end
 
+  def osbl_uri_valid?
+    @osbl_uri.match?(URI::RFC2396_PARSER.make_regexp(%w[http https]))
+  end
+
   def start_extract_async_job
-    response = @firecrawl.extract(
+    response = Firecrawl.new(SECRET_KEY).extract(
       urls: [@osbl_uri + "/*"],
       prompt: get_prompt,
       schema: osbl_schema,
@@ -33,7 +42,7 @@ class OsblScraperService
     if response["success"]
       response["id"]
     else
-      raise "Failed to start extract job : #{response["error"]}"
+      raise "Failed to start extract job : #{response}"
     end
   end
 
