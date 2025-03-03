@@ -32,7 +32,7 @@ RSpec.describe OsblImportJob, type: :job do
       end
 
       context "when status is pending" do
-        let(:firecrawl_response) { {"status" => "pending"} }
+        let(:firecrawl_response) { {"status" => "processing"} }
 
         it "reschedules itself with increased interval" do
           expect {

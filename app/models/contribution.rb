@@ -3,6 +3,8 @@ class Contribution < ApplicationRecord
 
   belongs_to :user
 
+  has_one :osbl_import, dependent: :nullify
+
   enum :status, {
     :brouillon => 0,
     :"en attente de revue" => 1,

@@ -18,8 +18,7 @@ RSpec.describe OsblImports::CreateService do
 
       it "sets the correct attributes on the OsblImport" do
         VCR.use_cassette("firecrawl/firecrawl_extract") do
-          import_id = service.call
-          import = OsblImport.find(import_id)
+          import = service.call
 
           expect(import.osbl_uri).to eq(osbl_uri)
           expect(import.user).to eq(Current.user)
@@ -37,9 +36,8 @@ RSpec.describe OsblImports::CreateService do
 
       it "returns the osbl_import id" do
         VCR.use_cassette("firecrawl/firecrawl_extract") do
-          import_id = service.call
-          expect(import_id).to be_present
-          expect(OsblImport.exists?(import_id)).to be true
+          import = service.call
+          expect(import).to be_a(OsblImport)
         end
       end
     end
@@ -67,8 +65,7 @@ RSpec.describe OsblImports::CreateService do
 
       it "normalizes the URI by removing the trailing slash" do
         VCR.use_cassette("firecrawl/firecrawl_extract") do
-          import_id = service.call
-          import = OsblImport.find(import_id)
+          import = service.call
           expect(import.osbl_uri).to eq("https://universsel.org")
         end
       end

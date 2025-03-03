@@ -16,7 +16,7 @@ class OsblImports::CreateService
 
     OsblImportJob.set(wait: 5.seconds).perform_later(osbl_import_id: osbl_import.id)
 
-    osbl_import.id
+    osbl_import
   end
 
   private

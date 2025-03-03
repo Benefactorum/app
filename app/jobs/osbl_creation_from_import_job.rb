@@ -6,14 +6,13 @@ class OsblCreationFromImportJob < ApplicationJob
   def perform(osbl_import_id)
     osbl_import = OsblImport.find(osbl_import_id)
 
-    osbl_params = parse(osbl_import.extracted_data)
+    osbl_data = parse(osbl_import.extracted_data)
 
-    osbl = Osbl.new(osbl_params)
+    osbl = Osbl.new(osbl_data)
 
     if osbl.valid?
-      osbl_data = Contributions::OsblData::Serializer.new(osbl_params).call
       contribution = osbl_import.user.contributions.build
-      contribution.contributable = Contribution::OsblCreation.new(osbl_data: osbl_data)
+      contribution.contributable = Contribution::OsblCreation.new(osbl_data:)
 
       ActiveRecord::Base.transaction do
         contribution.save!
@@ -42,26 +41,32 @@ class OsblCreationFromImportJob < ApplicationJob
 
     osbl_params["osbls_causes_attributes"] = extracted_data["osbls_causes_attributes"].map do |cause|
       {
-        "cause_id" => Osbl::Cause.find_by!(name: cause["name"]).id
+        "cause_id" => Osbl::Cause.find_by!(name: cause["name"]).id.to_s,
+        "name" => cause["name"]
       }
     end
 
     osbl_params["osbls_keywords_attributes"] = extracted_data["osbls_keywords_attributes"]&.map do |keyword|
       {
-        "keyword_id" => Osbl::Keyword.find_or_create_by!(name: keyword["name"]).id
+        "keyword_id" => Osbl::Keyword.find_or_create_by!(name: keyword["name"]).id,
+        "name" => keyword["name"]
       }
     end
 
     osbl_params["osbls_intervention_areas_attributes"] = extracted_data["osbls_intervention_areas_attributes"]&.map do |intervention_area|
       {
-        "intervention_area_id" => Osbl::InterventionArea.find_or_create_by!(name: intervention_area["name"]).id
+        "intervention_area_id" => Osbl::InterventionArea.find_or_create_by!(name: intervention_area["name"]).id,
+        "name" => intervention_area["name"]
       }
     end
 
     osbl_params["osbls_labels_attributes"] = extracted_data["osbls_labels_attributes"]&.map do |label|
       next unless (label = Osbl::Label.find_by(name: label["name"]))
 
-      {"label_id" => label.id}
+      {
+        "label_id" => label.id,
+        "name" => label.name
+      }
     end&.compact
 
     osbl_params["document_attachments_attributes"] = extracted_data["document_attachments_attributes"]&.map do |document_attachment|

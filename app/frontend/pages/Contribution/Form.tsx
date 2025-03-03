@@ -1,7 +1,7 @@
 import { ReactElement, useState, useRef, useEffect } from 'react'
-import { Head } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
-import { Save, Bot } from 'lucide-react'
+import { Save, Bot, Loader2 } from 'lucide-react'
 import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
 import OsblDataSheet from '@/components/pages/contribution/new/OsblDatasheet'
 import OsblFinance from '@/components/pages/contribution/new/OsblFinances'
@@ -66,6 +66,11 @@ interface FormComponentProps {
   title?: string
 }
 
+interface OsblImportResponse {
+  status: string
+  contribution_id: number | undefined
+}
+
 export default function Form ({
   data,
   setData,
@@ -78,8 +83,30 @@ export default function Form ({
   title = 'Ajouter une association'
 }: FormComponentProps): ReactElement {
   const [showBottomButton, setShowBottomButton] = useState(false)
+  const [importId, setImportId] = useState<string | null>(null)
   const topButtonRef = useRef<HTMLButtonElement>(null)
   const [openDialog, setOpenDialog] = useState(false)
+
+  const pollStatus = async (importId: string): Promise<void> => {
+    try {
+      const response = await fetch(`/osbl_imports/${importId}`)
+      const { status, contribution_id } = await response.json() as OsblImportResponse
+
+      if (status === 'completed' && contribution_id !== undefined) {
+        router.get(`/mes-contributions/${contribution_id}/modifier`)
+      } else if (status === 'extracted') {
+        setTimeout(() => { void pollStatus(importId) }, 1000)
+      } else if (status === 'initialized') {
+        setTimeout(() => { void pollStatus(importId) }, 5000)
+      } else {
+        setImportId(null)
+        toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
+      }
+    } catch (error) {
+      setImportId(null)
+      toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
+    }
+  }
 
   const formProps: FormProps = {
     data: data.contribution.osbl,
@@ -159,7 +186,7 @@ export default function Form ({
 
   function validateAndOpenDialog (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault()
-    if (!validateOsbl()) return
+    if (!validateOsbl() || importId !== null) return
     setOpenDialog(true)
   }
 
@@ -195,10 +222,10 @@ export default function Form ({
           throw new Error('Network response was not 201')
         } else {
           toast.success('Extraction lancée avec succès. Veuillez patienter quelques secondes.')
-        // should start polling
+          setImportId(response.data.id)
+          void pollStatus(response.data.id)
         }
       } catch (error) {
-        console.error(error)
         toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
       }
     })()
@@ -232,9 +259,14 @@ export default function Form ({
                 e.preventDefault()
                 launchAutoScraper()
               }}
+              disabled={importId !== null}
             >
-              <Bot className='mr-2' />
-              Saisie automatique
+              {importId !== null
+                ? <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                : <Bot className='mr-2' />}
+              {importId !== null
+                ? 'Extraction en cours...'
+                : 'Saisie automatique'}
               <HelpTooltip>
                 Automatise la collecte des informations de l'association depuis son site web.
               </HelpTooltip>
