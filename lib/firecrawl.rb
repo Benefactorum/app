@@ -1,6 +1,6 @@
-require "net/http"
-require "json"
-require "uri"
+# require "net/http"
+# require "json"
+# require "uri"
 
 # https://docs.firecrawl.dev/api-reference/endpoint/extract
 class Firecrawl

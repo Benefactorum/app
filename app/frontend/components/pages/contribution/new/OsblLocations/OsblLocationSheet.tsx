@@ -25,10 +25,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible'
-import MyAsyncSelect from '@/components/shared/MyAsyncSelect'
 import deepCleanData from '@/lib/deepCleanData'
 import { Label } from '@/components/ui/label'
 import { usePage } from '@inertiajs/react'
+import AddressAsyncSelect from '@/components/shared/AddressAsyncSelect'
 
 interface Props {
   location: Partial<Location>
@@ -142,7 +142,7 @@ export default function OsblLocationSheet ({
 
           <div className='flex flex-col gap-4'>
             <Label>Adresse *</Label>
-            <MyAsyncSelect
+            <AddressAsyncSelect
               setData={(_, value) => handleAddressChange(value)}
               attributeName='address_attributes'
               required

@@ -47,7 +47,8 @@ class Osbl < ApplicationRecord
   }
 
   validates :name, presence: true, uniqueness: true
-  validates :website, uniqueness: true, allow_nil: true
+  validates :tax_reduction, presence: true
+  validates :website, uniqueness: true, allow_nil: true, format: {with: URI::RFC2396_PARSER.make_regexp(%w[http https])}
   validates :description, length: {maximum: 300}, allow_nil: true # TODO: enforce this at db level once we're sure it's enough
   validates :creation_year, numericality: {less_than_or_equal_to: Time.current.year}, allow_nil: true
 
