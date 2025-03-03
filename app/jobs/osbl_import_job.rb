@@ -11,14 +11,16 @@ class OsblImportJob < ApplicationJob
     case response["status"]
     when "completed"
       process_extracted_data(osbl_import, response["data"])
-    when "pending"
+    when "processing"
       if interval < 1.minute
         OsblImportJob.set(wait: interval).perform_later(osbl_import_id:, interval: interval * 2)
       else
         error_handling(osbl_import, "timed_out")
       end
-    else # "failed", "cancelled"
+    when "failed", "cancelled"
       error_handling(osbl_import, response["status"])
+    else
+      Rails.logger.error("OSBL import ID=#{osbl_import.id} unknown status: #{response["status"]}")
     end
   end
 
