@@ -87,26 +87,42 @@ export default function Form ({
   const topButtonRef = useRef<HTMLButtonElement>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
-  const pollStatus = async (importId: string): Promise<void> => {
-    try {
-      const response = await fetch(`/osbl_imports/${importId}`)
-      const { status, contribution_id } = await response.json() as OsblImportResponse
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout
 
-      if (status === 'completed' && contribution_id !== undefined) {
-        router.get(`/mes-contributions/${contribution_id}/modifier`)
-      } else if (status === 'extracted') {
-        setTimeout(() => { void pollStatus(importId) }, 1000)
-      } else if (status === 'initialized') {
-        setTimeout(() => { void pollStatus(importId) }, 5000)
-      } else {
+    const pollStatus = async (importId: string): Promise<void> => {
+      try {
+        const response = await fetch(`/osbl_imports/${importId}`)
+        const { status, contribution_id: contributionId } = await response.json() as OsblImportResponse
+
+        if (status === 'completed' && contributionId !== undefined) {
+          router.get(`/mes-contributions/${contributionId}/modifier`)
+          toast.success('Extraction terminée avec succès.')
+        } else if (status === 'extracted') {
+          timeoutId = setTimeout(() => { void pollStatus(importId) }, 1000)
+        } else if (status === 'initialized') {
+          timeoutId = setTimeout(() => { void pollStatus(importId) }, 5000)
+        } else {
+          setImportId(null)
+          toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
+        }
+      } catch (error) {
         setImportId(null)
         toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
       }
-    } catch (error) {
-      setImportId(null)
-      toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
     }
-  }
+
+    if (importId !== null) {
+      void pollStatus(importId)
+    }
+
+    // Cleanup function to clear any pending timeouts when component unmounts
+    return () => {
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [importId]) // Only re-run if importId changes
 
   const formProps: FormProps = {
     data: data.contribution.osbl,
@@ -223,7 +239,6 @@ export default function Form ({
         } else {
           toast.success('Extraction lancée avec succès. Veuillez patienter quelques secondes.')
           setImportId(response.data.id)
-          void pollStatus(response.data.id)
         }
       } catch (error) {
         toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
