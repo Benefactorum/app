@@ -533,7 +533,7 @@ labels = [
     logo_path: "app/frontend/assets/labels/don-en-confiance.png"
   },
   {
-    name: "Label IDEAS",
+    name: "Label ideas",
     description: <<~DESC,
       Le Label IDEAS, créé en 2010, est une certification indépendante pour les organismes à but non lucratif en France.
       Il atteste de bonnes pratiques en matière de gouvernance, de gestion financière et d'évaluation de l'action.

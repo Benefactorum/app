@@ -1,6 +1,11 @@
 class Osbl::Label < ApplicationRecord
   include AttachableValidation
 
+  LIST = %w[
+    Don en confiance
+    Label ideas
+  ]
+
   has_many :osbls_labels, dependent: :destroy, class_name: "JoinTables::OsblsLabel"
   has_many :osbls, through: :osbls_labels
 

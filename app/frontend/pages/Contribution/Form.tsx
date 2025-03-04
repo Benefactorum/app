@@ -88,12 +88,17 @@ export default function Form ({
   const [openDialog, setOpenDialog] = useState(false)
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
+    let timeoutId: ReturnType<typeof setTimeout>
+    let isComponentMounted = true
 
     const pollStatus = async (importId: string): Promise<void> => {
+      if (!isComponentMounted) return
+
       try {
         const response = await fetch(`/osbl_imports/${importId}`)
         const { status, contribution_id: contributionId } = await response.json() as OsblImportResponse
+
+        if (!isComponentMounted) return
 
         if (status === 'completed' && contributionId !== undefined) {
           router.get(`/mes-contributions/${contributionId}/modifier`)
@@ -107,6 +112,7 @@ export default function Form ({
           toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
         }
       } catch (error) {
+        if (!isComponentMounted) return
         setImportId(null)
         toast.error('Une erreur est survenue lors de l\'extraction. Veuillez réessayer.')
       }
@@ -114,10 +120,18 @@ export default function Form ({
 
     if (importId !== null) {
       void pollStatus(importId)
+      // Set a timeout of 2 minutes
+      timeoutId = setTimeout(() => {
+        if (isComponentMounted) {
+          setImportId(null)
+          toast.error('Le temps d\'extraction a dépassé la limite de 2 minutes. Veuillez réessayer.')
+        }
+      }, 3 * 60 * 1000)
     }
 
     // Cleanup function to clear any pending timeouts when component unmounts
     return () => {
+      isComponentMounted = false
       if (timeoutId !== undefined) {
         clearTimeout(timeoutId)
       }

@@ -2,8 +2,10 @@ class OsblImportJob < ApplicationJob
   queue_as :default
 
   SECRET_KEY = Rails.application.credentials.dig(:firecrawl, :secret_key)
+  MAX_DURATION = 3.minutes
+  DEFAULT_INTERVAL = 5.seconds
 
-  def perform(osbl_import_id:, interval: 5.seconds)
+  def perform(osbl_import_id:, interval: DEFAULT_INTERVAL, max_duration: MAX_DURATION)
     osbl_import = OsblImport.find(osbl_import_id)
 
     response = get_extract_data(osbl_import.firecrawl_job_id)
@@ -12,8 +14,8 @@ class OsblImportJob < ApplicationJob
     when "completed"
       process_extracted_data(osbl_import, response["data"])
     when "processing"
-      if interval < 1.minute
-        OsblImportJob.set(wait: interval).perform_later(osbl_import_id:, interval: interval * 2)
+      if Time.current - osbl_import.created_at < MAX_DURATION
+        OsblImportJob.set(wait: interval).perform_later(osbl_import_id:, interval: interval)
       else
         error_handling(osbl_import, "timed_out")
       end
