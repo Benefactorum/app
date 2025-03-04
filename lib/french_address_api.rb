@@ -1,7 +1,7 @@
 class FrenchAddressApi
   API_BASE = "https://api-adresse.data.gouv.fr"
 
-  class APIError < StandardError; end
+  class ApiError < StandardError; end
 
   # INPUT: query: The query to search for.
   # OUTPUT
@@ -34,8 +34,8 @@ class FrenchAddressApi
       http.request(request)
     end
 
+    raise ApiError, "API request failed with query: '#{query}'. Response: #{response.body}" if response.code != "200"
+
     JSON.parse(response.body)
-  rescue JSON::ParserError, Net::ReadTimeout, Net::OpenTimeout, SocketError => e
-    raise APIError, "API request failed: #{e.message}"
   end
 end

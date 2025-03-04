@@ -35,8 +35,7 @@ class OsblImports::CreateService
     response = Firecrawl.new(SECRET_KEY).extract(
       urls: [@osbl_uri + "/*"],
       prompt: get_prompt,
-      schema: osbl_schema,
-      enable_web_search: true
+      schema: osbl_schema
     )
 
     if response["success"]
@@ -52,31 +51,29 @@ class OsblImports::CreateService
     <<~PROMPT
       You are tasked with extracting only verified, meaningful data from an OSBL website (a French non-profit organization). Follow these rules strictly and output JSON that exactly matches the provided schema. Do not fabricate defaults or include blank values.
 
-      1. **Use only credible sources:** Only include a field if you have a reliable source backing it up.
-      2. **Conform to the additional informations provided below:** Ensure your output follows requirements.
-      3. **Do not fabricate defaults:** Do not include blank values.
-      4. **Do not add duplicates:** Remove any duplicates or irrelevant data before outputting.
-      5. **use French:** All output must be in French.
+      1. Only include a field if the information is clearly written on the website.
+      2. Do not include blank values.
+      4. Do not add duplicates: Remove any duplicates or irrelevant data before outputting.
+      5. use French: All output must be in French.
 
-      **Additional informations:**
+      Guide for extraction process:
 
-      - **description:** A concise summary (max 300 characters) of the organization's mission and actions, in French.
-      - **logo:** A URL to a high-quality logo image (SVG, PNG, or WEBP) with a transparent background, suitable for 200x200px display.
-      - **tax_reduction:** One of: #{Osbl.tax_reductions.keys.join(", ")}. Indicates if donations yield a 66% (intérêt général) or 75% (aide aux personnes en difficulté) tax deduction.
-      - **geographical_scale:** One of: #{Osbl.geographical_scales.keys.join(", ")}. Defines the operational scope of the organization.
-      - **osbl_type:** One of: #{Osbl.osbl_types.keys.join(", ")}.
-      - **public_utility:** True if the organization is ARUP or FRUP (reconnue d'utilité publique); note that "reconnue d’intérêt général" is not considered as a public utility.
-      - **osbls_causes_attributes:** Up to 3 causes maximum. Each cause name must be in: #{Osbl::Cause::LIST}. Fewer is better than irrelevant extras.
-      - **osbls_keywords_attributes:** Up to 5 precise keywords capturing the organization's specifics. Avoid generic terms like "Sensibilisation" or "Solidarité".
-      - **osbls_intervention_areas_attributes:** Specific geographical areas (countries, regions, continents) where the organization operates. Exclude vague terms like "worldwide" or "international" and avoid listing 'France' for national OSBLs.
-      - **osbls_labels_attributes:** Include only if there is a valid, official label logo (e.g., "Don en Confiance", "label IDEAS").
-      - **annual_finances_attributes:** Only include financial data from the last 5 years. For each entry:
-        - **year:** The fiscal year.
-        - **fund_sources_attributes:** Each entry must have a type (one of: #{Osbl::FundSource.types.keys.join(", ")}).
-        - **fund_allocations_attributes:** Each entry must have a type (one of: #{Osbl::FundAllocation.types.keys.join(", ")}).
-      - **document_attachments_attributes:** Each document must be one of type: #{Document.types.except("Autre").keys.join(", ")}.
-      - **locations_attributes:** Only include if the address have at least a city. Ensure only one location is marked as "Siège social" and that the type is one of: #{Osbl::Location.types.keys.join(", ")}.
-
+      - description: A concise summary (max 300 characters) of the organization's mission and actions, in French.
+      - logo: A URL to a high-quality logo image (SVG, PNG, or WEBP) with a transparent background, suitable for 200x200px display.
+      - tax_reduction: One of: #{Osbl.tax_reductions.keys.join(", ")}. Indicates if donations yield a 66% (intérêt général) or 75% (aide aux personnes en difficulté) tax deduction.
+      - geographical_scale: One of: #{Osbl.geographical_scales.keys.join(", ")}. Defines the operational scope of the organization.
+      - osbl_type: One of: #{Osbl.osbl_types.keys.join(", ")}.
+      - public_utility: True if the organization is ARUP or FRUP (reconnue d'utilité publique); note that "reconnue d’intérêt général" is not considered as a public utility.
+      - osbls_causes_attributes: 3 causes maximum. Each cause name must be in: #{Osbl::Cause::LIST}. Fewer is better than irrelevant extras.
+      - osbls_keywords_attributes: 5 precise keywords maximum, capturing the organization's specifics. Avoid generic terms like "Sensibilisation" or "Solidarité".
+      - osbls_intervention_areas_attributes: Specific geographical areas (countries, regions, continents) where the organization operates. Exclude vague terms like "worldwide" or "international" and avoid listing 'France' for national OSBLs.
+      - osbls_labels_attributes: Include only if there is a valid, official label logo. Must be one of: #{Osbl::Label::LIST}.
+      - annual_finances_attributes: Only include financial data from the last 5 years. No year duplicates allowed, only select the most complete data.For each entry:
+        - year: The fiscal year.
+        - fund_sources_attributes: Each entry must have a type (one of: #{Osbl::FundSource.types.keys.join(", ")}). No type duplicates. Sum of percent's entries must be 100.
+        - fund_allocations_attributes: Each entry must have a type (one of: #{Osbl::FundAllocation.types.keys.join(", ")}). No type duplicates. Sum of percent's entries must be 100.
+      - document_attachments_attributes: Each document must be one of type: #{Document.types.except("Autre").keys.join(", ")}.
+      - locations_attributes: Only include if the address have at least a city. The type must be one of: #{Osbl::Location.types.keys.join(", ")}.  only one location can be marked as "Siège social", others should be 'Antenne sociale' (as local branch). Avoid duplicates, only select the most completes locations.
     PROMPT
   end
 

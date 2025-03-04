@@ -22,7 +22,7 @@ RSpec.describe OsblImports::CreateService do
 
           expect(import.osbl_uri).to eq(osbl_uri)
           expect(import.user).to eq(Current.user)
-          expect(import.firecrawl_job_id).to eq("e5be933c-4417-41f8-bfa3-3c834cd772f4")
+          expect(import.firecrawl_job_id).to be_present
         end
       end
 

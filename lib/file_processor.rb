@@ -40,7 +40,7 @@ module FileProcessor
   # Downloads a file from a URL and stores it using ActiveStorage
   # Returns the signed_id of the created blob or nil if download fails
   # your_model.your_attachment.attach(FileProcessor.download_from_url(url))
-  def self.download_from_url(url)
+  def self.download_from_url(url, formats: nil)
     return nil if url.blank?
 
     url = url.gsub(/\/$/, "")
@@ -50,20 +50,27 @@ module FileProcessor
       filename = File.basename(URI.parse(url).path)
       filename = "fichier_téléchargé" if filename.blank?
 
-      # Determine content type based on file extension or default to application/octet-stream
+      # Determine content type based on file extension
       content_type = case File.extname(filename).downcase
-      # when ".jpg", ".jpeg" then "image/jpeg"
       when ".png" then "image/png"
       when ".svg" then "image/svg+xml"
       when ".webp" then "image/webp"
       when ".pdf" then "application/pdf"
-      # when ".doc" then "application/msword"
-      # when ".docx" then "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      # when ".xls" then "application/vnd.ms-excel"
-      # when ".xlsx" then "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      # when ".ppt" then "application/vnd.ms-powerpoint"
-      # when ".pptx" then "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      when ".doc" then "application/msword"
+      when ".docx" then "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      when ".xls" then "application/vnd.ms-excel"
+      when ".xlsx" then "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      when ".ppt" then "application/vnd.ms-powerpoint"
+      when ".pptx" then "application/vnd.openxmlformats-officedocument.presentationml.presentation"
       else "application/octet-stream"
+      end
+
+      # If formats is provided, check if the content type is allowed
+      if formats.present?
+        unless formats.include?(content_type)
+          Rails.logger.error("Unsupported file format: #{File.extname(filename)} for allowed formats: #{formats.join(", ")}")
+          return nil
+        end
       end
 
       # Download the file from the URL using Net::HTTP instead of URI.open

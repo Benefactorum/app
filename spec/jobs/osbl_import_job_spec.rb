@@ -31,27 +31,31 @@ RSpec.describe OsblImportJob, type: :job do
           .and_return(firecrawl_response)
       end
 
-      context "when status is pending" do
+      context "when status is processing" do
         let(:firecrawl_response) { {"status" => "processing"} }
 
-        it "reschedules itself with increased interval" do
+        it "reschedules itself with 5 seconds interval" do
           expect {
             described_class.perform_now(osbl_import_id: osbl_import.id)
           }.to have_enqueued_job(described_class)
-            .with(osbl_import_id: osbl_import.id, interval: 10.seconds)
+            .with(osbl_import_id: osbl_import.id, interval: 5.seconds)
             .on_queue("default")
         end
 
-        context "when interval exceeds 1 minute" do
+        context "when total duration exceeds 3 minutes" do
+          before do
+            allow(Time).to receive(:current).and_return(Time.current + OsblImportJob::MAX_DURATION + 1.second)
+          end
+
           it "marks the job as timed out" do
             expect {
-              described_class.perform_now(osbl_import_id: osbl_import.id, interval: 1.minute + 1.second)
+              described_class.perform_now(osbl_import_id: osbl_import.id)
             }.to change { osbl_import.reload.status }.to("timed_out")
           end
 
           it "does not reschedule itself" do
             expect {
-              described_class.perform_now(osbl_import_id: osbl_import.id, interval: 2.minutes)
+              described_class.perform_now(osbl_import_id: osbl_import.id)
             }.not_to have_enqueued_job(described_class)
           end
         end

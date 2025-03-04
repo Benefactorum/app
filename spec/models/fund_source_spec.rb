@@ -19,8 +19,8 @@ RSpec.describe Osbl::FundSource, type: :model do
     end
 
     describe "amount constraints" do
-      it "enforces amount > 0" do
-        fund_source = build(:fund_source, annual_finance: annual_finance, amount: 0)
+      it "enforces amount >= 0" do
+        fund_source = build(:fund_source, annual_finance: annual_finance, amount: -1)
         expect(fund_source).not_to be_valid
         expect { fund_source.save!(validate: false) }.to raise_error(ActiveRecord::StatementInvalid, /amount_positive/)
       end

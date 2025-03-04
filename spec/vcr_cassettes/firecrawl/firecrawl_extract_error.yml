@@ -5,14 +5,14 @@ http_interactions:
     uri: https://api.firecrawl.dev/v1/extract
     body:
       encoding: UTF-8
-      string: '{"urls":["https://invalid-domain/*"],"prompt":"You are tasked with extracting
-        only verified, meaningful data from an OSBL website (a French non-profit organization).
-        Follow these rules strictly and output JSON that exactly matches the provided
-        schema. Do not fabricate defaults or include blank values.\n\n1. **Use only
-        credible sources:** Only include a field if you have a reliable source backing
-        it up.\n2. **Conform to the additional informations provided below:** Ensure
-        your output follows requirements.\n3. **Do not fabricate defaults:** Do not
-        include blank values.\n4. **Do not add duplicates:** Remove any duplicates
+      string: '{"urls":["https://invalid-domain/*"],"prompt":"You are tasked with
+        extracting only verified, meaningful data from an OSBL website (a French non-profit
+        organization). Follow these rules strictly and output JSON that exactly matches
+        the provided schema. Do not fabricate defaults or include blank values.\n\n1.
+        **Use only credible sources:** Only include a field if you have a reliable
+        source backing it up.\n2. **Conform to the additional informations provided
+        below:** Ensure your output follows requirements.\n3. **Do not fabricate defaults:**
+        Do not include blank values.\n4. **Do not add duplicates:** Remove any duplicates
         or irrelevant data before outputting.\n5. **use French:** All output must
         be in French.\n\n**Additional informations:**\n\n- **description:** A concise
         summary (max 300 characters) of the organization''s mission and actions, in
@@ -85,4 +85,91 @@ http_interactions:
       string: '{"success":false,"error":"Bad Request","details":[{"code":"custom","message":"URL
         must have a valid top-level domain or be a valid path","path":["urls",0]}]}'
   recorded_at: Mon, 03 Mar 2025 13:39:03 GMT
+- request:
+    method: post
+    uri: https://api.firecrawl.dev/v1/extract
+    body:
+      encoding: UTF-8
+      string: '{"urls":["https://invalid-domain/*"],"prompt":"You are tasked with
+        extracting only verified, meaningful data from an OSBL website (a French non-profit
+        organization). Follow these rules strictly and output JSON that exactly matches
+        the provided schema. Do not fabricate defaults or include blank values.\n\n1.
+        Only include a field if the information is clearly written on the website.\n2.
+        Do not include blank values.\n4. Do not add duplicates: Remove any duplicates
+        or irrelevant data before outputting.\n5. use French: All output must be in
+        French.\n\nGuide for extraction process:\n\n- description: A concise summary
+        (max 300 characters) of the organization''s mission and actions, in French.\n-
+        logo: A URL to a high-quality logo image (SVG, PNG, or WEBP) with a transparent
+        background, suitable for 200x200px display.\n- tax_reduction: One of: intérêt_général,
+        aide_aux_personnes_en_difficulté. Indicates if donations yield a 66% (intérêt
+        général) or 75% (aide aux personnes en difficulté) tax deduction.\n- geographical_scale:
+        One of: local, regional, national, international. Defines the operational
+        scope of the organization.\n- osbl_type: One of: association, fonds_de_dotation,
+        fondation.\n- public_utility: True if the organization is ARUP or FRUP (reconnue
+        d''utilité publique); note that \"reconnue d’intérêt général\" is not considered
+        as a public utility.\n- osbls_causes_attributes: 3 causes maximum. Each cause
+        name must be in: [\"Environnement\", \"Protection de l''enfance\", \"Santé\",
+        \"Lutte contre la précarité\", \"Éducation\", \"Protection animale\", \"Recherche\",
+        \"Arts, Culture, Patrimoine\", \"Aide internationale\", \"Handicap\", \"Justice
+        sociale\", \"Religion\", \"Autre\"]. Fewer is better than irrelevant extras.\n-
+        osbls_keywords_attributes: 5 precise keywords maximum, capturing the organization''s
+        specifics. Avoid generic terms like \"Sensibilisation\" or \"Solidarité\".\n-
+        osbls_intervention_areas_attributes: Specific geographical areas (countries,
+        regions, continents) where the organization operates. Exclude vague terms
+        like \"worldwide\" or \"international\" and avoid listing ''France'' for national
+        OSBLs.\n- osbls_labels_attributes: Include only if there is a valid, official
+        label logo. Must be one of: [\"Don\", \"en\", \"confiance\", \"Label\", \"ideas\"].\n-
+        annual_finances_attributes: Only include financial data from the last 5 years.
+        No year duplicates allowed, only select the most complete data.For each entry:\n  -
+        year: The fiscal year.\n  - fund_sources_attributes: Each entry must have
+        a type (one of: Dons, Aides publiques, Revenus d''activités, Autre). No type
+        duplicates. Sum of percent''s entries must be 100.\n  - fund_allocations_attributes:
+        Each entry must have a type (one of: Missions sociales, Frais de fonctionnement,
+        Frais de recherche de fonds, Autre). No type duplicates. Sum of percent''s
+        entries must be 100.\n- document_attachments_attributes: Each document must
+        be one of type: Statuts, Rapport d''activité, Rapport financier, Procès verbal.\n-
+        locations_attributes: Only include if the address have at least a city. The
+        type must be one of: Siège social, Antenne locale, Lieu d''activité, Autre.  only
+        one location can be marked as \"Siège social\", others should be ''Antenne
+        sociale'' (as local branch). Avoid duplicates, only select the most completes
+        locations.\n","schema":{"type":"object","properties":{"name":{"type":"string"},"website":{"type":"string"},"logo":{"type":"string"},"description":{"type":"string"},"tax_reduction":{"type":"string"},"geographical_scale":{"type":"string"},"osbl_type":{"type":"string"},"public_utility":{"type":"boolean"},"creation_year":{"type":"number"},"osbls_causes_attributes":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"}},"required":["name"]}},"osbls_keywords_attributes":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"}}},"required":["name"]},"osbls_intervention_areas_attributes":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"}},"required":["name"]}},"osbls_labels_attributes":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"}},"required":["name"]}},"annual_finances_attributes":{"type":"array","items":{"type":"object","properties":{"year":{"type":"number"},"certified":{"type":"boolean"},"budget":{"type":"number"},"treasury":{"type":"number"},"employees_count":{"type":"number"},"fund_sources_attributes":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string"},"percent":{"type":"number"},"amount":{"type":"number"}},"required":["type","percent"]}},"fund_allocations_attributes":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string"},"percent":{"type":"number"},"amount":{"type":"number"}},"required":["type","percent"]}}},"required":["year"]}},"document_attachments_attributes":{"type":"array","items":{"type":"object","properties":{"document_attributes":{"type":"object","properties":{"type":{"type":"string"},"file":{"type":"string"},"name":{"type":"string"},"year":{"type":"number"},"description":{"type":"string"}},"required":["type","file"]}}}},"locations_attributes":{"type":"array","items":{"type":"object","properties":{"type":{"type":"string"},"address_attributes":{"type":"object","properties":{"street_number":{"type":"string"},"street_name":{"type":"string"},"additional_info":{"type":"string"},"postal_code":{"type":"string"},"city":{"type":"string"}},"required":["street_name","postal_code","city"]},"name":{"type":"string"},"description":{"type":"string"},"website":{"type":"string"}},"required":["type","address_attributes"]}}},"required":["name","tax_reduction","osbls_causes_attributes"]}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api.firecrawl.dev
+      Authorization:
+      - Bearer <FIRECRAWL_SECRET_KEY>
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      X-Powered-By:
+      - Express
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '157'
+      Etag:
+      - W/"9d-tXcHfnAI8ipvqjxniQXGkfxCaX4"
+      Date:
+      - Tue, 04 Mar 2025 13:26:03 GMT
+      Via:
+      - 1.1 google
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+    body:
+      encoding: UTF-8
+      string: '{"success":false,"error":"Bad Request","details":[{"code":"custom","message":"URL
+        must have a valid top-level domain or be a valid path","path":["urls",0]}]}'
+  recorded_at: Tue, 04 Mar 2025 13:26:03 GMT
 recorded_with: VCR 6.3.1
