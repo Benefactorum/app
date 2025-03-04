@@ -58,14 +58,14 @@ class OsblCreationFromImportJob < ApplicationJob
         "keyword_id" => Osbl::Keyword.find_or_create_by!(name: keyword["name"]).id,
         "name" => keyword["name"]
       }
-    end&.uniq { it["keyword_id"] }
+    end&.uniq { |k| k["keyword_id"] }
 
     osbl_params["osbls_intervention_areas_attributes"] = extracted_data["osbls_intervention_areas_attributes"]&.map do |intervention_area|
       {
         "intervention_area_id" => Osbl::InterventionArea.find_or_create_by!(name: intervention_area["name"]).id,
         "name" => intervention_area["name"]
       }
-    end&.uniq { it["intervention_area_id"] }
+    end&.uniq { |k| k["intervention_area_id"] }
 
     osbl_params["osbls_labels_attributes"] = extracted_data["osbls_labels_attributes"]&.map do |label|
       if (label_record = Osbl::Label.find_by(name: label["name"].capitalize))
