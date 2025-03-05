@@ -43,11 +43,11 @@ module FileProcessor
   def self.download_from_url(url, formats: nil)
     return nil if url.blank?
 
-    url = url.gsub(/\/$/, "")
-
     begin
+      url = url.gsub(/\/$/, "")
+      uri = URI.parse(url)
       # Extract filename from URL or use a default name
-      filename = File.basename(URI.parse(url).path)
+      filename = File.basename(uri.path)
       filename = "fichier_téléchargé" if filename.blank?
 
       # Determine content type based on file extension
@@ -74,11 +74,10 @@ module FileProcessor
       end
 
       # Download the file from the URL using Net::HTTP instead of URI.open
-      uri = URI.parse(url)
       response = Net::HTTP.get_response(uri)
 
       unless response.is_a?(Net::HTTPSuccess)
-        raise "Failed to download file: HTTP #{response.code}"
+        raise "Failed to download file: #{response}"
       end
 
       downloaded_file = StringIO.new(response.body)
@@ -92,7 +91,12 @@ module FileProcessor
 
       # Return the signed_id of the blob
       blob.signed_id
+    rescue URI::InvalidURIError
+      Rails.logger.error("Invalid URL: #{url}")
+      nil
     rescue => e
+      # if need to deal with redirects, we can use the following code:
+      # https://github.com/Benefactorum/app/pull/212#discussion_r1979466775
       Rails.logger.error("Failed to download file from #{url}: #{e.message}")
       nil
     end

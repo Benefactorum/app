@@ -122,7 +122,7 @@ export default function Form ({
 
     if (importId !== null) {
       void pollStatus(importId)
-      // Set a timeout of 2 minutes
+      // Set a timeout of 3 minutes
       timeoutId = setTimeout(() => {
         if (isComponentMounted) {
           setImportId(null)

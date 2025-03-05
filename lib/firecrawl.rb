@@ -1,7 +1,3 @@
-# require "net/http"
-# require "json"
-# require "uri"
-
 # https://docs.firecrawl.dev/api-reference/endpoint/extract
 class Firecrawl
   API_BASE = "https://api.firecrawl.dev"
@@ -35,6 +31,9 @@ class Firecrawl
     end
 
     JSON.parse(response.body)
+  rescue => e
+    Rails.logger.error("Firecrawl API error for extract #{urls}: #{e.message}")
+    raise e
   end
 
   # INPUT: job_id: The job ID of the extraction job.
@@ -54,5 +53,8 @@ class Firecrawl
     end
 
     JSON.parse(response.body)
+  rescue => e
+    Rails.logger.error("Firecrawl API error for get_extract_status #{job_id}: #{e.message}")
+    raise e
   end
 end
