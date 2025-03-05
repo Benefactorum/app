@@ -45,11 +45,11 @@ RSpec.describe OsblImports::MapAnnualFinancesService do
 
         # Check fund sources
         expect(result.first["fund_sources_attributes"].size).to eq(2)
-        expect(result.first["fund_sources_attributes"].map { |fs| fs["type"] }).to contain_exactly("public", "private")
+        expect(result.first["fund_sources_attributes"].pluck("type")).to contain_exactly("public", "private")
 
         # Check fund allocations
         expect(result.first["fund_allocations_attributes"].size).to eq(2)
-        expect(result.first["fund_allocations_attributes"].map { |fa| fa["type"] }).to contain_exactly("salaries", "operations")
+        expect(result.first["fund_allocations_attributes"].pluck("type")).to contain_exactly("salaries", "operations")
       end
     end
 
