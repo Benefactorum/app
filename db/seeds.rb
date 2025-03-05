@@ -521,7 +521,7 @@ end
 
 labels = [
   {
-    name: "Don en confiance",
+    name: "Don en Confiance",
     description: <<~DESC,
       Don en confiance, créé en 1989, est un organisme à but non lucratif qui labellise et contrôle les associations et
       fondations faisant appel à la générosité du public. Son label garantit le respect de principes déontologiques tels
@@ -533,7 +533,7 @@ labels = [
     logo_path: "app/frontend/assets/labels/don-en-confiance.png"
   },
   {
-    name: "Label ideas",
+    name: "Label IDEAS",
     description: <<~DESC,
       Le Label IDEAS, créé en 2010, est une certification indépendante pour les organismes à but non lucratif en France.
       Il atteste de bonnes pratiques en matière de gouvernance, de gestion financière et d'évaluation de l'action.

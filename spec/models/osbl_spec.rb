@@ -111,4 +111,46 @@ RSpec.describe Osbl, type: :model do
       }.to raise_error(ActiveRecord::StatementInvalid, /creation_year_as_4_digits/)
     end
   end
+
+  describe "uniqueness validations" do
+    %i[
+      osbls_labels
+      osbls_causes
+      osbls_keywords
+      osbls_intervention_areas
+    ].each do |association|
+      describe association.to_s do
+        let(:target_model) { association.to_s.singularize.sub("osbls_", "") }
+        let(:target_class) { "Osbl::#{target_model.camelize}".constantize }
+        let(:target_record) { create(target_model.to_sym) }
+        let(:duplicate_attributes) { [{target_model => target_record}, {target_model => target_record}] }
+
+        it "validates uniqueness of #{association}" do
+          osbl = build(:osbl)
+          osbl.send(:"#{association}_attributes=", duplicate_attributes)
+
+          expect(osbl).not_to be_valid
+          expect(osbl.errors[association]).to be_present
+        end
+
+        it "allows unique #{association}" do
+          osbl = build(:osbl)
+          second_record = create(target_model.to_sym)
+          unique_attributes = [{target_model => target_record}, {target_model => second_record}]
+          osbl.send(:"#{association}_attributes=", unique_attributes)
+
+          expect(osbl.errors[association]).not_to be_present
+        end
+
+        it "skips validation when #{association} is empty" do
+          osbl = build(:osbl)
+          osbl.send(association).clear
+          # We need to add at least one cause since it's required
+          osbl.osbls_causes.build(cause: create(:cause)) if association != :osbls_causes
+
+          expect(osbl.errors[association]).not_to be_present
+        end
+      end
+    end
+  end
 end

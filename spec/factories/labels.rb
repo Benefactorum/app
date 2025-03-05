@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :label, class: "Osbl::Label" do
-    name { "Don en confiance" }
+    sequence(:name) { |n| "Label #{n}" }
   end
 end

@@ -19,7 +19,7 @@ VCR.configure do |config|
 
   # Set default recording mode
   config.default_cassette_options = {
-    record: :once,
+    record: :new_episodes,
     match_requests_on: [:method, :uri, :body],
     allow_playback_repeats: true
   }

@@ -19,18 +19,20 @@ RSpec.describe "InterventionAreas", type: :request, inertia: true do
       context "when query is present" do
         let(:params) { {query: "test"} }
 
-        it "returns first 3 keywords matching the query" do
-          create_list(:intervention_area, 4)
+        it "returns first 3 intervention areas matching the query" do
+          test1 = create(:intervention_area, name: "Test1")
+          test2 = create(:intervention_area, name: "Test2")
+          test3 = create(:intervention_area, name: "Test3")
           subject
           expect(response).to have_http_status(:ok)
           expect(JSON.parse(response.body)).to eq([
-            {"id" => 1, "name" => "Test1"},
-            {"id" => 2, "name" => "Test2"},
-            {"id" => 3, "name" => "Test3"}
+            {"id" => test1.id, "name" => "Test1"},
+            {"id" => test2.id, "name" => "Test2"},
+            {"id" => test3.id, "name" => "Test3"}
           ])
         end
 
-        it "returns an empty array if no keywords match the query" do
+        it "returns an empty array if no intervention areas match the query" do
           create(:intervention_area, name: "not-matching")
           subject
           expect(JSON.parse(response.body)).to eq([])
