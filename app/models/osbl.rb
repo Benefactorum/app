@@ -66,4 +66,26 @@ class Osbl < ApplicationRecord
   accepts_nested_attributes_for :annual_finances
   accepts_nested_attributes_for :document_attachments
   accepts_nested_attributes_for :locations
+
+  validate :validate_unique_associations, if: :new_record?
+
+  private
+
+  # Model validations on uniqueness don't work with nested attributes when creating a new record, so we need to validate manually
+  def validate_unique_associations
+    %i[
+      osbls_labels
+      osbls_causes
+      osbls_keywords
+      osbls_intervention_areas
+    ].each do |association_name|
+      association = send(association_name)
+      next if association.blank?
+
+      target_model = association_name.to_s.singularize.sub("osbls_", "")
+      unless association.size == association.uniq { |k| k.send(target_model).id }.size
+        errors.add(association_name, "doivent être uniques")
+      end
+    end
+  end
 end

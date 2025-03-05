@@ -1,5 +1,5 @@
 import { ReactElement, useState, useRef, useEffect } from 'react'
-import { Head, router } from '@inertiajs/react'
+import { Head, router, usePage } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { Save, Bot, Loader2 } from 'lucide-react'
 import OsblHeader from '@/components/pages/contribution/new/OsblHeader'
@@ -16,6 +16,7 @@ import { validate } from '@/lib/validate'
 import deepCleanData from '@/lib/deepCleanData'
 import HelpTooltip from '@/components/shared/HelpTooltip'
 import axios from 'axios'
+import { CurrentUserType } from '@/types/types'
 
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
@@ -82,6 +83,7 @@ export default function Form ({
   onSubmit,
   title = 'Ajouter une association'
 }: FormComponentProps): ReactElement {
+  const currentUser = usePage().props.currentUser as CurrentUserType
   const [showBottomButton, setShowBottomButton] = useState(false)
   const [importId, setImportId] = useState<string | null>(null)
   const topButtonRef = useRef<HTMLButtonElement>(null)
@@ -281,25 +283,27 @@ export default function Form ({
               Enregistrer
             </Button>
 
-            <Button
-              variant='outline'
-              className='items-center'
-              onClick={(e) => {
-                e.preventDefault()
-                launchAutoScraper()
-              }}
-              disabled={importId !== null}
-            >
-              {importId !== null
-                ? <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                : <Bot className='mr-2' />}
-              {importId !== null
-                ? 'Extraction en cours...'
-                : 'Saisie automatique'}
-              <HelpTooltip>
-                Automatise la collecte des informations de l'association depuis son site web.
-              </HelpTooltip>
-            </Button>
+            {currentUser.admin && title === 'Ajouter une association' && (
+              <Button
+                variant='outline'
+                className='items-center'
+                onClick={(e) => {
+                  e.preventDefault()
+                  launchAutoScraper()
+                }}
+                disabled={importId !== null}
+              >
+                {importId !== null
+                  ? <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  : <Bot className='mr-2' />}
+                {importId !== null
+                  ? 'Extraction en cours...'
+                  : 'Saisie automatique'}
+                <HelpTooltip>
+                  Automatise la collecte des informations de l'association depuis son site web.
+                </HelpTooltip>
+              </Button>
+            )}
           </div>
         </div>
 
