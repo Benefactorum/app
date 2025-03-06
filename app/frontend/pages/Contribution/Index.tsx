@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button'
 import { Badge, type BadgeProps } from '@/components/ui/badge'
 import formattedDate from '@/lib/formattedDate'
-import { Pencil, Eye, Trash } from 'lucide-react'
+import { Pencil, Eye, Trash, Send } from 'lucide-react'
 // @ts-expect-error
 import Github from '@/assets/icons/github.svg?react'
 
@@ -119,11 +119,24 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                         </TableCell>
                         <TableCell className='flex gap-2'>
                           {contribution.contributable_type.includes('Osbl') && (
-                            <Link href={`/mes-contributions/${contribution.id}`} title='Voir'>
-                              <Button variant='ghost' size='icon' className='bg-white'>
-                                <Eye />
-                              </Button>
-                            </Link>
+                            <>
+                              <Link href={`/mes-contributions/${contribution.id}`} title='Voir'>
+                                <Button variant='ghost' size='icon' className='bg-white'>
+                                  <Eye />
+                                </Button>
+                              </Link>
+                              {contribution.status === 'brouillon' && (
+                                <Button
+                                  onClick={() => { router.post(`/contributions/${contribution.id}/submission`) }}
+                                  variant='ghost'
+                                  size='icon'
+                                  className='bg-white'
+                                  title='Soumettre pour revue'
+                                >
+                                  <Send />
+                                </Button>
+                              )}
+                            </>
                           )}
                           <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
                             <Button variant='ghost' size='icon' className='bg-white'>
