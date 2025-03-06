@@ -11,6 +11,7 @@ class OsblCreationFromImportJob < ApplicationJob
     if osbl.valid?
       create_contribution(osbl_import, osbl_data)
     else
+      osbl_import.update!(status: "failed")
       raise InvalidOsblImportData, osbl.errors.full_messages.join(", ")
     end
   end

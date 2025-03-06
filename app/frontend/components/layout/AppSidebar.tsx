@@ -58,6 +58,7 @@ export default function AppSidebar (): ReactElement {
                           ? ' bg-secondary'
                           : ' hover:bg-secondary/50'
                       }
+                      disabled={item.url === '#'}
                       onClick={handleClick}
                     >
                       <item.icon />

@@ -21,6 +21,7 @@ import { CurrentUserType } from '@/types/types'
 const MAX_LOGO_SIZE = 1 * 1024 * 1024 // 1MB
 const ALLOWED_LOGO_TYPES = ['image/svg+xml', 'image/png', 'image/webp']
 const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024 // 5MB
+const TIMEOUT_FOR_OSBL_IMPORT = 3 // minutes
 
 const osblValidation = z.object({
   contribution: z.object({
@@ -126,9 +127,9 @@ export default function Form ({
       timeoutId = setTimeout(() => {
         if (isComponentMounted) {
           setImportId(null)
-          toast.error('Le temps d\'extraction a dépassé la limite de 2 minutes. Veuillez réessayer.')
+          toast.error(`Le temps d'extraction a dépassé la limite de ${TIMEOUT_FOR_OSBL_IMPORT} minutes. Veuillez réessayer.`)
         }
-      }, 3 * 60 * 1000)
+      }, TIMEOUT_FOR_OSBL_IMPORT * 60 * 1000)
     }
 
     // Cleanup function to clear any pending timeouts when component unmounts

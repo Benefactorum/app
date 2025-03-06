@@ -10,10 +10,8 @@ class User::Otp < ApplicationRecord
   end
 
   def generate_new_code!
-    transaction do
-      increment!(:counter)
-      update!(used: false)
-    end
+    # increment!(:counter) # I always want to increment updated_at
+    update!(used: false, counter: counter + 1)
     code
   end
 
