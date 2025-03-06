@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import type { FileAsObject, OsblUpdate, NewOsbl } from '@/pages/Contribution/types'
 import { getOsblData } from '@/lib/osblData'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -32,7 +32,7 @@ function getStatusLabel (status: string): string {
     case 'rejetée':
       return ' cette contribution a été rejetée.'
     default:
-      return ' cette contribution n\'est pas dans un état valide.'
+      throw new Error(`Status ${status} non pris en charge.`)
   }
 }
 
@@ -73,12 +73,17 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
                   Modifier
                 </Button>
               </Link>
-              <Link href={`/mes-contributions/${contribution.id}/soumettre`} title='Soumettre pour revue'>
-                <Button>
+              {contribution.status === 'brouillon' && (
+                <Button
+                  onClick={() => {
+                    router.post(`/contributions/${contribution.id}/submission`)
+                  }}
+                  title='Soumettre pour revue'
+                >
                   <UserCheck />
                   Soumettre pour revue
                 </Button>
-              </Link>
+              )}
             </div>
           </div>
         </div>
