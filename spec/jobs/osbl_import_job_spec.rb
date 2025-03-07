@@ -22,10 +22,10 @@ RSpec.describe OsblImportJob, type: :job do
     end
 
     context "when extraction is not completed" do
-      let(:firecrawl_client) { instance_double(Firecrawl) }
+      let(:firecrawl_client) { instance_double(FirecrawlApi) }
 
       before do
-        allow(Firecrawl).to receive(:new).and_return(firecrawl_client)
+        allow(FirecrawlApi).to receive(:new).and_return(firecrawl_client)
         allow(firecrawl_client).to receive(:get_extract_status)
           .with(osbl_import.firecrawl_job_id)
           .and_return(firecrawl_response)

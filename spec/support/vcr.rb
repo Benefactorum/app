@@ -11,6 +11,22 @@ VCR.configure do |config|
   # Filter out sensitive information
   config.filter_sensitive_data("<FIRECRAWL_SECRET_KEY>") { Rails.application.credentials.dig(:firecrawl, :secret_key) }
 
+  # Filter GitHub credentials
+  config.filter_sensitive_data("<GITHUB_APP_ID>") { Rails.application.credentials.dig(:github, :app_id) }
+  config.filter_sensitive_data("<GITHUB_INSTALLATION_ID>") { Rails.application.credentials.dig(:github, :installation_id) }
+  config.filter_sensitive_data("<GITHUB_PRIVATE_KEY>") { Rails.application.credentials.dig(:github, :private_key)&.to_s&.gsub("\n", "\\n") }
+  # Filter installation tokens
+  config.filter_sensitive_data("<GITHUB_INSTALLATION_TOKEN>") do |interaction|
+    interaction.response.body.to_s.scan(/"token":\s*"([^"]+)"/).flatten.first
+  end
+  # Filter GitHub tokens in authorization headers
+  config.filter_sensitive_data("<GITHUB_TOKEN>") do |interaction|
+    auth_header = interaction.request.headers["Authorization"]&.first
+    if auth_header&.match(/^Bearer (.*)$/)
+      $1
+    end
+  end
+
   # Allow localhost requests to go through (useful for development)
   config.ignore_localhost = true
 
@@ -19,7 +35,7 @@ VCR.configure do |config|
 
   # Set default recording mode
   config.default_cassette_options = {
-    record: :new_episodes,
+    record: :once,
     match_requests_on: [:method, :uri, :body],
     allow_playback_repeats: true
   }

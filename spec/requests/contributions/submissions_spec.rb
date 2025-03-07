@@ -1,8 +1,8 @@
 require "rails_helper"
 
-RSpec.describe "Contributions::Submissions", type: :request, inertia: true do
-  describe "POST /contributions/:contribution_id/submission" do
-    subject { post contribution_submission_path(contribution) }
+RSpec.describe "Users::Contributions::Submissions", type: :request, inertia: true do
+  describe "POST /users/:user_id/contributions/:contribution_id/submission" do
+    subject { post user_contribution_submission_path(user, contribution) }
 
     let(:user) { create(:user) }
     let(:contribution) { create(:contribution, user:) }
@@ -13,10 +13,10 @@ RSpec.describe "Contributions::Submissions", type: :request, inertia: true do
       before { sign_in_as(user) }
 
       context "when the contribution belongs to the user" do
-        it "updates the contribution status to 'en attente de revue'" do
+        it "updates the contribution status to 'en attente de validation'" do
           expect { subject }.to change { contribution.reload.status }
             .from(contribution.status)
-            .to("en attente de revue")
+            .to("en cours d'envoi")
         end
 
         it "redirects to my contributions path" do

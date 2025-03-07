@@ -23,4 +23,8 @@ module Authorization
   def require_admin
     head :forbidden unless Current.user.admin?
   end
+
+  def require_current_user_or_admin(resource_user:)
+    redirect_to root_path, error: "Vous n'avez pas les droits pour accéder à cette page" unless Current.user == resource_user || Current.user.admin?
+  end
 end
