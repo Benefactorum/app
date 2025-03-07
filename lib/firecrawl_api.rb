@@ -1,5 +1,5 @@
 # https://docs.firecrawl.dev/api-reference/endpoint/extract
-class Firecrawl
+class FirecrawlApi
   API_BASE = "https://api.firecrawl.dev"
   API_VERSION = "v1"
 

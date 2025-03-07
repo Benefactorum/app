@@ -7,10 +7,11 @@ class Contribution < ApplicationRecord
 
   enum :status, {
     :brouillon => 0,
-    :"en attente de revue" => 1,
-    :"demande de modification" => 2,
-    :validée => 3,
-    :rejetée => 4
+    :"en cours d'envoi" => 1,
+    :"en attente de validation" => 2,
+    :"modifications demandées" => 3,
+    :validée => 4,
+    :rejetée => 5
   }
 
   OSBL_CONTRIBUTABLE_TYPES = %w[

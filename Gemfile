@@ -36,6 +36,13 @@ gem "rotp", "~> 6.3"
 
 gem "mailjet", "~> 1.8"
 
+# GitHub API client
+gem "octokit", "~> 8.0"
+# JSON Web Token for GitHub App authentication
+gem "jwt", "~> 2.7"
+# Faraday retry middleware for Octokit
+gem "faraday-retry", "~> 2.2"
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.13.0"
 gem "aws-sdk-s3", require: false

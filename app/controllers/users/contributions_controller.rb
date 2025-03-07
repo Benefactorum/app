@@ -23,7 +23,7 @@ module Users
       contribution = @user.contributions.related_to_osbl.find(params[:id])
       render inertia: "Osbl/Show", props: {
         contribution: contribution.as_json(only: %i[id status]),
-        osbl: Contributions::OsblData::Serializer.new(contribution.osbl_data, :display).call
+        osbl: ::Contributions::OsblData::Serializer.new(contribution.osbl_data, :display).call
       }
     end
 
@@ -37,7 +37,7 @@ module Users
     end
 
     def create
-      status, result = Contributions::CreateService.new(
+      status, result = ::Contributions::CreateService.new(
         user: @user,
         params: contribution_params
       ).call
@@ -56,13 +56,13 @@ module Users
         document_types: Document.types.keys,
         fund_source_types: Osbl::FundSource.types.keys,
         fund_allocation_types: Osbl::FundAllocation.types.keys,
-        contribution: Contributions::Serializer.new(contribution).call
+        contribution: ::Contributions::Serializer.new(contribution).call
       }
     end
 
     def update
       contribution = @user.contributions.related_to_osbl.find(params[:id])
-      status, result = Contributions::UpdateService.new(
+      status, result = ::Contributions::UpdateService.new(
         contribution: contribution,
         params: contribution_params
       ).call

@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
 import type { FileAsObject, OsblUpdate, NewOsbl } from '@/pages/Contribution/types'
 import { getOsblData } from '@/lib/osblData'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -12,10 +12,11 @@ import DataSheetTab from '@/components/pages/osbl/show/DataSheetTab'
 import LocationsTab from '@/components/pages/osbl/show/LocationsTab'
 import DocumentsTab from '@/components/pages/osbl/show/DocumentsTab'
 import { cn } from '@/lib/utils'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { CurrentUserType } from '@/types/types'
 
 interface Props {
-  contribution?: { id: number, status: string }
+  contribution?: { id: number, status: string, user_id: number }
   osbl: OsblUpdate
 }
 
@@ -23,23 +24,27 @@ function getStatusLabel (status: string): string {
   switch (status) {
     case 'brouillon':
       return ' cette contribution n\'est pas encore finalisée.'
-    case 'en attente de revue':
+    case 'en cours d\'envoi':
+      return ' cette contribution est en cours d\'envoi.'
+    case 'en attente de validation':
       return ' cette contribution est en attente d\'être validée par un modérateur.'
-    case 'demande de modification':
+    case 'modifications demandées':
       return ' cette contribution nécessite des modifications.'
     case 'validée':
       return ' cette contribution a été validée.'
     case 'rejetée':
       return ' cette contribution a été rejetée.'
     default:
-      return ' cette contribution n\'est pas dans un état valide.'
+      throw new Error(`Status ${status} non pris en charge.`)
   }
 }
 
 export default function Show ({ osbl, contribution }: Props): ReactElement {
+  const currentUser = usePage().props.currentUser as CurrentUserType
   const processedOsbl: NewOsbl = getOsblData(osbl)
   const bannerRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (bannerRef.current instanceof HTMLElement) {
@@ -66,20 +71,36 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
               <span className='font-semibold'>{contribution.status.toUpperCase()} :</span>
               {getStatusLabel(contribution.status)}
             </p>
-            <div className='flex gap-2 flex-wrap'>
-              <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
-                <Button variant='outline'>
-                  <Pencil />
-                  Modifier
-                </Button>
-              </Link>
-              <Link href={`/mes-contributions/${contribution.id}/soumettre`} title='Soumettre pour revue'>
-                <Button>
-                  <UserCheck />
-                  Soumettre pour revue
-                </Button>
-              </Link>
-            </div>
+            {(currentUser.admin || currentUser.id === contribution.user_id) && (
+              <div className='flex gap-2 flex-wrap'>
+                <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
+                  <Button variant='outline'>
+                    <Pencil />
+                    Modifier
+                  </Button>
+                </Link>
+              </div>
+            )}
+            {contribution.status === 'brouillon' && (
+              <Button
+                onClick={() => {
+                  setIsSubmitting(true)
+                  router.post(`/users/${currentUser.id}/contributions/${contribution.id}/submission`,
+                    {},
+                    {
+                      onFinish: () => {
+                        setIsSubmitting(false)
+                      }
+                    }
+                  )
+                }}
+                title='Soumettre pour revue'
+                disabled={isSubmitting}
+              >
+                <UserCheck />
+                Soumettre pour revue
+              </Button>
+            )}
           </div>
         </div>
       )}

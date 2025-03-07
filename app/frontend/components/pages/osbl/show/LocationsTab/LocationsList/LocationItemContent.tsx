@@ -60,8 +60,8 @@ export function LocationItemContent ({ location, isSelected = false }: LocationI
       </div>
       <div className='absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'>
         {isSelected
-          ? <ZoomOutIcon className='text-muted-foreground' aria-label="Zoom out from location" />
-          : <ZoomInIcon className='text-muted-foreground' aria-label="Zoom to location" />}
+          ? <ZoomOutIcon className='text-muted-foreground' aria-label='Zoom out from location' />
+          : <ZoomInIcon className='text-muted-foreground' aria-label='Zoom to location' />}
       </div>
     </>
   )

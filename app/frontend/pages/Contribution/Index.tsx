@@ -1,11 +1,11 @@
 import { Head, Link, router } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge, type BadgeProps } from '@/components/ui/badge'
 import formattedDate from '@/lib/formattedDate'
-import { Pencil, Eye, Trash } from 'lucide-react'
+import { Pencil, Eye, Trash, Send } from 'lucide-react'
 // @ts-expect-error
 import Github from '@/assets/icons/github.svg?react'
 
@@ -28,7 +28,7 @@ interface Contribution {
   contributable_type: string
   status: string
   created_at: string
-  github_resource_url: string
+  github_resource_url?: string
   osbl_name: string
 }
 
@@ -41,16 +41,18 @@ function getStatusBadgeVariant (status: string): BadgeProps['variant'] {
   switch (status) {
     case 'brouillon':
       return 'ghost'
-    case 'en attente de revue':
+    case 'en cours d\'envoi':
+      return 'ghost'
+    case 'en attente de validation':
       return 'outline'
-    case 'demande de modification':
+    case 'modifications demandées':
       return 'secondary'
     case 'validée':
       return 'default'
     case 'rejetée':
       return 'destructive'
     default:
-      return 'outline'
+      throw new Error(`Statut inconnu: ${status}`)
   }
 }
 
@@ -76,6 +78,8 @@ function getTypeLabel (contribution: Contribution): string {
 }
 
 export default function Index ({ currentUser, contributions }: Props): ReactElement {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   function handleDelete (id: number): void {
     router.delete(`/users/${currentUser.id}/contributions/${id}`)
   }
@@ -119,48 +123,72 @@ export default function Index ({ currentUser, contributions }: Props): ReactElem
                         </TableCell>
                         <TableCell className='flex gap-2'>
                           {contribution.contributable_type.includes('Osbl') && (
-                            <Link href={`/mes-contributions/${contribution.id}`} title='Voir'>
-                              <Button variant='ghost' size='icon' className='bg-white'>
-                                <Eye />
-                              </Button>
-                            </Link>
+                            <>
+                              <Link href={`/mes-contributions/${contribution.id}`} title='Voir'>
+                                <Button variant='ghost' size='icon' className='bg-white'>
+                                  <Eye />
+                                </Button>
+                              </Link>
+                              {contribution.status === 'brouillon' && (
+                                <Button
+                                  onClick={() => {
+                                    setIsSubmitting(true)
+                                    router.post(
+                                      `/users/${currentUser.id}/contributions/${contribution.id}/submission`,
+                                      {},
+                                      {
+                                        onFinish: () => {
+                                          setIsSubmitting(false)
+                                        }
+                                      }
+                                    )
+                                  }}
+                                  variant='ghost'
+                                  size='icon'
+                                  className='bg-white'
+                                  title='Soumettre pour revue'
+                                  disabled={isSubmitting}
+                                >
+                                  <Send />
+                                </Button>
+                              )}
+                            </>
                           )}
                           <Link href={`/mes-contributions/${contribution.id}/modifier`} title='Modifier'>
                             <Button variant='ghost' size='icon' className='bg-white'>
                               <Pencil />
                             </Button>
                           </Link>
-                          {contribution.status === 'brouillon'
-                            ? (
-                              <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                  <Button variant='ghost' size='icon' className='bg-white' title='Supprimer'>
-                                    <Trash />
-                                  </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                  <AlertDialogHeader>
-                                    <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                      Vous êtes sur le point de supprimer votre contribution.
-                                    </AlertDialogDescription>
-                                  </AlertDialogHeader>
-                                  <AlertDialogFooter>
-                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => { handleDelete(contribution.id) }}>
-                                      Supprimer
-                                    </AlertDialogAction>
-                                  </AlertDialogFooter>
-                                </AlertDialogContent>
-                              </AlertDialog>
-                              )
-                            : (
-                              <a href={contribution.github_resource_url} target='_blank' rel='noopener noreferrer' title='Aller sur GitHub'>
-                                <Button variant='ghost' size='icon' className='bg-white'>
-                                  <Github />
+                          {contribution.status === 'brouillon' && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant='ghost' size='icon' className='bg-white' title='Supprimer'>
+                                  <Trash />
                                 </Button>
-                              </a>
-                              )}
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Vous êtes sur le point de supprimer votre contribution.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => { handleDelete(contribution.id) }}>
+                                    Supprimer
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
+                          {contribution.github_resource_url !== null && (
+                            <a href={contribution.github_resource_url} target='_blank' rel='noopener noreferrer' title='Aller sur GitHub'>
+                              <Button variant='ghost' size='icon' className='bg-white'>
+                                <Github />
+                              </Button>
+                            </a>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
