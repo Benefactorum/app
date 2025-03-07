@@ -32,7 +32,7 @@ class OsblImports::CreateService
   end
 
   def start_extract_async_job
-    response = Firecrawl.new(SECRET_KEY).extract(
+    response = FirecrawlApi.new(SECRET_KEY).extract(
       urls: [@osbl_uri + "/*"],
       prompt: get_prompt,
       schema: osbl_schema

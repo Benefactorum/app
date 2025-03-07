@@ -29,7 +29,7 @@ class OsblImportJob < ApplicationJob
   private
 
   def get_extract_data(job_id)
-    Firecrawl.new(SECRET_KEY).get_extract_status(job_id)
+    FirecrawlApi.new(SECRET_KEY).get_extract_status(job_id)
   end
 
   def process_extracted_data(osbl_import, extracted_data)
