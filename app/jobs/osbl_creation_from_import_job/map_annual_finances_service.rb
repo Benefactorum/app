@@ -1,4 +1,4 @@
-module OsblImports
+class OsblCreationFromImportJob
   class MapAnnualFinancesService
     def self.call(annual_finances)
       new(annual_finances).call

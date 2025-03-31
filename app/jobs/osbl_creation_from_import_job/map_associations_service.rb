@@ -1,4 +1,4 @@
-module OsblImports
+class OsblCreationFromImportJob
   class MapAssociationsService
     def self.call(items, model_class, create_missing: true)
       new(items, model_class, create_missing).call

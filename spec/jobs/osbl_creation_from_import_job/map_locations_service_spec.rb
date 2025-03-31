@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe OsblImports::MapLocationsService do
+RSpec.describe OsblCreationFromImportJob::MapLocationsService do
   describe ".call" do
     context "with blank locations" do
       it "returns nil" do
