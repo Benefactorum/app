@@ -22,13 +22,13 @@ class OsblCreationFromImportJob < ApplicationJob
     extracted_data.merge!(
       {
         "logo" => map_logo(extracted_data["logo"]),
-        "osbls_causes_attributes" => OsblImports::MapAssociationsService.call(extracted_data["osbls_causes_attributes"], Osbl::Cause, create_missing: false),
-        "osbls_keywords_attributes" => OsblImports::MapAssociationsService.call(extracted_data["osbls_keywords_attributes"], Osbl::Keyword),
-        "osbls_intervention_areas_attributes" => OsblImports::MapAssociationsService.call(extracted_data["osbls_intervention_areas_attributes"], Osbl::InterventionArea),
-        "osbls_labels_attributes" => OsblImports::MapAssociationsService.call(extracted_data["osbls_labels_attributes"], Osbl::Label, create_missing: false),
-        "annual_finances_attributes" => OsblImports::MapAnnualFinancesService.call(extracted_data["annual_finances_attributes"]),
+        "osbls_causes_attributes" => MapAssociationsService.call(extracted_data["osbls_causes_attributes"], Osbl::Cause, create_missing: false),
+        "osbls_keywords_attributes" => MapAssociationsService.call(extracted_data["osbls_keywords_attributes"], Osbl::Keyword),
+        "osbls_intervention_areas_attributes" => MapAssociationsService.call(extracted_data["osbls_intervention_areas_attributes"], Osbl::InterventionArea),
+        "osbls_labels_attributes" => MapAssociationsService.call(extracted_data["osbls_labels_attributes"], Osbl::Label, create_missing: false),
+        "annual_finances_attributes" => MapAnnualFinancesService.call(extracted_data["annual_finances_attributes"]),
         "document_attachments_attributes" => map_document_attachments(extracted_data["document_attachments_attributes"]),
-        "locations_attributes" => OsblImports::MapLocationsService.call(extracted_data["locations_attributes"])
+        "locations_attributes" => MapLocationsService.call(extracted_data["locations_attributes"])
       }
     ).compact
   end

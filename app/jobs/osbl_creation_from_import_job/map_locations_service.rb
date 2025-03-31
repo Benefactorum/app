@@ -1,4 +1,4 @@
-module OsblImports
+class OsblCreationFromImportJob
   class MapLocationsService
     def self.call(locations)
       new(locations).call

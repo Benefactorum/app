@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe OsblImports::MapAnnualFinancesService do
+RSpec.describe OsblCreationFromImportJob::MapAnnualFinancesService do
   describe ".call" do
     context "with blank annual finances" do
       it "returns an empty array" do
