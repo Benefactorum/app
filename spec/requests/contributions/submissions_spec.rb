@@ -13,7 +13,7 @@ RSpec.describe "Users::Contributions::Submissions", type: :request, inertia: tru
       before { sign_in_as(user) }
 
       context "when the contribution belongs to the user" do
-        it "updates the contribution status to 'en attente de validation'" do
+        it "updates the contribution status" do
           expect { subject }.to change { contribution.reload.status }
             .from(contribution.status)
             .to("en cours d'envoi")
