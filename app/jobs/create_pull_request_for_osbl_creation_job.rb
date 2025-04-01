@@ -19,6 +19,7 @@ class CreatePullRequestForOsblCreationJob < ApplicationJob
     # Should be moved to a config file as constants
     repo_owner = "Benefactorum"
     repo_name = "contributions"
+    file_path = "Osbls/#{osbl_name.parameterize}.json"
 
     new_branch_name = "osbl_creation/#{Time.current.strftime("%Y-%m-%d")}/#{contribution.id}/#{osbl_name.parameterize}"
 
@@ -33,7 +34,7 @@ class CreatePullRequestForOsblCreationJob < ApplicationJob
       repo_name:,
       new_branch_name:,
       commit_message: "Osbl Creation of #{osbl_name}",
-      file_path: osbl_name.parameterize + ".json",
+      file_path:,
       file_content: JSON.pretty_generate(json_data) + "\n"
     )
 

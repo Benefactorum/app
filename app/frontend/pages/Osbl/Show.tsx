@@ -81,7 +81,7 @@ export default function Show ({ osbl, contribution }: Props): ReactElement {
                 </Link>
               </div>
             )}
-            {contribution.status === 'brouillon' && (
+            {currentUser.id === contribution.user_id && contribution.status === 'brouillon' && (
               <Button
                 onClick={() => {
                   setIsSubmitting(true)
