@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   get "mes-contributions/:id", to: "users/contributions#show", as: :my_contribution
   get "mes-contributions/:id/modifier", to: "users/contributions#edit", as: :edit_my_contribution
 
+  resources :github_events, only: [:create], module: :webhooks
+
   resources :contributions, only: [:show, :edit, :update]
 
   resources :osbl_imports, only: [:create, :show]
