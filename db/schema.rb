@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_28_122447) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_03_123232) do
   create_table "accounts", force: :cascade do |t|
   end
 
@@ -117,6 +117,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_122447) do
     t.check_constraint "type NOT IN (1, 2) OR (type IN (1, 2) AND year IS NOT NULL)", name: "year_required_for_specific_types"
     t.check_constraint "type NOT IN (3, 4) OR (type IN (3, 4) AND name IS NOT NULL)", name: "name_required_for_specific_types"
     t.check_constraint "year >= 1000", name: "year_as_4_digits"
+  end
+
+  create_table "github_events", force: :cascade do |t|
+    t.string "event", null: false
+    t.json "payload", null: false
+    t.string "status", default: "pending", null: false
+    t.integer "contribution_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contribution_id"], name: "index_github_events_on_contribution_id"
   end
 
   create_table "osbl_annual_finances", force: :cascade do |t|
@@ -301,6 +311,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_122447) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contributions", "users"
   add_foreign_key "document_attachments", "documents", on_delete: :cascade
+  add_foreign_key "github_events", "contributions"
   add_foreign_key "osbl_annual_finances", "osbls", on_delete: :cascade
   add_foreign_key "osbl_fund_allocations", "osbl_annual_finances", column: "annual_finance_id", on_delete: :cascade
   add_foreign_key "osbl_fund_sources", "osbl_annual_finances", column: "annual_finance_id", on_delete: :cascade
